@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "role": "payee",
+  "agent_id": "did:act:example.com/servicebot-01",
+  "supported_methods": [
+    {
+      "method_id": "urn:act:payment:example-wallet",
+      "psps": [
+        {
+          "psp_id": "urn:act:psp:example-psp",
+          "endpoint": "https://api.example-psp.com/act-psp/v1",
+          "method_schema_url": "https://specs.actprotocol.org/schemas/payment-payload.json"
+        }
+      ]
+    }
+  ]
+}

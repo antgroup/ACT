@@ -1,0 +1,10 @@
+{
+  "anchor_id": "anchor-20260419-001",
+  "chain_id": "act-trust-chain-mainnet",
+  "block_height": 1234567,
+  "block_hash": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+  "merkle_root": "sha256:cccddd...",
+  "record_count": 847,
+  "anchor_time": "2026-04-19T08:10:00Z",
+  "attestation_provider_id": "did:act:example.com/attestation-provider"
+}

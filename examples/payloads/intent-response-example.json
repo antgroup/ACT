@@ -1,0 +1,16 @@
+{
+  "request_id": "urn:uuid:a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "merchant_id": "urn:act:merchant:example-merchant",
+  "candidates": [
+    {
+      "product_id": "pkg-5g-129",
+      "product_name": "5G 套餐 129 元档",
+      "category": "mobile_plan",
+      "price": 129.00,
+      "currency": "CNY",
+      "availability": "in_stock",
+      "price_valid_until": "2026-05-31T23:59:59Z",
+      "estimated_delivery_time": "即时生效"
+    }
+  ]
+}

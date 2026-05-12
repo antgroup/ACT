@@ -1,0 +1,20 @@
+{
+  "event_id": "urn:uuid:f1e2d3c4-b5a6-7890-1234-567890abcdef",
+  "event_type": "act:payment:transaction-completed",
+  "event_time": "2026-04-19T08:05:32Z",
+  "event_source": "did:act:example.com/psp-provider",
+  "domain": "PSD",
+  "payload": {
+    "trade_no": "TXN-20260419-001",
+    "out_trade_no": "ORD-20260419-001",
+    "amount": 129.00,
+    "currency": "CNY",
+    "status": "TRADE_FINISHED"
+  },
+  "payload_digest": "sha256:a1b2c3d4e5f6...",
+  "related_ids": [
+    "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
+    "urn:uuid:7f3e9a12-b4c8-4d56-a321-8b7c6d5e4f30"
+  ],
+  "signature": "MEYCIQD...base64url"
+}

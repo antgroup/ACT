@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/tsd/did-document.schema.json",
+  "title": "DID Document (did:act)",
+  "description": "ACT 协议 did:act 身份文档（TSD-IDM-AID）的 JSON Schema 定义",
+  "type": "object",
+  "required": ["@context", "id", "verificationMethod", "authentication"],
+  "properties": {
+    "@context": {
+      "type": "array",
+      "items": { "type": "string" },
+      "contains": { "const": "https://www.w3.org/ns/did/v1" },
+      "description": "JSON-LD 上下文"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^did:act:.+$",
+      "description": "DID 标识符"
+    },
+    "controller": {
+      "type": "string",
+      "description": "控制器 DID 标识符"
+    },
+    "verificationMethod": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "controller", "publicKeyJwk"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "验证方法标识"
+          },
+          "type": {
+            "type": "string",
+            "description": "密钥类型"
+          },
+          "controller": {
+            "type": "string",
+            "description": "控制器标识"
+          },
+          "publicKeyJwk": {
+            "type": "object",
+            "description": "JWK 格式公钥",
+            "required": ["kty", "crv", "x", "y"],
+            "properties": {
+              "kty": { "type": "string", "enum": ["EC"] },
+              "crv": { "type": "string", "enum": ["P-256", "sm2p256v1"] },
+              "x": { "type": "string" },
+              "y": { "type": "string" }
+            }
+          }
+        }
+      },
+      "description": "验证方法列表"
+    },
+    "authentication": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "身份验证引用列表"
+    },
+    "assertionMethod": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "断言方法引用列表"
+    },
+    "service": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "serviceEndpoint"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "serviceEndpoint": { "type": "string", "format": "uri" }
+        }
+      },
+      "description": "服务端点列表"
+    }
+  }
+}

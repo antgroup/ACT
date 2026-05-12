@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/a2a-payment-payload.schema.json",
+  "title": "A2A Payment Payload",
+  "description": "ACT 协议 A2A 支付基础载荷（PSD-PAY-A2A）的 JSON Schema 定义",
+  "type": "object",
+  "required": [
+    "network",
+    "out_trade_no",
+    "amount",
+    "currency",
+    "resource_id",
+    "pay_before",
+    "seller_signature",
+    "seller_sign_type",
+    "seller_unique_id",
+    "buyer_unique_id"
+  ],
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "支付方法标识符，由方法规范注册"
+    },
+    "out_trade_no": {
+      "type": "string",
+      "description": "外部订单号，用于幂等控制"
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d+)?$",
+      "description": "支付金额（字符串格式，避免浮点精度问题）"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "交易币种（ISO 4217 三字母码）"
+    },
+    "resource_id": {
+      "type": "string",
+      "description": "资源标识，用于绑定支付与资源访问"
+    },
+    "pay_before": {
+      "type": "string",
+      "format": "date-time",
+      "description": "支付截止时间（ISO 8601 格式）"
+    },
+    "seller_signature": {
+      "type": "string",
+      "description": "卖方对支付诉求的数字签名"
+    },
+    "seller_sign_type": {
+      "type": "string",
+      "description": "卖方签名算法类型"
+    },
+    "seller_unique_id": {
+      "type": "string",
+      "description": "卖方唯一标识"
+    },
+    "buyer_unique_id": {
+      "type": "string",
+      "description": "买方唯一标识"
+    },
+    "method_extensions": {
+      "type": "object",
+      "description": "支付方法扩展字段，由各支付方法规范定义"
+    }
+  }
+}

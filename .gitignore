@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+
+# Build outputs
+dist/
+build/
+*.so
+*.dylib
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+.venv/
+venv/
+
+# SDK generated files (optional - may want to commit)
+sdks/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Test coverage
+coverage/
+.coverage
+htmlcov/
+
+# Local config (keep example files)
+*.local.yaml
+*.local.json

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/cid/intent-context-response.schema.json",
+  "title": "Intent Context Response",
+  "description": "ACT 协议意图上下文传递响应报文（CID-INT-RUT）的 JSON Schema 定义",
+  "type": "object",
+  "required": ["request_id", "merchant_id", "candidates"],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "对应的请求追踪标识"
+    },
+    "merchant_id": {
+      "type": "string",
+      "description": "商户身份标识"
+    },
+    "candidates": {
+      "type": "array",
+      "description": "候选商品/服务推荐列表",
+      "items": {
+        "type": "object",
+        "required": ["product_id", "product_name", "price", "currency", "availability"],
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "description": "商品标识"
+          },
+          "product_name": {
+            "type": "string",
+            "description": "商品名称"
+          },
+          "category": {
+            "type": "string",
+            "description": "商品品类"
+          },
+          "price": {
+            "type": "number",
+            "description": "标价"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "货币单位"
+          },
+          "availability": {
+            "type": "string",
+            "enum": ["in_stock", "out_of_stock", "limited"],
+            "description": "库存或可售状态"
+          },
+          "price_valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "description": "价格有效截止时间"
+          },
+          "estimated_delivery_time": {
+            "type": "string",
+            "description": "预计配送或履约时效"
+          },
+          "product_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "商户侧引用地址"
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "description": "错误响应",
+      "properties": {
+        "error_type": {
+          "type": "string",
+          "enum": ["FORMAT_ERROR", "NO_MATCH", "ACCESS_DENIED", "CONSTRAINT_CONFLICT", "RATE_LIMITED"],
+          "description": "错误类型"
+        },
+        "error_message": {
+          "type": "string",
+          "description": "错误描述"
+        }
+      }
+    }
+  }
+}

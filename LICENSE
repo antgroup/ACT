@@ -1,0 +1,7 @@
+本仓库采用双许可证：
+
+1. specs/ 目录下的规范文档采用 Creative Commons Attribution 4.0 International (CC BY 4.0) 许可证。
+   详见 LICENSE-CC-BY-4.0。
+
+2. impl/、schemas/、examples/ 目录下的代码、Schema 和示例采用 Apache License 2.0。
+   详见 LICENSE-Apache-2.0。

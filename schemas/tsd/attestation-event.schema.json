@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/tsd/attestation-event.schema.json",
+  "title": "Attestation Event",
+  "description": "ACT 协议存证事件（TSD-ATT-EVT）的 JSON Schema 定义",
+  "type": "object",
+  "required": ["event_id", "event_type", "event_time", "event_source", "domain", "payload", "payload_digest", "signature"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "存证事件的全局唯一标识符"
+    },
+    "event_type": {
+      "type": "string",
+      "description": "事件类型标识（如 act:delegation:delegation-issued）"
+    },
+    "event_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "事件发生时间（ISO 8601 UTC）"
+    },
+    "event_source": {
+      "type": "string",
+      "description": "事件产生方的身份标识"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["ADD", "CID", "PSD", "TSD"],
+      "description": "所属协议域"
+    },
+    "payload": {
+      "type": "object",
+      "description": "事件载荷，包含与事件类型对应的业务数据"
+    },
+    "payload_digest": {
+      "type": "string",
+      "description": "事件载荷的数字摘要"
+    },
+    "related_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "关联的业务标识列表"
+    },
+    "signature": {
+      "type": "string",
+      "description": "事件产生方对事件核心字段的数字签名"
+    }
+  }
+}

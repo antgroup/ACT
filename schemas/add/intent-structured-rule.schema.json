@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/add/intent-structured-rule.schema.json",
+  "title": "Intent Structured Rule (ISR)",
+  "description": "ACT 协议意图结构化表达规则（ADD-INT-ISR）的 JSON Schema 定义",
+  "type": "object",
+  "required": [
+    "user_intent_raw",
+    "intent_id",
+    "delegation_mode",
+    "validity_start_time",
+    "validity_end_time",
+    "max_total_amount",
+    "amount_currency",
+    "allowed_payment_methods",
+    "signer_identity",
+    "agent_id"
+  ],
+  "properties": {
+    "user_intent_raw": {
+      "type": "string",
+      "description": "用户原始意图文本"
+    },
+    "intent_id": {
+      "type": "string",
+      "description": "意图生命周期唯一标识"
+    },
+    "delegation_id": {
+      "type": "string",
+      "description": "IAC 凭证唯一标识；仅在签发 IAC 的场景下必填"
+    },
+    "delegation_mode": {
+      "type": "string",
+      "enum": ["SPECIFIED", "BOUNDED"],
+      "description": "授权模式：SPECIFIED（定向委托）/ BOUNDED（自主委托）"
+    },
+    "validity_start_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "凭证生效时间（ISO 8601 UTC）"
+    },
+    "validity_end_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "凭证失效时间（ISO 8601 UTC）"
+    },
+    "max_total_amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "授权总金额上限"
+    },
+    "amount_currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "金额币种（ISO 4217）"
+    },
+    "allowed_payment_methods": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "允许的支付方式列表"
+    },
+    "signer_identity": {
+      "type": "string",
+      "description": "签名方身份标识"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "执行智能体身份标识"
+    },
+    "user_confirmation_method": {
+      "type": "string",
+      "enum": ["FACE_RECOGNITION", "FINGERPRINT", "PASSWORD", "OTP"],
+      "description": "用户确认方式"
+    },
+    "user_confirmation_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "用户确认时间（ISO 8601 UTC）"
+    },
+    "ext": {
+      "type": "object",
+      "description": "扩展字段命名空间",
+      "properties": {
+        "commerce": {
+          "type": "object",
+          "description": "商品与商户约束",
+          "properties": {
+            "max_single_amount": {
+              "type": "number",
+              "minimum": 0,
+              "description": "单笔最高金额"
+            },
+            "min_single_amount": {
+              "type": "number",
+              "minimum": 0,
+              "description": "单笔最低金额"
+            },
+            "allowed_categories": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "品类白名单"
+            },
+            "forbidden_categories": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "品类黑名单"
+            },
+            "allowed_merchants": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "商户白名单"
+            },
+            "forbidden_merchants": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "商户黑名单"
+            }
+          }
+        },
+        "agent_behavior": {
+          "type": "object",
+          "description": "智能体行为策略",
+          "properties": {
+            "price_change_tolerance": {
+              "type": "number",
+              "description": "价格变动容差百分比"
+            },
+            "price_change_action": {
+              "type": "string",
+              "enum": ["PAUSE_AND_NOTIFY", "AUTO_CANCEL"],
+              "description": "超出容差时行为"
+            },
+            "on_payment_failure": {
+              "type": "string",
+              "enum": ["AUTO_RETRY", "CANCEL"],
+              "description": "支付失败处理"
+            },
+            "max_retry_count": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 3,
+              "description": "最大重试次数"
+            }
+          }
+        },
+        "fulfillment": {
+          "type": "object",
+          "description": "履约要求",
+          "properties": {
+            "delivery_time_requirement": {
+              "type": "string",
+              "description": "配送时效要求"
+            },
+            "delivery_address": {
+              "type": "string",
+              "description": "配送地址"
+            }
+          }
+        }
+      }
+    }
+  }
+}

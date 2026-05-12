@@ -1,0 +1,34 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://specs.actprotocol.org/ns/did/act/v1"
+  ],
+  "id": "did:act:example.com/agent-alice-001",
+  "controller": "did:act:example.com/user-alice",
+  "verificationMethod": [
+    {
+      "id": "did:act:example.com/agent-alice-001#key-1",
+      "type": "JsonWebKey2020",
+      "controller": "did:act:example.com/agent-alice-001",
+      "publicKeyJwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "U1V6Ul9Yb3Z0QWxZcE1qYnRhc2tIZw",
+        "y": "Wk9XQlV4U2ZQYU1KdG9scXR5R3hJZw"
+      }
+    }
+  ],
+  "authentication": [
+    "did:act:example.com/agent-alice-001#key-1"
+  ],
+  "assertionMethod": [
+    "did:act:example.com/agent-alice-001#key-1"
+  ],
+  "service": [
+    {
+      "id": "did:act:example.com/agent-alice-001#agent-card",
+      "type": "AgentCard",
+      "serviceEndpoint": "https://agent.example.com/.well-known/agent.json"
+    }
+  ]
+}

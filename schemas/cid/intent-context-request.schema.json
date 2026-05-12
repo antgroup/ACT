@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/cid/intent-context-request.schema.json",
+  "title": "Intent Context Request",
+  "description": "ACT 协议意图上下文传递请求报文（CID-INT-RUT）的 JSON Schema 定义",
+  "type": "object",
+  "required": ["request_id", "intent_id", "buyer_agent_id", "intent_context", "constraints"],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "请求全局唯一标识，用于防重放"
+    },
+    "previous_request_id": {
+      "type": "string",
+      "description": "上一次请求标识，用于动态更新时维持上下文连贯"
+    },
+    "intent_id": {
+      "type": "string",
+      "description": "意图标识，在同一意图生命周期内保持不变"
+    },
+    "delegation_id": {
+      "type": "string",
+      "description": "委托标识，委托支付场景下包含，即时支付场景下可省略"
+    },
+    "buyer_agent_id": {
+      "type": "string",
+      "description": "买方智能体身份标识"
+    },
+    "intent_context": {
+      "type": "object",
+      "description": "多维度意图信息",
+      "required": ["explicit_intent"],
+      "properties": {
+        "explicit_intent": {
+          "type": "string",
+          "description": "显式意图需求"
+        },
+        "implicit_intent": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "隐式意图需求列表"
+        },
+        "preferences": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "个人偏好信息列表"
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "description": "刚性商业约束",
+      "properties": {
+        "max_amount": {
+          "type": "number",
+          "description": "金额上限"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "货币单位"
+        },
+        "allowed_categories": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "品类范围"
+        },
+        "allowed_merchants": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "商户白名单"
+        },
+        "delivery_time_requirement": {
+          "type": "string",
+          "description": "配送时效要求"
+        }
+      }
+    },
+    "response_requirements": {
+      "type": "object",
+      "description": "响应格式要求",
+      "properties": {
+        "max_candidates": {
+          "type": "integer",
+          "description": "候选数量上限"
+        },
+        "sort_preference": {
+          "type": "string",
+          "enum": ["price_asc", "price_desc", "relevance"],
+          "description": "推荐排序偏好"
+        }
+      }
+    },
+    "request_signature": {
+      "type": "object",
+      "description": "请求来源认证",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "description": "签名算法"
+        },
+        "value": {
+          "type": "string",
+          "description": "签名值"
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "请求时间戳"
+    }
+  }
+}

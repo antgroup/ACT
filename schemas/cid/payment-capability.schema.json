@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/cid/payment-capability.schema.json",
+  "title": "Payment Capability Declaration",
+  "description": "ACT 协议支付能力声明（CID-PCA-NEG）的 JSON Schema 定义",
+  "type": "object",
+  "required": ["version", "role", "agent_id", "supported_methods"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "支付能力声明版本号"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["payee", "payer"],
+      "description": "声明方角色"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "声明方智能体身份标识"
+    },
+    "supported_methods": {
+      "type": "array",
+      "description": "支持的支付方式列表",
+      "items": {
+        "type": "object",
+        "required": ["method_id", "psps"],
+        "properties": {
+          "method_id": {
+            "type": "string",
+            "description": "支付方式标识符"
+          },
+          "psps": {
+            "type": "array",
+            "description": "对应的 PSP 服务列表",
+            "items": {
+              "type": "object",
+              "required": ["psp_id", "endpoint", "method_schema_url"],
+              "properties": {
+                "psp_id": {
+                  "type": "string",
+                  "description": "PSP 标识"
+                },
+                "endpoint": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "PSP 服务端点"
+                },
+                "method_schema_url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "支付方法载荷 Schema 地址"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
