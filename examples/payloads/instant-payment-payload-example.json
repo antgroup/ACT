@@ -1,0 +1,18 @@
+{
+  "request_id": "req-ins-pay-002-xyz789",
+  "buyer_agent_id": "did:act:example.com/agent-alice-001",
+  "merchant_id": "did:act:example.com/merchant-shop-001",
+  "merchant_order_id": "MCH20240514123456789",
+  "cart_snapshot_hash": "sha256:b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+  "payment_token": "t_abc123def456ghi789jkl012mno345",
+  "amount": "9148.00",
+  "currency": "CNY",
+  "timestamp": "2024-05-14T12:35:00Z",
+  "description": "购买轻薄笔记本 AirBook Pro 14 英寸及无线鼠标",
+  "reference_info": {
+    "cid_delegation_id": null,
+    "cid_intent_id": "urn:uuid:550e8400-e29b-41d4-a716-446655440000"
+  },
+  "signature": "MEYCIQDtv8Qw3Xv6kZnP2mJaLcR5oN1yFgHsIbKdWxPqE7u4vAIhAOzR9sYmCnXpL3kQwBjTfN2aGdHe5VuMrXoIPcKs8Zt1",
+  "signature_algorithm": "ES256"
+}

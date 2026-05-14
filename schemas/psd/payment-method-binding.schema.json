@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/payment-method-binding.schema.json",
+  "title": "Payment Method Binding (PSD-PMT-BND)",
+  "description": "ACT 协议支付方式绑定（PSD-PMT-BND）的 JSON Schema 定义",
+  "type": "object",
+  "required": [
+    "binding_id",
+    "principal_id",
+    "agent_id",
+    "payment_token",
+    "bound_at",
+    "expires_at"
+  ],
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "description": "绑定关系唯一标识"
+    },
+    "principal_id": {
+      "type": "string",
+      "description": "委托人身份标识（DID）"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "受托智能体身份标识（DID）"
+    },
+    "payment_token": {
+      "type": "object",
+      "description": "支付标记信息",
+      "required": ["token", "token_type"],
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "支付标记（被加密/脱敏处理后的令牌）"
+        },
+        "token_type": {
+          "type": "string",
+          "enum": ["CARD_TOKEN", "ACCOUNT_TOKEN", "QUICKPAY_TOKEN"],
+          "description": "支付标记类型"
+        },
+        "token_scheme": {
+          "type": "string",
+          "description": "支付标记方案标识"
+        }
+      }
+    },
+    "linked_account": {
+      "type": "object",
+      "description": "链接的支付账户信息（脱敏展示用）",
+      "properties": {
+        "account_type": {
+          "type": "string",
+          "enum": ["BANK_CARD", "ALIPAY", "WECHAT_PAY", "CREDIT_CARD"],
+          "description": "账户类型"
+        },
+        "last_four_digits": {
+          "type": "string",
+          "description": "后四位数字（脱敏）"
+        },
+        "card_brand": {
+          "type": "string",
+          "description": "卡品牌（如 Visa, Mastercard, 银联）"
+        },
+        "bank_name": {
+          "type": "string",
+          "description": "发卡行名称"
+        }
+      }
+    },
+    "risk_limits": {
+      "type": "object",
+      "description": "风控限制配置",
+      "properties": {
+        "single_transaction_limit": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d{1,2})?$",
+          "description": "单笔交易限额"
+        },
+        "daily_limit": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d{1,2})?$",
+          "description": "每日累计限额"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "限额币种"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "SUSPENDED", "REVOKED"],
+      "description": "绑定状态"
+    },
+    "bound_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "绑定时间（ISO 8601 UTC）"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "过期时间（ISO 8601 UTC），长期标记则不设置"
+    },
+    "pstp_id": {
+      "type": "string",
+      "description": "支付标记服务方标识"
+    },
+    "psp_id": {
+      "type": "string",
+      "description": "支付服务方标识"
+    },
+    "authentication_method": {
+      "type": "string",
+      "enum": ["FACE_RECOGNITION", "FINGERPRINT", "PASSWORD", "OTP", "BIOMETRIC"],
+      "description": "绑定时的核身方式"
+    },
+    "authentication_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "核身时间戳"
+    }
+  }
+}

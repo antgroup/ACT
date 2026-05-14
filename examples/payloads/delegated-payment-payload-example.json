@@ -1,0 +1,24 @@
+{
+  "request_id": "req-del-pay-003-def456",
+  "buyer_agent_id": "did:act:example.com/agent-alice-001",
+  "delegation_id": "urn:uuid:7f3e9a12-b4c8-4d56-a321-8b7c6d5e4f30",
+  "iac": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRpZDphY3Q6ZXhhbXBsZS5jb20vdXNlci1hbGljZSBrZXktMSIsInR5cCI6InZjK2p3dCJ9.eyJpc3MiOiJkaWQ6YWN0OmV4YW1wbGUuY29tL3VzZXItYWxpY2UiLCJzdWIiOiJkaWQ6YWN0OmV4YW1wbGUuY29tL2FnZW50LWFsaWNlLTAwMSIsImplIjoiZXhhbXBsZSIsInZjIjp7InR5cGUiOlsiVkNiVmFsaWRhdGlvbkNyZWRlbnRpYWwiLCJBQ3RJbnRlbnRBdXRob3JpemF0aW9uIl0sImNyZWRlbnRpYWxTdWJqZWN0Ijp7InVzZXJfaW50ZW50X3JhdyI6IuWkmOWxj+e7p+S7tuWwu+h1bmN0YXNzIiwiZGVsZWdhdGlvbl9pZCI6InVybjp1dWlkOjdmM2U5YTEyLWI0YzgtNGQ1Ni1hMzIxLThiN2M2ZDVlNGYzMCIsImRlbGVnYXRpb25fbW9kZSI6IlNQRUNJRklFRCIsInZhbGlkaXR5X3N0YXJ0X3RpbWUiOiIyMDI0LTA1LTAxVDAwOjAwOjAwWiIsInZhbGlkaXR5X2VuZF90aW1lIjoiMjAyNC0xMi0zMVQyMzo1OTo1OVoiLCJtYXhfdG90YWxfYW1vdW50Ijo1MDAwLjAwLCJhbW91bnRfY3VycmVuY3kiOiJDTlkiLCJhbGxvd2VkX3BheW1lbnRfbWV0aG9kcyI6WyJ1cm46YWN0OnBheW1lbnQ6ZXhhbXBsZS13YWxsZXQiXSwic2lnbmVyX2lkZW50aXR5IjoiZGlkOmFjdDpleGFtcGxlLmNvbS91c2VyLWFsaWNlIiwiYWdlbnRfaWQiOiJkaWQ6YWN0OmV4YW1wbGUuY29tL2FnZW50LWFsaWNlLTAwMSJ9fQ.MEYCIQDtv8Qw3Xv6kZnP2mJaLcR5oN1yFgHsIbKdWxPqE7u4vAIhAOzR9sYmCnXpL3kQwBjTfN2aGdHe5VuMrXoIPcKs8Zt1",
+  "merchant_id": "did:act:example.com/merchant-shop-001",
+  "merchant_order_id": "MCH20240514123456789",
+  "cart_snapshot_hash": "sha256:c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+  "amount": "9148.00",
+  "currency": "CNY",
+  "timestamp": "2024-05-14T12:40:00Z",
+  "payment_method": "urn:act:payment:example-wallet",
+  "payment_token": "t_abc123def456ghi789jkl012mno345",
+  "description": "委托支付 - 购买轻薄笔记本 AirBook Pro 14 英寸及无线鼠标",
+  "signature": "MEYCIQDtv8Qw3Xv6kZnP2mJaLcR5oN1yFgHsIbKdWxPqE7u4vAIhAOzR9sYmCnXpL3kQwBjTfN2aGdHe5VuMrXoIPcKs8Zt1",
+  "signature_covered_fields": [
+    "request_id",
+    "delegation_id",
+    "merchant_order_id",
+    "amount",
+    "currency",
+    "timestamp"
+  ]
+}

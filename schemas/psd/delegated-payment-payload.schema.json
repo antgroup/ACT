@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/delegated-payment-payload.schema.json",
+  "title": "Delegated Payment Payload (PSD-PAY-DEL)",
+  "description": "ACT 协议用户委托支付（PSD-PAY-DEL）的 JSON Schema 定义",
+  "type": "object",
+  "required": [
+    "request_id",
+    "buyer_agent_id",
+    "delegation_id",
+    "iac",
+    "merchant_id",
+    "merchant_order_id",
+    "cart_snapshot_hash",
+    "amount",
+    "currency",
+    "timestamp"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "请求全局唯一标识，用于防重放"
+    },
+    "buyer_agent_id": {
+      "type": "string",
+      "description": "买方智能体身份标识"
+    },
+    "delegation_id": {
+      "type": "string",
+      "description": "委托标识，等于 IAC 的 jti"
+    },
+    "iac": {
+      "type": "string",
+      "description": "完整的意图授权凭证（JWT 格式）"
+    },
+    "merchant_id": {
+      "type": "string",
+      "description": "商户身份标识"
+    },
+    "merchant_order_id": {
+      "type": "string",
+      "description": "商户侧订单号，来自 CID-CART-CFM"
+    },
+    "cart_snapshot_hash": {
+      "type": "string",
+      "description": "购物车快照摘要，用于验证支付金额与购物车一致性"
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "支付金额（字符串格式）"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "币种（ISO 4217）"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "请求时间戳（ISO 8601 UTC）"
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "支付方式标识符"
+    },
+    "payment_token": {
+      "type": "string",
+      "description": "支付标记（非子账户场景）"
+    },
+    "subaccount_info": {
+      "type": "object",
+      "description": "子账户信息（使用专属子账户时提供）",
+      "properties": {
+        "subaccount_id": {
+          "type": "string",
+          "description": "子账户标识"
+        },
+        "signature": {
+          "type": "string",
+          "description": "子账户专属密钥签名/MAC"
+        },
+        "signature_algorithm": {
+          "type": "string",
+          "description": "签名算法类型"
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "description": "支付描述"
+    },
+    "signature": {
+      "type": "string",
+      "description": "买方智能体对请求关键要素的签名"
+    },
+    "signature_covered_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "签名覆盖的字段列表"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "binding_id": "BIND-20240514-00156",
+  "principal_id": "did:act:example.com/user-alice",
+  "agent_id": "did:act:example.com/agent-alice-001",
+  "payment_token": {
+    "token": "t_abc123def456ghi789jkl012mno345",
+    "token_type": "CARD_TOKEN",
+    "token_scheme": "EMV_PAIT"
+  },
+  "linked_account": {
+    "account_type": "BANK_CARD",
+    "last_four_digits": "6789",
+    "card_brand": "UnionPay",
+    "bank_name": "中国建设银行"
+  },
+  "risk_limits": {
+    "single_transaction_limit": "5000.00",
+    "daily_limit": "20000.00",
+    "currency": "CNY"
+  },
+  "status": "ACTIVE",
+  "bound_at": "2024-05-01T10:00:00Z",
+  "expires_at": "2025-05-01T23:59:59Z",
+  "pstp_id": "PSTP-EXP-001",
+  "psp_id": "urn:act:psp:example-psp",
+  "authentication_method": "FINGERPRINT",
+  "authentication_timestamp": "2024-05-01T09:58:30Z"
+}

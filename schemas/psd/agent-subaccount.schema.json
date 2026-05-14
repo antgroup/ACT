@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/agent-subaccount.schema.json",
+  "title": "Agent-Dedicated Sub-Account (PSD-AGT-SUB)",
+  "description": "ACT 协议智能体专属子账户（PSD-AGT-SUB）的 JSON Schema 定义",
+  "type": "object",
+  "required": [
+    "subaccount_id",
+    "principal_id",
+    "agent_id",
+    "balance",
+    "currency",
+    "status",
+    "created_at",
+    "key_reference"
+  ],
+  "properties": {
+    "subaccount_id": {
+      "type": "string",
+      "description": "子账户唯一标识"
+    },
+    "principal_id": {
+      "type": "string",
+      "description": "委托人身份标识（DID）"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "受托智能体身份标识（DID）"
+    },
+    "balance": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "当前余额"
+    },
+    "frozen_amount": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "冻结金额"
+    },
+    "available_balance": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "可用余额（自动计算：余额 - 冻结金额）"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "账户币种（ISO 4217）"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "FROZEN", "CLOSED"],
+      "description": "子账户状态"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "开户时间（ISO 8601 UTC）"
+    },
+    "key_reference": {
+      "type": "object",
+      "description": "关联的专属密钥引用",
+      "required": ["key_id", "key_type"],
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "description": "密钥标识符"
+        },
+        "key_type": {
+          "type": "string",
+          "enum": ["ASYMMETRIC", "SYMMETRIC"],
+          "description": "密钥类型（非对称或对称）"
+        },
+        "public_key_id": {
+          "type": "string",
+          "description": "公钥标识（非对称方案）"
+        },
+        "verification_key_id": {
+          "type": "string",
+          "description": "验证密钥 ID（对称方案）"
+        }
+      }
+    },
+    "risk_limits": {
+      "type": "object",
+      "description": "子账户风控限制",
+      "properties": {
+        "max_single_transaction": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d{1,2})?$",
+          "description": "单笔最大交易金额"
+        },
+        "daily_transaction_limit": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d{1,2})?$",
+          "description": "每日交易限额"
+        },
+        "transaction_count_limit": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "每日交易次数限制"
+        }
+      }
+    },
+    "auto_recharge_enabled": {
+      "type": "boolean",
+      "description": "是否启用自动充值"
+    },
+    "auto_recharge_threshold": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "自动充值触发阈值"
+    },
+    "auto_recharge_amount": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "自动充值金额"
+    },
+    "last_transaction_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "最后交易时间"
+    },
+    "total_transactions": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "总交易次数"
+    },
+    "psp_id": {
+      "type": "string",
+      "description": "管理该子账户的 PSP 标识"
+    }
+  }
+}

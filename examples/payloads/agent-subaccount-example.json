@@ -1,0 +1,27 @@
+{
+  "subaccount_id": "SA-20240514-000789",
+  "principal_id": "did:act:example.com/user-alice",
+  "agent_id": "did:act:example.com/agent-alice-001",
+  "balance": "5000.00",
+  "frozen_amount": "0.00",
+  "available_balance": "5000.00",
+  "currency": "CNY",
+  "status": "ACTIVE",
+  "created_at": "2024-05-01T08:00:00Z",
+  "key_reference": {
+    "key_id": "key-sa-001-xyz",
+    "key_type": "ASYMMETRIC",
+    "public_key_id": "did:act:example.com/agent-alice-001#key-1"
+  },
+  "risk_limits": {
+    "max_single_transaction": "2000.00",
+    "daily_transaction_limit": "10000.00",
+    "transaction_count_limit": 50
+  },
+  "auto_recharge_enabled": false,
+  "auto_recharge_threshold": "500.00",
+  "auto_recharge_amount": "1000.00",
+  "last_transaction_at": "2024-05-14T11:20:00Z",
+  "total_transactions": 127,
+  "psp_id": "urn:act:psp:example-psp"
+}
