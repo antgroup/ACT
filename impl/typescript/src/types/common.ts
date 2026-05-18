@@ -1,16 +1,21 @@
+export interface ConversationHistory {
+  user_intent_raw?: string;
+  user_intent_raw_digest?: string;
+  input_mode?: ('TEXT' | 'VOICE' | 'IMAGE' | 'INTERACTIVE_CARD' | 'OTHER')[];
+  context_ref?: string;
+}
+
 export interface ISR {
-  user_intent_raw: string;
+  conversation_history: ConversationHistory;
   intent_id: string;
-  delegation_id?: string;
   delegation_mode: 'SPECIFIED' | 'BOUNDED';
   validity_start_time: string;
   validity_end_time: string;
   max_total_amount: number;
-  amount_currency: string;
+  currency: string;
   allowed_payment_methods: string[];
-  signer_identity: string;
   agent_id: string;
-  user_confirmation_method?: 'FACE_RECOGNITION' | 'FINGERPRINT' | 'PASSWORD' | 'OTP';
+  user_confirmation_method?: string;
   user_confirmation_timestamp?: string;
   ext?: {
     commerce?: {
@@ -22,8 +27,8 @@ export interface ISR {
       forbidden_merchants?: string[];
     };
     agent_behavior?: {
-      price_change_tolerance?: number;
-      price_change_action?: 'PAUSE_AND_NOTIFY' | 'AUTO_CANCEL';
+      price_deviation_tolerance?: number;
+      price_deviation_action?: 'PAUSE_AND_NOTIFY' | 'AUTO_CANCEL';
       on_payment_failure?: 'AUTO_RETRY' | 'CANCEL';
       max_retry_count?: number;
     };
@@ -31,7 +36,26 @@ export interface ISR {
       delivery_time_requirement?: string;
       delivery_address?: string;
     };
+    vendor_private?: Record<string, unknown>;
   };
+}
+
+export interface IACPayload {
+  delegation_id: string;
+  intent_id?: string;
+  conversation_history?: ConversationHistory;
+  delegator_identity: string;
+  agent_id: string;
+  delegation_mode?: 'SPECIFIED' | 'BOUNDED';
+  validity_start_time: string;
+  validity_end_time: string;
+  max_total_amount: number;
+  currency?: string;
+  allowed_payment_methods?: string[];
+  user_confirmation_method?: string;
+  user_confirmation_timestamp?: string;
+  source_isr_digest?: string;
+  ext?: ISR['ext'];
 }
 
 export interface IAC {
@@ -42,7 +66,7 @@ export interface IAC {
   exp: number;
   vc: {
     type: string[];
-    credentialSubject: ISR;
+    credentialSubject: IACPayload;
   };
 }
 

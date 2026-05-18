@@ -7,27 +7,27 @@
   "vc": {
     "type": ["VerifiableCredential", "ACTIntentAuthorization"],
     "credentialSubject": {
-      "user_intent_raw": "帮我每个月自动续费我的中国移动手机号 138xxxxxxxx，套餐费用约 129 元",
-      "intent_id": "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
       "delegation_id": "urn:uuid:7f3e9a12-b4c8-4d56-a321-8b7c6d5e4f30",
+      "intent_id": "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
+      "delegator_identity": "did:act:example.com/user-alice",
+      "agent_id": "did:act:example.com/agent-alice-001",
       "delegation_mode": "SPECIFIED",
       "validity_start_time": "2026-03-19T00:00:00Z",
       "validity_end_time": "2026-06-19T23:59:59Z",
       "max_total_amount": 450.00,
-      "amount_currency": "CNY",
+      "currency": "CNY",
       "allowed_payment_methods": ["urn:act:payment:example-wallet"],
-      "signer_identity": "did:act:example.com/user-alice",
-      "agent_id": "did:act:example.com/agent-alice-001",
       "user_confirmation_method": "FINGERPRINT",
       "user_confirmation_timestamp": "2026-03-19T09:42:17Z",
+      "source_isr_digest": "sha256:a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
       "ext": {
         "commerce": {
           "allowed_merchants": ["urn:act:merchant:example-merchant"],
           "max_single_amount": 150.00
         },
         "agent_behavior": {
-          "price_change_tolerance": 10.0,
-          "price_change_action": "PAUSE_AND_NOTIFY",
+          "price_deviation_tolerance": 10.0,
+          "price_deviation_action": "PAUSE_AND_NOTIFY",
           "on_payment_failure": "AUTO_RETRY",
           "max_retry_count": 3
         }

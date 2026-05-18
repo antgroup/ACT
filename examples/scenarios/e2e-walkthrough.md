@@ -16,7 +16,7 @@
    - `delegation_mode: SPECIFIED`
    - `max_total_amount: 450.00`（3 个月 × 150 元含容差）
    - `ext.commerce.allowed_merchants: ["urn:act:merchant:example-merchant"]`
-   - `ext.agent_behavior.price_change_tolerance: 10.0`
+   - `ext.agent_behavior.price_deviation_tolerance: 10.0`
 3. 智能体向 Alice 展示结构化摘要，Alice 确认
 4. Alice 核身（指纹），智能体签发 IAC（VC-JWT 格式，ES256 签名）
 5. 智能体异步上报 `act:delegation:intent-created` 与 `act:delegation:delegation-issued` 存证事件

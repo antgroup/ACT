@@ -2,14 +2,20 @@
 
 ## 1 范围
 
-委托授权域（Authorization & Delegation Domain, ADD）是 ACT 协议的起点。本域规范了委托人将其商业意图和行动授权，以可验证的方式赋予智能体的完整过程，从委托人表达自然语言意图，到智能体持有完整有效的用户意图授权凭证，并可凭此在后续商业交互及支付执行中代表委托人行动为止。
+委托授权域（Authorization & Delegation Domain, ADD）规定用户意图的表达、确认、结构化约束、授权凭证签发及其生命周期管理规则，为智能体代表用户开展商业活动提供可表达、可约束、可验证、可追溯的授权基础。
 
-**本域范围：**
+**本域职责范围：**
 
-- 定义用户意图的获取、确认及结构化表达规范；
-- 定义用户意图授权凭证的委托模式、签发流程、封装格式与签名规范等；
-- 定义意图授权凭证的生命周期状态流转；
-- 定义用户委托授权过程中的关键事件类型，供信任服务域异步存证使用。
+- 用户原始意图的获取、澄清、确认与结构化表达；
+- 意图结构化结果（ISR）的生成与引用；
+- 意图授权凭证（IAC）的构造、签发与封装；
+- IAC 生命周期状态及其可见语义。
+
+**本域不规范以下内容：**
+
+- 前端交互样式、提示词工程、模型推理过程及多模态底层识别算法；
+- 具体身份基础设施、私钥托管实现和签名服务内部实现；
+- 商品发现、交易协商、购物车确认、支付渠道报文、资金清算结算。
 
 ## 2 术语和定义
 
@@ -19,21 +25,46 @@
 
 ### 意图获取及结构化表达 Intent Capture and Structured Expression, ICS
 
-将用户自然语言意图捕获并转化为结构化表达规则 per 的规范。
+将用户自然语言意图捕获并转化为结构化表达规则的规范。
+
+### 意图结构化结果 Intent Structured Result, ISR
+
+对用户商业目标、约束和边界的结构化规则表达。
 
 ### 意图授权凭证 Intent Authorization Credential, IAC
 
-由委托人向智能体签发的、具备密码学可验证性的授权凭证。
+对 ISR 进行可验证封装后的授权凭证对象。
 
-## 3 本域协议组件列表
+## 3 核心对象与标识
 
-| 协议组件 | 组件描述 |
-|---------|---------|
-| `ADD-INT-ICS`：意图获取及结构化表达 | 规范委托人向智能体表达自然语言意图，以及智能体解析并获得用户明确确认的交互流程。 |
-| `ADD-IAC-ISS`：意图授权凭证签发 | 规范将结构化意图转化为跨域可验证的密码学授权凭证的签发与签名机制。 |
-| `ADD-IAC-LCM`：意图授权凭证生命周期管理 | 定义意图授权凭证（IAC）从生效、挂起、恢复到作废、过期的全生命周期状态流转机制。 |
+为保持本域内部及跨域处理的一致性，ADD 使用一组标准核心对象和标识键来描述用户授权链路中的关键状态。本域核心对象及其作用可概括如下：
 
-## 4 协议典型场景与域内协议组件的关联
+| 对象或标识 | 含义 | 主要产生位置 | 主要使用位置 |
+|-----------|------|-------------|-------------|
+| 用户原始意图 | 用户以自然语言或其他输入方式表达的原始商业意图内容 | ADD-INT-ICS | ADD-INT-ICS，以及必要时用于事后核查的相关处理环节 |
+| `intent_id` | 用户意图标识，用于贯穿意图确认、结构化表达及后续跨域引用 | ADD-INT-ICS | ADD 域内部，以及需要引用该意图上下文的其他域 |
+| 意图结构化结果（ISR） | 对用户商业目标、约束和边界的结构化规则表达 | ADD-INT-ICS | ADD-IAC-ISS，以及需要引用该规则的其他域 |
+| 意图授权凭证（IAC） | 对 ISR 进行可验证封装后的授权凭证对象 | ADD-IAC-ISS | ADD-IAC-LCM、支付服务域、信任服务域 |
+| `delegation_id` | IAC 的生命周期唯一标识，用于标识一个正式的授权凭证 | ADD-IAC-ISS | ADD-IAC-LCM、支付服务域、信任服务域 |
+| 授权状态 | IAC 当前是否可用的状态，如 Active、Suspended、Revoked、Expired | ADD-IAC-LCM | 支付服务域，以及其他需要判断授权有效性的处理环节 |
+
+## 4 本域协议组件列表与关系
+
+### 组件总览
+
+委托授权域由三个协议组件构成，它们共同完成从用户原始意图输入到授权凭证可用的完整链路。各组件的功能定位如下：
+
+- **ADD-INT-ICS**：意图获取及结构化表达。负责接收用户原始意图，完成必要的语义澄清、用户确认和结构化表达，形成后续授权流程可引用的意图结构化结果。
+- **ADD-IAC-ISS**：意图授权凭证签发。负责将结构化意图封装为跨域可验证的授权凭证，并完成必要的签名或签发动作。
+- **ADD-IAC-LCM**：意图授权凭证生命周期管理。负责定义和管理 IAC 在有效期内的状态变化及其可见语义。
+
+### 依赖与跨域引用
+
+ADD-INT-ICS 形成的 ISR 构成 ADD-IAC-ISS 的签发依据。ADD-IAC-ISS 形成的 IAC 和 delegation_id 构成 ADD-IAC-LCM 的管理对象，ADD-IAC-LCM 给出的授权状态将影响后续环节是否接受该授权凭证。
+
+商业交互域主要引用 ISR 及相关约束上下文，以支持商品发现、意图传递和交易确认。支付服务域主要引用 IAC、delegation_id 及授权状态结论，以支持支付请求中的授权校验。信任服务域可引用本域相关事件标识，但事件结构与存证治理规则由信任服务域统一定义。
+
+## 5 典型场景与域内协议组件的关联
 
 ### 场景一：用户即时支付
 
@@ -52,7 +83,7 @@
 涉及本域组件：
 
 - `ADD-INT-ICS`：平台型智能体获取并解析用户的定向购买意图；
-- `ADD-IAC-ISS`：委托人通过平台型智能体发起意图授权凭证签发（`delegation_mode` 为定向委托类型）；
+- `ADD-IAC-ISS`：委托人通过平台型智能体发起意图授权凭证签发（`delegation_mode` 为 `SPECIFIED`）；
 - `ADD-IAC-LCM`：业务完成、凭证到期自动失效，或由于业务终止而被委托人主动吊销。
 
 ### 场景三：用户定向委托支付（专属型智能体）
@@ -62,7 +93,7 @@
 涉及本域组件：
 
 - `ADD-INT-ICS`：专属型智能体获取并解析用户的定向购买意图；
-- `ADD-IAC-ISS`：委托人通过专属型智能体发起意图授权凭证签发（`delegation_mode` 为定向委托类型）；
+- `ADD-IAC-ISS`：委托人通过专属型智能体发起意图授权凭证签发（`delegation_mode` 为 `SPECIFIED`）；
 - `ADD-IAC-LCM`：业务完成、凭证到期自动失效，或由于业务终止而被委托人主动吊销。
 
 ### 场景四：智能体自主委托支付
@@ -72,116 +103,281 @@
 涉及本域组件：
 
 - `ADD-INT-ICS`：智能体获取并解析复杂的任务目标与约束边界；
-- `ADD-IAC-ISS`：委托人通过智能体发起意图授权凭证签发（`delegation_mode` 为自主委托类型，赋予智能体在边界内的自主行动权）；
+- `ADD-IAC-ISS`：委托人通过智能体发起意图授权凭证签发（`delegation_mode` 为 `BOUNDED`，赋予智能体在边界内的自主行动权）；
 - `ADD-IAC-LCM`：任务完成、凭证到期自动失效，或发生资金超额预警时被系统/委托人主动吊销等。
 
-## 5 域内协议组件描述
+## 6 域内协议组件描述
 
-### 5.1 ADD-INT-ICS：意图获取及结构化表达
+### 6.1 ADD-INT-ICS：意图获取及结构化表达
 
-#### 5.1.1 概述
+#### 6.1.1 概述
 
-用户意图表达与确认（Intent Expression and Confirmation）规范了委托人向智能体表达委托意图的交互过程，以及智能体对原始意图进行结构化理解并获得委托人明确确认的流程。
+意图获取及结构化表达（Intent Capture and Structured Expression, ADD-INT-ICS）规定用户原始意图的获取、语义澄清、用户确认和结构化表达的处理要求。
 
-#### 5.1.2 意图输入方式
+本组件的目标是将用户以自然语言或其他输入方式表达的原始商业意图，转化为可被后续授权流程引用和校验的意图结构化结果（Intent Structured Result, ISR）。
 
-当前协议中，主要支持委托人表达意图的输入方式以文本（Text）为主。
+本组件不规范具体的人机交互界面、提示词工程、模型推理过程及多模态底层识别算法。
 
-> 注：后续版本将进一步补充语音、图片、交互式卡片等多模态意图输入的处理方式。
+#### 6.1.2 参与方与前置条件
 
-#### 5.1.3 意图确认流程
+本组件涉及以下参与方：用户，以及负责接收、解析、澄清、确认并生成 ISR 的用户侧智能体。
 
-1. **用户意图描述**：委托人向用户侧智能体表述商业意图。智能体在接收意图后进行初步语义理解，提取核心商业要素（如品类、金额上限、时间要求等），并生成意图的初始唯一标识。同时，智能体应在本地保存委托人的原始意图以备后续溯源。
-2. **意图解析与澄清**：智能体对委托人意图进行深度解析，将自然语言表述映射为本协议定义的意图获取及结构化表达规则（ICS）草稿。在映射过程中，智能体需评估是否需要向委托人进行意图澄清（例如：当委托人表述模糊、核心约束字段缺失，或预算不合理时）。智能体可与委托人进行多轮交互以逐步完善 ICS 草稿；具体的交互形式（如文本、语音、UI 卡片等）及澄清触发的推理逻辑，属于应用层智能体内部实现，不在本协议规范范围内。
-3. **意图确认**：经过解析与澄清后的意图，应以用户可读的结构化摘要形式（如确认卡片）展示给委托人进行确认。在确认后，如需进一步签署意图授权凭证，可参照 `ADD-IAC-ISS` 规范中的流程。
-4. **【存证】**用户意图确认完成后，智能体可异步上报 `act:delegation:intent-created` 存证事件。
+进入本组件前，应满足以下前置条件：
 
-#### 5.1.4 意图原文的处理
+- 用户侧智能体已建立与用户的有效交互上下文；
+- 用户能够以实现方支持的输入方式表达商业意图；
+- 用户侧智能体具备本地留存原始意图以及输出 ISR 的能力。
 
-智能体宜在本地保留委托人的原始意图描述，保留期限宜不短于对应委托任务完成后的合理争议处理周期，以备事后争议取证使用。具体留存时长可由实现方依据适用的数据保护法律法规自行确定。
+#### 6.1.3 数据结构与字段表
+
+本组件处理过程中涉及两个核心对象：用户原始意图（`conversation_history`），以及意图结构化结果（ISR）。
+
+其中，`conversation_history` 用于承载用户原始意图及其原始上下文引用；ISR 用于承载经澄清、确认后形成的结构化表达结果，并作为 ADD-IAC-ISS 的输入基础。
+
+##### 6.1.3.1 用户原始意图
+
+`conversation_history` 是承载用户原始意图的结构体，用于记录用户在本次意图链路中表达的原始内容，或其可校验的摘要与上下文引用。
+
+| 字段名 | 类型 | 存在性 | 约束条件 | 说明 |
+|--------|------|--------|----------|------|
+| `user_intent_raw` | string | 条件必备 | 与 `user_intent_raw_digest` 至少一项存在 | 用户原始意图内容 |
+| `user_intent_raw_digest` | string | 条件必备 | 与 `user_intent_raw` 至少一项存在 | 用户原始意图的摘要值。适用于意图上下文中存在语音、图片、交互式卡片等多模态信息时，不方便直接传递完整原始意图内容的情形 |
+| `input_mode` | array\[string\] | 可选 | 数组元素应为输入模式枚举值 | 用户输入方式，支持多种输入方式的混合 |
+| `context_ref` | string | 条件必备 | 当存在 `user_intent_raw_digest` 时必须存在 | 指向相关会话、本地记录或外部存储位置的引用；该引用对应的原始内容应能计算出与 `user_intent_raw_digest` 一致的摘要值 |
+
+`input_mode` 枚举值：
+
+| 枚举值 | 说明 |
+|--------|------|
+| `TEXT` | 文本输入 |
+| `VOICE` | 语音输入 |
+| `IMAGE` | 图片输入 |
+| `INTERACTIVE_CARD` | 交互式卡片 |
+| `OTHER` | 其他输入方式 |
+
+实现方可扩展其他输入模式枚举值，但不应改变上述字段的基本语义。
+
+##### 6.1.3.2 意图结构化结果（ISR）
+
+ISR 是本组件的核心输出对象，用于表达经语义理解、澄清和用户确认后形成的结构化意图结果。鉴于不同业务场景对字段完备性的要求不同，本节将 ISR 定义为数据字典，仅规定字段名称、字段类型与字段语义，不统一规定本节中的字段存在性条件。字段的具体存在要求，由后续场景规则、IAC 签发规则及相关组件章节进一步约束。
+
+**基本字段**
+
+| 字段名 | 类型 | 约束说明 | 说明 |
+|--------|------|----------|------|
+| `conversation_history` | object | 应符合 6.1.3.1 定义 | 用户原始意图对象 |
+| `intent_id` | string | 在本次意图链路内唯一 | 用户意图标识 |
+| `delegation_mode` | string | 枚举值：`SPECIFIED` / `BOUNDED` | 委托模式 |
+| `validity_start_time` | string | ISO 8601 UTC | 委托起始时间 |
+| `validity_end_time` | string | ISO 8601 UTC，且应晚于 `validity_start_time` | 委托结束时间 |
+| `max_total_amount` | number | 应大于或等于 0，精度保留 2 位小数 | 授权总金额上限 |
+| `currency` | string | ISO 4217 | 币种 |
+| `allowed_payment_methods` | array\[string\] | 至少包含一种允许方式 | 允许的支付方式列表 |
+| `agent_id` | string | 应为可识别的智能体标识 | 执行智能体标识 |
+| `user_confirmation_method` | string | 由实现方定义枚举 | 用户确认方式 |
+| `user_confirmation_timestamp` | string | 当存在 `user_confirmation_method` 时必须存在；ISO 8601 UTC | 用户确认时间 |
+| `ext` | object | 应符合 6.1.3.3 定义 | 标准扩展字段及私有扩展字段命名空间 |
+
+`delegation_mode` 取值说明：
+
+| 枚举值 | 语义 | 适用情形 |
+|--------|------|---------|
+| `SPECIFIED` | 定向委托，授权范围已锁定在明确的购买目标、商户或较明确的交易边界内 | 用户不在场且购买目标已明确的场景 |
+| `BOUNDED` | 边界委托，授权只设定任务目标与行为边界，具体选择可由智能体在边界内自主决策 | 用户不在场且由智能体在边界内自主决策的场景 |
+
+##### 6.1.3.3 标准扩展字段
+
+当前版本延续三类标准扩展块：`ext.commerce`、`ext.agent_behavior` 和 `ext.fulfillment`。这些扩展字段用于承载商品与商户约束、智能体行为策略以及履约要求。
+
+**`ext.commerce`（商品与商户约束）字段表：**
+
+| 字段名 | 类型 | 约束条件 | 说明 |
+|--------|------|----------|------|
+| `max_single_amount` | number | 应大于或等于 0；如存在，不应大于 `max_total_amount` | 单笔最高金额 |
+| `min_single_amount` | number | 应大于或等于 0；如存在，不应大于 `max_single_amount` | 单笔最低金额 |
+| `allowed_categories` | array\[string\] | 元素值由实现方定义 | 品类白名单 |
+| `forbidden_categories` | array\[string\] | 元素值由实现方定义 | 品类黑名单 |
+| `allowed_merchants` | array\[string\] | 元素值应为可识别商户标识 | 商户白名单 |
+| `forbidden_merchants` | array\[string\] | 元素值应为可识别商户标识 | 商户黑名单 |
+
+**`ext.agent_behavior`（智能体行为策略）字段表：**
+
+| 字段名 | 类型 | 约束条件 | 说明 |
+|--------|------|----------|------|
+| `price_deviation_tolerance` | number | 表示百分比容差 | 价格变动容差百分比 |
+| `price_deviation_action` | string | 枚举值：`PAUSE_AND_NOTIFY` / `AUTO_CANCEL` | 超出价格容差时的处理动作 |
+| `on_payment_failure` | string | 枚举值：`AUTO_RETRY` / `CANCEL` | 支付失败处理方式 |
+| `max_retry_count` | integer | 应大于或等于 0 | 最大重试次数 |
+
+**`ext.fulfillment`（履约要求）字段表：**
+
+| 字段名 | 类型 | 约束条件 | 说明 |
+|--------|------|----------|------|
+| `delivery_time_requirement` | string | 由实现方定义格式 | 配送或履约时效要求 |
+| `delivery_address` | string | 应为可解析地址或结构化地址引用 | 配送地址 |
+
+##### 6.1.3.4 私有扩展
+
+除标准扩展字段外，本协议支持通过 `ext.vendor_private` 作为标识进行私有扩展字段的承载。私有扩展字段不得改变 ISR 核心字段及标准扩展字段的既有语义。
+
+对于无法识别的私有扩展字段，接收方可忽略其不影响核心约束理解的部分，但不应改变对 ISR 核心语义的解释结果。
+
+#### 6.1.4 处理要求
+
+##### 原始意图获取
+
+用户侧智能体应接收用户提出的原始商业意图，并形成 `conversation_history` 对象。
+
+- 智能体宜直接记录并传递完整的 `user_intent_raw`。在存在语音、图片、交互式卡片等不便直接记录并传递完整原始意图对话内容的场景中，智能体可计算 `user_intent_raw_digest`，并通过 `context_ref` 指向相关会话或本地记录。
+- 如本次输入包含多种输入方式，智能体可在 `input_mode` 中记录混合输入模式。
+
+##### 初步理解与结构化草稿生成
+
+在获取原始意图后，用户侧智能体应对其进行初步语义理解，并提取与商业委托相关的核心要素。这些要素可包括但不限于委托目标、金额边界、时间边界、支付方式限制、商户或品类约束、履约要求和智能体行为策略。在此基础上，智能体应生成 ISR 草稿。
+
+##### 意图澄清与草稿更新
+
+当原始意图存在歧义、关键约束缺失、条件不完整或存在明显冲突时，用户侧智能体应向用户发起澄清。澄清过程可以是单轮或多轮；具体交互方式由实现方决定，不属于本协议规范范围。
+
+每次有效澄清后，智能体应对 ISR 草稿进行更新，使其逐步收敛为能够表达用户真实意图和边界条件的结构化结果。
+
+##### 用户确认
+
+在 ISR 草稿达到可理解、可确认的程度后，用户侧智能体宜以用户可理解的方式向用户展示结构化摘要，并获取用户确认。确认内容应足以反映本次委托的核心目标及主要边界。
+
+##### ISR 输出
+
+用户确认完成后，用户侧智能体应生成最终 ISR。若后续需要签发意图授权凭证，则 ADD-IAC-ISS 应以该 ISR 作为输入依据。
+
+##### 原始意图留存
+
+用户侧智能体宜在本地保留与本次意图链路相关的原始记录或其可验证引用，以支持后续争议处理、人工复核或审计。
+
+保留期限宜不短于对应委托任务完成后的合理争议处理周期。具体留存时长、留存介质和访问控制方式，可由实现方依据适用的数据保护法律法规和内部治理要求自行确定。
 
 ---
 
-## 6 本域涉及的存证事件定义
+### 6.2 ADD-IAC-ISS：意图授权凭证签发
 
-本域可在以下节点触发存证事件，由智能体或其代理存证服务商向信任服务域构建的联盟链（ACT Trust Chain）异步上报：
+#### 6.2.1 概述
 
-| 事件类型标识 | 触发时机 |
-|-------------|---------|
-| `act:delegation:intent-created` | `ADD-INT-ICS` 确认完成 |
-| `act:delegation:delegation-issued` | IAC 完成签发 |
-| `act:delegation:delegation-suspended` | IAC 凭证被风控引擎或委托人临时挂起时触发 |
-| `act:delegation:delegation-resumed` | IAC 从 `Suspended` 状态成功解封并恢复为 `Active` 时触发 |
-| `act:delegation:delegation-revoked` | IAC 主动吊销 |
-| `act:delegation:delegation-expired` | IAC 自动过期 |
-| `intent_id` | string | 必填 | 意图生命周期唯一标识 |
-| `delegation_id` | string | 可选 | IAC 凭证唯一标识；仅在签发 IAC 的场景下必填 |
-| `delegation_mode` | string | 必填 | 授权模式：`SPECIFIED` / `BOUNDED` |
-| `validity_start_time` | string | 必填 | 凭证生效时间（ISO 8601 UTC） |
-| `validity_end_time` | string | 必填 | 凭证失效时间；应晚于 `validity_start_time`（ISO 8601 UTC） |
-| `max_total_amount` | number | 必填 | 授权总金额上限；应 ≥ 0，精度保留 2 位小数 |
-| `amount_currency` | string | 必填 | 金额币种（ISO 4217） |
-| `allowed_payment_methods` | array\[string\] | 必填 | 允许的支付方式列表 |
-| `signer_identity` | string | 必填 | 签名方身份标识 |
-| `agent_id` | string | 必填 | 执行智能体身份标识 |
-| `user_confirmation_method` | string | 可选 | 用户确认方式；在用户发生核身确认的时候填写；`FACE_RECOGNITION` / `FINGERPRINT` / `PASSWORD` / `OTP` |
-| `user_confirmation_timestamp` | string | 可选 | 用户确认时间；与 `user_confirmation_method` 同步存在（ISO 8601 UTC） |
+用户意图授权凭证签发（Intent Authorization Credential Issuance, ADD-IAC-ISS）规定如何将最终 ISR 转化为可被后续商业交互、支付执行和可信存证环节引用与校验的用户意图授权凭证（IAC）。
 
-关于 `delegation_mode` 的取值说明：
+本组件规定 IAC 的业务语义、待签名载荷边界、凭证封装要求以及签发处理流程。
 
-| 枚举值 | 语义 | 系统判断依据 |
-|--------|------|-------------|
-| `SPECIFIED` | 定向委托：IAC 授权范围已锁定在明确的购买标的（即买方已知"买什么"或"付给谁"） | ISR 载荷中配置了具体的商户白名单（`allowed_merchants`）或极其明确的单品/类目约束 |
-| `BOUNDED` | 自主委托：IAC 仅设定任务级目标与资金行为边界，具体购买标的由智能体在执行中自主决策 | ISR 载荷中仅包含总预算上限（`max_total_amount`）与宽泛的行业品类，无具体商户约束 |
+IAC 的输入对象是最终 ISR，但最终 ISR 中的内容并不一定都进入 IAC 的待签名载荷；只有构成授权边界、执行约束和后续核验依据的字段，才应纳入 IAC 的签名范围。
 
-#### 5.2.3 扩展字段
+#### 6.2.2 参与方与前置条件
 
-考虑到不同商业场景对意图结构化表达字段的要求差异比较大，本协议不求穷举所有业务字段，而是定义 `ext` 对象作为扩展命名空间，并采用"协议标准扩展 + 厂商私有扩展"相结合的处理机制，以兼顾下游商户平台的对接可行性与智能体生态的灵活性。
+本组件涉及以下参与方：委托人、受托智能体，以及负责提供签名、密钥调用或凭证封装支持的实现组件或服务。
 
-##### 协议标准扩展
+在具体实现中，签发过程可结合身份校验、受保护交互、密钥访问控制和控制证明等安全能力完成，但相关安全能力可由外部安全支撑协议提供。
 
-对于跨行业通用的一些扩展字段，本协议维护一套标准扩展字典。本版本预定义以下三个标准扩展块节点及其常用字段：
+进入本组件前，应满足以下前置条件：
 
-**`ext.commerce`（商品与商户约束）**：
+- 已形成最终 ISR，并已进入面向用户的确认环节。用户对最终 ISR 的确认动作，可直接作为 IAC 签发的授权触发。
+- 已明确本次授权的受托智能体标识，以及与该授权对应的委托模式、有效期和主要约束边界。
+- 实现方已具备生成 `delegation_id`、构造 IAC 待签名载荷、执行规范化处理并输出最终 IAC 的能力。
+- IAC 的签名私钥应由受控密钥管理能力托管，并在可信执行环境或等效受控签名环境中完成签名；业务应用不得以明文方式直接暴露或持有用于 IAC 签发的签名密钥。当实现方采用 ASL 作为安全支撑协议时，签发方身份校验、密钥调用、签名生成、控制证明和相关状态查询，可分别引用 ASL-IDN、ASL-INF-KMS 和 ASL-INF-SEE 等能力完成。
 
-- `max_single_amount`（单笔最高金额）
-- `min_single_amount`（单笔最低金额）
-- `allowed_categories`（品类白名单）
-- `forbidden_categories`（品类黑名单）
-- `allowed_merchants`（商户白名单）
-- `forbidden_merchants`（商户黑名单）
+#### 6.2.3 数据结构与字段表
 
-**`ext.agent_behavior`（智能体行为策略）**：
+##### 6.2.3.1 IAC 待签名载荷
 
-- `price_change_tolerance`（价格变动容差百分比，如 5.0）
-- `price_change_action`（超出容差时行为：`PAUSE_AND_NOTIFY` 暂停并通知，或 `AUTO_CANCEL` 自动取消）
-- `on_payment_failure`（支付失败处理：`AUTO_RETRY` 自动重试，或 `CANCEL`）
-- `max_retry_count`（默认值建议为 3）
+IAC 待签名载荷是基于最终 ISR 筛选并重组得到的授权业务对象，用于表达"谁在什么边界内授权哪个智能体代表其行动"。IAC 待签名载荷宜定义如下：
 
-**`ext.fulfillment`（履约要求）**：
+| 字段名 | 类型 | 存在性 | 约束说明 | 说明 |
+|--------|------|--------|----------|------|
+| `delegation_id` | string | 必备 | 本次 IAC 的唯一标识 | 本次 IAC 的唯一标识，也是本次授权生命周期的主标识 |
+| `intent_id` | string | 可选 | 当上游 ISR 已生成该标识时可填写 | 所对应的用户意图标识；当上游 ISR 已生成该标识时，可用于建立 IAC 与上游 ISR 的对应关系 |
+| `conversation_history` | object | 条件必备 | 当未生成 `intent_id`，且实现方采用直接携带原始意图对象的方式时可填写；如存在，应符合 6.1.3.1 定义 | 当未生成 `intent_id` 时，可由 `conversation_history` 直接作为本次授权的上游输入依据；该方式更适用于字节数较小的用户原始意图场景 |
+| `delegator_identity` | string | 必备 | 授权签发方标识，即委托方的身份标识 | 授权签发方标识，通常对应委托人或代表委托人发起签发的主体标识 |
+| `agent_id` | string | 必备 | 受托智能体的身份标识 | 被授权执行后续动作的智能体标识 |
+| `delegation_mode` | string | 可选 | 枚举值：`SPECIFIED` / `BOUNDED`，未填写时默认值为 `SPECIFIED` | 委托模式 |
+| `validity_start_time` | string | 必备 | ISO 8601 UTC | 授权生效时间 |
+| `validity_end_time` | string | 必备 | ISO 8601 UTC，且应晚于 `validity_start_time` | 授权失效时间 |
+| `max_total_amount` | number | 必备 | 应大于或等于 0，精度保留 2 位小数 | 授权总金额上限 |
+| `currency` | string | 可选 | ISO 4217；未填写时默认值为 `CNY` | 金额币种 |
+| `allowed_payment_methods` | array\[string\] | 可选 | 如进入签名范围，应保持与 ISR 中字段语义一致 | 允许的支付方式列表 |
+| `user_confirmation_method` | string | 可选 | 由实现方定义枚举 | 用户确认或核身方式 |
+| `user_confirmation_timestamp` | string | 条件必备 | 当存在 `user_confirmation_method` 时应同步存在；ISO 8601 UTC | 用户完成确认或核身的时间 |
+| `source_isr_digest` | string | 可选 | 用于表达上游 ISR 或其约定摘要范围的摘要值 | 当实现方需要更稳定的跨域核验锚点时可填写 |
+| `ext` | object | 可选 | 如需将 ISR 的扩展约束纳入 IAC，应直接沿用 ISR 的 `ext` 结构与字段语义 | 扩展字段命名空间 |
 
-- `delivery_time_requirement`（配送时效要求）
-- `delivery_address`（配送地址）
+对 `ext` 的处理：IAC 如需承载 ISR 中的扩展约束，应直接沿用 ISR 中 `ext` 的命名空间与字段语义。是否将某一扩展字段纳入 IAC 的签名范围，由实现方依据其是否影响后续授权核验来决定；不要求将 ISR 中的全部扩展字段一并签入 IAC。
 
-基本字段与标准扩展字段的 JSON 报文示例：
+##### 6.2.3.2 最终 IAC
+
+最终 IAC 是在 IAC 待签名载荷基础上完成签名、封装和必要元数据补充后形成的可验证授权凭证对象。本章对最终 IAC 仅定义其组成部分及其语义边界，暂不规定具体字段级结构，以兼容不同凭证封装格式下的实现。
+
+最终 IAC 可包括以下组成部分：
+
+- `protected_header` 或等价封装元数据，用于表达算法标识、封装类型、密钥寻址信息和必要的配置标识；
+- `credential_metadata`，用于表达签发方、受托方、签发时间、生效时间、失效时间和凭证标识等基础元数据；
+- `credential_subject` 或等价业务载荷区，用于承载 6.2.3.1 定义的 IAC 待签名载荷；
+- `proof`，用于表达对约定签名范围所生成的签名证明；
+- `status_reference`，用于支持后续状态查询、生命周期管理或相关校验环节；
+- `control_proof_ref`，为可选组成部分；在高风险签发场景中，可用于引用与本次签名调用相关的控制证明或其摘要。
+
+#### 6.2.4 处理要求
+
+##### ISR 完整性检查与确认触发
+
+受托智能体应接收最终 ISR，并检查其是否已达到可供用户确认和签发的状态，是否具备明确的委托模式、智能体标识、有效期和主要授权边界。如最终 ISR 缺少构成 IAC 所必需的关键授权信息，则不应进入正式签发步骤。
+
+用户对最终 ISR 的确认动作，可直接作为 IAC 签发的触发动作。不宜因协议流程设计而强制要求用户就同一授权事项进行重复确认。
+
+##### IAC 待签名载荷构造
+
+受托智能体应基于最终 ISR 构造 IAC 待签名载荷，并明确哪些字段进入本次 IAC 的签名范围。此时应遵循"基于 ISR 筛选并重组"的原则，而不应将最终 ISR 原样整体封装为 IAC。
+
+##### 规范化处理
+
+在进入签名前，实现方应对约定签名范围内的 IAC 待签名载荷执行确定性的规范化处理，以确保跨域验签和摘要比对的一致性。同一部署中的签发方与验证方应保持字段命名、规范化规则和签名输入边界一致，否则将导致验签或摘要校验失败。
+
+如采用 JSON 作为载荷表达方式，宜采用 RFC 8785 所定义的 JSON Canonicalization Scheme（JCS）执行规范化处理。
+
+##### 签名生成
+
+在完成规范化后，实现方应对约定签名输入执行签名，生成 IAC 的 proof。
+
+##### 凭证封装
+
+取得签名结果后，实现方应将 IAC 待签名载荷、凭证元数据、签名证明及必要引用信息组装为最终 IAC。封装后的 IAC 应能够稳定表达签发方、受托智能体、授权边界、有效期和签名证明，并支持后续独立校验。
+
+#### 6.2.5 封装与签名要求
+
+本组件对 IAC 采用封装无关规则；具体实现可映射到可验证凭证类封装、JWS 类封装或其他等价可验证表达方式，但所选封装应能够稳定承载签发方、受托方、时效、IAC 待签名载荷和签名证明。本版本将 W3C VC-JWT 作为推荐实现方式之一，但并非唯一封装格式。
+
+签名范围应由实现方明确声明，并在同一部署内保持稳定一致。默认情况下，签名输入应是"约定签名范围内的 IAC 待签名载荷或其等价规范化表示"，而不是完整 ISR 原文。实现方在进行 JSON 规范化时，应保留字段原始命名，不应因序列化框架自动转换字段风格而改变签名输入语义。
+
+当实现方采用 ASL 作为安全支撑协议时，可按以下方式进行规范性引用：
+
+- IAC 的签名生成可引用 ASL-INF-KMS 的 Sign 能力完成，相关签名密钥用途应与授权凭证签名用途相匹配，不应与其他用途密钥混用。
+- 高风险授权场景下的用户确认、本地敏感交互和签名调用，宜结合 ASL-INF-SEE 的受保护交互能力与 ASL-INF-KMS 的控制证明能力完成。
+- 当需要记录签名调用满足访问控制策略的证据时，宜引用 ASL-INF-KMS 的控制证明能力，并在最终 IAC 中携带 `control_proof_ref` 或等价引用。
+
+#### 6.2.6 参考示例
+
+以下为一个 IAC 待签名载荷的参考示例：
 
 ```json
 {
-  "user_intent_raw": "帮我每个月自动续费我的中国移动手机号 138xxxxxxxx，套餐费用约 129 元",
-  "intent_id": "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
   "delegation_id": "urn:uuid:7f3e9a12-b4c8-4d56-a321-8b7c6d5e4f30",
+  "intent_id": "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
+  "delegator_identity": "did:act:example.com/user-alice",
+  "agent_id": "did:act:example.com/agent-alice-001",
   "delegation_mode": "SPECIFIED",
   "validity_start_time": "2026-03-19T00:00:00Z",
   "validity_end_time": "2026-06-19T23:59:59Z",
   "max_total_amount": 450.00,
-  "amount_currency": "CNY",
+  "currency": "CNY",
   "allowed_payment_methods": [
     "urn:act:payment:example-wallet"
   ],
-  "signer_identity": "did:act:example.com/user-alice",
-  "agent_id": "did:act:example.com/agent-alice-001",
   "user_confirmation_method": "FINGERPRINT",
   "user_confirmation_timestamp": "2026-03-19T09:42:17Z",
+  "source_isr_digest": "sha256:a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
   "ext": {
     "commerce": {
       "allowed_merchants": [
@@ -190,8 +386,8 @@
       "max_single_amount": 150.00
     },
     "agent_behavior": {
-      "price_change_tolerance": 10.0,
-      "price_change_action": "PAUSE_AND_NOTIFY",
+      "price_deviation_tolerance": 10.0,
+      "price_deviation_action": "PAUSE_AND_NOTIFY",
       "on_payment_failure": "AUTO_RETRY",
       "max_retry_count": 3
     }
@@ -199,53 +395,7 @@
 }
 ```
 
-##### 厂商私有扩展与动态解析
-
-对于高度定制化的业务约束（如航司的舱位等级要求、平台专属的会员权益参数等），本协议允许通过 `ext.vendor_private` 作为标识进行私有扩展字段的承载。
-
-为使对接的外部系统能够理解这些字段，智能体或商户平台可公开其支持的 JSON Schema URL 供外部系统动态解析。各实现方在使用该机制时应遵循以下最小约束：
-
-- 安全寻址：Schema URL 应仅通过 HTTPS 协议提供，且 Schema 文档宜包含明确的版本标识字段；
-- 容错与兼容：接收方在因网络等原因无法获取对应 Schema，或解析后仍存在未知字段时，宜直接忽略 `ext.vendor_private` 中的未知内容，而不应因无法解析私有扩展字段而拒绝处理整个核心 ISR 载荷。
-
-> 注：本机制在本版本中为可选实验性功能，后续版本会进一步评估和细化。
-
-### 5.2 ADD-IAC-ISS：意图授权凭证签发
-
-#### 5.3.2 签发流程
-
-智能体在获得委托人对意图规则的确认后，应按以下步骤完成 IAC 的签发：
-
-1. **载荷构造与规范化**：智能体基于已确认的 ISR，构造待签名的意图授权凭证载荷（Payload）。智能体应根据当前的委托任务特性，自主判断并在载荷中设定合适的 `delegation_mode`。为保证跨域多方验签哈希的一致性，智能体应对载荷执行 RFC 8785（JSON Canonicalization Scheme, JCS）规范化处理。
-2. **唤起核身与执行签名**：智能体向委托人发起核身请求（如生物识别或密码验证）。在委托人核身通过后，智能体系统调用与该委托人身份绑定的私钥，对步骤 1 中规范化后的载荷字节序列计算生成数字签名值，并同步记录下完成核身的时间戳及核身方式。
-
-> **外部安全接口依赖**
->
-> 上述流程中，核身与执行签名过程依赖以下安全能力，ACT 协议规范不绑定具体实现：
->
-> | 接口 | 能力要求 | 本组件使用场景 |
-> |------|---------|-------------|
-> | 签名服务 (SigningService) | 对规范化载荷执行数字签名，返回签名值、算法标识和时间戳 | IAC 签发 |
-> | 核身服务 (AuthenticationService) | 验证用户身份，返回核身方式与时间戳 | IAC 签发前的用户确认 |
-> | 密钥管理服务 (KeyManagementService) | 密钥生成、存储、访问控制，私钥不可导出 | 签名密钥的生命周期管理 |
->
-> 以上接口的输入输出契约详见 [外部安全接口定义](../appendix/security-interfaces.md)。
-
-3. **凭证封装**：在获取到签名结果后，智能体按照 W3C VC-JWT 标准格式，将意图授权载荷（置于 `vc.credentialSubject` 中）与生成的签名数据、凭证生命周期声明（如 `exp` 失效时间）组装在一起，形成最终的意图授权凭证。
-4. **【存证】意图授权凭证签发事件存证**：在完成 IAC 签发后，智能体宜异步发起 `act:delegation:delegation-issued` 事件的存证上报，建立后续委托支付业务链路的信任起点。
-
-#### 5.3.3 封装格式
-
-采用 W3C VC-JWT（`vc+jwt`）格式封装。结构要求如下：
-
-- **JWS Protected Header**：包含算法声明（`alg`，为 `ES256` 或 `SM2-SM3`）、公钥寻址标识（`kid`）及令牌类型（`typ: vc+jwt`）。
-- **JWS Payload (Claims)**：
-  - W3C 标准字段：`iss`（签发方）、`sub`（受托方）、`jti`（凭证标识，等于 `delegation_id`）、签发与过期时间（`iat` / `exp`）；
-  - VC 核心结构：声明 `vc.type` 包含 `ACTIntentAuthorization`，并将上述完成组装的意图授权载荷放入 `vc.credentialSubject` 对象中。
-
-**规范化计算要求**：各实现方在进行 JSON 规范化（RFC 8785 JSON Canonicalization Scheme）以计算签名哈希时，应保留意图授权载荷中字段的原文命名。若序列化框架执行了非预期的格式转换（如将 snake_case 格式强制转为驼峰命名），将可能导致后续依赖方的验签失败。
-
-以下为一个完整 IAC 的参考示例：
+以下为一个完整 IAC 的参考示例（W3C VC-JWT 封装）：
 
 ```json
 {
@@ -265,21 +415,21 @@
   "vc": {
     "type": ["VerifiableCredential", "ACTIntentAuthorization"],
     "credentialSubject": {
-      "user_intent_raw": "帮我每个月自动续费我的中国移动手机号 138xxxxxxxx，套餐费用约 129 元",
-      "intent_id": "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
       "delegation_id": "urn:uuid:7f3e9a12-b4c8-4d56-a321-8b7c6d5e4f30",
+      "intent_id": "urn:uuid:550e8400-e29b-41d4-a716-446655440000",
+      "delegator_identity": "did:act:example.com/user-alice",
+      "agent_id": "did:act:example.com/agent-alice-001",
       "delegation_mode": "SPECIFIED",
       "validity_start_time": "2026-03-19T00:00:00Z",
       "validity_end_time": "2026-06-19T23:59:59Z",
       "max_total_amount": 450.00,
-      "amount_currency": "CNY",
+      "currency": "CNY",
       "allowed_payment_methods": [
         "urn:act:payment:example-wallet"
       ],
-      "signer_identity": "did:act:example.com/user-alice",
-      "agent_id": "did:act:example.com/agent-alice-001",
       "user_confirmation_method": "FINGERPRINT",
       "user_confirmation_timestamp": "2026-03-19T09:42:17Z",
+      "source_isr_digest": "sha256:a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
       "ext": {
         "commerce": {
           "allowed_merchants": [
@@ -288,8 +438,8 @@
           "max_single_amount": 150.00
         },
         "agent_behavior": {
-          "price_change_tolerance": 10.0,
-          "price_change_action": "PAUSE_AND_NOTIFY",
+          "price_deviation_tolerance": 10.0,
+          "price_deviation_action": "PAUSE_AND_NOTIFY",
           "on_payment_failure": "AUTO_RETRY",
           "max_retry_count": 3
         }
@@ -304,60 +454,92 @@
 MEYCIQDtv8Qw3Xv6kZnP2mJaLcR5oN1yFgHsIbKdWxPqE7u4vAIhAOzR9sYmCnXpL3kQwBjTfN2aGdHe5VuMrXoIPcKs8Zt1
 ```
 
-### 5.3 ADD-IAC-LCM：IAC 生命周期管理
+---
 
-#### 5.2.1 概述
+### 6.3 ADD-IAC-LCM：意图授权凭证生命周期管理
 
-IAC 生命周期管理（Intent Authorization Credential Life Cycle Management）定义了 IAC 的标准状态机。
+#### 6.3.1 概述
 
-#### 5.3.2 状态机定义
+意图授权凭证生命周期管理（Intent Authorization Credential Life Cycle Management, ADD-IAC-LCM）定义 IAC 的合法状态、状态迁移规则和处理要求。
 
-IAC 在其生命周期内的合法状态及流转规则如下：
+本组件适用于已签发 IAC 的状态管理、授权校验和相关存证处理。
+
+#### 6.3.2 状态机定义
+
+IAC 在其生命周期内的合法状态及流转规则如下。
+
+| 状态值 | 语义 | 触发条件 | 可恢复性 |
+|--------|------|---------|---------|
+| `Active` | 有效，可用于商业交互与支付 | IAC 已完成签发，且处于有效期内，未被暂停或吊销 | --- |
+| `Suspended` | 暂停，临时不可使用 | 委托人或风控系统发起临时挂起，且凭证尚未终止 | 可恢复 |
+| `Expired` | 已过期，不可使用 | `validity_end_time` 到达，系统自动触发 | 不可恢复 |
+| `Revoked` | 已吊销，永久不可使用 | 委托人或受托智能体主动触发永久吊销 | 不可恢复 |
+
+状态迁移规则：
+
+| 当前状态 | 目标状态 | 触发条件 | 是否可逆 |
+|---------|---------|---------|---------|
+| `Active` | `Suspended` | 委托人或风控系统发起临时挂起 | 是 |
+| `Suspended` | `Active` | 委托人或风控系统解除挂起 | 是 |
+| `Active` | `Revoked` | 委托人或受托智能体发起吊销 | 否 |
+| `Suspended` | `Revoked` | 委托人或受托智能体发起吊销 | 否 |
+| `Active` | `Expired` | `validity_end_time` 到达 | 否 |
+| `Suspended` | `Expired` | `validity_end_time` 到达 | 否 |
+
+其中 `Revoked` 和 `Expired` 为终态。进入终态后的 IAC 不得恢复为 `Active` 或 `Suspended`。`Suspended` 为临时限制状态，仅可依据明确的恢复条件解除挂起并返回 `Active`。
 
 ```mermaid
 stateDiagram-v2
     [*] --> Active: 签发完成
-    Active --> Suspended: 风控/委托人临时挂起
+    Active --> Suspended: 委托人或风控系统临时挂起
     Suspended --> Active: 解除挂起
     Active --> Expired: validity_end_time 到达
-    Active --> Revoked: 委托人/智能体主动吊销
-    Suspended --> Revoked: 主动吊销
+    Active --> Revoked: 吊销
+    Suspended --> Revoked: 吊销
+    Suspended --> Expired: validity_end_time 到达
 ```
 
-状态定义表：
+#### 6.3.3 处理要求
 
-| 状态值 | 语义 | 触发条件 | 可恢复性 |
-|--------|------|---------|---------|
-| `Active` | 有效，可用于商业交互与支付 | IAC 已签发且在有效期内 | — |
-| `Suspended` | 暂停，临时不可使用 | 风控系统或委托人发起临时挂起；凭证未终止 | 可恢复 |
-| `Expired` | 已过期，不可使用 | `validity_end_time` 到达，系统自动触发 | 不可恢复 |
-| `Revoked` | 已吊销，永久不可使用 | 委托人或受托智能体主动触发永久吊销 | 不可恢复 |
+##### 生效状态
 
-#### 5.3.3 临时挂起
+IAC 完成签发后，如当前时间已进入其有效时间窗口，且未被暂停或吊销，则其状态应为 `Active`。处于 `Active` 状态的 IAC，可被后续商业交互、支付执行和授权核验环节正常引用。
 
-委托人或风控系统可在 IAC 有效期内主动触发临时挂起。挂起后，IAC 状态流转为 `Suspended`。此时，任何以该 IAC 构造的支付载荷，PSP 都应拒绝处理。
+##### 临时挂起
 
-【存证】智能体宜异步上报 `act:delegation:delegation-suspended` 存证事件。
+委托人或风控系统可在 IAC 有效期内发起临时挂起。挂起后，IAC 状态应变更为 `Suspended`。处于 `Suspended` 状态的 IAC 不得继续用于商业交互、支付执行或授权校验。
 
-#### 5.3.4 解除挂起
+智能体宜异步上报 `act:delegation:delegation-suspended` 存证事件。
 
-处于 `Suspended` 状态的 IAC，可由委托人或风控系统发起解除挂起操作。解除后，IAC 状态恢复为 `Active`，此时可正常商业交互与支付。
+##### 解除挂起
 
-【存证】智能体宜异步上报 `act:delegation:delegation-resumed` 存证事件。
+处于 `Suspended` 状态的 IAC，可由委托人或风控系统发起解除挂起操作。解除后，IAC 状态应恢复为 `Active`。
 
-#### 5.3.5 吊销
+智能体宜异步上报 `act:delegation:delegation-resumed` 存证事件。
 
-委托人或受托智能体可在 IAC 有效期内主动触发吊销。吊销后，IAC 状态流转为 `Revoked`。后续任何以该 IAC 构造的支付载荷，PSP 都应拒绝处理。
+##### 吊销
 
-【存证】智能体宜异步上报 `act:delegation:delegation-revoked` 存证事件。
+委托人或受托智能体可在 IAC 有效期内发起吊销。吊销后，IAC 状态应变更为 `Revoked`。处于 `Revoked` 状态的 IAC 不得继续用于商业交互、支付执行或授权校验。
 
-#### 5.3.6 到期自动处理
+智能体宜异步上报 `act:delegation:delegation-revoked` 存证事件。
 
-当 `validity_end_time` 到达时，IAC 状态应自动流转为 `Expired`。后续任何以该 IAC 构造的支付载荷，PSP 都应拒绝处理。
+##### 到期自动处理
 
-【存证】智能体宜异步上报 `act:delegation:delegation-expired` 存证事件。
+当 `validity_end_time` 到达时，IAC 状态应自动变更为 `Expired`。处于 `Expired` 状态的 IAC 不得继续用于商业交互、支付执行或授权校验。
 
-## 6 本域涉及的存证事件定义
+智能体宜异步上报 `act:delegation:delegation-expired` 存证事件。
+
+##### 授权状态校验
+
+后续环节在引用 IAC 时，应至少校验以下内容：
+
+- IAC 是否处于有效时间窗口内；
+- IAC 当前状态是否为 `Active`；
+- IAC 是否存在已知的暂停、吊销或到期结果。
+
+处理方在作出最终授权有效性判断前，应通过 `status_reference` 获取当前状态。当状态服务暂时不可达时，处理方可基于本地最近一次成功查询结果和 `validity_end_time` 进行临时风险控制。
+
+## 7 本域涉及的存证事件定义
 
 本域可在以下节点触发存证事件，由智能体或其代理存证服务商向信任服务域构建的联盟链（ACT Trust Chain）异步上报：
 
@@ -365,7 +547,7 @@ stateDiagram-v2
 |-------------|---------|
 | `act:delegation:intent-created` | `ADD-INT-ICS` 确认完成 |
 | `act:delegation:delegation-issued` | IAC 完成签发 |
-| `act:delegation:delegation-suspended` | IAC 凭证被风控引擎或委托人临时挂起时触发 |
+| `act:delegation:delegation-suspended` | IAC 凭证被委托人或风控系统临时挂起时触发 |
 | `act:delegation:delegation-resumed` | IAC 从 `Suspended` 状态成功解封并恢复为 `Active` 时触发 |
 | `act:delegation:delegation-revoked` | IAC 主动吊销 |
 | `act:delegation:delegation-expired` | IAC 自动过期 |

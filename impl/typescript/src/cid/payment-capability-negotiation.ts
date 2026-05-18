@@ -52,7 +52,7 @@ export class PaymentCapabilityNegotiation {
       body: JSON.stringify({
         agent_id: agentId,
         supported_methods: supportedMethods,
-        amount_currency: currency,
+        currency: currency,
         estimated_amount: estimatedAmount,
       }),
     });
