@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/add/iac-payload.schema.json",
+  "title": "IAC Payload (IAC 待签名载荷)",
+  "description": "ACT 协议意图授权凭证待签名载荷（ADD-IAC-ISS）的 JSON Schema 定义。IAC 待签名载荷是基于最终 ISR 筛选并重组得到的授权业务对象，用于表达'谁在什么边界内授权哪个智能体代表其行动'",
+  "type": "object",
+  "required": [
+    "delegation_id",
+    "delegator_identity",
+    "agent_id",
+    "validity_start_time",
+    "validity_end_time",
+    "max_total_amount"
+  ],
+  "properties": {
+    "delegation_id": {
+      "type": "string",
+      "description": "本次 IAC 的唯一标识，也是本次授权生命周期的主标识"
+    },
+    "intent_id": {
+      "type": "string",
+      "description": "所对应的用户意图标识；当上游 ISR 已生成该标识时，可用于建立 IAC 与上游 ISR 的对应关系"
+    },
+    "conversation_history": {
+      "$ref": "https://specs.actprotocol.org/schemas/add/conversation-history.schema.json",
+      "description": "当未生成 intent_id，且实现方采用直接携带原始意图对象的方式时可填写；如存在，应符合 conversation-history 定义。该方式更适用于字节数较小的用户原始意图场景"
+    },
+    "delegator_identity": {
+      "type": "string",
+      "description": "授权签发方标识，即委托方的身份标识，通常对应委托人或代表委托人发起签发的主体标识"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "受托智能体的身份标识，被授权执行后续动作的智能体标识"
+    },
+    "delegation_mode": {
+      "type": "string",
+      "enum": ["SPECIFIED", "BOUNDED"],
+      "default": "SPECIFIED",
+      "description": "委托模式：SPECIFIED（定向委托）/ BOUNDED（边界委托），未填写时默认值为 SPECIFIED"
+    },
+    "validity_start_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "授权生效时间（ISO 8601 UTC）"
+    },
+    "validity_end_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "授权失效时间（ISO 8601 UTC），且应晚于 validity_start_time"
+    },
+    "max_total_amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "授权总金额上限，应大于或等于 0，精度保留 2 位小数"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "default": "CNY",
+      "description": "金额币种（ISO 4217），未填写时默认值为 CNY"
+    },
+    "allowed_payment_methods": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "允许的支付方式列表，如进入签名范围应保持与 ISR 中字段语义一致"
+    },
+    "user_confirmation_method": {
+      "type": "string",
+      "description": "用户确认或核身方式，由实现方定义枚举"
+    },
+    "user_confirmation_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "用户完成确认或核身的时间（ISO 8601 UTC），当存在 user_confirmation_method 时应同步存在"
+    },
+    "source_isr_digest": {
+      "type": "string",
+      "description": "用于表达上游 ISR 或其约定摘要范围的摘要值，当实现方需要更稳定的跨域核验锚点时可填写"
+    },
+    "ext": {
+      "$ref": "https://specs.actprotocol.org/schemas/add/intent-structured-rule.schema.json#/properties/ext",
+      "description": "扩展字段命名空间，如需将 ISR 的扩展约束纳入 IAC，应直接沿用 ISR 的 ext 结构与字段语义"
+    }
+  }
+}
