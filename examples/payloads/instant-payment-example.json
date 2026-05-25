@@ -1,0 +1,34 @@
+{
+  "request": {
+    "request_id": "urn:uuid:a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "merchant_order_no": "ORD-20260419-STAR-001",
+    "cart_info": {
+      "items": [
+        {
+          "product_id": "SKU-SB-LATTE-L",
+          "product_name": "星巴克大杯拿铁",
+          "price": 38.00,
+          "currency": "CNY",
+          "quantity": 1
+        }
+      ],
+      "cart_snapshot_digest": "sha256:9f8e7d6c5b4a3210fedcba9876543210abcdef0123456789abcdef0123456789"
+    },
+    "payment_token": "tk_example_4242424242424242",
+    "amount": "38.00",
+    "currency": "CNY",
+    "timestamp": "2026-04-19T08:00:00Z",
+    "buyer_agent_id": "did:act:example.com/agent-alice-001",
+    "signature": {
+      "algorithm": "ES256",
+      "value": "MEUCIQDx...base64url"
+    }
+  },
+  "response": {
+    "request_id": "urn:uuid:a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "trade_no": "TXN-20260419-PSI-001",
+    "merchant_order_no": "ORD-20260419-STAR-001",
+    "status": "SUCCESS",
+    "trade_timestamp": "2026-04-19T08:00:15Z"
+  }
+}

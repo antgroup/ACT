@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/instant-payment.schema.json",
+  "title": "Instant Payment (PSD-PAY-INS)",
+  "description": "ACT 协议用户即时支付流程（PSD-PAY-INS）的 JSON Schema 定义，包含即时支付请求与响应报文结构",
+  "definitions": {
+    "InstantPaymentRequest": {
+      "type": "object",
+      "description": "买方智能体向 PSP 发起的即时支付请求报文",
+      "required": [
+        "request_id",
+        "merchant_order_no",
+        "payment_token",
+        "amount",
+        "currency",
+        "timestamp",
+        "buyer_agent_id",
+        "signature"
+      ],
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "description": "本次请求的全局唯一标识，用于防重放"
+        },
+        "merchant_order_no": {
+          "type": "string",
+          "description": "来自 CID-CART-CFM 的商户侧订单号，是连接前端商业意图与后端资金清算的业务锚点"
+        },
+        "cart_info": {
+          "type": "object",
+          "description": "来自 CID-CART-CFM 的购物车信息，供 PSP 验证支付内容与购物车的一致性",
+          "required": ["items"],
+          "properties": {
+            "items": {
+              "type": "array",
+              "description": "购物车商品列表",
+              "items": {
+                "type": "object",
+                "required": ["product_id", "product_name", "price", "currency", "quantity"],
+                "properties": {
+                  "product_id": {
+                    "type": "string",
+                    "description": "商品标识"
+                  },
+                  "product_name": {
+                    "type": "string",
+                    "description": "商品名称"
+                  },
+                  "price": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "商品单价"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{3}$",
+                    "description": "商品单价币种（ISO 4217 三字母码）"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "购买数量"
+                  }
+                }
+              }
+            },
+            "cart_snapshot_digest": {
+              "type": "string",
+              "description": "购物车快照摘要，用于一致性校验"
+            }
+          }
+        },
+        "payment_token": {
+          "type": "string",
+          "description": "前期绑定的支付标记（Payment Token），用于替代原始支付账户信息"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d+)?$",
+          "description": "本次支付金额（字符串格式，避免浮点精度问题），应与购物车信息中总金额一致"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "交易币种（ISO 4217 三字母码）"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "请求时间戳（ISO 8601 格式），用于 PSP 侧时效性验证"
+        },
+        "buyer_agent_id": {
+          "type": "string",
+          "description": "买方智能体身份标识"
+        },
+        "signature": {
+          "type": "object",
+          "description": "买方智能体对本次请求关键要素的签名",
+          "required": ["algorithm", "value"],
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "description": "签名算法类型（如 ES256、SM2-SM3）"
+            },
+            "value": {
+              "type": "string",
+              "description": "签名值（Base64url 编码）"
+            }
+          }
+        }
+      }
+    },
+    "InstantPaymentResponse": {
+      "type": "object",
+      "description": "PSP 返回给买方智能体的即时支付响应报文",
+      "required": [
+        "request_id",
+        "trade_no",
+        "merchant_order_no",
+        "status",
+        "trade_timestamp"
+      ],
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "description": "回传本次请求的全局唯一标识"
+        },
+        "trade_no": {
+          "type": "string",
+          "description": "PSP 生成的全局唯一交易流水号"
+        },
+        "merchant_order_no": {
+          "type": "string",
+          "description": "回传商户侧订单号"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["SUCCESS", "FAILED", "PENDING"],
+          "description": "交易状态：SUCCESS（支付成功）、FAILED（支付失败）、PENDING（待用户确认）"
+        },
+        "trade_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "交易时间戳（ISO 8601 格式）"
+        },
+        "error": {
+          "type": "object",
+          "description": "错误响应详情，仅在支付失败时返回",
+          "properties": {
+            "error_code": {
+              "type": "string",
+              "description": "错误语义类别编码",
+              "enum": [
+                "REQUEST_DUPLICATE",
+                "REQUEST_EXPIRED",
+                "SIGNATURE_INVALID",
+                "PAYMENT_TOKEN_INVALID",
+                "PAYMENT_TOKEN_MISMATCH",
+                "AMOUNT_MISMATCH",
+                "INSUFFICIENT_BALANCE",
+                "USER_AUTH_FAILED",
+                "RISK_CONTROL_REJECTED",
+                "SYSTEM_ERROR"
+              ]
+            },
+            "error_message": {
+              "type": "string",
+              "description": "错误详情描述"
+            }
+          }
+        }
+      }
+    }
+  }
+}
