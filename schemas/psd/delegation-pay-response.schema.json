@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/delegation-pay-response.schema.json",
+  "title": "Delegation Pay Response (PSD-PAY-DEL-PAY-RESP)",
+  "description": "ACT 协议委托代付响应（PSD-PAY-DEL-PAY-RESP）的 JSON Schema 定义。PSP 返回委托代付处理结果。",
+  "type": "object",
+  "required": [
+    "request_id",
+    "trade_no",
+    "out_trade_no",
+    "trade_status",
+    "timestamp"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "对应的请求全局唯一标识"
+    },
+    "trade_no": {
+      "type": "string",
+      "description": "PSP 生成的全局唯一交易流水号"
+    },
+    "out_trade_no": {
+      "type": "string",
+      "description": "商户侧订单号（回传），即请求中的 merchant_order_id"
+    },
+    "agreement_no": {
+      "type": "string",
+      "description": "委托协议号（回传）"
+    },
+    "trade_status": {
+      "type": "string",
+      "enum": ["TRADE_SUCCESS", "TRADE_PENDING", "TRADE_FAILED", "TRADE_CLOSED"],
+      "description": "交易状态：TRADE_SUCCESS-支付成功，TRADE_PENDING-处理中，TRADE_FAILED-支付失败，TRADE_CLOSED-交易关闭"
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "实际扣款金额"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "交易币种（ISO 4217）"
+    },
+    "buyer_principal_id": {
+      "type": "string",
+      "description": "实际付款的委托人身份标识（DID）"
+    },
+    "buyer_agent_id": {
+      "type": "string",
+      "description": "发起代付的智能体身份标识（DID）"
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "实际使用的支付方式标识符"
+    },
+    "payment_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "支付完成时间（ISO 8601 UTC）"
+    },
+    "deducted_amount_total": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "该协议下已累计扣款总额（含本次）"
+    },
+    "error_code": {
+      "type": "string",
+      "description": "错误码，交易失败时返回"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "错误描述信息"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "响应时间戳（ISO 8601 UTC）"
+    }
+  }
+}

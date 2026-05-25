@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/delegation-agreement-apply.schema.json",
+  "title": "Delegation Agreement Apply (PSD-PAY-DEL-APPLY)",
+  "description": "ACT 协议委托协议签约（PSD-PAY-DEL-APPLY）的 JSON Schema 定义。规范委托人向 PSP 申请签约委托支付协议的请求与响应结构，对应用户授权智能体代为支付的协议签署流程。",
+  "type": "object",
+  "definitions": {
+    "PeriodRule": {
+      "type": "object",
+      "description": "周期扣款规则，适用于周期性委托扣款场景",
+      "required": ["period_type", "period", "execution_time", "single_amount"],
+      "properties": {
+        "period_type": {
+          "type": "string",
+          "enum": ["DAY", "WEEK", "MONTH", "YEAR"],
+          "description": "扣款周期类型：DAY-按日，WEEK-按周，MONTH-按月，YEAR-按年"
+        },
+        "period": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "扣款周期数，与 period_type 组合表示扣款周期"
+        },
+        "execution_time": {
+          "type": "string",
+          "description": "扣款执行时间。按日周期时为空；按周周期时为1-7表示周一到周日；按月周期时为1-28表示日期；按年周期时为 MM-DD 格式"
+        },
+        "single_amount": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d{1,2})?$",
+          "description": "单次扣款金额上限"
+        }
+      }
+    },
+    "AccessParams": {
+      "type": "object",
+      "description": "协议签约接入参数",
+      "required": ["channel"],
+      "properties": {
+        "channel": {
+          "type": "string",
+          "enum": ["ALIAPP", "PC", "MOBILE_APP", "QR_CODE"],
+          "description": "签约渠道：ALIAPP-支付宝APP，PC-PC网页，MOBILE_APP-移动应用，QR_CODE-扫码签约"
+        },
+        "personal_product_code": {
+          "type": "string",
+          "description": "个人签约产品码，由 PSP 分配"
+        }
+      }
+    }
+  },
+  "required": [
+    "request_id",
+    "principal_id",
+    "agent_id",
+    "agreement_type",
+    "sign_validity",
+    "timestamp"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "请求全局唯一标识，用于防重放"
+    },
+    "principal_id": {
+      "type": "string",
+      "description": "委托人身份标识（DID），即签约人标识"
+    },
+    "principal_display_name": {
+      "type": "string",
+      "description": "委托人展示名称（脱敏），用于签约页面展示"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "受托智能体身份标识（DID），即被授权方标识"
+    },
+    "agent_display_name": {
+      "type": "string",
+      "description": "受托智能体展示名称，用于签约页面展示"
+    },
+    "agreement_type": {
+      "type": "string",
+      "enum": ["DELEGATION_SPECIFIED", "DELEGATION_GENERAL"],
+      "description": "委托协议类型：DELEGATION_SPECIFIED-定向委托（限定商户/场景），DELEGATION_GENERAL-通用委托（按规则授权）"
+    },
+    "sign_validity": {
+      "type": "object",
+      "description": "签约有效期",
+      "required": ["start_time", "end_time"],
+      "properties": {
+        "start_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "协议生效时间（ISO 8601 UTC）"
+        },
+        "end_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "协议过期时间（ISO 8601 UTC），长期有效时设置为远期时间"
+        }
+      }
+    },
+    "period_rule": {
+      "$ref": "#/definitions/PeriodRule",
+      "description": "周期扣款规则，适用于定期委托扣款场景（可选）"
+    },
+    "single_amount_limit": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "单笔扣款金额上限"
+    },
+    "total_amount_limit": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "协议累计扣款金额上限"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "金额币种（ISO 4217），默认 CNY"
+    },
+    "allowed_payment_methods": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "允许的支付方式标识符列表，对应 IAC 中的 allowed_payment_methods"
+    },
+    "allowed_merchants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "允许的商户标识符列表（定向委托场景）"
+    },
+    "access_params": {
+      "$ref": "#/definitions/AccessParams",
+      "description": "签约接入参数"
+    },
+    "notify_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "签约结果异步通知地址"
+    },
+    "return_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "签约完成后跳转地址"
+    },
+    "external_agreement_no": {
+      "type": "string",
+      "description": "外部协议号，由调用方生成的唯一协议编号，用于幂等控制"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "请求时间戳（ISO 8601 UTC）"
+    },
+    "signature": {
+      "type": "string",
+      "description": "请求方对关键要素的签名"
+    },
+    "signature_algorithm": {
+      "type": "string",
+      "description": "签名算法标识"
+    }
+  }
+}

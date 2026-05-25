@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/delegation-agreement-apply-response.schema.json",
+  "title": "Delegation Agreement Apply Response (PSD-PAY-DEL-APPLY-RESP)",
+  "description": "ACT 协议委托协议签约响应（PSD-PAY-DEL-APPLY-RESP）的 JSON Schema 定义。PSP 签约结果返回结构。",
+  "type": "object",
+  "required": [
+    "request_id",
+    "agreement_no",
+    "status",
+    "timestamp"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "对应的请求全局唯一标识"
+    },
+    "agreement_no": {
+      "type": "string",
+      "description": "PSP 生成的委托协议号，全局唯一"
+    },
+    "external_agreement_no": {
+      "type": "string",
+      "description": "外部协议号（回传）"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["SIGNED", "SIGNING", "FAILED"],
+      "description": "签约状态：SIGNED-签约成功，SIGNING-签约中（需用户确认），FAILED-签约失败"
+    },
+    "sign_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "签约页面 URL，当 status 为 SIGNING 时返回，用于引导用户完成签约确认"
+    },
+    "validity": {
+      "type": "object",
+      "description": "协议有效期",
+      "properties": {
+        "start_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "协议生效时间（ISO 8601 UTC）"
+        },
+        "end_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "协议过期时间（ISO 8601 UTC）"
+        }
+      }
+    },
+    "principal_id": {
+      "type": "string",
+      "description": "委托人身份标识（DID）"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "受托智能体身份标识（DID）"
+    },
+    "psp_id": {
+      "type": "string",
+      "description": "支付服务方标识"
+    },
+    "error_code": {
+      "type": "string",
+      "description": "错误码，签约失败时返回"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "错误描述信息"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "响应时间戳（ISO 8601 UTC）"
+    }
+  }
+}

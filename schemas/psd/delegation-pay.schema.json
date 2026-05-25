@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/delegation-pay.schema.json",
+  "title": "Delegation Pay (PSD-PAY-DEL-PAY)",
+  "description": "ACT 协议委托代付（PSD-PAY-DEL-PAY）的 JSON Schema 定义。规范智能体基于委托协议代委托人发起支付的请求结构，对应 alipay.trade.agent.delegation.pay 语义。",
+  "type": "object",
+  "required": [
+    "request_id",
+    "agreement_no",
+    "buyer_agent_id",
+    "merchant_id",
+    "merchant_order_id",
+    "amount",
+    "currency",
+    "timestamp"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "请求全局唯一标识，用于防重放"
+    },
+    "agreement_no": {
+      "type": "string",
+      "description": "委托协议号，标识本次代付所依据的委托协议"
+    },
+    "external_agreement_no": {
+      "type": "string",
+      "description": "外部协议号（与 agreement_no 二选一，优先使用 agreement_no）"
+    },
+    "buyer_agent_id": {
+      "type": "string",
+      "description": "买方智能体身份标识（DID），即发起代付的智能体"
+    },
+    "principal_id": {
+      "type": "string",
+      "description": "委托人身份标识（DID），即实际付款人"
+    },
+    "merchant_id": {
+      "type": "string",
+      "description": "商户身份标识，即收款方"
+    },
+    "merchant_order_id": {
+      "type": "string",
+      "description": "商户侧订单号，来自 CID-CART-CFM"
+    },
+    "cart_snapshot_hash": {
+      "type": "string",
+      "description": "购物车快照摘要，用于验证支付金额与购物车一致性"
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,2})?$",
+      "description": "支付金额（字符串格式）"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "币种（ISO 4217）"
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "支付方式标识符，应与委托协议中约定的 allowed_payment_methods 一致"
+    },
+    "payment_token": {
+      "type": "string",
+      "description": "支付标记（非子账户场景），来自 PSD-PMT-BND 绑定结果"
+    },
+    "subaccount_info": {
+      "type": "object",
+      "description": "子账户信息（使用专属子账户时提供）",
+      "properties": {
+        "subaccount_id": {
+          "type": "string",
+          "description": "子账户标识"
+        },
+        "signature": {
+          "type": "string",
+          "description": "子账户专属密钥签名/MAC"
+        },
+        "signature_algorithm": {
+          "type": "string",
+          "description": "签名算法类型"
+        }
+      }
+    },
+    "subject": {
+      "type": "string",
+      "description": "支付主题/订单标题，用于支付记录展示"
+    },
+    "description": {
+      "type": "string",
+      "description": "支付描述"
+    },
+    "goods_detail": {
+      "type": "array",
+      "description": "商品明细列表",
+      "items": {
+        "type": "object",
+        "required": ["goods_id", "goods_name", "quantity", "price"],
+        "properties": {
+          "goods_id": {
+            "type": "string",
+            "description": "商品ID"
+          },
+          "goods_name": {
+            "type": "string",
+            "description": "商品名称"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "商品数量"
+          },
+          "price": {
+            "type": "string",
+            "pattern": "^\\d+(\\.\\d{1,2})?$",
+            "description": "商品单价"
+          },
+          "goods_category": {
+            "type": "string",
+            "description": "商品类目"
+          }
+        }
+      }
+    },
+    "notify_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "支付结果异步通知地址"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "请求时间戳（ISO 8601 UTC）"
+    },
+    "signature": {
+      "type": "string",
+      "description": "买方智能体对请求关键要素的签名"
+    },
+    "signature_covered_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "签名覆盖的字段列表"
+    }
+  }
+}

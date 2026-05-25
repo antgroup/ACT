@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/schemas/psd/delegation-agreement-cancel.schema.json",
+  "title": "Delegation Agreement Cancel (PSD-PAY-DEL-CANCEL)",
+  "description": "ACT 协议委托协议解约（PSD-PAY-DEL-CANCEL）的 JSON Schema 定义。规范委托人或智能体主动解除委托支付协议的请求结构。",
+  "type": "object",
+  "required": [
+    "request_id",
+    "timestamp"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "description": "请求全局唯一标识，用于防重放"
+    },
+    "agreement_no": {
+      "type": "string",
+      "description": "委托协议号，与 external_agreement_no 二选一"
+    },
+    "external_agreement_no": {
+      "type": "string",
+      "description": "外部协议号，与 agreement_no 二选一"
+    },
+    "principal_id": {
+      "type": "string",
+      "description": "委托人身份标识（DID），发起解约的委托人"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "受托智能体身份标识（DID）"
+    },
+    "cancel_reason": {
+      "type": "string",
+      "enum": ["USER_INITIATED", "AGENT_INITIATED", "RISK_CONTROL", "AGREEMENT_EXPIRED", "MERCHANT_REQUEST", "OTHER"],
+      "description": "解约原因：USER_INITIATED-用户主动解约，AGENT_INITIATED-智能体主动解约，RISK_CONTROL-风控触发，AGREEMENT_EXPIRED-协议到期，MERCHANT_REQUEST-商户请求，OTHER-其他"
+    },
+    "cancel_remark": {
+      "type": "string",
+      "description": "解约备注说明"
+    },
+    "notify_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "解约结果异步通知地址"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "请求时间戳（ISO 8601 UTC）"
+    },
+    "signature": {
+      "type": "string",
+      "description": "请求方对关键要素的签名"
+    },
+    "signature_algorithm": {
+      "type": "string",
+      "description": "签名算法标识"
+    }
+  },
+  "anyOf": [
+    { "required": ["agreement_no"] },
+    { "required": ["external_agreement_no"] }
+  ]
+}

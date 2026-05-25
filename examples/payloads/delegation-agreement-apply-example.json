@@ -1,0 +1,33 @@
+{
+  "request_id": "req-del-apply-001-abc123",
+  "principal_id": "did:act:example.com/user-alice",
+  "principal_display_name": "Alice****",
+  "agent_id": "did:act:example.com/agent-alice-001",
+  "agent_display_name": "Shopping Assistant Agent",
+  "agreement_type": "DELEGATION_SPECIFIED",
+  "sign_validity": {
+    "start_time": "2026-06-01T00:00:00Z",
+    "end_time": "2027-05-31T23:59:59Z"
+  },
+  "single_amount_limit": "500.00",
+  "total_amount_limit": "10000.00",
+  "currency": "CNY",
+  "allowed_payment_methods": [
+    "urn:act:payment:example-wallet",
+    "urn:act:payment:credit-card"
+  ],
+  "allowed_merchants": [
+    "did:act:example.com/merchant-shop-001",
+    "did:act:example.com/merchant-shop-002"
+  ],
+  "access_params": {
+    "channel": "ALIAPP",
+    "personal_product_code": "GENERAL_WITHHOLDING"
+  },
+  "notify_url": "https://agent.example.com/callback/agreement/notify",
+  "return_url": "https://agent.example.com/agreement/result",
+  "external_agreement_no": "EXT-AGR-20260601-001",
+  "timestamp": "2026-06-01T10:00:00Z",
+  "signature": "MEUCIQDKxJ7dBJz...truncated...Y2jmQg==",
+  "signature_algorithm": "ES256"
+}
