@@ -1,0 +1,28 @@
+{
+  "request": {
+    "request_id": "urn:uuid:b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "principal_id": "did:act:example.com/user-alice",
+    "agent_id": "did:act:example.com/agent-alice-001",
+    "payment_account_ref": "urn:act:payment:example-wallet:acct-****4242",
+    "token_constraints": {
+      "max_amount_per_transaction": 500.00,
+      "validity_period": {
+        "start_time": "2026-04-19T00:00:00Z",
+        "end_time": "2027-04-19T23:59:59Z"
+      },
+      "allowed_merchants": [
+        "urn:act:merchant:example-merchant"
+      ]
+    },
+    "authentication_method": "FINGERPRINT",
+    "timestamp": "2026-04-19T07:30:00Z"
+  },
+  "response": {
+    "request_id": "urn:uuid:b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "status": "SUCCESS",
+    "payment_token": "tk_example_4242424242424242",
+    "token_expiry": "2027-04-19T23:59:59Z",
+    "bound_agent_id": "did:act:example.com/agent-alice-001",
+    "timestamp": "2026-04-19T07:30:05Z"
+  }
+}
