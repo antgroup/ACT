@@ -1,0 +1,7 @@
+# 电商购物助手 - 项目依赖
+
+# 核心依赖
+streamlit
+openai
+python-dotenv
+agentscope
