@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://specs.actprotocol.org/schemas/add/conversation-history.schema.json",
   "title": "Conversation History",
-  "description": "ACT Э���û�ԭʼ��ͼ��conversation_history���� JSON Schema ���壬���ڳ����û��ڱ�����ͼ��·�б����ԭʼ���ݣ������У���ժҪ������������",
+  "description": "ACT 协议用户原始意图（conversation_history）的 JSON Schema 定义，用于承载用户在本次意图链路中表达的原始内容，或其可校验的摘要与上下文引用",
   "type": "object",
   "oneOf": [
     { "required": ["user_intent_raw"] },
@@ -11,11 +11,11 @@
   "properties": {
     "user_intent_raw": {
       "type": "string",
-      "description": "�û�ԭʼ��ͼ����"
+      "description": "用户原始意图内容"
     },
     "user_intent_raw_digest": {
       "type": "string",
-      "description": "�û�ԭʼ��ͼ��ժҪֵ����������ͼ�������д���������ͼƬ������ʽ��Ƭ�ȶ�ģ̬��Ϣʱ��������ֱ�Ӵ�������ԭʼ��ͼ���ݵ�����"
+      "description": "用户原始意图的摘要值。适用于意图上下文中存在语音、图片、交互式卡片等多模态信息时，不方便直接传递完整原始意图内容的情形"
     },
     "input_mode": {
       "type": "array",
@@ -23,11 +23,11 @@
         "type": "string",
         "enum": ["TEXT", "VOICE", "IMAGE", "INTERACTIVE_CARD", "OTHER"]
       },
-      "description": "�û����뷽ʽ��֧�ֶ������뷽ʽ�Ļ�ϡ�ö��ֵ��TEXT���ı����룩��VOICE���������룩��IMAGE��ͼƬ���룩��INTERACTIVE_CARD������ʽ��Ƭ����OTHER���������뷽ʽ����ʵ�ַ�����չ��������ģʽö��ֵ������Ӧ�ı������ֶεĻ�������"
+      "description": "用户输入方式，支持多种输入方式的混合。枚举值：TEXT（文本输入）、VOICE（语音输入）、IMAGE（图片输入）、INTERACTIVE_CARD（交互式卡片）、OTHER（其他输入方式）。实现方可扩展其他输入模式枚举值，但不应改变上述字段的基本语义"
     },
     "context_ref": {
       "type": "string",
-      "description": "ָ����ػỰ�����ؼ�¼���ⲿ�洢λ�õ����ã������ö�Ӧ��ԭʼ����Ӧ�ܼ������ user_intent_raw_digest һ�µ�ժҪֵ�������� user_intent_raw_digest ʱ�������"
+      "description": "指向相关会话、本地记录或外部存储位置的引用；该引用对应的原始内容应能计算出与 user_intent_raw_digest 一致的摘要值。当存在 user_intent_raw_digest 时必须存在"
     }
   },
   "if": {

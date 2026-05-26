@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://specs.actprotocol.org/schemas/add/iac-payload.schema.json",
-  "title": "IAC Payload (IAC ´ıÇ©ÃûÔØºÉ)",
-  "description": "ACT Ğ­ÒéÒâÍ¼ÊÚÈ¨Æ¾Ö¤´ıÇ©ÃûÔØºÉ£¨ADD-IAC-ISS£©µÄ JSON Schema ¶¨Òå¡£IAC ´ıÇ©ÃûÔØºÉÊÇ»ùÓÚ×îÖÕ ISR É¸Ñ¡²¢ÖØ×éµÃµ½µÄÊÚÈ¨ÒµÎñ¶ÔÏó£¬ÓÃÓÚ±í´ï'Ë­ÔÚÊ²Ã´±ß½çÄÚÊÚÈ¨ÄÄ¸öÖÇÄÜÌå´ú±íÆäĞĞ¶¯'",
+  "title": "IAC Payload (IAC å¾…ç­¾åè½½è·)",
+  "description": "ACT åè®®æ„å›¾æˆæƒå‡­è¯å¾…ç­¾åè½½è·ï¼ˆADD-IAC-ISSï¼‰çš„ JSON Schema å®šä¹‰ã€‚IAC å¾…ç­¾åè½½è·æ˜¯åŸºäºæœ€ç»ˆ ISR ç­›é€‰å¹¶é‡ç»„å¾—åˆ°çš„æˆæƒä¸šåŠ¡å¯¹è±¡ï¼Œç”¨äºè¡¨è¾¾'è°åœ¨ä»€ä¹ˆè¾¹ç•Œå†…æˆæƒå“ªä¸ªæ™ºèƒ½ä½“ä»£è¡¨å…¶è¡ŒåŠ¨'",
   "type": "object",
   "required": [
     "delegation_id",
@@ -15,74 +15,74 @@
   "properties": {
     "delegation_id": {
       "type": "string",
-      "description": "±¾´Î IAC µÄÎ¨Ò»±êÊ¶£¬Ò²ÊÇ±¾´ÎÊÚÈ¨ÉúÃüÖÜÆÚµÄÖ÷±êÊ¶"
+      "description": "æœ¬æ¬¡ IAC çš„å”¯ä¸€æ ‡è¯†ï¼Œä¹Ÿæ˜¯æœ¬æ¬¡æˆæƒç”Ÿå‘½å‘¨æœŸçš„ä¸»æ ‡è¯†"
     },
     "intent_id": {
       "type": "string",
-      "description": "Ëù¶ÔÓ¦µÄÓÃ»§ÒâÍ¼±êÊ¶£»µ±ÉÏÓÎ ISR ÒÑÉú³É¸Ã±êÊ¶Ê±£¬¿ÉÓÃÓÚ½¨Á¢ IAC ÓëÉÏÓÎ ISR µÄ¶ÔÓ¦¹ØÏµ"
+      "description": "æ‰€å¯¹åº”çš„ç”¨æˆ·æ„å›¾æ ‡è¯†ï¼›å½“ä¸Šæ¸¸ ISR å·²ç”Ÿæˆè¯¥æ ‡è¯†æ—¶ï¼Œå¯ç”¨äºå»ºç«‹ IAC ä¸ä¸Šæ¸¸ ISR çš„å¯¹åº”å…³ç³»"
     },
     "conversation_history": {
       "$ref": "https://specs.actprotocol.org/schemas/add/conversation-history.schema.json",
-      "description": "µ±Î´Éú³É intent_id£¬ÇÒÊµÏÖ·½²ÉÓÃÖ±½ÓĞ¯´øÔ­Ê¼ÒâÍ¼¶ÔÏóµÄ·½Ê½Ê±¿ÉÌîĞ´£»Èç´æÔÚ£¬Ó¦·ûºÏ conversation-history ¶¨Òå¡£¸Ã·½Ê½¸üÊÊÓÃÓÚ×Ö½ÚÊı½ÏĞ¡µÄÓÃ»§Ô­Ê¼ÒâÍ¼³¡¾°"
+      "description": "å½“æœªç”Ÿæˆ intent_idï¼Œä¸”å®ç°æ–¹é‡‡ç”¨ç›´æ¥æºå¸¦åŸå§‹æ„å›¾å¯¹è±¡çš„æ–¹å¼æ—¶å¯å¡«å†™ï¼›å¦‚å­˜åœ¨ï¼Œåº”ç¬¦åˆ conversation-history å®šä¹‰ã€‚è¯¥æ–¹å¼æ›´é€‚ç”¨äºå­—èŠ‚æ•°è¾ƒå°çš„ç”¨æˆ·åŸå§‹æ„å›¾åœºæ™¯"
     },
     "delegator_identity": {
       "type": "string",
-      "description": "ÊÚÈ¨Ç©·¢·½±êÊ¶£¬¼´Î¯ÍĞ·½µÄÉí·İ±êÊ¶£¬Í¨³£¶ÔÓ¦Î¯ÍĞÈË»ò´ú±íÎ¯ÍĞÈË·¢ÆğÇ©·¢µÄÖ÷Ìå±êÊ¶"
+      "description": "æˆæƒç­¾å‘æ–¹æ ‡è¯†ï¼Œå³å§”æ‰˜æ–¹çš„èº«ä»½æ ‡è¯†ï¼Œé€šå¸¸å¯¹åº”å§”æ‰˜äººæˆ–ä»£è¡¨å§”æ‰˜äººå‘èµ·ç­¾å‘çš„ä¸»ä½“æ ‡è¯†"
     },
     "agent_id": {
       "type": "string",
-      "description": "ÊÜÍĞÖÇÄÜÌåµÄÉí·İ±êÊ¶£¬±»ÊÚÈ¨Ö´ĞĞºóĞø¶¯×÷µÄÖÇÄÜÌå±êÊ¶"
+      "description": "å—æ‰˜æ™ºèƒ½ä½“çš„èº«ä»½æ ‡è¯†ï¼Œè¢«æˆæƒæ‰§è¡Œåç»­åŠ¨ä½œçš„æ™ºèƒ½ä½“æ ‡è¯†"
     },
     "delegation_mode": {
       "type": "string",
       "enum": ["SPECIFIED", "BOUNDED"],
       "default": "SPECIFIED",
-      "description": "Î¯ÍĞÄ£Ê½£ºSPECIFIED£¨¶¨ÏòÎ¯ÍĞ£©/ BOUNDED£¨±ß½çÎ¯ÍĞ£©£¬Î´ÌîĞ´Ê±Ä¬ÈÏÖµÎª SPECIFIED"
+      "description": "å§”æ‰˜æ¨¡å¼ï¼šSPECIFIEDï¼ˆå®šå‘å§”æ‰˜ï¼‰/ BOUNDEDï¼ˆè¾¹ç•Œå§”æ‰˜ï¼‰ï¼Œæœªå¡«å†™æ—¶é»˜è®¤å€¼ä¸º SPECIFIED"
     },
     "validity_start_time": {
       "type": "string",
       "format": "date-time",
-      "description": "ÊÚÈ¨ÉúĞ§Ê±¼ä£¨ISO 8601 UTC£©"
+      "description": "æˆæƒç”Ÿæ•ˆæ—¶é—´ï¼ˆISO 8601 UTCï¼‰"
     },
     "validity_end_time": {
       "type": "string",
       "format": "date-time",
-      "description": "ÊÚÈ¨Ê§Ğ§Ê±¼ä£¨ISO 8601 UTC£©£¬ÇÒÓ¦ÍíÓÚ validity_start_time"
+      "description": "æˆæƒå¤±æ•ˆæ—¶é—´ï¼ˆISO 8601 UTCï¼‰ï¼Œä¸”åº”æ™šäº validity_start_time"
     },
     "max_total_amount": {
       "type": "number",
       "minimum": 0,
-      "description": "ÊÚÈ¨×Ü½ğ¶îÉÏÏŞ£¬Ó¦´óÓÚ»òµÈÓÚ 0£¬¾«¶È±£Áô 2 Î»Ğ¡Êı"
+      "description": "æˆæƒæ€»é‡‘é¢ä¸Šé™ï¼Œåº”å¤§äºæˆ–ç­‰äº 0ï¼Œç²¾åº¦ä¿ç•™ 2 ä½å°æ•°"
     },
     "currency": {
       "type": "string",
       "pattern": "^[A-Z]{3}$",
       "default": "CNY",
-      "description": "½ğ¶î±ÒÖÖ£¨ISO 4217£©£¬Î´ÌîĞ´Ê±Ä¬ÈÏÖµÎª CNY"
+      "description": "é‡‘é¢å¸ç§ï¼ˆISO 4217ï¼‰ï¼Œæœªå¡«å†™æ—¶é»˜è®¤å€¼ä¸º CNY"
     },
     "allowed_payment_methods": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "ÔÊĞíµÄÖ§¸¶·½Ê½ÁĞ±í£¬Èç½øÈëÇ©Ãû·¶Î§Ó¦±£³ÖÓë ISR ÖĞ×Ö¶ÎÓïÒåÒ»ÖÂ"
+      "description": "å…è®¸çš„æ”¯ä»˜æ–¹å¼åˆ—è¡¨ï¼Œå¦‚è¿›å…¥ç­¾åèŒƒå›´åº”ä¿æŒä¸ ISR ä¸­å­—æ®µè¯­ä¹‰ä¸€è‡´"
     },
     "user_confirmation_method": {
       "type": "string",
-      "description": "ÓÃ»§È·ÈÏ»òºËÉí·½Ê½£¬ÓÉÊµÏÖ·½¶¨ÒåÃ¶¾Ù"
+      "description": "ç”¨æˆ·ç¡®è®¤æˆ–æ ¸èº«æ–¹å¼ï¼Œç”±å®ç°æ–¹å®šä¹‰æšä¸¾"
     },
     "user_confirmation_timestamp": {
       "type": "string",
       "format": "date-time",
-      "description": "ÓÃ»§Íê³ÉÈ·ÈÏ»òºËÉíµÄÊ±¼ä£¨ISO 8601 UTC£©£¬µ±´æÔÚ user_confirmation_method Ê±Ó¦Í¬²½´æÔÚ"
+      "description": "ç”¨æˆ·å®Œæˆç¡®è®¤æˆ–æ ¸èº«çš„æ—¶é—´ï¼ˆISO 8601 UTCï¼‰ï¼Œå½“å­˜åœ¨ user_confirmation_method æ—¶åº”åŒæ­¥å­˜åœ¨"
     },
     "source_isr_digest": {
       "type": "string",
-      "description": "ÓÃÓÚ±í´ïÉÏÓÎ ISR »òÆäÔ¼¶¨ÕªÒª·¶Î§µÄÕªÒªÖµ£¬µ±ÊµÏÖ·½ĞèÒª¸üÎÈ¶¨µÄ¿çÓòºËÑéÃªµãÊ±¿ÉÌîĞ´"
+      "description": "ç”¨äºè¡¨è¾¾ä¸Šæ¸¸ ISR æˆ–å…¶çº¦å®šæ‘˜è¦èŒƒå›´çš„æ‘˜è¦å€¼ï¼Œå½“å®ç°æ–¹éœ€è¦æ›´ç¨³å®šçš„è·¨åŸŸæ ¸éªŒé”šç‚¹æ—¶å¯å¡«å†™"
     },
     "ext": {
       "$ref": "https://specs.actprotocol.org/schemas/add/intent-structured-rule.schema.json#/properties/ext",
-      "description": "À©Õ¹×Ö¶ÎÃüÃû¿Õ¼ä£¬ÈçĞè½« ISR µÄÀ©Õ¹Ô¼ÊøÄÉÈë IAC£¬Ó¦Ö±½ÓÑØÓÃ ISR µÄ ext ½á¹¹Óë×Ö¶ÎÓïÒå"
+      "description": "æ‰©å±•å­—æ®µå‘½åç©ºé—´ï¼Œå¦‚éœ€å°† ISR çš„æ‰©å±•çº¦æŸçº³å…¥ IACï¼Œåº”ç›´æ¥æ²¿ç”¨ ISR çš„ ext ç»“æ„ä¸å­—æ®µè¯­ä¹‰"
     }
   }
 }
