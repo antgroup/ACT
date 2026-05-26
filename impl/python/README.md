@@ -20,7 +20,7 @@
 #### 1. 克隆项目
 ```bash
 git clone <项目地址>
-cd ace_demo
+cd  <本地项目地址>
 ```
 
 #### 2. 安装依赖
@@ -52,11 +52,31 @@ pip install streamlit==1.29.0 openai>=1.0.0 python-dotenv==1.0.0
 ./run.sh
 
 # 方式二：直接启动
-streamlit run ui/app.py
-
+  streamlit run ui/app.py
+  
 # 方式三：使用主入口
 python main.py
 ```
+
+### 完整启动流程
+````
+1. 进入项目目录
+cd <项目空间>/impl/python
+
+2. 创建虚拟环境
+python3 -m venv .venv
+
+3. 激活虚拟环境
+source .venv/bin/activate
+
+4. 安装依赖
+pip install -r requirements.txt
+
+5. 启动应用
+streamlit run ui/app.py
+
+应用将自动在浏览器中打开：http://localhost:8501
+````
 
 ### 🎯 使用流程
 
