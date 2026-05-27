@@ -32,6 +32,7 @@ from ui.identity_select import render_identity_select, render_user_interface, re
 # 导入购物助手和商户服务界面
 from ui.shopping_assistant import render_shopping_assistant_tab, init_shopping_assistant_state
 from ui.merchant_service_ui import render_merchant_service_tab
+from ui.payment_demo import render_payment_demo_tab
 from assistant_agent.delegation_agent import DelegationAgent
 
 # 页面配置
@@ -777,8 +778,9 @@ def render_user_view():
     st.markdown('<div class="main-header">👤 用户中心 - ACT 协议</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-header">智能购物 & 委托支付</div>', unsafe_allow_html=True)
 
-    # 用户功能 Tabs
+    # 用户功能 Tabs - 新增支付模式演示首页
     user_tabs = st.tabs([
+        "🎯 支付模式演示",
         "🤖 智能体对话 (智能购物助手)",
         "💳 即时支付",
         "💰 委托支付管理",
@@ -787,6 +789,10 @@ def render_user_view():
     ])
 
     with user_tabs[0]:
+        # 支付模式演示首页 - 三种支付方式对比和可视化
+        render_payment_demo_tab()
+
+    with user_tabs[1]:
         # 智能体对话 Tab - 使用购物助手界面（左右分栏）
         st.subheader("🤖 AI 智能购物助手")
         st.info("这是一个**AI 智能体助手**，您可以直接与其对话来完成购物任务！")
