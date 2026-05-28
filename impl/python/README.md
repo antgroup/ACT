@@ -156,8 +156,72 @@ ace_demo/
 
 - **Agent 框架**：Agentscope（可选，支持规则模式）
 - **UI 框架**：Streamlit 1.29.0
-- **语言模型**：OpenAI GPT-3.5/GPT-4（可选）
+- **语言模型**：
+  - OpenAI GPT-3.5/GPT-4（可选）
+  - **阿里云 DashScope** - 通义千问、DeepSeek 等（推荐）
 - **Python 版本**：3.9+
+
+## 🤖 模型配置
+
+### 支持的模型提供商
+
+| 提供商 | 模型 | 推荐场景 |
+|--------|------|----------|
+| **DashScope** | `qwen-turbo` | 快速响应，低成本 |
+| **DashScope** | `qwen-plus` | 均衡性能 |
+| **DashScope** | `qwen-max` | 复杂推理 |
+| **DashScope** | `deepseek-r1` | 逻辑推理 |
+| OpenAI | `gpt-3.5-turbo` | OpenAI 服务 |
+| OpenAI | `gpt-4` | 高精度任务 |
+
+### 快速配置 DashScope (阿里系模型)
+
+```bash
+# 1. 获取 API Key
+# 访问 https://dashscope.console.aliyun.com/api-key
+
+# 2. 设置环境变量
+export DASHSCOPE_API_KEY=sk-your-dashscope-api-key
+export MODEL_PROVIDER=dashscope
+export DASHSCOPE_MODEL=qwen-turbo
+
+# 3. 安装依赖
+pip install dashscope>=1.19.0
+
+# 4. 运行应用
+streamlit run ui/app.py
+```
+
+### 配置文件
+
+复制 `.env.example` 为 `.env`，填写你的 API Key：
+
+```bash
+cp .env.example .env
+# 编辑 .env 文件，填入 API Key
+```
+
+### 快速测试
+
+```python
+from assistant_agent.agent import create_assistant_agent
+
+# 使用 DashScope (通义千问)
+agent = create_assistant_agent(
+    api_key="sk-your-dashscope-key",
+    model="qwen-turbo",
+    provider="dashscope"
+)
+
+# 使用 OpenAI
+agent = create_assistant_agent(
+    api_key="sk-your-openai-key",
+    provider="openai"
+)
+
+# 测试对话
+print(agent.chat("你好，有什么商品？"))
+```
 
 ## 🎯 项目特色
 

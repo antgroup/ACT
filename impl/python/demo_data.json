@@ -4,7 +4,7 @@
       "id": "p1",
       "name": "iPhone 15 Pro",
       "price": 8999.0,
-      "stock": 10,
+      "stock": 8,
       "merchant_id": "m1"
     },
     {
@@ -25,14 +25,14 @@
       "id": "p4",
       "name": "星巴克大杯拿铁",
       "price": 38.0,
-      "stock": 96,
+      "stock": 94,
       "merchant_id": "m2"
     },
     {
       "id": "p5",
       "name": "奈雪的茶",
       "price": 32.0,
-      "stock": 50,
+      "stock": 49,
       "merchant_id": "m2"
     }
   ],
@@ -112,6 +112,138 @@
       "payment_mode": "instant",
       "status": "completed",
       "timestamp": "2026-05-27T14:58:16.074015"
+    },
+    {
+      "id": "did:act:task:8e833df7926040da",
+      "type": "autonomous_task",
+      "user_id": "user_240316a8",
+      "description": "出差行程安排（机票+酒店+用车）",
+      "budget": 5000.0,
+      "sub_account_id": "did:act:sub:b1ef3bd81517",
+      "sub_account_balance": 5000.0,
+      "status": "active",
+      "sub_tasks": [],
+      "created_at": "2026-05-27T16:24:27.805525"
+    },
+    {
+      "id": "ORD-73e0e74cc004",
+      "user_id": "user_196c6d4a",
+      "product_id": "p4",
+      "product_name": "星巴克大杯拿铁",
+      "amount": 38.0,
+      "payment_mode": "instant",
+      "status": "completed",
+      "timestamp": "2026-05-27T18:38:54.619994"
+    },
+    {
+      "id": "did:act:task:6f0372c15be94d63",
+      "type": "autonomous_task",
+      "user_id": "user_196c6d4a",
+      "description": "出差行程安排（机票+酒店+用车）",
+      "budget": 5000.0,
+      "sub_account_id": "did:act:sub:ba03474756e0",
+      "sub_account_balance": 5000.0,
+      "status": "active",
+      "sub_tasks": [],
+      "created_at": "2026-05-27T18:40:38.941123"
+    },
+    {
+      "id": "ORD-2a8970e49a2b",
+      "user_id": "user_dde02c1e",
+      "product_id": "p1",
+      "product_name": "iPhone 15 Pro",
+      "amount": 8999.0,
+      "payment_mode": "instant",
+      "status": "completed",
+      "timestamp": "2026-05-28T10:54:12.321495"
+    },
+    {
+      "id": "ORD-3efd145ec4b2",
+      "user_id": "user_dde02c1e",
+      "product_id": "p4",
+      "product_name": "星巴克大杯拿铁",
+      "amount": 38.0,
+      "payment_mode": "delegated",
+      "delegation_id": "did:act:delegation:a0b07301dea94060",
+      "status": "completed",
+      "timestamp": "2026-05-28T10:57:22.617025"
+    },
+    {
+      "id": "ORD-2ab78c8e32fa",
+      "user_id": "user_a3e51e86",
+      "product_id": "p4",
+      "product_name": "星巴克大杯拿铁",
+      "amount": 38.0,
+      "payment_mode": "instant",
+      "status": "completed",
+      "timestamp": "2026-05-28T11:35:47.681751"
+    },
+    {
+      "id": "ORD-5a84c807b7f1",
+      "user_id": "user_6657e708",
+      "product_id": "p1",
+      "product_name": "iPhone 15 Pro",
+      "amount": 8999.0,
+      "payment_mode": "instant",
+      "status": "completed",
+      "timestamp": "2026-05-28T14:47:48.206582"
+    },
+    {
+      "id": "ORD-9500bdd1d46c",
+      "user_id": "user_6657e708",
+      "product_id": "p5",
+      "product_name": "奈雪的茶",
+      "amount": 32.0,
+      "payment_mode": "delegated",
+      "delegation_id": "did:act:delegation:f1f7254254884056",
+      "status": "completed",
+      "timestamp": "2026-05-28T14:49:07.128440"
+    },
+    {
+      "id": "did:act:task:b003289373f8414e",
+      "type": "autonomous_task",
+      "user_id": "user_6657e708",
+      "description": "综合性任务执行",
+      "budget": 3000.0,
+      "sub_account_id": "did:act:sub:5edc2f6b7533",
+      "sub_account_balance": 3000.0,
+      "status": "active",
+      "sub_tasks": [],
+      "created_at": "2026-05-28T14:53:39.848851"
+    },
+    {
+      "id": "ORD-0fc09b54bf10",
+      "user_id": "user_d4dc4ee6",
+      "product_id": "p5",
+      "product_name": "奈雪的茶",
+      "amount": 32.0,
+      "payment_mode": "instant",
+      "status": "completed",
+      "timestamp": "2026-05-28T16:41:14.596584"
+    },
+    {
+      "id": "did:act:task:d29f4a46a4544b4a",
+      "type": "autonomous_task",
+      "user_id": "user_d4dc4ee6",
+      "description": "巴哈马旅行行程规划（交通+住宿+门票+餐饮）",
+      "budget": 30000.0,
+      "sub_account_id": "did:act:sub:504354a9f4be",
+      "sub_account_balance": 30000.0,
+      "status": "active",
+      "sub_tasks": [],
+      "created_at": "2026-05-28T16:42:57.311194"
+    },
+    {
+      "id": "did:act:task:3d476d402a8b4e11",
+      "type": "autonomous_task",
+      "user_id": "user_4bb7bdc2",
+      "description": "旅行行程规划（交通+住宿+门票+餐饮）",
+      "budget": 30000.0,
+      "sub_account_id": "did:act:sub:ee315ce8d236",
+      "sub_account_balance": 30000.0,
+      "status": "active",
+      "sub_tasks": [],
+      "created_at": "2026-05-28T16:48:34.765474"
     }
   ],
   "delegations": [
@@ -154,6 +286,46 @@
       "status": "active",
       "created_at": "2026-05-27T14:59:39.457354",
       "iac_jwt": "{\"header\": {\"alg\": \"ES256\", \"typ\": \"IAC\", \"kid\": \"did:act:psp:example#key1\"}, \"payload\": {\"iat\": 1779865179, \"exp\": 1782457179, \"iss\": \"did:act:psp:example\", \"sub\": \"did:act:delegation:d3e913b7d7e841df\", \"principal\": \"did:act:user:example\", \"agent\": \"did:act:agent:example\", \"max_total_amount\": 100.0, \"max_single_amount\": 20.0, \"delegation_mode\": \"SPECIFIED\"}}"
+    },
+    {
+      "id": "did:act:delegation:5fe209264a544e83",
+      "user_id": "user_196c6d4a",
+      "max_total": 500.0,
+      "max_single": 100.0,
+      "used_amount": 0.0,
+      "status": "active",
+      "created_at": "2026-05-27T18:39:17.539046",
+      "iac_jwt": "{\"header\": {\"alg\": \"ES256\", \"typ\": \"IAC\", \"kid\": \"did:act:psp:example#key1\"}, \"payload\": {\"iat\": 1779878357, \"exp\": 1782470357, \"iss\": \"did:act:psp:example\", \"sub\": \"did:act:delegation:5fe209264a544e83\", \"principal\": \"did:act:user:example\", \"agent\": \"did:act:agent:example\", \"max_total_amount\": 500.0, \"max_single_amount\": 100.0, \"delegation_mode\": \"SPECIFIED\"}}"
+    },
+    {
+      "id": "did:act:delegation:b0ef75c163ac4b63",
+      "user_id": "user_196c6d4a",
+      "max_total": 500.0,
+      "max_single": 100.0,
+      "used_amount": 0.0,
+      "status": "active",
+      "created_at": "2026-05-27T18:39:52.468546",
+      "iac_jwt": "{\"header\": {\"alg\": \"ES256\", \"typ\": \"IAC\", \"kid\": \"did:act:psp:example#key1\"}, \"payload\": {\"iat\": 1779878392, \"exp\": 1782470392, \"iss\": \"did:act:psp:example\", \"sub\": \"did:act:delegation:b0ef75c163ac4b63\", \"principal\": \"did:act:user:example\", \"agent\": \"did:act:agent:example\", \"max_total_amount\": 500.0, \"max_single_amount\": 100.0, \"delegation_mode\": \"SPECIFIED\"}}"
+    },
+    {
+      "id": "did:act:delegation:a0b07301dea94060",
+      "user_id": "user_dde02c1e",
+      "max_total": 500.0,
+      "max_single": 100.0,
+      "used_amount": 38.0,
+      "status": "active",
+      "created_at": "2026-05-28T10:56:25.304971",
+      "iac_jwt": "{\"header\": {\"alg\": \"ES256\", \"typ\": \"IAC\", \"kid\": \"did:act:psp:example#key1\"}, \"payload\": {\"iat\": 1779936985, \"exp\": 1782528985, \"iss\": \"did:act:psp:example\", \"sub\": \"did:act:delegation:a0b07301dea94060\", \"principal\": \"did:act:user:example\", \"agent\": \"did:act:agent:example\", \"max_total_amount\": 500.0, \"max_single_amount\": 100.0, \"delegation_mode\": \"SPECIFIED\"}}"
+    },
+    {
+      "id": "did:act:delegation:f1f7254254884056",
+      "user_id": "user_6657e708",
+      "max_total": 500.0,
+      "max_single": 100.0,
+      "used_amount": 32.0,
+      "status": "active",
+      "created_at": "2026-05-28T14:48:09.409535",
+      "iac_jwt": "{\"header\": {\"alg\": \"ES256\", \"typ\": \"IAC\", \"kid\": \"did:act:psp:example#key1\"}, \"payload\": {\"iat\": 1779950889, \"exp\": 1782542889, \"iss\": \"did:act:psp:example\", \"sub\": \"did:act:delegation:f1f7254254884056\", \"principal\": \"did:act:user:example\", \"agent\": \"did:act:agent:example\", \"max_total_amount\": 500.0, \"max_single_amount\": 100.0, \"delegation_mode\": \"SPECIFIED\"}}"
     }
   ],
   "sub_accounts": {
@@ -170,6 +342,31 @@
     "did:act:sub:8951eedbbc81": {
       "balance": 5000.0,
       "initial_budget": 5000.0,
+      "transactions": []
+    },
+    "did:act:sub:b1ef3bd81517": {
+      "balance": 5000.0,
+      "initial_budget": 5000.0,
+      "transactions": []
+    },
+    "did:act:sub:ba03474756e0": {
+      "balance": 5000.0,
+      "initial_budget": 5000.0,
+      "transactions": []
+    },
+    "did:act:sub:5edc2f6b7533": {
+      "balance": 3000.0,
+      "initial_budget": 3000.0,
+      "transactions": []
+    },
+    "did:act:sub:504354a9f4be": {
+      "balance": 30000.0,
+      "initial_budget": 30000.0,
+      "transactions": []
+    },
+    "did:act:sub:ee315ce8d236": {
+      "balance": 30000.0,
+      "initial_budget": 30000.0,
       "transactions": []
     }
   },

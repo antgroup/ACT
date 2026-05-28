@@ -148,6 +148,18 @@ def init_session_state():
         st.session_state.delegation_agent = DelegationAgent()
         st.session_state.agent_chat_delegation = st.session_state.delegation_agent.process_delegation_command
 
+    # 模型配置状态（新版）
+    if "model_config" not in st.session_state:
+        st.session_state.model_config = {
+            "provider": "dashscope",
+            "dashscope_api_key": "",
+            "openai_api_key": "",
+            "dashscope_model": "qwen-turbo",
+            "openai_model": "gpt-3.5-turbo",
+            "configured": False,
+            "use_llm": False,
+        }
+
     # 核心服务实例（共享）
     if "merchant_service" not in st.session_state:
         st.session_state.merchant_service = merchant_service
@@ -201,11 +213,24 @@ def init_session_state():
         st.session_state.product_notifications = []  # 商品变更通知
 
 
-def initialize_agent(mode: str, api_key: str = None, model: str = "gpt-3.5-turbo"):
+def initialize_agent(mode: str = "rule", api_key: str = None, model: str = None, provider: str = None):
     """初始化助理 Agent"""
     from assistant_agent.agent import create_assistant_agent
 
     try:
+        # 如果没有传入参数，尝试从 model_config 读取
+        if api_key is None and st.session_state.model_config.get("configured"):
+            config = st.session_state.model_config
+            if config["provider"] == "dashscope":
+                api_key = config["dashscope_api_key"]
+                model = config["dashscope_model"]
+                provider = "dashscope"
+            else:
+                api_key = config["openai_api_key"]
+                model = config["openai_model"]
+                provider = "openai"
+            mode = "llm" if api_key else "rule"
+
         if mode == "rule":
             st.session_state.agent = create_assistant_agent()
             st.session_state.agent_mode = "rule"
@@ -214,15 +239,17 @@ def initialize_agent(mode: str, api_key: str = None, model: str = "gpt-3.5-turbo
 
         elif mode == "llm":
             if not api_key:
-                return False, "请提供 OpenAI API Key"
+                return False, "请先在侧边栏配置模型 API Key"
 
             st.session_state.agent = create_assistant_agent(
                 api_key=api_key,
-                model=model
+                model=model or "qwen-turbo",
+                provider=provider or "dashscope"
             )
             st.session_state.agent_mode = "llm"
             st.session_state.agent_initialized = True
-            return True, f"助理 Agent 初始化成功（LLM 模式 - {model}）"
+            model_name = model or provider or "unknown"
+            return True, f"助理 Agent 初始化成功（{provider} - {model_name}）"
 
         else:
             return False, "未知的 Agent 模式"
@@ -692,6 +719,11 @@ def main():
     # 初始化 Session State
     init_session_state()
 
+    # 导入并渲染模型配置侧边栏
+    from ui.model_config import render_model_config_sidebar, render_model_test_button
+    model_config = render_model_config_sidebar()
+    render_model_test_button()
+
     # 检查是否已选择角色
     if st.session_state.current_role is None:
         # 未选择角色，显示身份选择界面
@@ -801,34 +833,33 @@ def render_user_view():
         if not st.session_state.agent_initialized:
             st.info("💡 请先初始化智能体助手")
 
-            # Agent 模式选择
-            agent_mode = st.radio(
-                "选择 Agent 模式",
-                options=["rule (规则模式)", "llm (LLM 模式)"],
-                format_func=lambda x: {
-                    "rule (规则模式)": "📋 规则模式 - 使用预定义规则",
-                    "llm (LLM 模式)": "🧠 LLM 模式 - 使用大语言模型"
-                }.get(x, x)
-            )
+            # 显示当前模型配置状态
+            config = st.session_state.model_config
 
-            api_key = None
-            model = "gpt-3.5-turbo"
+            col1, col2 = st.columns(2)
+            with col1:
+                if config.get("configured"):
+                    st.success(f"✅ 已配置模型：{config['provider']}")
+                    st.info(f"使用模型：{config.get(config['provider'] + '_model', 'default')}")
+                else:
+                    st.warning("⚠️ 请在左侧边栏配置模型 API Key")
 
-            if agent_mode == "llm (LLM 模式)":
-                api_key = st.text_input(
-                    "OpenAI API Key（可选）",
-                    type="password",
-                    help="输入您的 OpenAI API Key 以使用 LLM 模式，如果不填将使用规则模式",
-                    key="user_api_key"
+            with col2:
+                st.markdown("**初始化选项：**")
+                init_mode = st.radio(
+                    "选择初始化模式",
+                    options=["使用配置的模型", "使用规则模式"],
+                    index=0 if config.get("configured") else 1
                 )
 
             if st.button("🚀 初始化智能体助手", type="primary", use_container_width=True):
                 with st.spinner("正在初始化..."):
-                    # 根据选择调用初始化
-                    if agent_mode == "llm (LLM 模式)" and api_key:
-                        success, message = initialize_agent("llm", api_key, model)
+                    if init_mode == "使用配置的模型" and config.get("configured"):
+                        # 使用侧边栏配置的模型
+                        success, message = initialize_agent("llm")
                     else:
-                        success, message = initialize_agent("rule", None, None)
+                        # 使用规则模式
+                        success, message = initialize_agent("rule")
 
                     if success:
                         st.success(message)
