@@ -32,5 +32,5 @@
 - IAC 锁定商户白名单，PSP 校验支付商户一致性
 - 支持累计额度管控，防止超额支付
 
-## 参考案例
-- 淘宝 x AI支付：低价买
+## 落地案例
+- 淘宝 x AI支付-低价买：https://mp.weixin.qq.com/s/3Z-YalSv4yDI_mkRXsn1qQ

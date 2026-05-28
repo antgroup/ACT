@@ -1,5 +1,11 @@
 # 商业交互域（Commerce Interaction Domain, CID）
 
+> **导航**: [概览](overview.md) | [ADD委托授权域](authorization-delegation-domain-spec.md) | **CID商业交互域** | [PSD支付服务域](payment-services-domain-spec.md) | [TSD信任服务域](trust-services-domain-spec.md)
+>
+> **资源**: [返回首页](../../README.md) | [CID Schema](../../schemas/cid/) | [场景示例](../../examples/scenarios/) | [CID报文示例](../../examples/payloads/cid/)
+
+---
+
 ## 1 范围
 
 商业交互域（Commerce Interaction Domain，CID）定义了智能体与商户（含商户侧智能体）或其他智能体之间，围绕商品/服务发现、意图传递、内容协商、支付能力协商、购物车确认等环节所遵循的交互规范。

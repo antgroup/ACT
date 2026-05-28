@@ -1,5 +1,11 @@
 # 支付服务域（Payment Services Domain, PSD）
 
+> **导航**: [概览](overview.md) | [ADD委托授权域](authorization-delegation-domain-spec.md) | [CID商业交互域](commerce-interaction-domain-spec.md) | **PSD支付服务域** | [TSD信任服务域](trust-services-domain-spec.md)
+>
+> **资源**: [返回首页](../../README.md) | [PSD Schema](../../schemas/psd/) | [场景示例](../../examples/scenarios/) | [PSD报文示例](../../examples/payloads/psd/)
+
+---
+
 ## 1 范围
 
 支付服务域（Payment Services Domain，PSD）定义了智能体在完成购物车确认之后，向支付服务方发起支付的完整交互规范，覆盖支付请求的构造、授权核验、交易执行与结果状态管理等环节。
@@ -143,7 +149,7 @@
 - **支付授权调用**：买方智能体构造支付载荷时，向安全组件传入密钥引用标识及待处理的载荷内容，由安全组件返回支付授权密文信息（非对称方案下为数字签名，对称方案下为消息认证码）。
 - **密钥失效**：子账户冻结或注销时应联动触发密钥失效；密钥失效后PSP不应继续接受该子账户的支付请求。
 
-> 注：上述密钥操作可基于外部安全服务组件实现，具体接口定义参见[安全接口声明](../appendix/security-interfaces.md)。
+> 注：上述密钥操作可基于外部安全服务组件实现，具体接口定义参见[安全接口声明](appendix/security-interfaces.md)。
 
 #### 子账户生命周期管理
 
@@ -331,7 +337,7 @@ PSP 接收签约请求后，应对委托人进行身份核验及签约意愿确�
 
 若签约需异步处理，PSP 应在签约结果确定后向请求方通知地址推送签约结果通知。
 
-> 对应 Schema：[delegation-agreement-apply.schema.json](../../schemas/psd/delegation-agreement-apply.schema.json)、[delegation-agreement-apply-response.schema.json](../../schemas/psd/delegation-agreement-apply-response.schema.json)
+> 对应 Schema：[delegation-agreement-apply.schema.json](schemas/payment-services-domain/delegation-agreement-apply.schema.json)、[delegation-agreement-apply-response.schema.json](schemas/payment-services-domain/delegation-agreement-apply-response.schema.json)
 
 ##### 5.4.2 PSD-PAY-DEL-QUERY：委托协议查询
 
@@ -364,7 +370,7 @@ PSP 根据查询维度检索协议信息并返回结果，响应内容应包含�
 - 已累计扣款总额；
 - 签约时间与解约时间（如已解约）。
 
-> 对应 Schema：[delegation-agreement-query.schema.json](../../schemas/psd/delegation-agreement-query.schema.json)、[delegation-agreement-query-response.schema.json](../../schemas/psd/delegation-agreement-query-response.schema.json)
+> 对应 Schema：[delegation-agreement-query.schema.json](schemas/payment-services-domain/delegation-agreement-query.schema.json)、[delegation-agreement-query-response.schema.json](schemas/payment-services-domain/delegation-agreement-query-response.schema.json)
 
 ##### 5.4.3 PSD-PAY-DEL-CANCEL：委托协议解约
 
@@ -398,7 +404,7 @@ PSP 接收解约请求后，执行以下处理：
 
 若请求方提供了通知地址，PSP 应在解约结果确定后推送解约结果通知。
 
-> 对应 Schema：[delegation-agreement-cancel.schema.json](../../schemas/psd/delegation-agreement-cancel.schema.json)、[delegation-agreement-cancel-response.schema.json](../../schemas/psd/delegation-agreement-cancel-response.schema.json)
+> 对应 Schema：[delegation-agreement-cancel.schema.json](schemas/payment-services-domain/delegation-agreement-cancel.schema.json)、[delegation-agreement-cancel-response.schema.json](schemas/payment-services-domain/delegation-agreement-cancel-response.schema.json)
 
 ##### 5.4.4 PSD-PAY-DEL-PAY：委托代付
 
@@ -467,7 +473,7 @@ PSP 应在代付结果最终确定后向请求方通知地址推送支付结果�
 
 **【存证】** 委托代付交易完成后，PSP 宜异步上报 `act:payment:transaction-completed` 存证事件，为后续潜在的争议解决提供支持。
 
-> 对应 Schema：[delegation-pay.schema.json](../../schemas/psd/delegation-pay.schema.json)、[delegation-pay-response.schema.json](../../schemas/psd/delegation-pay-response.schema.json)
+> 对应 Schema：[delegation-pay.schema.json](schemas/payment-services-domain/delegation-pay.schema.json)、[delegation-pay-response.schema.json](schemas/payment-services-domain/delegation-pay-response.schema.json)
 
 #### 委托支付子流程关联关系
 

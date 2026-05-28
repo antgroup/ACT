@@ -1,5 +1,11 @@
 # 信任服务域（Trust Services Domain, TSD）
 
+> **导航**: [概览](overview.md) | [ADD委托授权域](authorization-delegation-domain-spec.md) | [CID商业交互域](commerce-interaction-domain-spec.md) | [PSD支付服务域](payment-services-domain-spec.md) | **TSD信任服务域**
+>
+> **资源**: [返回首页](../../README.md) | [TSD Schema](../../schemas/tsd/) | [场景示例](../../examples/scenarios/) | [TSD报文示例](../../examples/payloads/tsd/)
+
+---
+
 ## 1 范围
 
 信任服务域（Trust Services Domain，TSD）为 ACT 协议的其他三个域（委托授权域、商业交互域、支付服务域）提供底层的信任基础设施，包括智能体身份管理、可信存证、存证验证与争议解决等核心能力。

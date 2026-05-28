@@ -1,5 +1,11 @@
 # 委托授权域（Authorization & Delegation Domain, ADD）
 
+> **导航**: [概览](overview.md) | **ADD委托授权域** | [CID商业交互域](commerce-interaction-domain-spec.md) | [PSD支付服务域](payment-services-domain-spec.md) | [TSD信任服务域](trust-services-domain-spec.md)
+>
+> **资源**: [返回首页](../../README.md) | [ADD Schema](../../schemas/add/) | [场景示例](../../examples/scenarios/) | [ADD报文示例](../../examples/payloads/add/)
+
+---
+
 ## 1 范围
 
 委托授权域（Authorization & Delegation Domain, ADD）规定用户意图的表达、确认、结构化约束、授权凭证签发及其生命周期管理规则，为智能体代表用户开展商业活动提供可表达、可约束、可验证、可追溯的授权基础。
