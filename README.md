@@ -8,6 +8,10 @@
   <a href="https://www.act-protocol.com/documentation/delegation"><img src="https://img.shields.io/badge/Documentation-Online-green" alt="Documentation"></a>
 </p>
 
+> [!IMPORTANT]
+> ACT 协议正在修订。面向开源重构的目标、边界、支付宝 AI 付公开接入基线和阶段计划，见
+> [开源重构工作区](docs/open-source-restructure/README.md)。该工作区当前为非规范性草案，不修改或替代现有协议正文。
+
 ## 概述
 
 智能体商业（Agentic Commerce）正在成为继移动电商之后的下一次范式升级。ACT 协议为智能体商业提供从用户意图授权到支付结算、争议仲裁的端到端信任协议栈。
