@@ -31,6 +31,7 @@
 | ACT-OSR-002 | 建立目标、架构、产品基线和计划文档 | Phase 0 | 无 | Done | 本目录 |
 | ACT-OSR-003 | 从根 README 提供重构入口 | Phase 0 | ACT-OSR-002 | Done | `README.md` |
 | ACT-OSR-003A | 建立外滩大会发布章程 | Phase 0 | DEC-001—012 | Done | `06-bund-release-charter.md` |
+| ACT-OSR-003B | 建立 Alipay AI Pay 对齐矩阵初稿 | Phase 0 | ACT-OSR-002 | Done | `profiles/alipay-ai-pay/` |
 | ACT-OSR-004 | 审计断链和虚构目录 | Phase 1 | 无 | Proposed | 待建 Issue/PR |
 | ACT-OSR-005 | 校正规范和实现成熟度描述 | Phase 1 | 治理确认 | Proposed | 待建 Issue/PR |
 | ACT-OSR-006 | 标记并隔离模拟 Demo | Phase 1 | 无 | Proposed | 待建 Issue/PR |
@@ -99,3 +100,4 @@
 | 2026-07-15 | 建立重构分支与文档框架 | ACT-OSR-001—003 |
 | 2026-07-15 | 记录首期范围、分层和公开资料原则 | DEC-001—005 |
 | 2026-07-15 | 确认大会版本、接入基线、沙箱复用、双语范围和负责人 | DEC-006—012 |
+| 2026-07-16 | 建立 Agent 支付、按量付费、字段、生命周期和错误映射初稿 | ACT-OSR-003B |
