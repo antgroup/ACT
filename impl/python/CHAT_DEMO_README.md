@@ -1,5 +1,8 @@
 # ACT协议 - GPT对话式演示
 
+> [!WARNING]
+> 这是本地对话体验 Demo。页面中的支付、扣款、余额、IAC/JWT 和 A2A 执行结果可能是模拟数据，不是支付宝 AI 付真实交易或 ACT 一致性证明。真实产品接入请查看 [Alipay AI Pay Profile 工作草案](../../profiles/alipay-ai-pay/README.md)。
+
 ## 🚀 快速开始
 
 ### 启动方式

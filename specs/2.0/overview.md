@@ -2,7 +2,7 @@
 
 > **导航**: [概览](overview.md) | [ADD委托授权域](authorization-delegation-domain-spec.md) | [CID商业交互域](commerce-interaction-domain-spec.md) | [PSD支付服务域](payment-services-domain-spec.md) | [TSD信任服务域](trust-services-domain-spec.md)
 >
-> **资源**: [返回首页](../../README.md) | [Schema](../../schemas/) | [场景示例](../../examples/scenarios/) | [报文示例](../../examples/payloads/)
+> **资源**: [返回首页](../../README.md) | [Schema](schemas/) | [场景示例](../../examples/scenarios/) | [报文示例](../../examples/payloads/)
 
 ---
 
@@ -145,7 +145,7 @@ ADD 域解决"用户意图如何可信地授权给智能体"的问题。本域�
 | ADD-IAC-ISS：意图授权凭证签发 | 规范将结构化意图转化为跨域可验证的密码学授权凭证（IAC）的签发与签名机制 |
 | ADD-IAC-LCM：IAC 生命周期管理 | 定义 IAC 从生效、挂起、恢复到作废、过期的全生命周期状态流转机制 |
 
-详细规范参见 [ADD 域规范](spec.md)。
+详细规范参见 [ADD 域规范](authorization-delegation-domain-spec.md)。
 
 #### 2.3.2 CID -- 商业交互域（Commerce Interaction Domain）
 
@@ -160,7 +160,7 @@ CID 域解决"智能体如何与商户/其他智能体交互"的问题。本域�
 | CID-CART-CFM：购物车确认 | 规范买卖双方确认最终商品清单、金额，并将交易状态锁定准备进入支付阶段的交互过程 |
 | CID-PCA-NEG：支付能力协商 | 规定买卖双方智能体在交易前相互声明并匹配可用支付方式及 PSP 服务端点的握手过程 |
 
-详细规范参见 [CID 域规范](cid/spec.md)。
+详细规范参见 [CID 域规范](commerce-interaction-domain-spec.md)。
 
 #### 2.3.3 PSD -- 支付服务域（Payment Services Domain）
 
@@ -176,7 +176,7 @@ PSD 域解决"智能体如何安全完成支付"的问题。本域定义了智�
 | PSD-PAY-DEL：用户委托支付流程 | 规范委托人不在场情形下，智能体基于意图授权凭证，在用户设定的规则与限额内由智能体自主完成的支付流程 |
 | PSD-PAY-AUP：智能体A2A通用支付协议 | 规范智能体间基于 HTTP 402 语义扩展的通用支付骨架，涵盖"支付挑战-凭证传递-履约回执"的标准交互与状态流转机制 |
 
-详细规范参见 [PSD 域规范](psd/spec.md)。
+详细规范参见 [PSD 域规范](payment-services-domain-spec.md)。
 
 #### 2.3.4 TSD -- 信任服务域（Trust Services Domain）
 
@@ -193,7 +193,7 @@ TSD 域解决"如何建立跨机构信任"的问题。本域为 ACT 协议的其
 | TSD-ATT-DSP：争议处理 | 定义争议提交、调解与裁决的交互流程 |
 | TSD-IDM-AID：智能体身份管理 | 定义 `did:act` 身份标识方法、DID Document 结构与解析规则 |
 
-详细规范参见 [TSD 域规范](tsd/spec.md)。
+详细规范参见 [TSD 域规范](trust-services-domain-spec.md)。
 
 ---
 

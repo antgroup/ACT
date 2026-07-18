@@ -2,7 +2,7 @@
 
 > **导航**: [概览](overview.md) | **ADD委托授权域** | [CID商业交互域](commerce-interaction-domain-spec.md) | [PSD支付服务域](payment-services-domain-spec.md) | [TSD信任服务域](trust-services-domain-spec.md)
 >
-> **资源**: [返回首页](../../README.md) | [ADD Schema](../../schemas/add/) | [场景示例](../../examples/scenarios/) | [ADD报文示例](../../examples/payloads/add/)
+> **资源**: [返回首页](../../README.md) | [ADD Schema](schemas/authorization-delegation-domain/) | [场景示例](../../examples/scenarios/) | [报文示例](../../examples/payloads/)
 
 ---
 

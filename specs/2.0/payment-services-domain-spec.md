@@ -2,7 +2,7 @@
 
 > **导航**: [概览](overview.md) | [ADD委托授权域](authorization-delegation-domain-spec.md) | [CID商业交互域](commerce-interaction-domain-spec.md) | **PSD支付服务域** | [TSD信任服务域](trust-services-domain-spec.md)
 >
-> **资源**: [返回首页](../../README.md) | [PSD Schema](../../schemas/psd/) | [场景示例](../../examples/scenarios/) | [PSD报文示例](../../examples/payloads/psd/)
+> **资源**: [返回首页](../../README.md) | [PSD Schema](schemas/payment-services-domain/) | [场景示例](../../examples/scenarios/) | [报文示例](../../examples/payloads/)
 
 ---
 
@@ -149,7 +149,7 @@
 - **支付授权调用**：买方智能体构造支付载荷时，向安全组件传入密钥引用标识及待处理的载荷内容，由安全组件返回支付授权密文信息（非对称方案下为数字签名，对称方案下为消息认证码）。
 - **密钥失效**：子账户冻结或注销时应联动触发密钥失效；密钥失效后PSP不应继续接受该子账户的支付请求。
 
-> 注：上述密钥操作可基于外部安全服务组件实现，具体接口定义参见[安全接口声明](appendix/security-interfaces.md)。
+> 注：上述密钥操作可基于外部安全服务组件实现；安全接口附录尚未进入当前仓库，后续应随协议修订补充。
 
 #### 子账户生命周期管理
 

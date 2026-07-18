@@ -1,5 +1,8 @@
 # ACT 协议演示指南
 
+> [!WARNING]
+> 本文描述的是本地模拟 Demo。支付成功、账户余额、IAC/JWT 和 HTTP 402 流程均可能由本地代码模拟，不代表支付宝 AI 付真实接入，也不能用于生产交易。真实接入路径见 [Alipay AI Pay Profile 工作草案](../../profiles/alipay-ai-pay/README.md)。
+
 ## 概述
 
 本演示展示了 ACT (Agent Commerce Transactions) 协议中的三种支付模式，清晰地呈现了它们之间的差异和适用场景。
@@ -235,6 +238,6 @@ Agent-to-Agent 支付协议：
 ## 扩展阅读
 
 参考 ACT 协议规范文档：
-- [PSD Spec](../specs/psd/spec.md) - Payment Service Domain 规范
-- [ADD Spec](../specs/add/spec.md) - Agent Dispatch Domain 规范
-- [CART Spec](../specs/cid/spec.md) - Customer Intent Domain 规范
+- [PSD Spec](../../specs/2.0/payment-services-domain-spec.md) - Payment Services Domain 规范
+- [ADD Spec](../../specs/2.0/authorization-delegation-domain-spec.md) - Authorization & Delegation Domain 规范
+- [CID Spec](../../specs/2.0/commerce-interaction-domain-spec.md) - Commerce Interaction Domain 规范
