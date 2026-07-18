@@ -11,7 +11,8 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 
 首期对齐支付宝 AI 付的 **Agent 支付**产品，公开接入基线是支付宝官方钱包与 Payment Skill/CLI。
 
-- 了解产品与 ACT 的关系：[Agent Payment alignment](profiles/alipay-ai-pay/agent-payment-alignment.md)
+- 按开发者路径接入：[Agent 支付 Getting Started](docs/getting-started/agent-payment.md)
+- 了解产品与 ACT 的映射：[Agent Payment alignment](profiles/alipay-ai-pay/agent-payment-alignment.md)
 - 查看支付宝官方接入资料：[AI 钱包使用指南](https://aipay.alipay.com/wallet-guide)
 - 查看官方开源能力：[alipay/payment-skills](https://github.com/alipay/payment-skills)
 
@@ -19,7 +20,8 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 
 首期对齐支付宝 AI 付的 **AI 按量付费**产品，以官网公开的 HTTP 402 流程为接入基线。
 
-- 了解产品与 ACT 的关系：[Metered Payment alignment](profiles/alipay-ai-pay/metered-payment-alignment.md)
+- 按开发者路径接入：[AI 按量付费 Getting Started](docs/getting-started/metered-payment.md)
+- 了解产品与 ACT 的映射：[Metered Payment alignment](profiles/alipay-ai-pay/metered-payment-alignment.md)
 - 查看支付宝官方接入资料：[AI 按量付费接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)
 - 查看工作字段映射：[ACT—Alipay field mapping](profiles/alipay-ai-pay/field-mapping.md)
 
@@ -29,6 +31,8 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 2. 查看[协议修订与开源重构计划](docs/open-source-restructure/05-revision-tracker.md)。
 3. 了解 [ACT Core、Product Profile 与 Binding 的边界](docs/open-source-restructure/01-vision-and-principles.md#4-分层原则)。
 4. 查看 [Alipay AI Pay Profile 工作草案](profiles/alipay-ai-pay/README.md)。
+
+不确定应该选择哪条路径？从[接入方式选择页](docs/getting-started/README.md)开始。
 
 ## 首期产品闭环
 
@@ -99,6 +103,7 @@ act-protocol/
 ├── profiles/alipay-ai-pay/       # 支付宝 AI 付 Profile 工作草案
 ├── examples/scenarios/           # 说明性业务场景
 ├── examples/payloads/            # JSON 工作示例
+├── docs/getting-started/          # 开发者接入路径
 ├── impl/python/                  # 本地模拟 Demo
 ├── docs/open-source-restructure/ # 重构方案、路线图与追踪
 └── scripts/                      # 仓库质量检查

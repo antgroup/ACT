@@ -36,9 +36,10 @@
 | ACT-OSR-005 | 校正规范和实现成熟度描述 | Phase 1 | 治理确认 | In progress | README 已处理，治理文件待复核 |
 | ACT-OSR-006 | 标记并隔离模拟 Demo | Phase 1 | 无 | Done | `impl/python/README.md` |
 | ACT-OSR-007 | 建立基础 CI | Phase 1 | ACT-OSR-004 | Done | `scripts/check_repository.py`、workflow |
-| ACT-OSR-008 | 编写接入路径选择页 | Phase 2 | REV-001 | Proposed | 待建 Issue/PR |
-| ACT-OSR-009 | 编写 Agent 支付 Getting Started | Phase 2 | 支付宝公开资料复核 | Proposed | 待建 Issue/PR |
-| ACT-OSR-010 | 编写 AI 按量付费 Getting Started | Phase 2 | 支付宝公开资料复核 | Proposed | 待建 Issue/PR |
+| ACT-OSR-008 | 编写接入路径选择页 | Phase 2 | REV-001 | Done | `docs/getting-started/README.md` |
+| ACT-OSR-009 | 编写 Agent 支付 Getting Started | Phase 2 | 支付宝公开资料复核 | Done | `docs/getting-started/agent-payment.md` |
+| ACT-OSR-010 | 编写 AI 按量付费 Getting Started | Phase 2 | 支付宝公开资料复核 | Done | `docs/getting-started/metered-payment.md` |
+| ACT-OSR-010A | 编写端到端 402 验证计划 | Phase 2 | ACT-OSR-009、010 | Done | `docs/getting-started/end-to-end-402.md` |
 | ACT-OSR-011 | 建立 ACT Core 候选草案 | Phase 3 | REV-002—REV-010 | Blocked by revision | 待协议决定 |
 | ACT-OSR-012 | 建立 Alipay AI Pay Profile | Phase 4 | ACT-OSR-011、产品复核 | Blocked | 待 Core 候选 |
 | ACT-OSR-013 | 实现 Agent Payment Quickstart | Phase 5 | ACT-OSR-012 | Blocked | 待 Profile 候选 |
@@ -102,3 +103,4 @@
 | 2026-07-15 | 确认大会版本、接入基线、沙箱复用、双语范围和负责人 | DEC-006—012 |
 | 2026-07-16 | 建立 Agent 支付、按量付费、字段、生命周期和错误映射初稿 | ACT-OSR-003B |
 | 2026-07-18 | 完成首轮仓库可信度审计、Demo 标记和基础 CI | ACT-OSR-004—007 |
+| 2026-07-18 | 完成接入选择、Agent 支付、按量付费和端到端 402 指南 | ACT-OSR-008—010A |
