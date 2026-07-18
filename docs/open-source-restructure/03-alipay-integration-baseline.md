@@ -13,9 +13,9 @@
 - [Agent 支付](https://aipay.alipay.com/agentpay)：为 Agent 提供 AI 钱包和支付能力。
 - [AI 按量付费](https://aipay.alipay.com/callpay)：允许 API、MCP Tool 或 Skill 按调用收费。
 
-在 HTTP 402 场景中，两者分别构成买方侧和卖方侧：Agent 支付负责付款，AI 按量付费负责出账、验款和履约。
+在 HTTP 402 场景中，两者不是孤立产品流程，而是同一机器支付闭环的两侧能力：Agent 支付赋予买方 Agent 授权、付款和取得凭证的能力；AI 按量付费赋予卖方服务机器可读出账、验款、交付和确认履约的能力。
 
-两个产品都不是 ACT 的独立域或单域实现。它们作为 Alipay AI Pay Product Profile 跨 ADD、CID、PSD、TSD 组合，具体见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
+两侧能力都不是 ACT 的独立域或单域实现。它们作为 Alipay AI Pay Product Profile 跨 ADD、CID、PSD、TSD 协作，具体见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
 
 ## 2. Agent 支付公开接入路径
 
@@ -126,9 +126,9 @@ Agent 支付产品页当前主要指向 Skill 安装和钱包使用路径。面�
 
 官方公开示例位于 [alipay/ai 的 aipay-402-example](https://github.com/alipay/ai/tree/main/code_example/aipay-402-example)。
 
-## 4. ACT 四域到支付宝产品的工作映射
+## 4. ACT 四域到双侧机器支付能力的工作映射
 
-| ACT 域 | Agent 支付 | AI 按量付费 |
+| ACT 域 | 买方 Agent 支付能力 | 卖方机器支付能力 |
 |---|---|---|
 | ADD | 当前支付意图与用户确认；未来委托授权 | 消费买方授权上下文，不替买方签发授权 |
 | CID | 保留商品、商户、订单和支付能力上下文 | 描述收费资源、交易条件和支付宝支付能力 |

@@ -58,7 +58,7 @@ AI 按量付费也不是只属于 PSD。卖方接入主要落在 CID、PSD 和 T
 | PSD | 返回 402、接收 Proof、调用支付宝验款并确认履约 | 支付宝字段、RSA2 和 API 属于 Product Profile |
 | TSD | 形成支付完成和资源履约的可关联证据 | 产品日志/回调不自动等同于 ACT TSD 记录 |
 
-ACT 官网目前把 402 基础框架放在 `PSD-PAY-AUP`。本项目复用该交互框架，但买方实际采用 `PSD-PAY-INS`、`PSD-PAY-DEL` 还是 `PSD-PAY-AUP`，取决于授权级别。组件级说明见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#4-ai-按量付费映射)。
+ACT 官网目前把 402 基础框架放在 `PSD-PAY-AUP`。本项目复用该交互框架，但买方实际采用 `PSD-PAY-INS`、`PSD-PAY-DEL` 还是 `PSD-PAY-AUP`，取决于授权级别。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#4-卖方机器支付能力映射)。
 
 ## 5. 第一步：返回支付要求
 

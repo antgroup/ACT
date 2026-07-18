@@ -57,7 +57,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 | PSD | 钱包绑定、支付能力检查、用户确认支付和结果查询 | 支付宝官方 Skill/CLI |
 | TSD | 关联意图、订单、支付结果和履约证据 | ACT 实现 + 各证据提供方 |
 
-首期即使通过 HTTP 402 收到账单，用户逐笔确认后的支付执行仍按 `PSD-PAY-INS` 建模。402 交互框架是否应从 `PSD-PAY-AUP` 抽出供不同授权级别复用，属于协议修订问题。组件级说明见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#3-agent-支付映射)。
+首期即使通过 HTTP 402 收到账单，用户逐笔确认后的支付执行仍按 `PSD-PAY-INS` 建模。402 交互框架是否应从 `PSD-PAY-AUP` 抽出供不同授权级别复用，属于协议修订问题。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#3-买方-agent-支付能力映射)。
 
 ## 5. ACT 接入责任
 

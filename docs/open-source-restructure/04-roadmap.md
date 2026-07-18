@@ -174,7 +174,7 @@
 |---|---|---|
 | M0 Framework | 重构工作区和追踪机制 | 无 |
 | M1 Trustworthy Repository | 文档、链接、状态和基础检查可信 | M0 |
-| M2 Developer Journey | 两条产品接入路径清晰 | M1 |
+| M2 Developer Journey | 一条机器支付闭环及买卖双方接入路径清晰 | M1 |
 | M3 Core Candidate | 修订结论进入候选规范 | 协议修订 |
 | M4 Alipay Profile Candidate | 产品映射完成并复核 | M3、产品复核 |
 | M5 Runnable Integration | 三个真实 Quickstart 跑通 | M4、沙箱能力 |

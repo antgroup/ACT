@@ -18,7 +18,7 @@ This product path composes ACT domains; it is not a PSD-only integration:
 | PSD | `PSD-PMT-BND`, `PSD-PAY-INS` | Alipay wallet binding and user-present payment are the public preview baseline. |
 | TSD | Primarily `TSD-ATT-EVT`; other trust services depend on the deployment | ACT records may link intent, order, payment and fulfillment evidence. Alipay product records are evidence inputs, not automatic TSD conformance. |
 
-When Agent Payment consumes an HTTP 402 requirement, the 402 interaction skeleton and the authorization/execution level must remain distinct. See [Product-to-domain mapping](domain-mapping.md#3-agent-支付映射).
+When Agent Payment consumes an HTTP 402 requirement, the 402 interaction skeleton and the authorization/execution level must remain distinct. See [two-sided capability-to-domain mapping](domain-mapping.md#3-买方-agent-支付能力映射).
 
 ## 3. Developer journey alignment
 

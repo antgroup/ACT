@@ -14,7 +14,7 @@ The provider path consumes ADD context and directly implements responsibilities 
 | PSD | 402 framework currently documented under `PSD-PAY-AUP` | The Alipay Profile supplies `Payment-Needed`, `Payment-Proof`, RSA2 and verification/fulfillment APIs. The buyer's actual execution level may be INS, DEL or AUP. |
 | TSD | Primarily `TSD-ATT-EVT`; other trust services depend on the deployment | Payment and fulfillment evidence can feed ACT events; the product callback itself is not automatically a TSD attestation. |
 
-The relationship between `Payment-Needed` and `CID-CART-CFM`, and between the fulfillment API and TSD events, remains protocol-pending. See [Product-to-domain mapping](domain-mapping.md#4-ai-按量付费映射).
+The relationship between `Payment-Needed` and `CID-CART-CFM`, and between the fulfillment API and TSD events, remains protocol-pending. See [two-sided capability-to-domain mapping](domain-mapping.md#4-卖方机器支付能力映射).
 
 ## 2. Provider journey alignment
 

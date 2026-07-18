@@ -31,13 +31,18 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 2. 查看[协议修订与开源重构计划](docs/open-source-restructure/05-revision-tracker.md)。
 3. 了解 [ACT Core、Product Profile 与 Binding 的边界](docs/open-source-restructure/01-vision-and-principles.md#4-分层原则)。
 4. 查看 [Alipay AI Pay Profile 工作草案](profiles/alipay-ai-pay/README.md)。
-5. 查看 [Agent 支付、AI 按量付费与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
+5. 查看 [Alipay AI Pay 双侧能力与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
 
 不确定应该选择哪条路径？从[接入方式选择页](docs/getting-started/README.md)开始。
 
-## 首期产品闭环
+## 一个机器支付闭环，两侧能力
 
-Agent 支付和 AI 按量付费分别构成 HTTP 402 交易的买方侧与卖方侧：
+首期不是把 Agent 支付和 AI 按量付费作为两个孤立产品分别开源，而是用 ACT 把它们连接为一条机器支付链路：
+
+- **Agent 支付**赋予买方 Agent 支付能力：获得用户授权、理解支付要求、执行支付并返回支付凭证。
+- **AI 按量付费**赋予卖方服务接受机器支付的能力：机器可读地出账、验证支付凭证、交付资源并确认履约。
+
+在首期 HTTP 402 场景中，两侧能力形成如下闭环：
 
 ```mermaid
 sequenceDiagram
@@ -82,7 +87,7 @@ ACT Core 描述跨产品语义；Alipay AI Pay Profile 描述支付宝字段、A
 
 组件名称、消息结构和域边界可能随当前修订发生变化。新实现应同时关注[修订追踪表](docs/open-source-restructure/05-revision-tracker.md)。
 
-支付宝产品不是第五个域，也不是与某一个域一一对应。Agent 支付和 AI 按量付费作为 Product Profile 跨四域组合；当前组件级关系见[产品与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
+支付宝产品不是第五个域，也不是与某一个域一一对应。Agent 支付和 AI 按量付费是同一机器支付闭环的买方与卖方能力，作为 Product Profile 跨四域协作；当前组件级关系见[双侧能力与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
 
 ## Demo、Quickstart 与参考实现
 
