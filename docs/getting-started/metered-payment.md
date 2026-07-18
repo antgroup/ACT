@@ -47,7 +47,20 @@
 
 这些步骤可能随产品更新变化，本仓库不复制具体页面和密钥配置。请从[支付宝 AI 付产品概览](https://aipay.alipay.com/docs/overview.html)和[按量付费接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)进入。
 
-## 4. 第一步：返回支付要求
+## 4. ACT 四域覆盖
+
+AI 按量付费也不是只属于 PSD。卖方接入主要落在 CID、PSD 和 TSD，并消费买方 Agent 在 ADD 中形成的授权上下文：
+
+| ACT 域 | 首期关系 | 卖方边界 |
+|---|---|---|
+| ADD | 买方捕获购买意图并决定是否有权支付 | 卖方不替用户签发授权 |
+| CID | 描述收费资源，确认金额/订单/收款方，声明支付宝支付能力 | 402 账单需要可追溯到同一交易和资源 |
+| PSD | 返回 402、接收 Proof、调用支付宝验款并确认履约 | 支付宝字段、RSA2 和 API 属于 Product Profile |
+| TSD | 形成支付完成和资源履约的可关联证据 | 产品日志/回调不自动等同于 ACT TSD 记录 |
+
+ACT 官网目前把 402 基础框架放在 `PSD-PAY-AUP`。本项目复用该交互框架，但买方实际采用 `PSD-PAY-INS`、`PSD-PAY-DEL` 还是 `PSD-PAY-AUP`，取决于授权级别。组件级说明见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#4-ai-按量付费映射)。
+
+## 5. 第一步：返回支付要求
 
 没有可验证支付凭证时，服务返回：
 
@@ -70,7 +83,7 @@ ACT 将其理解为产品无关的 Payment Requirement；`Payment-Needed` 的 `p
 
 准确字段和签名规则直接查阅[官网第一步：返回 402 账单](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)。ACT 工作映射见 [Field mapping](../../profiles/alipay-ai-pay/field-mapping.md)。
 
-## 5. 第二步：验证支付凭证
+## 6. 第二步：验证支付凭证
 
 Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把它视为不可信输入：
 
@@ -89,7 +102,7 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 
 任何检查失败都不能交付资源。接口调用成功不等于 ACT 业务验证成功。
 
-## 6. 第三步：交付和履约确认
+## 7. 第三步：交付和履约确认
 
 验证和本地一致性检查全部通过后：
 
@@ -100,7 +113,7 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 
 当前公开履约接口主要使用 `trade_no`。部分交付、交付失败和 Profile 幂等字段仍在产品/协议待确认清单中，不能由示例代码自行扩展成官方字段。
 
-## 7. MCP Tool 和 Skill
+## 8. MCP Tool 和 Skill
 
 在大会首期范围内：
 
@@ -111,7 +124,7 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 
 如果实际运行时无法直接暴露 HTTP 402，应由对应 Binding 明确封装规则，而不是改变 `Payment-Needed`、`Payment-Proof` 和验款语义。
 
-## 8. 验收清单
+## 9. 验收清单
 
 - [ ] 产品开通、服务注册、密钥和沙箱来自支付宝官网当前流程。
 - [ ] 未支付请求真实返回 402 和合法 `Payment-Needed` Header。
@@ -123,7 +136,7 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 - [ ] 资源交付后实际调用履约确认 API。
 - [ ] 过期、无效、未支付、错金额、错资源和重放场景均有测试证据。
 
-## 9. 不要这样实现
+## 10. 不要这样实现
 
 - 不要看到 `Payment-Proof` Header 就直接返回资源。
 - 不要只检查支付宝 API 的通用成功码。
@@ -132,7 +145,7 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 - 不要把同一支付用于多个不同资源。
 - 不要使用 `impl/python/` 的 Mock 支付作为沙箱验证。
 
-## 10. 下一步
+## 11. 下一步
 
 - 联合验证 Agent 买方：[端到端 402 验证](end-to-end-402.md)
 - 查看生命周期：[Lifecycle mapping](../../profiles/alipay-ai-pay/lifecycle-mapping.md)

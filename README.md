@@ -31,6 +31,7 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 2. 查看[协议修订与开源重构计划](docs/open-source-restructure/05-revision-tracker.md)。
 3. 了解 [ACT Core、Product Profile 与 Binding 的边界](docs/open-source-restructure/01-vision-and-principles.md#4-分层原则)。
 4. 查看 [Alipay AI Pay Profile 工作草案](profiles/alipay-ai-pay/README.md)。
+5. 查看 [Agent 支付、AI 按量付费与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
 
 不确定应该选择哪条路径？从[接入方式选择页](docs/getting-started/README.md)开始。
 
@@ -80,6 +81,8 @@ ACT Core 描述跨产品语义；Alipay AI Pay Profile 描述支付宝字段、A
 | TSD | [Trust Services](specs/2.0/trust-services-domain-spec.md) | 身份、存证与争议 |
 
 组件名称、消息结构和域边界可能随当前修订发生变化。新实现应同时关注[修订追踪表](docs/open-source-restructure/05-revision-tracker.md)。
+
+支付宝产品不是第五个域，也不是与某一个域一一对应。Agent 支付和 AI 按量付费作为 Product Profile 跨四域组合；当前组件级关系见[产品与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
 
 ## Demo、Quickstart 与参考实现
 

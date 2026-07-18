@@ -15,6 +15,8 @@
 
 在 HTTP 402 场景中，两者分别构成买方侧和卖方侧：Agent 支付负责付款，AI 按量付费负责出账、验款和履约。
 
+两个产品都不是 ACT 的独立域或单域实现。它们作为 Alipay AI Pay Product Profile 跨 ADD、CID、PSD、TSD 组合，具体见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
+
 ## 2. Agent 支付公开接入路径
 
 ### 2.1 当前公开载体
@@ -124,7 +126,16 @@ Agent 支付产品页当前主要指向 Skill 安装和钱包使用路径。面�
 
 官方公开示例位于 [alipay/ai 的 aipay-402-example](https://github.com/alipay/ai/tree/main/code_example/aipay-402-example)。
 
-## 4. ACT 到支付宝产品的工作映射
+## 4. ACT 四域到支付宝产品的工作映射
+
+| ACT 域 | Agent 支付 | AI 按量付费 |
+|---|---|---|
+| ADD | 当前支付意图与用户确认；未来委托授权 | 消费买方授权上下文，不替买方签发授权 |
+| CID | 保留商品、商户、订单和支付能力上下文 | 描述收费资源、交易条件和支付宝支付能力 |
+| PSD | 钱包绑定、用户确认支付和结果查询 | 402、支付凭证、服务端验款和履约确认 |
+| TSD | 关联意图、订单、支付和履约证据 | 提供支付完成和资源履约证据 |
+
+组件级映射以[四域映射文档](../../profiles/alipay-ai-pay/domain-mapping.md)为准。以下工作语义表保留用于字段和 Profile 讨论。
 
 以下名称仅用于框架讨论，等待 ACT 修订后替换：
 

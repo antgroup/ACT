@@ -7,14 +7,16 @@
 
 This directory records how the public Alipay AI Pay products relate to ACT working semantics. It is an alignment workspace for the July Preview, not a published ACT Product Profile.
 
+支付宝产品不是 ACT 的第五个域。Agent 支付和 AI 按量付费都通过 Product Profile 组合 ADD、CID、PSD、TSD 的语义，并用支付宝字段、接口和公开接入载体完成产品映射。先阅读[产品与 ACT 四域映射](domain-mapping.md)。
+
 ## Scope
 
 The first preview covers two product paths:
 
-| Product path | Participant | Public integration baseline |
-|---|---|---|
-| Agent Payment | Buyer Agent | Official Alipay wallet and payment Skill/CLI |
-| AI Metered Payment | Paid resource provider | HTTP 402, `Payment-Needed`, `Payment-Proof`, payment verification and fulfillment confirmation |
+| Product path | Participant | Public integration baseline | Main ACT coverage |
+|---|---|---|---|
+| Agent Payment | Buyer Agent | Official Alipay wallet and payment Skill/CLI | ADD intent; CID transaction context; PSD binding and user-present payment; TSD evidence |
+| AI Metered Payment | Paid resource provider | HTTP 402, `Payment-Needed`, `Payment-Proof`, payment verification and fulfillment confirmation | CID resource/capability/transaction; PSD 402 and verification; TSD payment/fulfillment evidence |
 
 The two paths form one payment loop:
 
@@ -39,6 +41,7 @@ sequenceDiagram
 
 | Document | Purpose |
 |---|---|
+| [Product-to-domain mapping](domain-mapping.md) | Primary map from Agent Payment and Metered Payment to ADD, CID, PSD and TSD |
 | [Official sources](official-sources.md) | Public product sources and snapshot policy |
 | [Agent Payment alignment](agent-payment-alignment.md) | Wallet, Skill/CLI and buyer payment path |
 | [Metered Payment alignment](metered-payment-alignment.md) | HTTP 402 provider path |

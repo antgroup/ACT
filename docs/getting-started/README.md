@@ -5,6 +5,8 @@
 
 ACT 仓库负责解释协议语义、产品映射和验证边界；支付宝官网负责维护开户、钱包授权、沙箱、密钥、API 参数和当前产品操作步骤。
 
+两个产品都不是单独的 ACT 域，而是跨 ADD、CID、PSD、TSD 组合实现。协议开发者和需要判断组件边界的实现者应先查看[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
+
 ## 你属于哪一类开发者？
 
 | 你的目标 | 接入路径 | 主要角色 | 从这里开始 |
@@ -13,6 +15,15 @@ ACT 仓库负责解释协议语义、产品映射和验证边界；支付宝官�
 | 让 API、MCP Tool 或 Skill 按调用收费 | AI 按量付费 | 付费资源提供方 | [AI 按量付费 Getting Started](metered-payment.md) |
 | 同时验证买方支付与卖方收费 | HTTP 402 闭环 | Agent + 资源提供方 | [端到端 402 验证](end-to-end-402.md) |
 | 实现 ACT 或支付宝 Profile | 协议/Profile 实现 | 协议开发者 | [Alipay AI Pay Profile](../../profiles/alipay-ai-pay/README.md) |
+
+## 从产品路径进入四域
+
+| 产品路径 | ADD | CID | PSD | TSD |
+|---|---|---|---|---|
+| Agent 支付 | 当前支付意图；未来委托授权 | 商品、订单和支付方式上下文 | 钱包绑定与用户确认支付 | 关联意图、订单、支付和履约证据 |
+| AI 按量付费 | 消费买方授权上下文 | 收费资源、价格、订单和支付能力 | 402、支付凭证、验款与履约确认 | 支付完成和资源履约事件 |
+
+详细组件级映射和首期/后续边界见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
 
 ## 两个产品如何组合？
 

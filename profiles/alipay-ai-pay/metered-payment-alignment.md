@@ -3,7 +3,20 @@
 > Status: Preview / Non-normative  
 > Public baseline: Alipay HTTP 402 provider integration
 
-## 1. Provider journey alignment
+## 1. ACT domain coverage
+
+The provider path consumes ADD context and directly implements responsibilities across CID, PSD and TSD:
+
+| ACT domain | Components used by the preview | Product/Profile relationship |
+|---|---|---|
+| ADD | Upstream `ADD-INT-ICS`; future IAC components | The buyer Agent owns user intent and delegation. The paid resource does not issue user authorization. |
+| CID | `CID-MER-CAT`, `CID-INT-XFR`, `CID-PCA-NEG`, `CID-CART-CFM` | The provider describes the resource and binds the payment requirement to a resource, price, order and supported payment method. |
+| PSD | 402 framework currently documented under `PSD-PAY-AUP` | The Alipay Profile supplies `Payment-Needed`, `Payment-Proof`, RSA2 and verification/fulfillment APIs. The buyer's actual execution level may be INS, DEL or AUP. |
+| TSD | Primarily `TSD-ATT-EVT`; other trust services depend on the deployment | Payment and fulfillment evidence can feed ACT events; the product callback itself is not automatically a TSD attestation. |
+
+The relationship between `Payment-Needed` and `CID-CART-CFM`, and between the fulfillment API and TSD events, remains protocol-pending. See [Product-to-domain mapping](domain-mapping.md#4-ai-按量付费映射).
+
+## 2. Provider journey alignment
 
 | Stage | Public product behavior | Source | ACT working semantic | Layer | Dependency/status | Validation |
 |---|---|---|---|---|---|---|
@@ -22,7 +35,7 @@
 | Fulfillment confirmation | Provider calls `alipay.aipay.agent.fulfillment.confirm` | AP-SRC-006, 008 | Fulfillment Receipt | Core + Alipay Profile | `PUBLIC-FACT`; Core object `PROTOCOL-PENDING` | Sandbox API |
 | Recovery | Provider returns a retryable or terminal result without delivering on invalid proof | AP-SRC-006—008 | Protocol Error + next actions | Core + Profile | Recovery structure `PROTOCOL-PENDING` | Error matrix tests |
 
-## 2. Provider responsibilities
+## 3. Provider responsibilities
 
 For the conference preview, the paid-resource provider must demonstrate that it:
 
@@ -37,7 +50,7 @@ For the conference preview, the paid-resource provider must demonstrate that it:
 - handles retryable platform errors without fabricating a result;
 - does not expose private keys or full proofs in logs.
 
-## 3. API, MCP Tool and Skill boundary
+## 4. API, MCP Tool and Skill boundary
 
 The paid resource may be presented as an API, MCP Tool or Skill. In the conference scope:
 
@@ -46,7 +59,7 @@ The paid resource may be presented as an API, MCP Tool or Skill. In the conferen
 - ACT does not claim a separate native MCP payment transport unless a public product specification exists.
 - Resource-specific input and output remain application concerns; payment requirement, proof and fulfillment semantics belong to ACT/Profile.
 
-## 4. Protocol handoff to the ACT owner
+## 5. Protocol handoff to the ACT owner
 
 The protocol revision needs to decide:
 
@@ -57,3 +70,5 @@ The protocol revision needs to decide:
 - how synchronous resource delivery relates to an asynchronous fulfillment event;
 - the common error envelope and `valid_next_actions`;
 - which fields are Core and which may be Profile extensions.
+- whether `Payment-Needed` is or references the `CID-CART-CFM` transaction confirmation result;
+- how product fulfillment confirmation maps to PSD receipts and independent TSD events.

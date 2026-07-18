@@ -7,7 +7,20 @@
 
 The conference preview covers the public Skill/CLI route documented by Alipay. Other Agent platform SDKs or device integrations can be added later as separate Bindings without changing ACT Core.
 
-## 2. Developer journey alignment
+## 2. ACT domain coverage
+
+This product path composes ACT domains; it is not a PSD-only integration:
+
+| ACT domain | Components used by the preview | Product/Profile relationship |
+|---|---|---|
+| ADD | `ADD-INT-ICS` | The host Agent captures and presents the current payment intent. IAC issuance and lifecycle are future delegated-payment work. |
+| CID | `CID-MER-CAT`, `CID-INT-XFR`, `CID-PCA-NEG`, `CID-CART-CFM` | The host commerce flow supplies the product, merchant, order and payment-capability context consumed by the payment Skill. |
+| PSD | `PSD-PMT-BND`, `PSD-PAY-INS` | Alipay wallet binding and user-present payment are the public preview baseline. |
+| TSD | Primarily `TSD-ATT-EVT`; other trust services depend on the deployment | ACT records may link intent, order, payment and fulfillment evidence. Alipay product records are evidence inputs, not automatic TSD conformance. |
+
+When Agent Payment consumes an HTTP 402 requirement, the 402 interaction skeleton and the authorization/execution level must remain distinct. See [Product-to-domain mapping](domain-mapping.md#3-agent-支付映射).
+
+## 3. Developer journey alignment
 
 | Stage | Public product behavior | Source | ACT working semantic | Layer | Dependency/status | Validation |
 |---|---|---|---|---|---|---|
@@ -25,7 +38,7 @@ The conference preview covers the public Skill/CLI route documented by Alipay. O
 | Reauthorization | Missing or invalid wallet access routes back to wallet authorization | AP-SRC-003, 004 | Recovery action | Core + Profile | `PUBLIC-FACT`; recovery model `PROTOCOL-PENDING` | Expired/unbound case |
 | Close/unbind | User or Agent closes the wallet relationship through the supported product flow | AP-SRC-003, 004 | Authorization revocation | Profile | `PUBLIC-FACT`; lifecycle ownership `PROTOCOL-PENDING` | Official flow if testable |
 
-## 3. Binding boundary
+## 4. Binding boundary
 
 The Skill/CLI Binding is responsible for:
 
@@ -42,7 +55,7 @@ It is not responsible for:
 - storing merchant private keys for the paid-resource provider;
 - redefining Alipay wallet lifecycle rules.
 
-## 4. Minimum Agent behavior for the preview
+## 5. Minimum Agent behavior for the preview
 
 An Agent integration shown at the conference must:
 
@@ -55,7 +68,7 @@ An Agent integration shown at the conference must:
 7. preserve enough context to continue the original paid-resource request;
 8. avoid logging binding secrets, credentials or complete payment proofs.
 
-## 5. Protocol handoff to the ACT owner
+## 6. Protocol handoff to the ACT owner
 
 The protocol revision needs to decide:
 
@@ -65,5 +78,6 @@ The protocol revision needs to decide:
 - the common outcome envelope used by Skill, MCP and HTTP Bindings;
 - the representation of `valid_next_actions` for authorize, retry, query and abort;
 - how authorization revocation affects in-flight payments.
+- whether the PSD 402 framework is shared by `PSD-PAY-INS`, `PSD-PAY-DEL` and `PSD-PAY-AUP`.
 
 Until those decisions are accepted, the terms in this document are working semantics only.

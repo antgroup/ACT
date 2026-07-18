@@ -46,7 +46,20 @@ npx -y @alipay/agent-payment@latest install
 
 > 绑定码、支付密码和身份核验信息属于敏感信息。ACT 实现、Demo、日志和测试夹具都不应记录或提交真实值。
 
-## 4. ACT 接入责任
+## 4. ACT 四域覆盖
+
+Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责任由宿主 Agent、商户业务、支付宝产品和 ACT 实现共同承担：
+
+| ACT 域 | 首期关系 | 主要承担方 |
+|---|---|---|
+| ADD | 捕获当前支付意图并取得用户逐笔确认；不要求长期委托 IAC | 宿主 Agent + 用户 |
+| CID | 保留商品/资源、商户、金额、订单和支付能力选择上下文 | 商户业务 + 宿主 Agent |
+| PSD | 钱包绑定、支付能力检查、用户确认支付和结果查询 | 支付宝官方 Skill/CLI |
+| TSD | 关联意图、订单、支付结果和履约证据 | ACT 实现 + 各证据提供方 |
+
+首期即使通过 HTTP 402 收到账单，用户逐笔确认后的支付执行仍按 `PSD-PAY-INS` 建模。402 交互框架是否应从 `PSD-PAY-AUP` 抽出供不同授权级别复用，属于协议修订问题。组件级说明见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#3-agent-支付映射)。
+
+## 5. ACT 接入责任
 
 安装成功只代表 Agent 获得了产品能力。为了符合大会版 ACT/Profile 方向，Agent 还需要保留以下语义：
 
@@ -62,15 +75,15 @@ npx -y @alipay/agent-payment@latest install
 
 详细映射见 [Agent Payment alignment](../../profiles/alipay-ai-pay/agent-payment-alignment.md)。
 
-## 5. 两类支付入口
+## 6. 两类支付入口
 
-### 5.1 支付宝收银台链接
+### 6.1 支付宝收银台链接
 
 如果 Agent 的业务流程生成或接收到受支持的支付宝收银台链接，交由官方 Payment Skill 处理。商户的商品、订单和履约仍属于商户业务；支付宝支付能力负责付款动作及结果查询。
 
 传统商户 Skill 与支付 Skill 的边界见[支付宝传统供给 Skill 支付说明](https://aipay.alipay.com/docs/skillpay.html)。
 
-### 5.2 HTTP 402
+### 6.2 HTTP 402
 
 当付费资源返回 `402 Payment Required` 和 `Payment-Needed` 时：
 
@@ -82,7 +95,7 @@ npx -y @alipay/agent-payment@latest install
 
 卖方责任见[AI 按量付费 Getting Started](metered-payment.md)。
 
-## 6. 验收清单
+## 7. 验收清单
 
 以下条件全部满足，才能将该路径记录为真实产品验证：
 
@@ -95,7 +108,7 @@ npx -y @alipay/agent-payment@latest install
 - [ ] HTTP 402 场景保留并恢复原始资源请求。
 - [ ] 没有使用 `impl/python/` 的 Mock 成功结果作为证据。
 
-## 7. 常见恢复路径
+## 8. 常见恢复路径
 
 | 情况 | 建议处理 |
 |---|---|
@@ -108,7 +121,7 @@ npx -y @alipay/agent-payment@latest install
 
 候选错误和下一步动作见 [Error mapping](../../profiles/alipay-ai-pay/error-mapping.md)。
 
-## 8. 下一步
+## 9. 下一步
 
 - 验证买方和卖方完整链路：[端到端 402 验证](end-to-end-402.md)
 - 实现 Product Profile：[Alipay AI Pay Profile](../../profiles/alipay-ai-pay/README.md)

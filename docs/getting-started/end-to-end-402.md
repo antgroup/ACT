@@ -40,7 +40,20 @@ sequenceDiagram
 | Fulfillment Confirmation | 调用支付宝公开履约回执 API | [fulfillment.confirm](https://ideservice.alipay.com/cms/site/0j7sw0) |
 | Environment | 使用支付宝官网提供的 Sandbox/测试能力 | [AI 付产品概览](https://aipay.alipay.com/docs/overview.html) |
 
-## 3. 验证前准备
+## 3. 四域验证检查点
+
+端到端验证不只证明 HTTP Header 可以往返，还要证明四域上下文能够贯通：
+
+| ACT 域 | 本场景的检查点 | 最小证据 |
+|---|---|---|
+| ADD | 用户请求被整理为可理解的支付意图，并在首期路径中逐笔确认 | 脱敏 `intent_id`、意图摘要和确认结果 |
+| CID | 资源、商户、金额、币种和订单在支付前已确定 | 脱敏资源 ID、商户订单号和交易确认摘要 |
+| PSD | 钱包可用；402、Proof、官方验款和支付结果形成闭环 | 脱敏账单、验证结果和支付宝交易号 |
+| TSD | 意图、订单、支付和履约证据可以关联，且没有把产品日志冒充标准存证 | 关联 ID、事件时间和证据来源 |
+
+首期用户逐笔确认对应 `PSD-PAY-INS`，同时消费当前官网放在 `PSD-PAY-AUP` 下的 402 交互框架。这一跨组件组合必须标记为协议待确认，不能被测试结果直接提升为协议结论。完整说明见[产品与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
+
+## 4. 验证前准备
 
 ### Agent 侧
 
@@ -67,7 +80,7 @@ sequenceDiagram
 
 不得保存私钥、支付密码、绑定码、完整支付凭证或可重放的请求。
 
-## 4. Happy Path
+## 5. Happy Path
 
 1. 用户要求 Agent 获取测试资源。
 2. Agent 发出原始资源请求。
@@ -89,7 +102,7 @@ sequenceDiagram
 - 资源交付记录。
 - 履约确认结果或可审计的重试状态。
 
-## 5. 必测异常
+## 6. 必测异常
 
 | 用例 | 构造方式 | 预期结果 |
 |---|---|---|
@@ -104,7 +117,7 @@ sequenceDiagram
 | 履约确认失败 | 受控故障注入 | 资源交付证据保留，确认调用幂等重试 |
 | 用户拒绝 | 在官方支付流程取消 | Agent 安全终止原任务 |
 
-## 6. 发布门槛
+## 7. 发布门槛
 
 端到端验证只有满足以下条件才能进入大会发布证据：
 
@@ -113,15 +126,17 @@ sequenceDiagram
 - [ ] Happy Path 连续执行三次成功。
 - [ ] 所有必测异常不会造成未付款交付或重复交付。
 - [ ] 文档中的官网链接和产品字段与发布快照一致。
+- [ ] ADD、CID、PSD、TSD 的关联证据完整，且产品证据与 ACT 标准事件未混淆。
 - [ ] 测试证据完成脱敏且不含可重放凭证。
 - [ ] 观岳确认涉及的 ACT Core 候选语义。
 - [ ] 念箴确认 Alipay Profile 映射和产品验证结果。
 
-## 7. 当前开放项
+## 8. 当前开放项
 
 - 首个支持官方 Skill/CLI 的 Agent 运行时尚待选择。
 - 需要确认官网 Sandbox 是否能在同一链路覆盖 Agent 钱包买方和 402 卖方；如果分段验证，需要定义证据如何组合。
 - 金额单位、Proof 编码、`client_session` 条件和第三方代调用关系仍需产品复核。
 - Core 生命周期和 `valid_next_actions` 尚待协议修订确认。
+- 402 框架跨 `PSD-PAY-INS`、`PSD-PAY-DEL`、`PSD-PAY-AUP` 复用，以及 CID/TSD 边界尚待协议修订确认。
 
 这些开放项在[修订追踪表](../open-source-restructure/05-revision-tracker.md)中维护。
