@@ -44,6 +44,8 @@ Agent 支付与 AI 按量付费是同一机器支付闭环的两侧能力，不�
 
 两侧最小责任、关联标识和分级验收口径见[双侧能力接入契约 v0.1](../../profiles/alipay-ai-pay/end-to-end-capability-contract.md)。
 
+准备真实验证时使用[端到端证据模板](end-to-end-evidence-template.md)，确保版本、关联标识、异常和双侧履约证据可复核。
+
 ## 不属于首期范围
 
 - AI 订阅付费。

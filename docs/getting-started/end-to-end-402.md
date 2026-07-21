@@ -148,3 +148,5 @@ sequenceDiagram
 - 买方 `402-buyer-fulfillment-ack` 与卖方 `fulfillment.confirm` 的关系、调用责任和幂等规则仍需产品确认。
 
 这些开放项在[修订追踪表](../open-source-restructure/05-revision-tracker.md)中维护。
+
+实际执行时复制并填写[端到端验证证据模板](end-to-end-evidence-template.md)，不要直接在本指南中粘贴真实凭证或运行日志。

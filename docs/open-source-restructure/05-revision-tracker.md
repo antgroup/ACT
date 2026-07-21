@@ -48,6 +48,8 @@
 | ACT-OSR-010B | 建立双侧能力接入契约 v0.1 | Phase 2 | ACT-OSR-003C、010A | Done | `profiles/alipay-ai-pay/end-to-end-capability-contract.md` |
 | ACT-OSR-010C | 复核双侧契约对应的官网产品事实 | Phase 2 | ACT-OSR-010B | Done | `profiles/alipay-ai-pay/product-fact-audit-2026-07-21.md` |
 | ACT-OSR-010D | 核对官方 Agent Payment Skill/CLI 行为 | Phase 2 | ACT-OSR-010B | Done | `profiles/alipay-ai-pay/skill-cli-behavior-audit-2026-07-21.md` |
+| ACT-OSR-010E | 建立真实端到端验证证据模板 | Phase 2 | ACT-OSR-010B、010D | Done | `docs/getting-started/end-to-end-evidence-template.md` |
+| ACT-OSR-010F | 整理协议最小决策简报 | Phase 2 | REV-014—017 | Done | `08-protocol-decision-brief.md` |
 | ACT-OSR-011 | 建立 ACT Core 候选草案 | Phase 3 | REV-002—REV-010 | Blocked by revision | 待协议决定 |
 | ACT-OSR-012 | 建立 Alipay AI Pay Profile | Phase 4 | ACT-OSR-011、产品复核 | Blocked | 待 Core 候选 |
 | ACT-OSR-013 | 实现 Agent Payment Quickstart | Phase 5 | ACT-OSR-012 | Blocked | 待 Profile 候选 |
@@ -125,3 +127,4 @@
 | 2026-07-21 | 建立双侧能力、关联标识、恢复规则和分级验收接入契约 | ACT-OSR-010B |
 | 2026-07-21 | 完成官网产品事实复核并记录金额、编码、API 与沙箱差异 | ACT-OSR-010C、AP-001—003 |
 | 2026-07-21 | 核对官方 Skill/CLI 工作流并识别 Binding 封装和双侧履约问题 | ACT-OSR-010D、REV-017、OQ-015—016 |
+| 2026-07-21 | 建立端到端证据模板和观岳协议决策简报 | ACT-OSR-010E—010F |
