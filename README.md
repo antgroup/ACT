@@ -32,6 +32,7 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 3. 了解 [ACT Core、Product Profile 与 Binding 的边界](docs/open-source-restructure/01-vision-and-principles.md#4-分层原则)。
 4. 查看 [Alipay AI Pay Profile 工作草案](profiles/alipay-ai-pay/README.md)。
 5. 查看 [Alipay AI Pay 双侧能力与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
+6. 查看 [双侧能力接入契约 v0.1](profiles/alipay-ai-pay/end-to-end-capability-contract.md)。
 
 不确定应该选择哪条路径？从[接入方式选择页](docs/getting-started/README.md)开始。
 
@@ -62,6 +63,8 @@ sequenceDiagram
 ```
 
 ACT Core 描述跨产品语义；Alipay AI Pay Profile 描述支付宝字段、API、Skill/CLI 和错误映射；HTTP 或 Skill/CLI Binding 描述消息如何传递。
+
+July Preview 使用[双侧能力接入契约](profiles/alipay-ai-pay/end-to-end-capability-contract.md)区分买方能力、卖方能力和端到端互操作证据，不以单侧接入声明完整兼容。
 
 ## 当前文档状态
 

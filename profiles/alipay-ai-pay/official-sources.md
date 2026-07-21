@@ -1,7 +1,8 @@
 # Official product sources
 
 > Status: Active source registry  
-> Snapshot date: 2026-07-16
+> Product content snapshot: 2026-07-16
+> Last checked: 2026-07-21
 
 Alipay AI Pay public documentation is the product fact source. ACT documentation links to these pages instead of copying onboarding, sandbox or API tutorials.
 
@@ -20,6 +21,8 @@ Alipay AI Pay public documentation is the product fact source. ACT documentation
 | AP-SRC-009 | [Official AI Pay 402 example](https://github.com/alipay/ai/tree/main/code_example/aipay-402-example) | Provider-side example code | Validation reference, not normative source |
 | AP-SRC-010 | [Traditional merchant Skill payment guide](https://aipay.alipay.com/docs/skillpay.html) | Merchant order Skill and cashier link handoff | Cashier payment boundary |
 | AP-SRC-011 | [Machine-readable documentation index](https://aipay.alipay.com/docs/llms.txt) | Public documentation discovery | Weekly source drift check |
+
+Latest recorded review: [2026-07-21 public product fact audit](product-fact-audit-2026-07-21.md).
 
 ## Source precedence
 

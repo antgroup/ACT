@@ -41,8 +41,10 @@ sequenceDiagram
 
 | Document | Purpose |
 |---|---|
+| [End-to-end capability contract](end-to-end-capability-contract.md) | Working contract for buyer Agent payment, seller machine-payment and end-to-end evidence |
 | [Two-sided capability-to-domain mapping](domain-mapping.md) | Primary map from buyer Agent payment and seller machine-payment capabilities to ADD, CID, PSD and TSD |
 | [Official sources](official-sources.md) | Public product sources and snapshot policy |
+| [2026-07-21 product fact audit](product-fact-audit-2026-07-21.md) | Checked public facts, discrepancies and validation gaps |
 | [Agent Payment alignment](agent-payment-alignment.md) | Wallet, Skill/CLI and buyer payment path |
 | [Metered Payment alignment](metered-payment-alignment.md) | HTTP 402 provider path |
 | [Field mapping](field-mapping.md) | Working ACT-to-Alipay field mapping |
@@ -75,3 +77,5 @@ An implementation cannot claim conformance to this working draft. Conference rel
 2. a versioned Alipay AI Pay Profile;
 3. a declared Binding;
 4. successful profile tests using the official public integration path.
+
+During the July Preview, use the three scoped working claims in the [end-to-end capability contract](end-to-end-capability-contract.md#9-分级验收声明) instead of a general ACT conformance claim.

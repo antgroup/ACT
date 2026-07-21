@@ -42,6 +42,8 @@ Agent 支付与 AI 按量付费是同一机器支付闭环的两侧能力，不�
 - MCP Tool 和 Skill 可以作为收费资源形态复用 402 链路；当前不声明独立的原生 MCP 支付 Binding。
 - ACT Core 仍在修订，当前文档不构成最终协议字段或兼容性承诺。
 
+两侧最小责任、关联标识和分级验收口径见[双侧能力接入契约 v0.1](../../profiles/alipay-ai-pay/end-to-end-capability-contract.md)。
+
 ## 不属于首期范围
 
 - AI 订阅付费。

@@ -44,6 +44,8 @@
 | ACT-OSR-009 | 编写 Agent 支付 Getting Started | Phase 2 | 支付宝公开资料复核 | Done | `docs/getting-started/agent-payment.md` |
 | ACT-OSR-010 | 编写 AI 按量付费 Getting Started | Phase 2 | 支付宝公开资料复核 | Done | `docs/getting-started/metered-payment.md` |
 | ACT-OSR-010A | 编写端到端 402 验证计划 | Phase 2 | ACT-OSR-009、010 | Done | `docs/getting-started/end-to-end-402.md` |
+| ACT-OSR-010B | 建立双侧能力接入契约 v0.1 | Phase 2 | ACT-OSR-003C、010A | Done | `profiles/alipay-ai-pay/end-to-end-capability-contract.md` |
+| ACT-OSR-010C | 复核双侧契约对应的官网产品事实 | Phase 2 | ACT-OSR-010B | Done | `profiles/alipay-ai-pay/product-fact-audit-2026-07-21.md` |
 | ACT-OSR-011 | 建立 ACT Core 候选草案 | Phase 3 | REV-002—REV-010 | Blocked by revision | 待协议决定 |
 | ACT-OSR-012 | 建立 Alipay AI Pay Profile | Phase 4 | ACT-OSR-011、产品复核 | Blocked | 待 Core 候选 |
 | ACT-OSR-013 | 实现 Agent Payment Quickstart | Phase 5 | ACT-OSR-012 | Blocked | 待 Profile 候选 |
@@ -116,3 +118,5 @@
 | 2026-07-18 | 完成接入选择、Agent 支付、按量付费和端到端 402 指南 | ACT-OSR-008—010A |
 | 2026-07-18 | 按 ACT 官网四域框架重构产品映射并记录跨域协议问题 | ACT-OSR-003C、REV-014—016 |
 | 2026-07-18 | 明确 Agent 支付与 AI 按量付费为同一机器支付闭环的双侧能力 | DEC-013 |
+| 2026-07-21 | 建立双侧能力、关联标识、恢复规则和分级验收接入契约 | ACT-OSR-010B |
+| 2026-07-21 | 完成官网产品事实复核并记录金额、编码、API 与沙箱差异 | ACT-OSR-010C、AP-001—003 |
