@@ -35,7 +35,7 @@
 npx -y @alipay/agent-payment@latest install
 ```
 
-接下来按照[官方钱包指南](https://aipay.alipay.com/wallet-guide)完成：
+如果当前任务是独立开通或绑定钱包，按照[官方钱包指南](https://aipay.alipay.com/wallet-guide)完成：
 
 1. 加载钱包与支付 Skill。
 2. 检查支付能力状态。
@@ -43,6 +43,8 @@ npx -y @alipay/agent-payment@latest install
 4. 用户在支付宝页面完成身份核验和授权。
 5. 将官方生成的短时绑定指令提交给 Agent。
 6. 再次检查绑定结果。
+
+这不是每笔支付的固定前置流程。进入收银台或 402 支付时，应直接调用官方支付 Skill/CLI 的对应支付命令，由支付命令处理钱包就绪或支付中开通状态；不要在每笔支付前额外插入 `check-wallet`。
 
 > 绑定码、支付密码和身份核验信息属于敏感信息。ACT 实现、Demo、日志和测试夹具都不应记录或提交真实值。
 
@@ -89,11 +91,13 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 
 1. Agent 保留原始请求的方法、地址、Body 和必要 Header。
 2. 官方支付能力处理账单和用户支付。
-3. Agent 获得 `Payment-Proof` 后重试原请求。
+3. 官方 Skill/CLI 可以在内部携带 `Payment-Proof` 重试原请求，并把状态或资源返回给 Agent；宿主不应自行从日志抽取 Proof 拼接请求。
 4. 资源服务方负责验证凭证并返回资源。
 5. Agent 不在本地自行宣布凭证有效。
 
 卖方责任见[AI 按量付费 Getting Started](metered-payment.md)。
+
+真实 Skill/CLI 命令面和封装边界见[官方 Skill/CLI 行为核对](../../profiles/alipay-ai-pay/skill-cli-behavior-audit-2026-07-21.md)。
 
 ## 7. 验收清单
 

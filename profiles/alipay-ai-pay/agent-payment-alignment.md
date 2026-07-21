@@ -25,7 +25,7 @@ When Agent Payment consumes an HTTP 402 requirement, the 402 interaction skeleto
 | Stage | Public product behavior | Source | ACT working semantic | Layer | Dependency/status | Validation |
 |---|---|---|---|---|---|---|
 | Install | Install official Agent Payment capabilities | AP-SRC-001, 003, 004 | Capability installation | Skill/CLI Binding | `PUBLIC-FACT` | Clean-environment install |
-| Wallet check | Agent checks whether wallet access is available or authorization is required | AP-SRC-003, 004 | Capability availability | Profile + Binding | `PUBLIC-FACT`; discovery model `PROTOCOL-PENDING` | CLI result fixtures + live check |
+| Wallet check | Agent may check wallet access during standalone onboarding or diagnosis; payment commands handle readiness during actual payment | AP-SRC-003, 004 | Capability availability | Profile + Binding | `PUBLIC-FACT`; discovery model `PROTOCOL-PENDING` | CLI result fixtures + live check |
 | Wallet application | Agent requests wallet activation when needed | AP-SRC-003, 004 | Wallet authorization request | Profile | `PUBLIC-FACT`; Core ownership `PROTOCOL-PENDING` | Official flow |
 | User authorization | User opens the Alipay authorization flow and authenticates | AP-SRC-003 | Human authorization | Product UI | `PUBLIC-FACT` | User test account |
 | Agent binding | Agent submits the user-provided binding instruction | AP-SRC-003, 004 | Authorization binding | Profile + Binding | `PUBLIC-FACT` | Official flow |
@@ -60,7 +60,7 @@ It is not responsible for:
 An Agent integration shown at the conference must:
 
 1. use the official public installation path;
-2. check wallet status before payment;
+2. use the official payment command's wallet-readiness result, without inserting a standalone wallet check before every payment;
 3. obtain user authorization through the official flow when required;
 4. present a comprehensible payment intent;
 5. distinguish pending, successful and failed outcomes;

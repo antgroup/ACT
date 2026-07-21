@@ -22,8 +22,8 @@ sequenceDiagram
     Agent-->>User: Present payment intent
     User->>Agent: Authorize payment
     Agent->>Alipay: Pay through official capability
-    Alipay-->>Agent: Payment-Proof
-    Agent->>Service: Retry original request + Payment-Proof
+    Alipay-->>Agent: Payment status / Payment-Proof inside official capability
+    Agent->>Service: Official CLI retries original request + Payment-Proof
     Service->>Alipay: payment.verify
     Alipay-->>Service: Verified payment facts
     Service-->>Agent: Paid resource
@@ -60,7 +60,7 @@ sequenceDiagram
 ### Agent 侧
 
 - 按[Agent 支付 Getting Started](agent-payment.md)安装官方 Skill。
-- 使用官方流程完成钱包状态检查和必要授权。
+- 确认钱包已经就绪，或允许官方支付命令在支付中完成必要开通授权；不要把独立 `check-wallet` 固定插入每笔支付之前。
 - 确认 Agent 能安全保存一次任务的原始 HTTP 请求上下文。
 
 ### 服务侧
@@ -74,6 +74,7 @@ sequenceDiagram
 测试记录只能保存脱敏信息：
 
 - 运行时与 Skill/CLI 版本。
+- npm 安装器版本/integrity、实际安装后的 Skill 内容版本或哈希，以及对应公开源码提交。
 - Profile 和代码提交版本。
 - 沙箱环境标识。
 - 脱敏订单号、交易号和资源 ID。
@@ -89,12 +90,13 @@ sequenceDiagram
 3. 服务返回 402 和有效 `Payment-Needed`。
 4. Agent 展示账单关键信息。
 5. 用户通过官方能力授权并完成沙箱支付。
-6. Agent 携带官方 `Payment-Proof` 重试原请求。
+6. 官方 Skill/CLI 在内部携带 `Payment-Proof` 重试原请求；宿主 Agent 不要求直接读取完整 Proof。
 7. 服务调用支付验证 API。
 8. 服务核对 active、金额、订单和资源。
 9. 服务记录幂等占用并返回资源。
-10. 服务调用履约确认 API。
-11. Agent 将资源交给用户并结束原任务。
+10. 服务按官网调用卖方履约确认 API。
+11. 官方买方 Skill/CLI 在满足条件时可能执行 buyer fulfillment ack，并将资源交给 Agent。
+12. Agent 将资源交给用户并结束原任务。
 
 成功证据必须同时包含：
 
@@ -103,6 +105,7 @@ sequenceDiagram
 - 支付宝验凭证 API 的脱敏结果。
 - 资源交付记录。
 - 履约确认结果或可审计的重试状态。
+- 同一交易中买方 fulfillment ack 与卖方 fulfillment confirm 的实际调用关系。
 
 ## 6. 必测异常
 
@@ -142,5 +145,6 @@ sequenceDiagram
 - 金额单位、Proof 编码、`client_session` 条件和第三方代调用关系仍需产品复核。
 - Core 生命周期和 `valid_next_actions` 尚待协议修订确认。
 - 402 框架跨 `PSD-PAY-INS`、`PSD-PAY-DEL`、`PSD-PAY-AUP` 复用，以及 CID/TSD 边界尚待协议修订确认。
+- 买方 `402-buyer-fulfillment-ack` 与卖方 `fulfillment.confirm` 的关系、调用责任和幂等规则仍需产品确认。
 
 这些开放项在[修订追踪表](../open-source-restructure/05-revision-tracker.md)中维护。

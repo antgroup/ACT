@@ -25,6 +25,7 @@
 | REV-014 | 402 与支付授权级别 | 402 框架位于 PSD-PAY-AUP，但首期产品包含用户逐笔确认 | 可供 INS/DEL/AUP 复用的支付交互边界 | PSD、Bindings、Profiles | Proposed |
 | REV-015 | CID 交易确认与 Payment Requirement | `Payment-Needed` 与交易确认结果的关系不明确 | CID-CART-CFM 到 PSD 的引用规则 | CID、PSD、Profiles | Proposed |
 | REV-016 | 产品履约回调与 TSD | 产品履约确认、支付回执和可信事件容易混为一层 | PSD 回执、业务履约与 TSD 事件边界 | PSD、TSD、Profiles | Proposed |
+| REV-017 | 工作流级 Binding | 官方 Skill/CLI 封装支付、Proof 提交、资源重试和履约动作 | Binding 覆盖声明与 Core 消息封装规则 | Bindings、PSD、Profiles | Proposed |
 
 ## 2. 开源重构工作项
 
@@ -46,6 +47,7 @@
 | ACT-OSR-010A | 编写端到端 402 验证计划 | Phase 2 | ACT-OSR-009、010 | Done | `docs/getting-started/end-to-end-402.md` |
 | ACT-OSR-010B | 建立双侧能力接入契约 v0.1 | Phase 2 | ACT-OSR-003C、010A | Done | `profiles/alipay-ai-pay/end-to-end-capability-contract.md` |
 | ACT-OSR-010C | 复核双侧契约对应的官网产品事实 | Phase 2 | ACT-OSR-010B | Done | `profiles/alipay-ai-pay/product-fact-audit-2026-07-21.md` |
+| ACT-OSR-010D | 核对官方 Agent Payment Skill/CLI 行为 | Phase 2 | ACT-OSR-010B | Done | `profiles/alipay-ai-pay/skill-cli-behavior-audit-2026-07-21.md` |
 | ACT-OSR-011 | 建立 ACT Core 候选草案 | Phase 3 | REV-002—REV-010 | Blocked by revision | 待协议决定 |
 | ACT-OSR-012 | 建立 Alipay AI Pay Profile | Phase 4 | ACT-OSR-011、产品复核 | Blocked | 待 Core 候选 |
 | ACT-OSR-013 | 实现 Agent Payment Quickstart | Phase 5 | ACT-OSR-012 | Blocked | 待 Profile 候选 |
@@ -91,6 +93,8 @@
 | OQ-012 | 产品履约确认 API 与 PSD 回执、TSD 事件如何映射 | PSD/TSD 修订结论 | Profile 生命周期和存证 | Open |
 | OQ-013 | `Payment-Validation` 如何映射支付宝服务端验款结果 | PSD 修订与产品复核 | 402 响应和一致性测试 | Open |
 | OQ-014 | `intent_id`、委托、资源、订单和交易号的最小关联规则 | 四域联合修订 | 端到端追踪与争议处理 | Open |
+| OQ-015 | Binding 能否封装多个 Core 消息和资源重试 | Common Message/Binding 修订 | 官方 Skill/CLI 的准确 ACT 覆盖声明 | Open |
+| OQ-016 | 买方与卖方履约调用的关系和幂等责任是什么 | 支付宝产品复核 + PSD/TSD 修订 | 端到端履约实现和测试 | Open |
 
 支付宝产品侧的详细问题见[公开接入基线](03-alipay-integration-baseline.md#6-待支付宝产品复核的问题)。
 
@@ -120,3 +124,4 @@
 | 2026-07-18 | 明确 Agent 支付与 AI 按量付费为同一机器支付闭环的双侧能力 | DEC-013 |
 | 2026-07-21 | 建立双侧能力、关联标识、恢复规则和分级验收接入契约 | ACT-OSR-010B |
 | 2026-07-21 | 完成官网产品事实复核并记录金额、编码、API 与沙箱差异 | ACT-OSR-010C、AP-001—003 |
+| 2026-07-21 | 核对官方 Skill/CLI 工作流并识别 Binding 封装和双侧履约问题 | ACT-OSR-010D、REV-017、OQ-015—016 |

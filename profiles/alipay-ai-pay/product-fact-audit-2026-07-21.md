@@ -63,6 +63,7 @@
 | AUD-005 | 独立 API 文档本次无法通过公开抓取直接核对 | 错误映射可能过期或不完整 | `error-mapping.md` 保持工作候选；发布前直接复核 API 文档 |
 | AUD-006 | 官网提供 Sandbox，但尚未证明 Agent 钱包买方与 402 卖方能在同一笔沙箱交易贯通 | 端到端声明可能缺少完整证据 | 保持 `VALIDATION-PENDING`；下一步执行真实闭环 Spike |
 | AUD-007 | 官网在 Proof 无效时建议重新支付，但重复付款前是否先查询原支付状态没有完整说明 | 自动恢复可能造成重复支付 | ACT/Profile 保持“先查询权威状态，不自动二次支付”的安全约束，待产品复核 |
+| AUD-008 | npm `latest` 为 1.0.18，GitHub main 的 Skill metadata 声明 1.0.12；npm tarball 也不内嵌完整 Skill | 公开源码、安装器和实际运行 Skill 可能不是同一版本 | 验证时分别记录 npm、CLI、安装后 Skill 和源码提交，不使用模糊 `latest` 作为版本证据 |
 
 ## 6. 对接入契约的影响
 

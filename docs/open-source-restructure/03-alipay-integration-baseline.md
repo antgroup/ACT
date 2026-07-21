@@ -55,6 +55,8 @@ npx -y @alipay/agent-payment@latest install
 
 Agent 支付产品页当前主要指向 Skill 安装和钱包使用路径。面向 Agent 平台或智能硬件的独立 SDK 尚不能作为开源项目的可用接入前提。因此首期 Alipay Agent Payment Profile 应以公开 Skill/CLI 行为为产品事实，未来 SDK/API 公开后再增加 Binding。
 
+当前官方 Skill/CLI 是工作流级 Binding：在 402 场景中可以保存账单和原始请求、发起或查询支付、携带 Proof 恢复请求并返回资源。ACT 接入不应假设宿主 Agent 必须直接获得完整 Proof。详细核对见[官方 Skill/CLI 行为审计](../../profiles/alipay-ai-pay/skill-cli-behavior-audit-2026-07-21.md)。
+
 ## 3. AI 按量付费公开接入路径
 
 完整卖方流程见[AI 按量付费接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)。服务提供方需要实现：
@@ -189,6 +191,8 @@ Agent 支付产品页当前主要指向 Skill 安装和钱包使用路径。面�
 | AP-006 | 履约失败、部分交付和履约确认重试如何表达 | 资源交付状态可能不一致 |
 | AP-007 | Agent 平台未来 SDK/API 与当前 Skill/CLI 的兼容关系 | Profile 演进和版本兼容风险 |
 | AP-008 | 是否存在原生 MCP/Skill 卖方支付 Binding 的公开计划 | 产品表述与技术接入边界可能不一致 |
+| AP-009 | 买方 `402-buyer-fulfillment-ack` 与卖方 `fulfillment.confirm` 是否是同一接口、能否重复调用及最终责任方 | 双侧都调用可能产生重复或错误履约状态 |
+| AP-010 | npm `latest` 安装器、实际安装后的 Skill 与 `alipay/payment-skills` main 如何建立可验证版本关系 | 大会证据可能引用了错误或不可复现的 Skill 版本 |
 
 这些问题在确认前进入[修订追踪](05-revision-tracker.md)，不能由示例代码自行假设答案。
 

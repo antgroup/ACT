@@ -24,6 +24,8 @@ Alipay AI Pay public documentation is the product fact source. ACT documentation
 
 Latest recorded review: [2026-07-21 public product fact audit](product-fact-audit-2026-07-21.md).
 
+Latest Skill/CLI review: [2026-07-21 official Skill/CLI behavior audit](skill-cli-behavior-audit-2026-07-21.md).
+
 ## Source precedence
 
 When public materials differ, use the following review order:

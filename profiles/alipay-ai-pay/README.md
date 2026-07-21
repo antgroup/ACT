@@ -45,6 +45,7 @@ sequenceDiagram
 | [Two-sided capability-to-domain mapping](domain-mapping.md) | Primary map from buyer Agent payment and seller machine-payment capabilities to ADD, CID, PSD and TSD |
 | [Official sources](official-sources.md) | Public product sources and snapshot policy |
 | [2026-07-21 product fact audit](product-fact-audit-2026-07-21.md) | Checked public facts, discrepancies and validation gaps |
+| [2026-07-21 Skill/CLI behavior audit](skill-cli-behavior-audit-2026-07-21.md) | Real public buyer workflow, command boundary and validation gaps |
 | [Agent Payment alignment](agent-payment-alignment.md) | Wallet, Skill/CLI and buyer payment path |
 | [Metered Payment alignment](metered-payment-alignment.md) | HTTP 402 provider path |
 | [Field mapping](field-mapping.md) | Working ACT-to-Alipay field mapping |
