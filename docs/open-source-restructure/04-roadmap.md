@@ -135,6 +135,8 @@
 
 目标：使用官网已提供的接入方案和官方沙箱验证 ACT/Profile 闭环，避免重复实现支付宝产品能力。
 
+当前进度（2026-07-22）：三个入口及本地自动化测试已经落成；买方环境预检通过，卖方 Java SDK 项目已完成编译、测试和可执行 JAR 打包。真实 Sandbox 支付、验款和履约证据仍是 Phase 5 的最后验收项。
+
 计划交付三个最小验证入口：
 
 1. Agent 钱包与 Payment Skill Quickstart。
@@ -177,7 +179,7 @@
 | M2 Developer Journey | 一条机器支付闭环及买卖双方接入路径清晰 | M1 |
 | M3 Core Candidate | 修订结论进入候选规范 | 协议修订 |
 | M4 Alipay Profile Candidate | 产品映射完成并复核 | M3、产品复核 |
-| M5 Runnable Integration | 三个真实 Quickstart 跑通 | M4、沙箱能力 |
+| M5 Runnable Integration | 三个 Quickstart 已实现；真实 Sandbox 闭环待验证 | M4、沙箱能力 |
 | M6 Release Candidate | 一致性测试和迁移方案完成 | M5、治理批准 |
 
 ## 4. 任务追踪字段

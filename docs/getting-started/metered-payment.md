@@ -147,6 +147,7 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 
 ## 11. 下一步
 
+- 直接运行卖方入口：[Metered REST Provider Quickstart](../../quickstarts/alipay/metered-rest-provider/README.md)
 - 联合验证 Agent 买方：[端到端 402 验证](end-to-end-402.md)
 - 查看生命周期：[Lifecycle mapping](../../profiles/alipay-ai-pay/lifecycle-mapping.md)
 - 查看错误恢复：[Error mapping](../../profiles/alipay-ai-pay/error-mapping.md)

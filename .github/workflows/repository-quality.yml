@@ -21,3 +21,23 @@ jobs:
 
       - name: Check repository integrity
         run: python3 scripts/check_repository.py
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Test buyer and end-to-end Quickstart tools
+        run: |
+          npm --prefix quickstarts/alipay/agent-payment test
+          npm --prefix quickstarts/alipay/end-to-end-402 test
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+          cache: maven
+
+      - name: Test seller Quickstart
+        run: mvn -f quickstarts/alipay/metered-rest-provider/pom.xml test

@@ -127,6 +127,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 
 ## 9. 下一步
 
+- 直接运行买方入口：[Agent Payment Quickstart](../../quickstarts/alipay/agent-payment/README.md)
 - 验证买方和卖方完整链路：[端到端 402 验证](end-to-end-402.md)
 - 实现 Product Profile：[Alipay AI Pay Profile](../../profiles/alipay-ai-pay/README.md)
 - 查看产品当前能力：[支付宝 AI 付概览](https://aipay.alipay.com/docs/overview.html)

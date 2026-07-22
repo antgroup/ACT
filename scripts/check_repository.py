@@ -2,8 +2,9 @@
 """Run dependency-free repository integrity checks.
 
 This checker deliberately validates only facts that can be established without
-installing project dependencies: local Markdown links, UTF-8/JSON syntax and
-Python syntax. Schema-to-example conformance is tracked separately.
+installing project dependencies: local Markdown links, UTF-8/JSON syntax,
+Python syntax and required Quickstart structure. Semantic conformance is tracked
+separately.
 """
 
 from __future__ import annotations
@@ -110,11 +111,31 @@ def python_syntax_errors() -> list[str]:
     return errors
 
 
+def quickstart_structure_errors() -> list[str]:
+    required = [
+        "bindings/http-a402/README.md",
+        "bindings/skill-cli/README.md",
+        "quickstarts/alipay/agent-payment/package.json",
+        "quickstarts/alipay/agent-payment/preflight.mjs",
+        "quickstarts/alipay/metered-rest-provider/pom.xml",
+        "quickstarts/alipay/metered-rest-provider/.env.example",
+        "quickstarts/alipay/end-to-end-402/package.json",
+        "quickstarts/alipay/end-to-end-402/inspect-402.mjs",
+        "conformance/README.md",
+    ]
+    return [
+        f"missing required Quickstart asset: {path}"
+        for path in required
+        if not (ROOT / path).is_file()
+    ]
+
+
 def main() -> int:
     checks = [
         ("Markdown local links", markdown_link_errors),
         ("UTF-8 and JSON syntax", json_errors),
         ("Python syntax", python_syntax_errors),
+        ("Quickstart structure", quickstart_structure_errors),
     ]
     failure_count = 0
 

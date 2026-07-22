@@ -53,10 +53,10 @@
 | ACT-OSR-010G | 将 v2.1 修订方向对齐开源框架 | Phase 2 | REV-014—017 | Done | `09-v2.1-revision-alignment.md` |
 | ACT-OSR-011 | 建立 ACT Core 候选草案 | Phase 3 | REV-002—REV-010 | Blocked by revision | 待协议决定 |
 | ACT-OSR-012 | 建立 Alipay AI Pay Profile | Phase 4 | ACT-OSR-011、产品复核 | Blocked | 待 Core 候选 |
-| ACT-OSR-013 | 实现 Agent Payment Quickstart | Phase 5 | ACT-OSR-012 | Blocked | 待 Profile 候选 |
-| ACT-OSR-014 | 实现 Metered REST Quickstart | Phase 5 | ACT-OSR-012 | Blocked | 待 Profile 候选 |
-| ACT-OSR-015 | 实现端到端 402 Quickstart | Phase 5 | ACT-OSR-013、014 | Blocked | 待前置实现 |
-| ACT-OSR-016 | 建立一致性测试 | Phase 6 | REV-012、Quickstarts | Blocked | 待候选规范 |
+| ACT-OSR-013 | 实现 Agent Payment Quickstart | Phase 5 | 官方 Skill/CLI | Implemented; live validation pending | `quickstarts/alipay/agent-payment/` |
+| ACT-OSR-014 | 实现 Metered REST Quickstart | Phase 5 | Alipay Profile 工作映射 | Implemented; Sandbox pending | `quickstarts/alipay/metered-rest-provider/` |
+| ACT-OSR-015 | 实现端到端 402 Quickstart | Phase 5 | ACT-OSR-013、014 | Implemented; Sandbox pending | `quickstarts/alipay/end-to-end-402/` |
+| ACT-OSR-016 | 建立一致性测试 | Phase 6 | REV-012、v2.1 候选规范 | Partially implemented | Quickstart 测试已建立；正式 Conformance 待候选规范 |
 
 这里的 `Blocked` 表示存在明确前置依赖，不代表工作被取消。
 
@@ -132,3 +132,4 @@
 | 2026-07-21 | 核对官方 Skill/CLI 工作流并识别 Binding 封装和双侧履约问题 | ACT-OSR-010D、REV-017、OQ-015—016 |
 | 2026-07-21 | 建立端到端证据模板和观岳协议决策简报 | ACT-OSR-010E—010F |
 | 2026-07-22 | 按 v2.1 修订方向拆分 PSD 场景组件与候选 A402 接入协议，并同步开源框架、Profile 与接入指南 | ACT-OSR-010G、DEC-014、REV-014 |
+| 2026-07-22 | 落成项目框架、官方 Skill/CLI 买方入口、Java SDK 卖方 402 服务和端到端检查器 | ACT-OSR-013—016 |

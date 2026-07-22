@@ -1,8 +1,8 @@
 # Official product sources
 
 > Status: Active source registry  
-> Product content snapshot: 2026-07-16
-> Last checked: 2026-07-21
+> Product content snapshot: 2026-07-22
+> Last checked: 2026-07-22
 
 Alipay AI Pay public documentation is the product fact source. ACT documentation links to these pages instead of copying onboarding, sandbox or API tutorials.
 
@@ -25,6 +25,13 @@ Alipay AI Pay public documentation is the product fact source. ACT documentation
 Latest recorded review: [2026-07-21 public product fact audit](product-fact-audit-2026-07-21.md).
 
 Latest Skill/CLI review: [2026-07-21 official Skill/CLI behavior audit](skill-cli-behavior-audit-2026-07-21.md).
+
+The 2026-07-22 Quickstart implementation rechecked AP-SRC-004, AP-SRC-006 and AP-SRC-009. At that snapshot:
+
+- the public buyer repository installs with `npx -y @alipay/agent-payment@latest install`;
+- the seller integration guide was updated at `2026-07-22 00:26:54` and still defines 402, Base64URL `Payment-Needed`, Base64 `Payment-Proof`, `payment.verify` and `fulfillment.confirm`;
+- the seller Vibe-coding installer is a different package, `@alipay/alipay-aipay`, and must not be substituted for the buyer payment package;
+- the guide says Java SDK `4.38.0.ALL` or newer; the runnable seller Quickstart pins a newer generated SDK containing the AI Pay API types.
 
 ## Source precedence
 

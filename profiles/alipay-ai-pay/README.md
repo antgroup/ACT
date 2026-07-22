@@ -2,7 +2,7 @@
 
 > Status: Preview / Non-normative  
 > Profile version: `0.1-working-draft`  
-> Product source snapshot: 2026-07-16  
+> Product source snapshot: 2026-07-22
 > Compatible ACT version: pending ACT Core 2.1 revision
 
 This directory records how the public Alipay AI Pay products relate to ACT working semantics. It is an alignment workspace for the July Preview, not a published ACT Product Profile.

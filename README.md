@@ -12,6 +12,7 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 首期对齐支付宝 AI 付的 **Agent 支付**产品，公开接入基线是支付宝官方钱包与 Payment Skill/CLI。
 
 - 按开发者路径接入：[Agent 支付 Getting Started](docs/getting-started/agent-payment.md)
+- 直接运行：[Agent Payment Quickstart](quickstarts/alipay/agent-payment/README.md)
 - 了解产品与 ACT 的映射：[Agent Payment alignment](profiles/alipay-ai-pay/agent-payment-alignment.md)
 - 查看支付宝官方接入资料：[AI 钱包使用指南](https://aipay.alipay.com/wallet-guide)
 - 查看官方开源能力：[alipay/payment-skills](https://github.com/alipay/payment-skills)
@@ -21,15 +22,16 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 首期对齐支付宝 AI 付的 **AI 按量付费**产品，以官网公开的 HTTP 402 流程为接入基线。
 
 - 按开发者路径接入：[AI 按量付费 Getting Started](docs/getting-started/metered-payment.md)
+- 直接运行：[Metered REST Provider Quickstart](quickstarts/alipay/metered-rest-provider/README.md)
 - 了解产品与 ACT 的映射：[Metered Payment alignment](profiles/alipay-ai-pay/metered-payment-alignment.md)
 - 查看支付宝官方接入资料：[AI 按量付费接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)
 - 查看工作字段映射：[ACT—Alipay field mapping](profiles/alipay-ai-pay/field-mapping.md)
 
 ### 我要理解或实现 ACT
 
-1. 阅读[现有协议概览](specs/2.0/overview.md)。
-2. 查看[协议修订与开源重构计划](docs/open-source-restructure/05-revision-tracker.md)。
-3. 了解 [ACT Core、Product Profile 与 Binding 的边界](docs/open-source-restructure/01-vision-and-principles.md#4-分层原则)。
+1. 从[ACT 项目框架](docs/architecture/README.md)理解 Domain、场景、接入协议、Binding 和 Product Profile。
+2. 阅读[现有协议概览](specs/2.0/overview.md)。
+3. 查看[协议修订与开源重构计划](docs/open-source-restructure/05-revision-tracker.md)。
 4. 查看 [Alipay AI Pay Profile 工作草案](profiles/alipay-ai-pay/README.md)。
 5. 查看 [Alipay AI Pay 双侧能力与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
 6. 查看 [双侧能力接入契约 v0.1](profiles/alipay-ai-pay/end-to-end-capability-contract.md)。
@@ -75,6 +77,9 @@ July Preview 使用[双侧能力接入契约](profiles/alipay-ai-pay/end-to-end-
 | 业务场景 | [`examples/scenarios/`](examples/scenarios/) | 说明性示例，部分术语待随协议修订 |
 | 报文示例 | [`examples/payloads/`](examples/payloads/) | 工作示例，尚未形成完整一致性认证 |
 | Python 项目 | [`impl/python/`](impl/python/) | 本地模拟 Demo，不是真实支付宝接入 |
+| Quickstarts | [`quickstarts/`](quickstarts/) | 官方 Skill/CLI、HTTP 402 与 Sandbox 最短路径 |
+| Bindings | [`bindings/`](bindings/) | HTTP A402 与 Skill/CLI 承载边界 |
+| Conformance | [`conformance/`](conformance/) | 规划中；当前不授予协议合规结论 |
 | 重构计划 | [`docs/open-source-restructure/`](docs/open-source-restructure/) | Active |
 
 ## 现有协议工作版本
@@ -104,7 +109,7 @@ July Preview 使用[双侧能力接入契约](profiles/alipay-ai-pay/end-to-end-
 | Reference Implementation | 声明并测试其协议覆盖范围的实现 |
 | Conformance Suite | 判断实现是否满足 Core 或 Product Profile |
 
-当前 `impl/python/` 属于 Demo。大会版本计划中的真实接入验证仍在建设，进度见[发布章程](docs/open-source-restructure/06-bund-release-charter.md)。
+当前 `impl/python/` 属于 Demo。真实接入从 [Quickstarts](quickstarts/README.md) 开始；本地测试与正式 Sandbox 证据的边界见各 Quickstart README。
 
 ## 仓库结构
 
@@ -112,8 +117,14 @@ July Preview 使用[双侧能力接入契约](profiles/alipay-ai-pay/end-to-end-
 act-protocol/
 ├── specs/2.0/                    # 现有协议工作版本与 Schema
 ├── profiles/alipay-ai-pay/       # 支付宝 AI 付 Profile 工作草案
+├── bindings/                     # HTTP A402 与 Skill/CLI Binding
+├── quickstarts/alipay/           # 官方产品与 Sandbox 最短接入路径
+├── conformance/                  # 一致性测试入口与状态
+├── reference-implementations/    # 参考实现发布入口（当前为空）
+├── demos/                        # Demo 定位与迁移入口
 ├── examples/scenarios/           # 说明性业务场景
 ├── examples/payloads/            # JSON 工作示例
+├── docs/architecture/            # 项目分层、目录责任与依赖方向
 ├── docs/getting-started/          # 开发者接入路径
 ├── impl/python/                  # 本地模拟 Demo
 ├── docs/open-source-restructure/ # 重构方案、路线图与追踪
@@ -126,7 +137,7 @@ act-protocol/
 python3 scripts/check_repository.py
 ```
 
-该检查覆盖 Markdown 本地链接、UTF-8/JSON 语法和 Python 语法。Schema 与示例的语义一致性测试仍在建设中。
+该检查覆盖 Markdown 本地链接、UTF-8/JSON 语法、Python 语法以及 Quickstart 静态结构。Quickstart 自身的测试命令见对应目录；正式一致性测试仍在建设中。
 
 ## 贡献
 

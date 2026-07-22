@@ -1,7 +1,7 @@
 # 选择你的接入路径
 
 > 状态：July Preview / Non-normative  
-> 支付宝产品资料快照：2026-07-16
+> 支付宝产品资料快照：2026-07-22
 
 ACT 仓库负责解释协议语义、产品映射和验证边界；支付宝官网负责维护开户、钱包授权、沙箱、密钥、API 参数和当前产品操作步骤。
 
@@ -45,6 +45,14 @@ Agent 支付与 AI 按量付费是同一机器支付闭环的两侧能力，不�
 两侧最小责任、关联标识和分级验收口径见[双侧能力接入契约 v0.1](../../profiles/alipay-ai-pay/end-to-end-capability-contract.md)。
 
 准备真实验证时使用[端到端证据模板](end-to-end-evidence-template.md)，确保版本、关联标识、异常和双侧履约证据可复核。
+
+## 可运行入口
+
+| 路径 | 本仓库可运行资产 | 外部真实步骤 |
+|---|---|---|
+| 买方 Agent | [Agent Payment Quickstart](../../quickstarts/alipay/agent-payment/README.md) | 安装官方 Skill/CLI 并完成用户授权 |
+| 卖方服务 | [Metered REST Provider Quickstart](../../quickstarts/alipay/metered-rest-provider/README.md) | 配置支付宝 Sandbox 应用、服务和密钥 |
+| 双侧闭环 | [End-to-end 402 Quickstart](../../quickstarts/alipay/end-to-end-402/README.md) | 执行一笔真实授权的 Sandbox 支付并保存脱敏证据 |
 
 ## 不属于首期范围
 

@@ -26,9 +26,13 @@
 git clone https://github.com/act-protocol/act-protocol.git
 cd act-protocol
 
-# 安装依赖（根据子项目选择）
-cd specs && npm install  # 规范文档依赖
-cd ../impl/python && pip install -r requirements.txt  # Python实现依赖
+# 运行仓库基础检查
+python3 scripts/check_repository.py
+
+# 根据贡献范围运行 Quickstart 测试
+cd quickstarts/alipay/agent-payment && npm test
+cd ../end-to-end-402 && npm test
+cd ../metered-rest-provider && mvn test
 ```
 
 ## 贡献类型
@@ -43,7 +47,9 @@ cd ../impl/python && pip install -r requirements.txt  # Python实现依赖
 
 ### 🔧 技术实现贡献
 
-- 参考实现（Python/Go/Java等）的 bug 修复
+- Quickstart、Binding 和开发者工具
+- 通过一致性测试并声明覆盖范围的参考实现
+- 已标记 Mock 边界的 Demo 修复
 - 新语言的参考实现
 - 测试用例和测试工具
 - 开发者工具和 SDK
@@ -132,7 +138,7 @@ ACT Protocol 使用 SEP 作为协议变更的标准流程。SEP 用于管理所�
 
 #### PR 审查流程
 
-1. **自动检查**：CI 当前检查 Markdown 本地链接、UTF-8/JSON 语法和 Python 语法；Schema 语义验证仍在建设
+1. **自动检查**：CI 检查仓库完整性，并运行 Node 与 Java Quickstart 测试；Schema 和正式协议一致性验证仍在建设
 2. **DWG 评审**：相关领域工作组技术评审
 3. **Maintainer 评审**：代码/规范质量把关
 4. **社区反馈**：公开征集意见（重大变更）
