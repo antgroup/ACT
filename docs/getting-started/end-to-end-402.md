@@ -53,7 +53,7 @@ sequenceDiagram
 | PSD | 钱包可用；402、Proof、官方验款和支付结果形成闭环 | 脱敏账单、验证结果和支付宝交易号 |
 | TSD | 意图、订单、支付和履约证据可以关联，且没有把产品日志冒充标准存证 | 关联 ID、事件时间和证据来源 |
 
-首期用户逐笔确认对应 `PSD-PAY-INS`，同时消费当前官网放在 `PSD-PAY-AUP` 下的 402 交互框架。这一跨组件组合必须标记为协议待确认，不能被测试结果直接提升为协议结论。完整说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
+首期用户逐笔确认对应 `PSD-PAY-INS`，同时消费候选 `PSD-PAY-A402` 接入协议；v2.0 官网仍把 402 框架放在 `PSD-PAY-AUP` 下。测试可以验证这一候选组合，但在 A402 公开规范发布前不能把结果提升为正式协议结论。完整说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md)。
 
 ## 4. 验证前准备
 
@@ -144,7 +144,7 @@ sequenceDiagram
 - 需要确认官网 Sandbox 是否能在同一链路覆盖 Agent 钱包买方和 402 卖方；如果分段验证，需要定义证据如何组合。
 - 金额单位、Proof 编码、`client_session` 条件和第三方代调用关系仍需产品复核。
 - Core 生命周期和 `valid_next_actions` 尚待协议修订确认。
-- 402 框架跨 `PSD-PAY-INS`、`PSD-PAY-DEL`、`PSD-PAY-AUP` 复用，以及 CID/TSD 边界尚待协议修订确认。
+- 候选 `PSD-PAY-A402` 的正式版本、状态机、与 v2.0 AUP 的迁移规则，以及 CID/TSD 边界尚待协议修订确认。
 - 买方 `402-buyer-fulfillment-ack` 与卖方 `fulfillment.confirm` 的关系、调用责任和幂等规则仍需产品确认。
 
 这些开放项在[修订追踪表](../open-source-restructure/05-revision-tracker.md)中维护。

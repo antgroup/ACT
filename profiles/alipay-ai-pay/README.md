@@ -9,14 +9,16 @@ This directory records how the public Alipay AI Pay products relate to ACT worki
 
 支付宝产品不是 ACT 的第五个域。Agent 支付赋予买方 Agent 支付能力，AI 按量付费赋予卖方服务接受机器支付的能力；二者是同一机器支付闭环的两侧，通过 Product Profile 组合 ADD、CID、PSD、TSD 的语义。先阅读[双侧能力与 ACT 四域映射](domain-mapping.md)。
 
+ACT v2.1 修订方向将支付场景与接入协议解耦：大会首期按 L1 `PSD-PAY-INS` + 候选 `PSD-PAY-A402` + 官方 Skill/CLI Binding + Alipay AI Pay Profile 组织。A402 尚未进入公开正式规范，因此这里只表达候选映射，不构成规范性声明。
+
 ## Scope
 
 The first preview covers one end-to-end machine-payment loop with two public integration sides:
 
 | Capability side | Participant | Public integration baseline | Main ACT coverage |
 |---|---|---|---|
-| Agent Payment | Buyer Agent | Official Alipay wallet and payment Skill/CLI | ADD intent; CID transaction context; PSD binding and user-present payment; TSD evidence |
-| AI Metered Payment | Paid resource provider | HTTP 402, `Payment-Needed`, `Payment-Proof`, payment verification and fulfillment confirmation | CID resource/capability/transaction; PSD 402 and verification; TSD payment/fulfillment evidence |
+| Agent Payment | Buyer Agent | Official Alipay wallet and payment Skill/CLI | ADD intent; CID transaction context; PSD INS scenario + candidate A402; TSD evidence |
+| AI Metered Payment | Paid resource provider | HTTP 402, `Payment-Needed`, `Payment-Proof`, payment verification and fulfillment confirmation | CID resource/capability/transaction; candidate PSD A402 and verification; TSD payment/fulfillment evidence |
 
 The two capability sides form one payment loop:
 

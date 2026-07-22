@@ -11,7 +11,7 @@ The provider path consumes ADD context and directly implements responsibilities 
 |---|---|---|
 | ADD | Upstream `ADD-INT-ICS`; future IAC components | The buyer Agent owns user intent and delegation. The paid resource does not issue user authorization. |
 | CID | `CID-MER-CAT`, `CID-INT-XFR`, `CID-PCA-NEG`, `CID-CART-CFM` | The provider describes the resource and binds the payment requirement to a resource, price, order and supported payment method. |
-| PSD | 402 framework currently documented under `PSD-PAY-AUP` | The Alipay Profile supplies `Payment-Needed`, `Payment-Proof`, RSA2 and verification/fulfillment APIs. The buyer's actual execution level may be INS, DEL or AUP. |
+| PSD | Candidate `PSD-PAY-A402`; currently documented under `PSD-PAY-AUP` in v2.0 | The v2.1 direction separates the A402 access protocol from INS/DEL/AUP scenarios. The Alipay Profile supplies `Payment-Needed`, `Payment-Proof`, RSA2 and verification/fulfillment APIs. |
 | TSD | Primarily `TSD-ATT-EVT`; other trust services depend on the deployment | Payment and fulfillment evidence can feed ACT events; the product callback itself is not automatically a TSD attestation. |
 
 The relationship between `Payment-Needed` and `CID-CART-CFM`, and between the fulfillment API and TSD events, remains protocol-pending. See [two-sided capability-to-domain mapping](domain-mapping.md#4-卖方机器支付能力映射).

@@ -45,7 +45,8 @@ sequenceDiagram
 | [阶段计划](04-roadmap.md) | 先做什么、后做什么、每阶段如何验收 | Draft |
 | [修订追踪](05-revision-tracker.md) | 协议修订主题、决策、开放问题如何持续追踪 | Active |
 | [2026 外滩大会发布章程](06-bund-release-charter.md) | 大会前发布什么、谁负责、何时冻结 | Accepted |
-| [协议决策简报](08-protocol-decision-brief.md) | 双侧机器支付进入 Core 修订前需要决定的最小问题包 | Proposed |
+| [协议决策简报](08-protocol-decision-brief.md) | 双侧机器支付进入 Core 修订前需要决定的最小问题包 | Partially aligned |
+| [ACT v2.1 修订方向对齐](09-v2.1-revision-alignment.md) | 场景组件、A402 接入协议、Binding 与产品 Profile 如何分层 | Active |
 
 ## 当前工作约束
 

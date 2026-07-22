@@ -22,6 +22,8 @@ ACT 官网当前按照四个域组织：
 | [PSD：Payment Services Domain](https://www.act-protocol.com/documentation/payment) | `PSD-PMT-BND`、`PSD-AGT-SUB`、`PSD-PAY-INS`、`PSD-PAY-DEL`、`PSD-PAY-AUP` | 支付方式如何可用；以何种授权级别发起、证明和验证支付 |
 | [TSD：Trust Services Domain](https://www.act-protocol.com/documentation/trust) | `TSD-ATT-EVT`、`TSD-ATT-OFF`、`TSD-ATT-OCA`、`TSD-ATT-SVF`、`TSD-ATT-DSP` | 如何形成可验证事件链、存证、核验和争议处理 |
 
+ACT v2.1 最新修订方向进一步把 PSD 的“支付场景”与“接入协议”分开：`PSD-PAY-INS`、`PSD-PAY-DEL`、`PSD-PAY-AUP` 分别描述 L1/L2/L3 场景，候选 `PSD-PAY-A402` 独立描述 HTTP 402 支付交互。该编号和结构尚未进入公开正式规范，因此本页将其标记为 `PROTOCOL-PENDING`；支付宝产品实现仍以公开官网为准。
+
 因此，开发者的阅读顺序应当是：先确认自己在闭环中建设买方还是卖方能力，再用本页确认其覆盖哪些 ACT 组件，最后进入支付宝官网完成真实产品接入。需要声明端到端兼容时，必须同时验证两侧能力。
 
 ## 2. 双侧能力与四域总览
@@ -50,17 +52,18 @@ ACT 官网当前按照四个域组织：
 | `CID-INT-XFR` | Agent 将必要购买上下文交给商户或收费资源 | `HOST` | 只传完成交易所需的最小上下文 |
 | `CID-PCA-NEG` | 识别对方支持支付宝，并选择官方支付能力 | `CURRENT` / `PROTOCOL-PENDING` | 当前 Skill 或 402 可隐式完成选择；标准能力声明格式待修订 |
 | `CID-CART-CFM` | 宿主业务确认商品、金额、商户订单与收款方 | `HOST` | 支付前必须存在可理解的交易确认结果 |
-| `PSD-PMT-BND` | 支付宝 AI 钱包开通、授权绑定、状态检查和解绑 | `CURRENT` | 产品操作以[钱包指南](https://aipay.alipay.com/wallet-guide)为准 |
-| `PSD-PAY-INS` | 用户确认后由官方 Payment Skill 提交支付并查询结果 | `CURRENT` | 首期主要支付执行语义 |
-| `PSD-PAY-DEL` | 基于指定意图授权、用户不在场的支付 | `FUTURE` | 需要 IAC 与公开产品能力共同确认 |
-| `PSD-AGT-SUB` / `PSD-PAY-AUP` | 受限自主支付及其账户隔离能力 | `FUTURE` | 不作为首期公开 Skill/CLI 的合规声明 |
+| `PSD-PMT-BND` | 使用已就绪的支付宝支付工具引用 | `CURRENT` / `PROTOCOL-PENDING` | AI 钱包开通、授权、检查和解绑是官网维护的聚合产品生命周期，不整体等同于协议绑定组件 |
+| `PSD-PAY-INS` | 用户确认后由官方 Payment Skill 提交支付并查询结果 | `CURRENT` | L1 首期场景；PSP 在资金移动前逐笔确认用户身份与授权 |
+| 候选 `PSD-PAY-A402` | 处理 402 支付要求、支付凭证和资源请求恢复 | `CURRENT` / `PROTOCOL-PENDING` | 首期由 INS 场景引用；正式编号、版本和迁移规则待发布 |
+| `PSD-PAY-DEL` | 定向委托支付：预先确定目标并通过 IAC 授权 | `FUTURE` | L2 场景；执行时不要求用户逐笔身份确认，仍需满足委托范围 |
+| `PSD-AGT-SUB` / `PSD-PAY-AUP` | 自主化委托支付及可选账户隔离能力 | `FUTURE` | L3 场景；使用 BOUNDED IAC，不作为首期公开 Skill/CLI 合规声明 |
 | `TSD-ATT-EVT` 等 | 将支付结果与意图、订单和履约证据关联 | `PROTOCOL-PENDING` | 支付宝交易记录是产品证据，不自动等同于 ACT TSD 事件记录 |
 
-### 3.1 为什么 Agent 支付会遇到 402，但仍以 `PSD-PAY-INS` 为主？
+### 3.1 场景组件与 402 接入协议如何组合？
 
 HTTP 402 描述资源服务如何提出支付要求、买方如何携带凭证重试，是支付交互框架；`PSD-PAY-INS`、`PSD-PAY-DEL` 和 `PSD-PAY-AUP` 描述授权和执行级别。首期 Agent 支付即使消费 402 账单，仍由用户逐笔确认，因此支付执行按 `PSD-PAY-INS` 建模。
 
-ACT 官网当前把完整 402 `Payment-Needed` / `Payment-Proof` / `Payment-Validation` 框架放在 `PSD-PAY-AUP`。框架能否被 `PSD-PAY-INS` 和 `PSD-PAY-DEL` 共用，需要在本轮协议修订中明确，当前标记为 `PROTOCOL-PENDING`。
+ACT v2.0 官网当前把完整 402 `Payment-Needed` / `Payment-Proof` / `Payment-Validation` 框架放在 `PSD-PAY-AUP`。v2.1 修订方向拟将它抽成独立的 `PSD-PAY-A402`，供 INS、DEL、AUP 引用。外滩大会首期因此按“L1 `PSD-PAY-INS` + 候选 `PSD-PAY-A402` + 官方 Skill/CLI Binding + Alipay Profile”组织，但在公开规范发布前不把候选编号写成正式合规结论。
 
 ## 4. 卖方机器支付能力映射
 
@@ -74,7 +77,7 @@ AI 按量付费让收费资源具备接受机器支付的能力。它负责生�
 | `CID-INT-XFR` | 原始资源请求及必要业务上下文 | `CURRENT` | 支付后必须恢复同一个资源请求 |
 | `CID-PCA-NEG` | 服务声明支付宝支付方式，Agent 选择可用方式 | `CURRENT` / `PROTOCOL-PENDING` | 402 中的产品方法字段需要映射到 ACT 支付能力描述 |
 | `CID-CART-CFM` | 确认资源、金额、币种、商户订单和收款方 | `CURRENT` / `PROTOCOL-PENDING` | `Payment-Needed` 是否可承载完整交易确认结果待协议确认 |
-| `PSD-PAY-AUP` 基础框架 | `402 Payment Required`、`Payment-Needed`、`Payment-Proof`、验款和交付 | `CURRENT` | 支付宝字段与 RSA2 规则属于 Alipay Profile 和 HTTP Binding |
+| 候选 `PSD-PAY-A402` | `402 Payment Required`、`Payment-Needed`、`Payment-Proof`、验款和交付 | `CURRENT` / `PROTOCOL-PENDING` | v2.0 官网当前置于 AUP；v2.1 拟独立。支付宝字段与 RSA2 规则属于 Alipay Profile 和 HTTP Binding |
 | 支付方式扩展 | `alipay.aipay.agent.payment.verify` 及支付宝支付字段 | `CURRENT` | 实现必须调用官网接口并核对原账单，而不是本地相信 Proof |
 | 履约确认 | `alipay.aipay.agent.fulfillment.confirm` | `CURRENT` / `PROTOCOL-PENDING` | 它是支付宝产品回调；与 ACT 支付回执、TSD 事件的关系待确认 |
 | `TSD-ATT-EVT` 等 | 支付完成、履约完成及关联证据 | `PROTOCOL-PENDING` | 产品日志或履约确认调用本身不自动构成 TSD 合规记录 |
@@ -112,19 +115,20 @@ flowchart LR
 
 | 场景 | ADD | CID | PSD | 大会首期状态 |
 |---|---|---|---|---|
-| L1：用户逐笔确认 | 捕获并确认当前支付意图 | 确认交易和支付方式 | `PSD-PMT-BND` + `PSD-PAY-INS`；可消费 402 交互 | 首期公开基线 |
-| L2：指定意图委托 | 签发并管理指定范围 IAC | 每笔交易必须落在授权范围内 | `PSD-PAY-DEL` | 后续；协议与产品共同确认 |
-| L3：受限自主支付 | BOUNDED IAC 及生命周期 | 自动协商并确认交易约束 | `PSD-AGT-SUB`（按需）+ `PSD-PAY-AUP` | 后续；不在首期声明 |
+| L1：用户逐笔确认 | 捕获并确认当前支付意图 | 确认交易和支付方式 | `PSD-PMT-BND` + `PSD-PAY-INS` + 候选 `PSD-PAY-A402` | 首期公开基线 |
+| L2：定向委托支付 | 签发并管理指定范围 IAC | 每笔交易必须落在授权范围内 | `PSD-PAY-DEL` + A402/MCP/API 接入方式 | 后续；协议与产品共同确认 |
+| L3：自主化委托支付 | BOUNDED IAC 及生命周期 | 自动协商并确认交易约束 | `PSD-AGT-SUB`（按需）+ `PSD-PAY-AUP` + A402/MCP/API 接入方式 | 后续；不在首期声明 |
 
 ## 7. 需要协议负责人确认
 
 以下问题由观岳牵头的 ACT 修订决定；在结论形成前，Profile 只能记录映射，不能固化 Schema：
 
-1. `PSD-PAY-AUP` 中的 402 基础框架是否应抽出并供 `PSD-PAY-INS`、`PSD-PAY-DEL` 共用。
+1. 候选 `PSD-PAY-A402` 的正式编号、版本、公共状态机和从 v2.0 AUP 迁移的兼容规则。
 2. `Payment-Needed` 是否能够同时作为 `CID-CART-CFM` 的交易确认结果，还是必须引用独立确认对象。
 3. 支付宝钱包开通/授权绑定与 `PSD-PMT-BND` 的准确边界，哪些属于产品账户操作而非协议消息。
 4. 支付宝履约确认 API 属于 PSD 的产品回执还是业务回调；TSD 的履约事件应如何独立形成。
 5. ACT 官网的 `Payment-Validation` 与支付宝公开 402 路径中的服务端验款结果如何映射，以及该响应是否需要回传买方。
 6. `intent_id`、`delegation_id`、商户订单号、`resource_id` 和支付宝交易号的最小关联规则。
+7. DEL/AUP 所依赖的身份、连接、授权和密钥安全能力如何进入公开规范与开发者路径。
 
 这些问题同步记录在[修订追踪表](../../docs/open-source-restructure/05-revision-tracker.md)，后续应由协议决定、Profile 映射和沙箱证据共同闭环。

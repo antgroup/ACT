@@ -3,7 +3,7 @@
 ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放协议项目。
 
 > [!IMPORTANT]
-> ACT 协议正在修订。仓库中的 `specs/2.0/` 是现有工作版本，不应被理解为已经完成生产稳定性认证。修订期间的目标、边界和计划见[开源重构工作区](docs/open-source-restructure/README.md)。
+> ACT 协议正在修订。仓库中的 `specs/2.0/` 是现有工作版本，不应被理解为已经完成生产稳定性认证。v2.1 修订方向拟将场景组件与候选 `PSD-PAY-A402` 支付接入协议解耦；正式发布前不改写 2.0 规范。修订期间的目标、边界和计划见[开源重构工作区](docs/open-source-restructure/README.md)。
 
 ## 你想做什么？
 

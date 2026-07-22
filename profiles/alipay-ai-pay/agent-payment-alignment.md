@@ -15,10 +15,10 @@ This product path composes ACT domains; it is not a PSD-only integration:
 |---|---|---|
 | ADD | `ADD-INT-ICS` | The host Agent captures and presents the current payment intent. IAC issuance and lifecycle are future delegated-payment work. |
 | CID | `CID-MER-CAT`, `CID-INT-XFR`, `CID-PCA-NEG`, `CID-CART-CFM` | The host commerce flow supplies the product, merchant, order and payment-capability context consumed by the payment Skill. |
-| PSD | `PSD-PMT-BND`, `PSD-PAY-INS` | Alipay wallet binding and user-present payment are the public preview baseline. |
+| PSD | `PSD-PMT-BND`, `PSD-PAY-INS`, candidate `PSD-PAY-A402` | User-present payment is the scenario baseline; A402 is the candidate access protocol. Alipay wallet onboarding remains a product lifecycle rather than being wholly standardized by `PSD-PMT-BND`. |
 | TSD | Primarily `TSD-ATT-EVT`; other trust services depend on the deployment | ACT records may link intent, order, payment and fulfillment evidence. Alipay product records are evidence inputs, not automatic TSD conformance. |
 
-When Agent Payment consumes an HTTP 402 requirement, the 402 interaction skeleton and the authorization/execution level must remain distinct. See [two-sided capability-to-domain mapping](domain-mapping.md#3-买方-agent-支付能力映射).
+When Agent Payment consumes an HTTP 402 requirement, the 402 interaction skeleton and the authorization/execution level must remain distinct. The v2.1 revision direction models the preview as `PSD-PAY-INS` referencing candidate `PSD-PAY-A402`; the public specification must be published before this becomes a normative conformance claim. See [two-sided capability-to-domain mapping](domain-mapping.md#3-买方-agent-支付能力映射).
 
 ## 3. Developer journey alignment
 
@@ -78,6 +78,6 @@ The protocol revision needs to decide:
 - the common outcome envelope used by Skill, MCP and HTTP Bindings;
 - the representation of `valid_next_actions` for authorize, retry, query and abort;
 - how authorization revocation affects in-flight payments.
-- whether the PSD 402 framework is shared by `PSD-PAY-INS`, `PSD-PAY-DEL` and `PSD-PAY-AUP`.
+- the final identifier, version, common state machine and v2.0 migration rules for candidate `PSD-PAY-A402`.
 
 Until those decisions are accepted, the terms in this document are working semantics only.

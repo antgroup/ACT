@@ -1,7 +1,7 @@
 # ACT 修订与开源重构追踪
 
 > 状态：Active / Non-normative  
-> 最后更新：2026-07-18
+> 最后更新：2026-07-22
 
 本文件连接“协议修订”“支付宝产品接入”和“开源工程交付”。它不替代正式决策记录；当某项结论被接受后，应建立独立 ADR、Issue 或 PR，并从本表链接到证据。
 
@@ -22,7 +22,7 @@
 | REV-011 | Field Mapping | ACT 对产品字段缺少显式映射 | Profile 映射规范 | Profiles | Proposed |
 | REV-012 | Conformance | 示例不能证明协议兼容 | Core/Profile 测试套件 | Conformance | Proposed |
 | REV-013 | Compatibility | 现有组件、Schema 和示例命名不一致 | 版本和迁移策略 | 全仓库 | Proposed |
-| REV-014 | 402 与支付授权级别 | 402 框架位于 PSD-PAY-AUP，但首期产品包含用户逐笔确认 | 可供 INS/DEL/AUP 复用的支付交互边界 | PSD、Bindings、Profiles | Proposed |
+| REV-014 | 402 与支付授权级别 | v2.0 将 402 放在 AUP，混合接入方式与授权场景 | 候选 `PSD-PAY-A402`，供 INS/DEL/AUP 引用 | PSD、Bindings、Profiles | Direction aligned; publication pending |
 | REV-015 | CID 交易确认与 Payment Requirement | `Payment-Needed` 与交易确认结果的关系不明确 | CID-CART-CFM 到 PSD 的引用规则 | CID、PSD、Profiles | Proposed |
 | REV-016 | 产品履约回调与 TSD | 产品履约确认、支付回执和可信事件容易混为一层 | PSD 回执、业务履约与 TSD 事件边界 | PSD、TSD、Profiles | Proposed |
 | REV-017 | 工作流级 Binding | 官方 Skill/CLI 封装支付、Proof 提交、资源重试和履约动作 | Binding 覆盖声明与 Core 消息封装规则 | Bindings、PSD、Profiles | Proposed |
@@ -50,6 +50,7 @@
 | ACT-OSR-010D | 核对官方 Agent Payment Skill/CLI 行为 | Phase 2 | ACT-OSR-010B | Done | `profiles/alipay-ai-pay/skill-cli-behavior-audit-2026-07-21.md` |
 | ACT-OSR-010E | 建立真实端到端验证证据模板 | Phase 2 | ACT-OSR-010B、010D | Done | `docs/getting-started/end-to-end-evidence-template.md` |
 | ACT-OSR-010F | 整理协议最小决策简报 | Phase 2 | REV-014—017 | Done | `08-protocol-decision-brief.md` |
+| ACT-OSR-010G | 将 v2.1 修订方向对齐开源框架 | Phase 2 | REV-014—017 | Done | `09-v2.1-revision-alignment.md` |
 | ACT-OSR-011 | 建立 ACT Core 候选草案 | Phase 3 | REV-002—REV-010 | Blocked by revision | 待协议决定 |
 | ACT-OSR-012 | 建立 Alipay AI Pay Profile | Phase 4 | ACT-OSR-011、产品复核 | Blocked | 待 Core 候选 |
 | ACT-OSR-013 | 实现 Agent Payment Quickstart | Phase 5 | ACT-OSR-012 | Blocked | 待 Profile 候选 |
@@ -76,6 +77,7 @@
 | DEC-011 | 官网不能同步修改，ACT 仓库单向对齐官网 | 2026-07-15 | 建立官网漂移检查 |
 | DEC-012 | 协议由观岳牵头，其余开源、Profile、验证与发布由念箴牵头 | 2026-07-15 | 明确决策和交付责任 |
 | DEC-013 | Agent 支付和 AI 按量付费是同一机器支付闭环的买方与卖方能力，不作为孤立产品流程设计 | 2026-07-18 | 文档架构、四域映射和端到端验收以双侧互通为主线 |
+| DEC-014 | 开源框架跟踪 v2.1“场景组件与支付接入协议解耦”的方向，并使用候选 `PSD-PAY-A402` 表达 402 接入层 | 2026-07-22 | 不提前修改 `specs/2.0/`；正式合规仍等待公开规范，产品事实仍以 AIPay 官网为准 |
 
 ## 4. 待决定问题
 
@@ -90,13 +92,14 @@
 | OQ-007 | `valid_next_actions` 是通用信封字段还是错误字段 | Error Recovery 修订 | Agent 自动恢复 | Open |
 | OQ-008 | 首个 Quickstart 选择哪个支持官方 Skill/CLI 的 Agent 运行时 | 公开能力和维护成本评估 | Quickstart 验证入口 | Open |
 | OQ-009 | 支付宝产品字段歧义如何获得公开确认 | 产品与开放平台复核 | Alipay Profile | Open |
-| OQ-010 | 402 基础框架是否供 INS、DEL、AUP 共用 | 观岳牵头的 PSD 修订结论 | Agent 支付与按量付费的准确组件映射 | Open |
+| OQ-010 | 候选 `PSD-PAY-A402` 的正式编号、版本、公共状态机与 v2.0 迁移规则是什么 | 观岳牵头的 PSD 公开候选规范 | Agent 支付与按量付费的正式组件映射 | Direction aligned; details open |
 | OQ-011 | `Payment-Needed` 是否可作为 CID 交易确认结果 | CID/PSD 修订结论 | 订单确认与支付要求的对象边界 | Open |
 | OQ-012 | 产品履约确认 API 与 PSD 回执、TSD 事件如何映射 | PSD/TSD 修订结论 | Profile 生命周期和存证 | Open |
 | OQ-013 | `Payment-Validation` 如何映射支付宝服务端验款结果 | PSD 修订与产品复核 | 402 响应和一致性测试 | Open |
 | OQ-014 | `intent_id`、委托、资源、订单和交易号的最小关联规则 | 四域联合修订 | 端到端追踪与争议处理 | Open |
 | OQ-015 | Binding 能否封装多个 Core 消息和资源重试 | Common Message/Binding 修订 | 官方 Skill/CLI 的准确 ACT 覆盖声明 | Open |
 | OQ-016 | 买方与卖方履约调用的关系和幂等责任是什么 | 支付宝产品复核 + PSD/TSD 修订 | 端到端履约实现和测试 | Open |
+| OQ-017 | DEL/AUP 依赖的身份、连接、授权和密钥安全能力如何公开 | 安全层公开规范与依赖关系 | L2/L3 开发者路径和合规验证 | Open |
 
 支付宝产品侧的详细问题见[公开接入基线](03-alipay-integration-baseline.md#6-待支付宝产品复核的问题)。
 
@@ -128,3 +131,4 @@
 | 2026-07-21 | 完成官网产品事实复核并记录金额、编码、API 与沙箱差异 | ACT-OSR-010C、AP-001—003 |
 | 2026-07-21 | 核对官方 Skill/CLI 工作流并识别 Binding 封装和双侧履约问题 | ACT-OSR-010D、REV-017、OQ-015—016 |
 | 2026-07-21 | 建立端到端证据模板和观岳协议决策简报 | ACT-OSR-010E—010F |
+| 2026-07-22 | 按 v2.1 修订方向拆分 PSD 场景组件与候选 A402 接入协议，并同步开源框架、Profile 与接入指南 | ACT-OSR-010G、DEC-014、REV-014 |

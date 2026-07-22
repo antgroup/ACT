@@ -1,6 +1,6 @@
 # ACT 双侧机器支付协议决策简报
 
-> 状态：Proposed / Non-normative  
+> 状态：Partially aligned / Non-normative
 > 面向：观岳牵头的 ACT Core 修订  
 > 产品基线：Alipay AI Pay 双侧能力接入契约 v0.1  
 > 建议评审日期：2026-07-25
@@ -19,7 +19,7 @@
 
 | ID | 决策 | 推荐方向 | 阻塞产物 |
 |---|---|---|---|
-| PD-001 | 402 与 INS/DEL/AUP 的关系 | 将支付交互框架与授权执行级别解耦，可由三种模式复用 | PSD Core、HTTP Binding |
+| PD-001 | 402 与 INS/DEL/AUP 的关系 | 修订方向已对齐：候选 `PSD-PAY-A402` 与三种场景组件解耦 | PSD Core、HTTP Binding |
 | PD-002 | CID 交易确认与 `Payment-Needed` 的关系 | `Payment-Needed` 引用或携带已确认交易事实，不直接等同整个 CID 对象 | CID/PSD 边界、Profile |
 | PD-003 | 工作流级 Binding 能否封装多步协议 | 允许，但必须声明覆盖组件、输入输出和证据 | Skill/CLI Binding |
 | PD-004 | Payment Validation 是否为独立语义 | Core 定义验证结果语义，Binding 可在工作流内部消费而不暴露完整消息 | PSD 状态机、测试 |
@@ -29,7 +29,7 @@
 
 ## 3. PD-001：402 与授权执行级别
 
-ACT 官网当前把 `Payment-Needed`、`Payment-Proof`、`Payment-Validation` 的 402 框架放在 `PSD-PAY-AUP`，但首期支付宝公开链路是用户逐笔确认，执行语义更接近 `PSD-PAY-INS`，未来还需要支持 `PSD-PAY-DEL`。
+ACT v2.0 官网当前把 `Payment-Needed`、`Payment-Proof`、`Payment-Validation` 的 402 框架放在 `PSD-PAY-AUP`，但首期支付宝公开链路是用户逐笔确认，执行语义更接近 `PSD-PAY-INS`，未来还需要支持 `PSD-PAY-DEL`。
 
 方案：
 
@@ -37,7 +37,7 @@ ACT 官网当前把 `Payment-Needed`、`Payment-Proof`、`Payment-Validation` �
 - B：抽出产品无关的支付要求、凭证和验证框架，由 INS/DEL/AUP 选择不同授权门禁和执行规则。
 - C：保持现状，由 Product Profile 声明跨组件复用。
 
-推荐 B。支付要求和凭证交换描述“如何完成一次机器支付”，INS/DEL/AUP 描述“凭什么授权执行”。二者解耦能减少重复 Binding，并与当前用户确认 402 产品事实一致。
+最新 v2.1 修订方向已选择 B，并提出独立的候选组件 `PSD-PAY-A402`。支付要求和凭证交换描述“如何完成一次机器支付”，INS/DEL/AUP 描述“凭什么授权执行”。剩余决策不再是“是否抽出”，而是正式编号、版本、公共状态机、Schema、与 v2.0 AUP 的兼容迁移，以及关联 MCP/API 接口方式的边界。
 
 ## 4. PD-002：CID 交易确认与支付要求
 
@@ -123,7 +123,7 @@ intent_id
 
 | 决策 ID | 结论 | 负责人 | 日期 | Core 影响 | Profile/Binding 影响 | 测试影响 |
 |---|---|---|---|---|---|---|
-| PD-001 | Pending | 观岳 |  |  |  |  |
+| PD-001 | Direction aligned; publication details pending | 观岳 | 2026-07-22 | 候选 `PSD-PAY-A402` | Profile/Binding 改为引用接入协议 | 待状态机与 Schema |
 | PD-002 | Pending | 观岳 |  |  |  |  |
 | PD-003 | Pending | 观岳 |  |  |  |  |
 | PD-004 | Pending | 观岳 |  |  |  |  |
