@@ -1,24 +1,20 @@
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-const REQUIRED_PROTOCOL_FIELDS = [
-  "out_trade_no",
-  "amount",
-  "currency",
-  "resource_id",
-  "pay_before",
-  "seller_signature",
-  "seller_sign_type",
-  "seller_unique_id",
-];
+export const PAYMENT_NEEDED_PROFILE_SCHEMA = JSON.parse(
+  readFileSync(
+    new URL(
+      "../../../profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+);
 
-const REQUIRED_METHOD_FIELDS = [
-  "seller_name",
-  "seller_id",
-  "seller_app_id",
-  "goods_name",
-  "seller_unique_id_key",
-  "service_id",
-];
+const REQUIRED_PROTOCOL_FIELDS =
+  PAYMENT_NEEDED_PROFILE_SCHEMA.properties.protocol.required;
+const REQUIRED_METHOD_FIELDS =
+  PAYMENT_NEEDED_PROFILE_SCHEMA.properties.method.required;
 
 export function decodePaymentNeeded(header) {
   if (!header || header.length > 32 * 1024) {
@@ -29,8 +25,17 @@ export function decodePaymentNeeded(header) {
   assertObject(value.method, "method");
   assertFields(value.protocol, REQUIRED_PROTOCOL_FIELDS, "protocol");
   assertFields(value.method, REQUIRED_METHOD_FIELDS, "method");
-  if (value.protocol.seller_sign_type !== "RSA2") {
+  const requiredSignType =
+    PAYMENT_NEEDED_PROFILE_SCHEMA.properties.protocol.properties.seller_sign_type
+      .const;
+  if (value.protocol.seller_sign_type !== requiredSignType) {
     throw new Error("protocol.seller_sign_type must be RSA2 for the current Alipay profile");
+  }
+  const currencyPattern = new RegExp(
+    PAYMENT_NEEDED_PROFILE_SCHEMA.properties.protocol.properties.currency.pattern,
+  );
+  if (!currencyPattern.test(value.protocol.currency)) {
+    throw new Error("protocol.currency must be a three-letter uppercase code");
   }
   if (Number.isNaN(Date.parse(value.protocol.pay_before))) {
     throw new Error("protocol.pay_before must be an ISO8601 timestamp");
@@ -50,13 +55,22 @@ export function sanitizedSummary(value) {
   };
 }
 
-async function inspect(url) {
+export async function inspectPaymentRequirement(url) {
   const response = await fetch(url, { redirect: "manual" });
   if (response.status !== 402) {
     throw new Error(`Expected HTTP 402, received ${response.status}`);
   }
   const decoded = decodePaymentNeeded(response.headers.get("payment-needed"));
-  console.log(JSON.stringify(sanitizedSummary(decoded), null, 2));
+  return {
+    status: response.status,
+    decoded,
+    summary: sanitizedSummary(decoded),
+  };
+}
+
+async function inspect(url) {
+  const result = await inspectPaymentRequirement(url);
+  console.log(JSON.stringify(result.summary, null, 2));
   console.log("Payment requirement inspection passed. No payment was performed.");
 }
 

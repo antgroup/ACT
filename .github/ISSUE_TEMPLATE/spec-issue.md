@@ -7,7 +7,7 @@ labels: specification
 
 ## 涉及的协议组件
 
-<!-- 如 ADD-INT-ISR, CID-CART-CFM, PSD-PAY-A2A 等 -->
+<!-- 请注明 ACT 版本、Domain、场景组件、接入协议或 Binding -->
 
 ## 问题描述
 
@@ -25,5 +25,5 @@ labels: specification
 
 - [ ] 仅影响文档表述
 - [ ] 影响数据结构（需同步更新 JSON Schema）
-- [ ] 影响实现行为（需同步更新参考实现）
+- [ ] 影响实现行为（需同步更新 Quickstart、Binding 或后续参考实现）
 - [ ] 破坏性变更（影响已有实现的兼容性）

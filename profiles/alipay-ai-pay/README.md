@@ -1,84 +1,55 @@
 # Alipay AI Pay Profile
 
-> Status: Preview / Non-normative  
-> Profile version: `0.1-working-draft`  
-> Product source snapshot: 2026-07-22
-> Compatible ACT version: pending ACT Core 2.1 revision
+> 状态：Profile Preview / Non-normative；Profile 版本：`0.9-preview.1`；产品资料核对：2026-08-03；ACT 兼容版本：ACT Core `2.1-candidate.1`
 
-This directory records how the public Alipay AI Pay products relate to ACT working semantics. It is an alignment workspace for the July Preview, not a published ACT Product Profile.
+本目录记录支付宝 AI 付公开产品如何映射 ACT 工作语义。它是公开 Preview 阶段的产品 Profile 工作区，不是已经发布的规范性 Product Profile。
 
-支付宝产品不是 ACT 的第五个域。Agent 支付赋予买方 Agent 支付能力，AI 按量付费赋予卖方服务接受机器支付的能力；二者是同一机器支付闭环的两侧，通过 Product Profile 组合 ADD、CID、PSD、TSD 的语义。先阅读[双侧能力与 ACT 四域映射](domain-mapping.md)。
+支付宝产品不是 ACT 的第五个域。Agent 支付赋予买方 Agent 支付能力，AI 按量付费赋予卖方服务接受机器支付的能力；二者是同一机器支付闭环的两侧，通过 Product Profile 组合 ADD、CID、PSD、TSD。先阅读[双侧能力与 ACT 四域映射](mappings/domains.md)。
 
-ACT v2.1 修订方向将支付场景与接入协议解耦：大会首期按 L1 `PSD-PAY-INS` + 候选 `PSD-PAY-A402` + 官方 Skill/CLI Binding + Alipay AI Pay Profile 组织。A402 尚未进入公开正式规范，因此这里只表达候选映射，不构成规范性声明。
+ACT v2.1 完成版支付服务域将支付场景与接入协议解耦：首期按 L1 `PSD-PAY-INS` + 候选 `PSD-PAY-A402` + 官方 Skill/CLI Binding + Alipay AI Pay Profile 组织。仓库公开规范仍为 Candidate / Non-normative，因此这里只表达候选映射，不构成正式 Conformance 声明。
 
-## Scope
+## 目录
 
-The first preview covers one end-to-end machine-payment loop with two public integration sides:
-
-| Capability side | Participant | Public integration baseline | Main ACT coverage |
-|---|---|---|---|
-| Agent Payment | Buyer Agent | Official Alipay wallet and payment Skill/CLI | ADD intent; CID transaction context; PSD INS scenario + candidate A402; TSD evidence |
-| AI Metered Payment | Paid resource provider | HTTP 402, `Payment-Needed`, `Payment-Proof`, payment verification and fulfillment confirmation | CID resource/capability/transaction; candidate PSD A402 and verification; TSD payment/fulfillment evidence |
-
-The two capability sides form one payment loop:
-
-```mermaid
-sequenceDiagram
-    participant Agent as Buyer Agent
-    participant Resource as Paid Resource
-    participant Alipay as Alipay AI Pay
-
-    Agent->>Resource: Request resource
-    Resource-->>Agent: 402 + Payment-Needed
-    Agent->>Alipay: User-authorized payment via official Skill
-    Alipay-->>Agent: Payment-Proof
-    Agent->>Resource: Retry original request with proof
-    Resource->>Alipay: Verify proof
-    Alipay-->>Resource: Payment facts
-    Resource-->>Agent: Deliver resource
-    Resource->>Alipay: Confirm fulfillment
-```
-
-## Documents
-
-| Document | Purpose |
-|---|---|
-| [End-to-end capability contract](end-to-end-capability-contract.md) | Working contract for buyer Agent payment, seller machine-payment and end-to-end evidence |
-| [Two-sided capability-to-domain mapping](domain-mapping.md) | Primary map from buyer Agent payment and seller machine-payment capabilities to ADD, CID, PSD and TSD |
-| [Official sources](official-sources.md) | Public product sources and snapshot policy |
-| [2026-07-21 product fact audit](product-fact-audit-2026-07-21.md) | Checked public facts, discrepancies and validation gaps |
-| [2026-07-21 Skill/CLI behavior audit](skill-cli-behavior-audit-2026-07-21.md) | Real public buyer workflow, command boundary and validation gaps |
-| [Agent Payment alignment](agent-payment-alignment.md) | Wallet, Skill/CLI and buyer payment path |
-| [Metered Payment alignment](metered-payment-alignment.md) | HTTP 402 provider path |
-| [Field mapping](field-mapping.md) | Working ACT-to-Alipay field mapping |
-| [Lifecycle mapping](lifecycle-mapping.md) | Product events and working ACT states |
-| [Error mapping](error-mapping.md) | Product errors and candidate recovery actions |
-
-## Layer boundary
-
-| Layer | Owns | Must not own |
+| 区域 | 内容 | 推荐入口 |
 |---|---|---|
-| ACT Core | Cross-product meaning, lifecycle, verification responsibility, recovery semantics | Alipay API names, merchant identifiers, RSA2 details |
-| Alipay AI Pay Profile | Product fields, API calls, Skill/CLI capabilities, signatures and product error mapping | Redefinition of Core semantics |
-| Binding | HTTP Header or Skill/CLI packaging and transport behavior | Product onboarding policy |
-| Official product documentation | Onboarding, credentials, sandbox operation and current product procedures | ACT protocol definitions |
+| `capabilities/` | 买方、卖方及端到端最小能力契约 | [双侧能力接入契约](capabilities/end-to-end-contract.md) |
+| `mappings/` | ACT 四域、产品字段、生命周期和错误映射 | [四域映射](mappings/domains.md) |
+| `bindings/` | 支付宝产品特定的 Skill/CLI 工作流封装 | [Skill/CLI Binding](bindings/skill-cli/README.md) |
+| `schemas/` | 当前产品报文、验款事实和错误映射的机器可读 Preview 契约，不是 ACT Core Schema | [Payment-Needed](schemas/payment-needed.preview.schema.json) · [Payment-Proof](schemas/payment-proof.preview.schema.json) · [Verification Result](schemas/payment-verification-result.preview.schema.json) · [Error Mapping](schemas/error-mapping.preview.json) |
+| `sources/` | 官网资料、快照策略和事实审计 | [官方资料表](sources/README.md) |
 
-## Status labels
+产品待复核事项的机器状态和安全下限见 [`profile-review-status.json`](profile-review-status.json)。这些事项按影响分别阻塞 Sandbox Verified、生产声明或未来扩展，不再笼统阻塞 Profile Preview。
 
-| Label | Meaning |
+### 能力
+
+- [Agent 支付能力](capabilities/agent-payment.md)
+- [AI 按量付费能力](capabilities/metered-payment.md)
+- [双侧能力接入契约](capabilities/end-to-end-contract.md)
+
+### 映射
+
+- [双侧能力与 ACT 四域](mappings/domains.md)
+- [字段映射](mappings/fields.md)
+- [生命周期映射](mappings/lifecycle.md)
+- [错误映射](mappings/errors.md)
+
+## 分层边界
+
+| 层次 | 负责 | 不负责 |
+|---|---|---|
+| ACT Core | 跨产品语义、生命周期、验证责任和恢复语义 | 支付宝 API 名称、商户标识和 RSA2 细节 |
+| Alipay AI Pay Profile | 产品字段、API、Skill/CLI、签名和产品错误映射 | 重定义 Core 语义 |
+| Binding | HTTP Header 或 Skill/CLI 的封装和传输行为 | 产品开户规则 |
+| 支付宝官方文档 | 开户、凭证、沙箱和当前产品操作 | ACT 协议定义 |
+
+## 状态标签
+
+| 标签 | 含义 |
 |---|---|
-| `PUBLIC-FACT` | Directly supported by a public Alipay source |
-| `PRODUCT-REVIEW` | Interpretation of public material that needs Alipay product confirmation |
-| `PROTOCOL-PENDING` | Depends on the ACT Core revision led by the protocol owner |
-| `VALIDATION-PENDING` | Must be verified with the official sandbox or Skill/CLI |
+| `PUBLIC-FACT` | 有公开支付宝资料直接支持 |
+| `CANDIDATE-MAPPED` | 已映射到 ACT `2.1-candidate.1` 机器契约，仍为非规范性候选 |
+| `PRODUCT-REVIEW` | 对公开资料的解释仍需产品复核 |
+| `PROTOCOL-PENDING` | 依赖未进入当前 A402 Candidate 范围的后续 ACT 协议决策 |
+| `VALIDATION-PENDING` | 仅相应 Sandbox Verified 或更高等级主张必须通过官方沙箱或 Skill/CLI 验证 |
 
-## Compatibility statement
-
-An implementation cannot claim conformance to this working draft. Conference release conformance will require:
-
-1. a reviewed ACT Core candidate;
-2. a versioned Alipay AI Pay Profile;
-3. a declared Binding;
-4. successful profile tests using the official public integration path.
-
-During the July Preview, use the three scoped working claims in the [end-to-end capability contract](end-to-end-capability-contract.md#9-分级验收声明) instead of a general ACT conformance claim.
+实现可以声明“映射到 Alipay Profile Preview”，但不能据此声明已通过真实沙箱、ACT SEP Candidate 或生产 Conformance。真实互操作声明必须使用[双侧能力接入契约中的分级声明](capabilities/end-to-end-contract.md#9-分级验收声明)并附相应证据。

@@ -58,7 +58,7 @@ AI 按量付费也不是只属于 PSD。卖方接入主要落在 CID、PSD 和 T
 | PSD | 返回 402、接收 Proof、调用支付宝验款并确认履约 | 支付宝字段、RSA2 和 API 属于 Product Profile |
 | TSD | 形成支付完成和资源履约的可关联证据 | 产品日志/回调不自动等同于 ACT TSD 记录 |
 
-ACT v2.0 官网目前把 402 基础框架放在 `PSD-PAY-AUP`；v2.1 修订方向拟将其抽为独立的 `PSD-PAY-A402`。买方实际采用 `PSD-PAY-INS`、`PSD-PAY-DEL` 还是 `PSD-PAY-AUP` 取决于授权场景，A402 只负责支付接入交互。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#4-卖方机器支付能力映射)。
+ACT v2.1 候选将 402 基础框架建模为独立的 `PSD-PAY-A402`。买方实际采用 `PSD-PAY-INS`、`PSD-PAY-DEL` 还是 `PSD-PAY-AUP` 取决于授权场景，A402 只负责支付接入交互。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/mappings/domains.md#4-卖方机器支付能力映射)。
 
 ## 5. 第一步：返回支付要求
 
@@ -81,7 +81,7 @@ ACT 将其理解为产品无关的 Payment Requirement；`Payment-Needed` 的 `p
 - 私钥只在安全的服务端环境中使用。
 - 账单过期后不会静默修改旧账单并继续支付。
 
-准确字段和签名规则直接查阅[官网第一步：返回 402 账单](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)。ACT 工作映射见 [Field mapping](../../profiles/alipay-ai-pay/field-mapping.md)。
+准确字段和签名规则直接查阅[官网第一步：返回 402 账单](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)。ACT 工作映射见 [Field mapping](../../profiles/alipay-ai-pay/mappings/fields.md)。
 
 ## 6. 第二步：验证支付凭证
 
@@ -143,12 +143,12 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 - 不要信任 Agent 传入的金额、商户订单或资源标识。
 - 不要在验款失败时复用原订单并自动修改金额。
 - 不要把同一支付用于多个不同资源。
-- 不要使用 `impl/python/` 的 Mock 支付作为沙箱验证。
+- 不要使用 Demo 的 Guided Preview 或自行构造的成功结果作为沙箱验证。
 
 ## 11. 下一步
 
 - 直接运行卖方入口：[Metered REST Provider Quickstart](../../quickstarts/alipay/metered-rest-provider/README.md)
 - 联合验证 Agent 买方：[端到端 402 验证](end-to-end-402.md)
-- 查看生命周期：[Lifecycle mapping](../../profiles/alipay-ai-pay/lifecycle-mapping.md)
-- 查看错误恢复：[Error mapping](../../profiles/alipay-ai-pay/error-mapping.md)
+- 查看生命周期：[Lifecycle mapping](../../profiles/alipay-ai-pay/mappings/lifecycle.md)
+- 查看错误恢复：[Error mapping](../../profiles/alipay-ai-pay/mappings/errors.md)
 - 查看支付宝官方示例：[aipay-402-example](https://github.com/alipay/ai/tree/main/code_example/aipay-402-example)

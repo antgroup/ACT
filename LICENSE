@@ -1,7 +1,10 @@
-本仓库采用双许可证：
+# ACT Protocol licensing
 
-1. specs/ 目录下的规范文档采用 Creative Commons Attribution 4.0 International (CC BY 4.0) 许可证。
-   详见 LICENSE-CC-BY-4.0。
+Unless a file states otherwise, this repository uses two licenses:
 
-2. impl/、schemas/、examples/ 目录下的代码、Schema 和示例采用 Apache License 2.0。
-   详见 LICENSE-Apache-2.0。
+1. Documentation is licensed under Creative Commons Attribution 4.0 International (`CC-BY-4.0`). This includes Markdown and other documentation under `specs/`, `docs/`, `profiles/`, and `bindings/`, plus the root project documentation. See `LICENSE-CC-BY-4.0`.
+2. Source code, JSON Schema, executable examples, tests, and build or automation files are licensed under Apache License 2.0 (`Apache-2.0`). This includes code and related assets under `specs/*/schemas/`, `examples/`, `demos/`, `quickstarts/`, `scripts/`, and `.github/`. See `LICENSE-APACHE-2.0`.
+
+When a directory contains both documentation and code, the file type and an explicit per-file notice take precedence over the directory default. Third-party dependencies and linked external projects remain under their own licenses.
+
+The copyright holder and maintainers must confirm this allocation before the first formal public release. This notice does not change the license of third-party material.

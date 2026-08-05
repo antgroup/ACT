@@ -1,9 +1,19 @@
 # ACT Protocol
 
-ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放协议项目。
+ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放协议项目。当前开源主轴是**支付服务域（PSD）的一键式接入**：用候选 Core 描述支付工具、L1/L2/L3 场景和 A402，用 Product Profile 与 Quickstart 连接支付宝公开产品。
 
 > [!IMPORTANT]
-> ACT 协议正在修订。仓库中的 `specs/2.0/` 是现有工作版本，不应被理解为已经完成生产稳定性认证。v2.1 修订方向拟将场景组件与候选 `PSD-PAY-A402` 支付接入协议解耦；正式发布前不改写 2.0 规范。修订期间的目标、边界和计划见[开源重构工作区](docs/open-source-restructure/README.md)。
+> 当前公开包只包含 `specs/2.1/` Candidate Working Draft，不包含旧版目录或旧版示例，也不代表已经完成生产稳定性认证。2.1 支付域候选已对齐 2026-08-03 完成修订的《支付服务域》，其中 `PSD-PAY-A402` 与 INS/L1、DEL/L2、AUP/L3 场景解耦。
+
+ACT 2.1 PSD Candidate 已对齐 2026-08-03 协议源并具备 A402 Candidate 机器契约，但尚未形成公开 Release。版权/许可证确认、私密安全披露渠道、公开远端和干净发布快照仍是公开发布门禁。支付宝 Sandbox 由官网提供，只影响 `Sandbox Verified` 声明，不阻塞 ACT Candidate 或 Alipay Profile Preview；先看[当前发布说明](docs/project/releases/2026-08-03-candidate-publication.md)，精确状态见[机器可读分级门禁](docs/project/releases/release-readiness.json)。
+
+想先验证仓库能否工作、又不配置密钥或发起支付，可在仓库根目录运行：
+
+```bash
+npm --prefix quickstarts/alipay/end-to-end-402 run local
+```
+
+这条本地 Golden Path 只验证 `402`、`Payment-Needed` 解码和“假 Proof 不得交付资源”的安全边界。它不会连接支付宝、执行支付或模拟支付成功；真实接入继续走下面的官方产品路径。
 
 ## 你想做什么？
 
@@ -11,32 +21,24 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 
 首期对齐支付宝 AI 付的 **Agent 支付**产品，公开接入基线是支付宝官方钱包与 Payment Skill/CLI。
 
-- 按开发者路径接入：[Agent 支付 Getting Started](docs/getting-started/agent-payment.md)
-- 直接运行：[Agent Payment Quickstart](quickstarts/alipay/agent-payment/README.md)
-- 了解产品与 ACT 的映射：[Agent Payment alignment](profiles/alipay-ai-pay/agent-payment-alignment.md)
+- 主路径：[Agent 支付 Getting Started](docs/getting-started/agent-payment.md)
 - 查看支付宝官方接入资料：[AI 钱包使用指南](https://aipay.alipay.com/wallet-guide)
-- 查看官方开源能力：[alipay/payment-skills](https://github.com/alipay/payment-skills)
 
 ### 我提供收费 API、MCP Tool 或 Skill
 
 首期对齐支付宝 AI 付的 **AI 按量付费**产品，以官网公开的 HTTP 402 流程为接入基线。
 
-- 按开发者路径接入：[AI 按量付费 Getting Started](docs/getting-started/metered-payment.md)
-- 直接运行：[Metered REST Provider Quickstart](quickstarts/alipay/metered-rest-provider/README.md)
-- 了解产品与 ACT 的映射：[Metered Payment alignment](profiles/alipay-ai-pay/metered-payment-alignment.md)
+- 主路径：[AI 按量付费 Getting Started](docs/getting-started/metered-payment.md)
 - 查看支付宝官方接入资料：[AI 按量付费接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)
-- 查看工作字段映射：[ACT—Alipay field mapping](profiles/alipay-ai-pay/field-mapping.md)
 
 ### 我要理解或实现 ACT
 
-1. 从[ACT 项目框架](docs/architecture/README.md)理解 Domain、场景、接入协议、Binding 和 Product Profile。
-2. 阅读[现有协议概览](specs/2.0/overview.md)。
-3. 查看[协议修订与开源重构计划](docs/open-source-restructure/05-revision-tracker.md)。
-4. 查看 [Alipay AI Pay Profile 工作草案](profiles/alipay-ai-pay/README.md)。
-5. 查看 [Alipay AI Pay 双侧能力与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
-6. 查看 [双侧能力接入契约 v0.1](profiles/alipay-ai-pay/end-to-end-capability-contract.md)。
+- 先看当前开源核心：[支付服务域候选](specs/2.1/payment-services-domain-spec.md)
+- 再理解整体分层：[ACT 项目框架](docs/architecture/README.md)
 
-不确定应该选择哪条路径？从[接入方式选择页](docs/getting-started/README.md)开始。
+### 延伸阅读
+
+实现细节、版本关系和项目计划集中在[支付宝 AI 付 Quickstart](quickstarts/alipay/README.md)、[Alipay AI Pay Profile](profiles/alipay-ai-pay/README.md)、[机器可读版本清单](release-manifest.json)和[项目修订状态](docs/project/revision-status.md)，不需要在首次接入时全部阅读。版本变化见 [Changelog](CHANGELOG.md)。
 
 ## 一个机器支付闭环，两侧能力
 
@@ -64,38 +66,37 @@ sequenceDiagram
     Service->>Alipay: Confirm fulfillment
 ```
 
-ACT Core 描述跨产品语义；Alipay AI Pay Profile 描述支付宝字段、API、Skill/CLI 和错误映射；HTTP 或 Skill/CLI Binding 描述消息如何传递。
+ACT Core 描述跨产品语义；公共 HTTP A402 Binding 描述消息如何传递；Alipay AI Pay Profile 描述支付宝字段、API、错误映射及产品专属 Skill/CLI 工作流。
 
-July Preview 使用[双侧能力接入契约](profiles/alipay-ai-pay/end-to-end-capability-contract.md)区分买方能力、卖方能力和端到端互操作证据，不以单侧接入声明完整兼容。
+[双侧能力接入契约](profiles/alipay-ai-pay/capabilities/end-to-end-contract.md)区分买方能力、卖方能力和端到端互操作证据，不以单侧接入或本地测试声明完整兼容。
 
 ## 当前文档状态
 
-| 内容 | 位置 | 状态 |
+| 内容 | 位置 | 状态 | Normative | Production certified |
+|---|---|---|---|---|
+| ACT 2.1 公开候选 | [`specs/2.1/`](specs/2.1/overview.md) | Candidate Working Draft；不代表 SEP Candidate | 否 | 否 |
+| Alipay AI Pay Profile | [`profiles/alipay-ai-pay/`](profiles/alipay-ai-pay/) | Preview | 否 | 否 |
+| Quickstarts | [`quickstarts/`](quickstarts/) | 产品接入与验证路径 | 否 | 否 |
+| Bindings | [`bindings/`](bindings/) | Preview | 否 | 否 |
+| 项目路线与修订状态 | [`docs/project/`](docs/project/) | Active | 否 | 否 |
+| 分级发布门禁 | [`docs/project/releases/release-readiness.json`](docs/project/releases/release-readiness.json) | ACT Candidate / Profile Preview / Sandbox Verified 分离；公开发布治理仍阻塞 | 否 | 否 |
+
+**当前建议实现基线**：生产产品行为以所选 Product Profile 和官方产品文档为准；需要实现 ACT 时，只能把 2.1 Candidate Working Draft 作为公开评审和原型输入。当前任何组合都不得声明已通过 ACT Production Conformance。
+
+## 当前候选域结构
+
+ACT 仍按四个域组织，但当前开源交付采用 PSD-first：PSD 是完整候选主轴，其他域只维护支付闭环需要的引用边界。
+
+| 域 | 当前公开入口 | 状态 |
 |---|---|---|
-| ACT 2.0 工作规范 | [`specs/2.0/`](specs/2.0/) | 修订中，不作生产稳定声明 |
-| Alipay AI Pay Profile | [`profiles/alipay-ai-pay/`](profiles/alipay-ai-pay/) | Preview / Non-normative |
-| 业务场景 | [`examples/scenarios/`](examples/scenarios/) | 说明性示例，部分术语待随协议修订 |
-| 报文示例 | [`examples/payloads/`](examples/payloads/) | 工作示例，尚未形成完整一致性认证 |
-| Python 项目 | [`impl/python/`](impl/python/) | 本地模拟 Demo，不是真实支付宝接入 |
-| Quickstarts | [`quickstarts/`](quickstarts/) | 官方 Skill/CLI、HTTP 402 与 Sandbox 最短路径 |
-| Bindings | [`bindings/`](bindings/) | HTTP A402 与 Skill/CLI 承载边界 |
-| Conformance | [`conformance/`](conformance/) | 规划中；当前不授予协议合规结论 |
-| 重构计划 | [`docs/open-source-restructure/`](docs/open-source-restructure/) | Active |
+| ADD | [2.1 修订状态](specs/2.1/revision-status.md) | 仅维护 IAC 等支付依赖；不阻塞 PSD 接入 |
+| CID | [商业支付能力协商候选](specs/2.1/commerce-payment-negotiation.md) | Partial Candidate |
+| PSD | [支付服务域候选](specs/2.1/payment-services-domain-spec.md) | 当前开源主轴；六组件 Candidate Working Draft |
+| TSD | [2.1 修订状态](specs/2.1/revision-status.md) | 仅维护支付证据/履约边界；不阻塞 PSD 接入 |
 
-## 现有协议工作版本
+组件名称、消息结构和域边界可能随当前修订发生变化。实现者应同时关注[规范修订状态](specs/2.1/revision-status.md)和[项目修订追踪表](docs/project/revision-status.md)。
 
-现有规范按照四个域组织：
-
-| 域 | 现有文档 | 解决的问题 |
-|---|---|---|
-| ADD | [Authorization & Delegation](specs/2.0/authorization-delegation-domain-spec.md) | 用户意图与授权委托 |
-| CID | [Commerce Interaction](specs/2.0/commerce-interaction-domain-spec.md) | Agent 与商户的商业交互 |
-| PSD | [Payment Services](specs/2.0/payment-services-domain-spec.md) | 支付请求、执行与结果 |
-| TSD | [Trust Services](specs/2.0/trust-services-domain-spec.md) | 身份、存证与争议 |
-
-组件名称、消息结构和域边界可能随当前修订发生变化。新实现应同时关注[修订追踪表](docs/open-source-restructure/05-revision-tracker.md)。
-
-支付宝产品不是第五个域，也不是与某一个域一一对应。Agent 支付和 AI 按量付费是同一机器支付闭环的买方与卖方能力，作为 Product Profile 跨四域协作；当前组件级关系见[双侧能力与 ACT 四域映射](profiles/alipay-ai-pay/domain-mapping.md)。
+支付宝产品不是第五个域，也不是与某一个域一一对应。Agent 支付和 AI 按量付费是同一机器支付闭环的买方与卖方能力，作为 Product Profile 跨四域协作；当前组件级关系见[双侧能力与 ACT 四域映射](profiles/alipay-ai-pay/mappings/domains.md)。
 
 ## Demo、Quickstart 与参考实现
 
@@ -109,35 +110,31 @@ July Preview 使用[双侧能力接入契约](profiles/alipay-ai-pay/end-to-end-
 | Reference Implementation | 声明并测试其协议覆盖范围的实现 |
 | Conformance Suite | 判断实现是否满足 Core 或 Product Profile |
 
-当前 `impl/python/` 属于 Demo。真实接入从 [Quickstarts](quickstarts/README.md) 开始；本地测试与正式 Sandbox 证据的边界见各 Quickstart README。
+当前大会 Demo 通过 Guided Preview 解释协议流程，并可回放官方沙箱证据；它不替代真实接入。真实接入从 [Quickstarts](quickstarts/README.md) 开始，本地演示与正式 Sandbox 证据的边界见各 Quickstart README。
 
 ## 仓库结构
 
 ```text
 act-protocol/
-├── specs/2.0/                    # 现有协议工作版本与 Schema
-├── profiles/alipay-ai-pay/       # 支付宝 AI 付 Profile 工作草案
-├── bindings/                     # HTTP A402 与 Skill/CLI Binding
-├── quickstarts/alipay/           # 官方产品与 Sandbox 最短接入路径
-├── conformance/                  # 一致性测试入口与状态
-├── reference-implementations/    # 参考实现发布入口（当前为空）
-├── demos/                        # Demo 定位与迁移入口
-├── examples/scenarios/           # 说明性业务场景
-├── examples/payloads/            # JSON 工作示例
-├── docs/architecture/            # 项目分层、目录责任与依赖方向
-├── docs/getting-started/          # 开发者接入路径
-├── impl/python/                  # 本地模拟 Demo
-├── docs/open-source-restructure/ # 重构方案、路线图与追踪
-└── scripts/                      # 仓库质量检查
+├── specs/                        # 版本化协议与 Schema
+├── profiles/                     # 产品到 ACT 的能力和字段映射
+├── bindings/                     # 跨产品 HTTP A402 Binding
+├── quickstarts/                  # 官方产品与 Sandbox 最短接入路径
+├── docs/                         # 接入、架构和项目状态
+├── demos/                        # 支付宝 AI 付协议演示与官方沙箱证据回放
+├── release-manifest.json         # 机器可读版本、状态和组件依赖
+└── scripts/                      # 仓库质量与 Quickstart 检查
 ```
 
 ## 本地质量检查
 
+完整检查需要 Python 3、Node.js 18+、JDK 8+ 和 Maven 3.8+：
+
 ```bash
-python3 scripts/check_repository.py
+./scripts/verify.sh
 ```
 
-该检查覆盖 Markdown 本地链接、UTF-8/JSON 语法、Python 语法以及 Quickstart 静态结构。Quickstart 自身的测试命令见对应目录；正式一致性测试仍在建设中。
+统一验证会运行仓库完整性检查、买方与端到端 Node.js 测试，以及卖方 Maven 测试。仅运行不需要项目依赖的静态检查时，可执行 `python3 scripts/check_repository.py`。正式一致性测试仍在建设中。
 
 ## 贡献
 
@@ -150,6 +147,6 @@ python3 scripts/check_repository.py
 
 协议正在修订。涉及 Core 对象、组件编号、状态机或 Schema 的修改，应先关联对应修订议题；产品事实应引用可公开访问的官方资料。
 
-## 许可证状态
+## 许可证
 
-仓库当前声明规范文档采用 CC BY 4.0，代码、Schema 和示例采用 Apache 2.0，但根 `LICENSE` 所引用的完整许可证文件尚待补齐和维护者确认。完成许可证治理前，请勿仅依据 README 推断具体文件的授权范围。
+规范和说明文档计划采用 CC BY 4.0；代码、Schema 和可执行示例计划采用 Apache 2.0。详细目录边界见 [LICENSE](LICENSE)。许可证文本已随仓库提供，但版权主体和最终适用范围仍需维护者或法务在正式发布前确认。

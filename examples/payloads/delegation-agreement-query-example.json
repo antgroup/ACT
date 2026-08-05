@@ -1,9 +1,0 @@
-{
-  "request_id": "req-del-query-001-def456",
-  "agreement_no": "AGR-20260601-8800100123456",
-  "principal_id": "did:act:example.com/user-alice",
-  "agent_id": "did:act:example.com/agent-alice-001",
-  "timestamp": "2026-06-15T08:30:00Z",
-  "signature": "MEUCIQDKxJ7dBJz...truncated...Y2jmQg==",
-  "signature_algorithm": "ES256"
-}

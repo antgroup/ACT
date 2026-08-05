@@ -1,13 +1,13 @@
 ---
-name: 实现问题
-about: 报告参考实现中的 Bug 或提出功能请求
+name: 实现与工具问题
+about: 报告 Quickstart、Demo、Binding 或开发者工具中的问题
 title: '[实现] '
 labels: implementation
 ---
 
 ## 涉及的模块
 
-<!-- 如 impl/typescript/src/add/ -->
+<!-- 如 quickstarts/alipay/metered-rest-provider 或 demos/alipay-ai-pay-sandbox-showcase -->
 
 ## 问题描述
 
@@ -23,5 +23,13 @@ labels: implementation
 
 ## 环境信息
 
-- Node.js 版本：
-- TypeScript 版本：
+- 操作系统：
+- 运行时与版本：
+- 仓库 Commit：
+
+## 接入边界
+
+- [ ] 仅本地测试
+- [ ] 支付宝官方 Skill/CLI
+- [ ] 支付宝沙箱/OpenAPI
+- [ ] 未执行真实支付

@@ -1,0 +1,8 @@
+{
+  "error_id": "ACT-A402-PROOF_INVALID",
+  "category": "PAYMENT_PROOF_VALIDATION",
+  "phase": "PROOF_VALIDATION",
+  "retryability": "AFTER_CORRECTION",
+  "valid_next_actions": ["OBTAIN_NEW_PROOF", "CREATE_NEW_REQUIREMENT", "ABORT"],
+  "message": "The proof is expired or does not match this resource."
+}

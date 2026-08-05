@@ -59,7 +59,12 @@ final class Config {
                 required(env, "ALIPAY_GATEWAY_URL"),
                 required(env, "ALIPAY_APP_ID"),
                 secret(env, "ALIPAY_PRIVATE_KEY", "ALIPAY_PRIVATE_KEY_FILE"),
-                secret(env, "ALIPAY_PUBLIC_KEY", "ALIPAY_PUBLIC_KEY_FILE"),
+                secret(
+                        env,
+                        "ALIPAY_ALIPAY_PUBLIC_KEY",
+                        "ALIPAY_ALIPAY_PUBLIC_KEY_FILE",
+                        "ALIPAY_PUBLIC_KEY",
+                        "ALIPAY_PUBLIC_KEY_FILE"),
                 env.getOrDefault("ALIPAY_APP_AUTH_TOKEN", ""),
                 required(env, "ALIPAY_SELLER_ID"),
                 required(env, "ALIPAY_SELLER_NAME"),
@@ -93,6 +98,30 @@ final class Config {
         }
         byte[] bytes = Files.readAllBytes(Paths.get(path));
         return normalizeKey(new String(bytes, StandardCharsets.UTF_8));
+    }
+
+    private static String secret(
+            Map<String, String> env,
+            String directName,
+            String fileName,
+            String legacyDirectName,
+            String legacyFileName) throws IOException {
+        if (nonBlank(env.get(directName)) || nonBlank(env.get(fileName))) {
+            return secret(env, directName, fileName);
+        }
+        if (nonBlank(env.get(legacyDirectName)) || nonBlank(env.get(legacyFileName))) {
+            System.err.println(
+                    "Deprecated Alipay public-key configuration: use "
+                            + directName + " or " + fileName);
+            return secret(env, legacyDirectName, legacyFileName);
+        }
+        throw new IllegalArgumentException(
+                "Set " + directName + " or " + fileName
+                        + ". The value must be the Alipay public key, not the app public key.");
+    }
+
+    private static boolean nonBlank(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 
     private static String normalizeKey(String value) {

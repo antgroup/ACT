@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/2.1-candidate.1/a402/payment-validation.schema.json",
+  "title": "ACT A402 Payment-Validation Candidate Payload",
+  "$comment": "Decoded optional Header payload; Candidate Working Draft / Non-normative",
+  "type": "object",
+  "required": ["protocol", "method"],
+  "properties": {
+    "protocol": {
+      "type": "object",
+      "required": [
+        "method_id", "method_version", "out_trade_no", "resource_id", "trade_no",
+        "request_fingerprint", "validation_status", "transaction_state", "validated_at"
+      ],
+      "properties": {
+        "method_id": { "$ref": "common.schema.json#/$defs/methodId" },
+        "method_version": { "$ref": "common.schema.json#/$defs/methodVersion" },
+        "out_trade_no": { "$ref": "common.schema.json#/$defs/identifier" },
+        "resource_id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "trade_no": { "$ref": "common.schema.json#/$defs/identifier" },
+        "request_fingerprint": { "$ref": "common.schema.json#/$defs/requestFingerprint" },
+        "validation_status": { "enum": ["VALID", "INVALID", "UNKNOWN"] },
+        "delivery_status": { "enum": ["NOT_STARTED", "STARTED", "DELIVERED", "FAILED", "UNKNOWN"] },
+        "fulfillment_status": { "enum": ["NOT_CONFIRMED", "PENDING", "CONFIRMED", "FAILED", "UNKNOWN"] },
+        "transaction_state": { "$ref": "transaction-state.schema.json#/$defs/state" },
+        "validated_at": { "$ref": "common.schema.json#/$defs/dateTime" },
+        "error": { "$ref": "error.schema.json" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/evidenceRef" },
+          "uniqueItems": true,
+          "maxItems": 20
+        }
+      },
+      "additionalProperties": false
+    },
+    "method": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -17,7 +17,7 @@
 
 - 阅读我们的[行为准则](CODE_OF_CONDUCT.md)
 - 了解项目的[治理规范](GOVERNANCE.md)
-- 加入社区讨论：[GitHub Discussions](#)
+- 查看仓库现有 Issues 和公开项目状态，避免重复提案
 
 ### 环境准备
 
@@ -26,13 +26,8 @@
 git clone https://github.com/act-protocol/act-protocol.git
 cd act-protocol
 
-# 运行仓库基础检查
-python3 scripts/check_repository.py
-
-# 根据贡献范围运行 Quickstart 测试
-cd quickstarts/alipay/agent-payment && npm test
-cd ../end-to-end-402 && npm test
-cd ../metered-rest-provider && mvn test
+# 运行仓库与全部 Quickstart 检查
+./scripts/verify.sh
 ```
 
 ## 贡献类型
@@ -65,7 +60,7 @@ cd ../metered-rest-provider && mvn test
 ### 1. 识别需求
 
 - **Bug/问题**：先搜索现有 Issues，避免重复
-- **新功能**：在 GitHub Discussions 中先进行公开讨论
+- **新功能**：先创建 Issue 公开讨论范围和兼容性影响
 - **安全问题**：参考[安全披露](SECURITY.md)流程
 
 ### 2. 创建 Issue
@@ -74,10 +69,11 @@ cd ../metered-rest-provider && mvn test
 
 | 类型 | 模板 | 适用场景 |
 |------|------|---------|
-| 🐛 Bug报告 | `bug_report.md` | 发现规范或实现的缺陷 |
-| 📝 规范提案 | `spec-proposal.md` | 规范新增或变更 |
-| ✨ 功能请求 | `feature_request.md` | 实现层面的改进 |
-| 🔒 安全问题 | `security.md` | 安全漏洞（私密Issue） |
+| 规范问题或提案 | `.github/ISSUE_TEMPLATE/spec-issue.md` | 规范勘误、澄清或变更建议 |
+| A402 协议决策 | `.github/ISSUE_TEMPLATE/a402-protocol-decision.md` | 评审现有 `DP-A402-NNN` 选项并形成 ADR 输入 |
+| 实现与工具问题 | `.github/ISSUE_TEMPLATE/implementation-issue.md` | Quickstart、Demo、Binding 或工具问题 |
+
+安全漏洞不要创建公开 Issue，应按照 [SECURITY.md](SECURITY.md) 中经维护者确认的渠道报告。
 
 ### 3. ACT SEP（Specification Enhancement Proposal）
 
@@ -88,6 +84,9 @@ ACT Protocol 使用 SEP 作为协议变更的标准流程。SEP 用于管理所�
 - 跨域协调变更
 - Breaking Change
 - 治理规则调整
+
+> [!IMPORTANT]
+> `specs/2.1/` 中的 **Candidate Working Draft / Non-normative** 是公开评审内容标签，不等同于下方 SEP 生命周期的 **Candidate（RC）** 阶段。只有满足两个独立实现验证及相应评审门槛后，才能声明进入 SEP Candidate。
 
 #### SEP 生命周期
 
@@ -123,6 +122,16 @@ ACT Protocol 使用 SEP 作为协议变更的标准流程。SEP 用于管理所�
 - 安全与风险考虑
 - 实现建议（可选）
 
+### 3.1 A402 Candidate 决策评审
+
+A402 2.1 的开放语义使用[决策包](docs/project/decisions/protocol-decision-brief.md)、[机器 Register](docs/project/decisions/a402-decision-register.json)和[评审执行指南](docs/project/decisions/a402-review-guide.md)推进。参与者应为每个 `DP-A402-NNN` 建立独立公开 Issue。
+
+- 推荐项不是正式 Accepted 决策；仓库可以用 `Candidate Accepted` 冻结可执行 Working Draft，但必须继续标记 Non-normative；
+- Product Profile 事实不能替代 Core 选择；
+- 正式投票权未登记时，会议只能形成等待治理确认的推荐结论；
+- Accepted/Rejected/Superseded 结果必须链接 ADR 或等价正式记录；
+- 没有 Source-settled、Candidate Accepted 或正式 Accepted 记录时，不得修改对应 Core 语义或发布 Candidate Schema；只有正式 Accepted ADR 才能驱动 Stable/Recommendation 资产。
+
 ### 4. 提交 Pull Request
 
 #### PR 准备清单
@@ -139,7 +148,7 @@ ACT Protocol 使用 SEP 作为协议变更的标准流程。SEP 用于管理所�
 #### PR 审查流程
 
 1. **自动检查**：CI 检查仓库完整性，并运行 Node 与 Java Quickstart 测试；Schema 和正式协议一致性验证仍在建设
-2. **DWG 评审**：相关领域工作组技术评审
+2. **DWG 评审**：相关领域工作组技术评审；治理主体未确认时只能形成 Candidate recommendation
 3. **Maintainer 评审**：代码/规范质量把关
 4. **社区反馈**：公开征集意见（重大变更）
 5. **合并**：获得足够批准后合并
@@ -237,30 +246,24 @@ Fixes #456
 
 ### 沟通渠道
 
-- 💬 **GitHub Discussions** - 一般性讨论、问题咨询
-- 🐛 **GitHub Issues** - Bug报告、功能请求
-- 🔒 **安全邮件** - 安全漏洞报告 (security@actprotocol.org)
-- 📧 **邮件列表** - 重大变更通知（即将开通）
+- **GitHub Issues**：规范问题、实现缺陷和功能建议。
+- **安全披露**：使用 [SECURITY.md](SECURITY.md) 中经确认的私密渠道；不要公开漏洞细节。
 
 ### 工作组 (DWG) 会议
 
-| 工作组 | 职责范围 | 会议频率 | 议程/纪要 |
-|--------|---------|---------|----------|
-| 委托授权域 DWG | 用户意图表达与授权链路标准 | 双周 | [会议纪要](#) |
-| 商业交互域 DWG | 智能体与商户的商业交互协议标准 | 双周 | [会议纪要](#) |
-| 支付服务域 DWG | 支付行为的协议标准与执行流程 | 双周 | [会议纪要](#) |
-| 信任服务域 DWG | 信任基础设施协议设计 | 双周 | [会议纪要](#) |
+工作组结构仍处于治理草案阶段。正式会议频率、公开议程和纪要入口将在治理机制确认后发布，不在贡献指南中预先承诺。
 
 ### 相关资源
 
 - [协议规范](specs/)
-- [JSON Schema](specs/2.0/schemas/)
-- [参考实现](impl/)
+- [Product Profile Preview Schema](profiles/alipay-ai-pay/schemas/)
+- [Quickstart](quickstarts/)
+- [Demo](demos/)
 - [治理规范](GOVERNANCE.md)
 
 ## 许可
 
-通过向 ACT Protocol 项目提交贡献，您同意您的贡献将在 [Apache 2.0 许可证](LICENSE)下发布。
+通过向 ACT Protocol 项目提交贡献，您确认有权提交相关内容，并同意贡献按照 [LICENSE](LICENSE) 中与文件类型和目录对应的许可证发布。正式贡献者协议或 CLA 机制仍需维护者确认。
 
 ---
 

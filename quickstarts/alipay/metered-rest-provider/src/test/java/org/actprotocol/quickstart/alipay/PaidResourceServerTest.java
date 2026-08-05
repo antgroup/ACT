@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -69,6 +70,33 @@ final class PaidResourceServerTest {
         assertEquals(402, request(proof("2026072200000002")).getResponseCode());
     }
 
+    @Test
+    void repeatedProofReturnsPriorResourceWithoutDuplicateFulfillment() throws Exception {
+        // A402-CAND-007: repeated proof cannot duplicate non-idempotent fulfillment.
+        MutableGateway gateway = new MutableGateway();
+        server = new PaidResourceServer(testConfig(), gateway, content -> "test-signature");
+        server.start();
+
+        HttpURLConnection unpaid = request(null);
+        assertEquals(402, unpaid.getResponseCode());
+        Models.PaymentNeeded bill = new A402Codec().decodePaymentNeeded(
+                unpaid.getHeaderField("Payment-Needed"));
+        gateway.result = new Models.VerificationResult(
+                true,
+                bill.protocol.amount,
+                bill.protocol.outTradeNo,
+                "2026072200000003",
+                bill.protocol.resourceId);
+        String proof = proof("2026072200000003");
+
+        assertEquals(200, request(proof).getResponseCode());
+        assertTrue(gateway.confirmed.await(2, TimeUnit.SECONDS));
+        HttpURLConnection replay = request(proof);
+        assertEquals(200, replay.getResponseCode());
+        assertTrue(read(replay.getInputStream()).contains("\"idempotent_replay\":true"));
+        assertEquals(1, gateway.confirmCalls.get());
+    }
+
     private HttpURLConnection request(String proof) throws Exception {
         URL url = new URL("http://127.0.0.1:" + server.port() + "/paid-resource");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -115,6 +143,7 @@ final class PaidResourceServerTest {
         volatile Models.VerificationResult result;
         volatile String confirmedTradeNo;
         final CountDownLatch confirmed = new CountDownLatch(1);
+        final AtomicInteger confirmCalls = new AtomicInteger();
 
         @Override
         public Models.VerificationResult verify(Models.PaymentProof proof) {
@@ -123,6 +152,7 @@ final class PaidResourceServerTest {
 
         @Override
         public void confirmFulfillment(String tradeNo) {
+            confirmCalls.incrementAndGet();
             confirmedTradeNo = tradeNo;
             confirmed.countDown();
         }

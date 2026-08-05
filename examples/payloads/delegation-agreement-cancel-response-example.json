@@ -1,8 +1,0 @@
-{
-  "request_id": "req-del-cancel-001-ghi789",
-  "agreement_no": "AGR-20260601-8800100123456",
-  "external_agreement_no": "EXT-AGR-20260601-001",
-  "status": "CANCELLED",
-  "cancel_time": "2026-07-01T14:00:01Z",
-  "timestamp": "2026-07-01T14:00:01Z"
-}

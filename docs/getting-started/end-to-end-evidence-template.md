@@ -133,8 +133,8 @@
 | 角色 | 结论 | 姓名 | 日期 |
 |---|---|---|---|
 | 执行人 | Pass / Fail / Partial |  |  |
-| Alipay Profile owner | Accepted / Changes required | 念箴 |  |
-| ACT protocol owner | Accepted semantics / Pending decisions | 观岳 |  |
+| Alipay Profile maintainer | Accepted / Changes required；附公开评审链接 |  |  |
+| ACT Core spec owner / DWG reviewer | Accepted semantics / Pending decisions；附公开评审链接 |  |  |
 
 最终说明：
 

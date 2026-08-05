@@ -1,0 +1,16 @@
+{
+  "allowed": [
+    {"from": "CREATE", "event": "PAYMENT_NEEDED_ISSUED", "to": "WAIT_BUYER_PAY"},
+    {"from": "WAIT_BUYER_PAY", "event": "PAYMENT_VALIDATED", "to": "WAIT_SELLER_FULFILLMENT"},
+    {"from": "WAIT_BUYER_PAY", "event": "PAYMENT_TERMINATED", "to": "TRADE_CLOSED"},
+    {"from": "WAIT_SELLER_FULFILLMENT", "event": "DELIVERY_COMMITTED", "to": "WAIT_BUYER_RECEIPT"},
+    {"from": "WAIT_SELLER_FULFILLMENT", "event": "COMPENSATION_COMPLETED", "to": "TRADE_CLOSED"},
+    {"from": "WAIT_BUYER_RECEIPT", "event": "FULFILLMENT_CONFIRMED", "to": "TRADE_FINISHED"},
+    {"from": "WAIT_BUYER_RECEIPT", "event": "TRADE_TERMINATED", "to": "TRADE_CLOSED"}
+  ],
+  "forbidden": [
+    {"from": "TRADE_FINISHED", "event": "PAYMENT_NEEDED_ISSUED", "to": "WAIT_BUYER_PAY"},
+    {"from": "TRADE_CLOSED", "event": "PAYMENT_VALIDATED", "to": "WAIT_SELLER_FULFILLMENT"},
+    {"from": "WAIT_BUYER_RECEIPT", "event": "PAYMENT_VALIDATED", "to": "WAIT_SELLER_FULFILLMENT"}
+  ]
+}

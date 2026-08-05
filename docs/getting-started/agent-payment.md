@@ -59,7 +59,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 | PSD | 钱包绑定、支付能力检查、用户确认支付和结果查询 | 支付宝官方 Skill/CLI |
 | TSD | 关联意图、订单、支付结果和履约证据 | ACT 实现 + 各证据提供方 |
 
-首期即使通过 HTTP 402 收到账单，用户逐笔确认后的支付执行仍按 `PSD-PAY-INS` 建模。v2.1 修订方向拟将 402 交互抽为独立的 `PSD-PAY-A402`，因此大会预览按“INS 场景 + 候选 A402 接入协议”组织；在公开规范发布前，该编号不构成正式合规声明。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/domain-mapping.md#3-买方-agent-支付能力映射)。
+首期即使通过 HTTP 402 收到账单，用户逐笔确认后的支付执行仍按 `PSD-PAY-INS` 建模。v2.1 修订方向拟将 402 交互抽为独立的 `PSD-PAY-A402`，因此大会预览按“INS 场景 + 候选 A402 接入协议”组织；在公开规范发布前，该编号不构成正式合规声明。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/mappings/domains.md#3-买方-agent-支付能力映射)。
 
 ## 5. ACT 接入责任
 
@@ -75,7 +75,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 | 状态查询 | 对 pending/未知状态进行查询，不直接再次支付 | ACT Core 候选 + Profile |
 | 任务恢复 | 支付成功后恢复原请求；失败时提供安全的下一步动作 | ACT Core 候选 |
 
-详细映射见 [Agent Payment alignment](../../profiles/alipay-ai-pay/agent-payment-alignment.md)。
+详细映射见 [Agent Payment alignment](../../profiles/alipay-ai-pay/capabilities/agent-payment.md)。
 
 ## 6. 两类支付入口
 
@@ -97,7 +97,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 
 卖方责任见[AI 按量付费 Getting Started](metered-payment.md)。
 
-真实 Skill/CLI 命令面和封装边界见[官方 Skill/CLI 行为核对](../../profiles/alipay-ai-pay/skill-cli-behavior-audit-2026-07-21.md)。
+真实 Skill/CLI 命令面和封装边界见[官方 Skill/CLI 行为核对](../../profiles/alipay-ai-pay/sources/audits/2026-07-21-skill-cli.md)。
 
 ## 7. 验收清单
 
@@ -110,7 +110,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 - [ ] 支付前展示了收款方、金额和交易对象。
 - [ ] 支付结果来自官方能力，并能区分 pending、success 和 failure。
 - [ ] HTTP 402 场景保留并恢复原始资源请求。
-- [ ] 没有使用 `impl/python/` 的 Mock 成功结果作为证据。
+- [ ] 没有使用 Demo 的 Guided Preview 或自行构造的成功结果作为沙箱证据。
 
 ## 8. 常见恢复路径
 
@@ -123,7 +123,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 | Skill/CLI 临时失败 | 保留原任务上下文，按官方结果决定重试或终止 |
 | 用户拒绝支付 | 终止当前支付，不伪造成功或继续交付 |
 
-候选错误和下一步动作见 [Error mapping](../../profiles/alipay-ai-pay/error-mapping.md)。
+候选错误和下一步动作见 [Error mapping](../../profiles/alipay-ai-pay/mappings/errors.md)。
 
 ## 9. 下一步
 

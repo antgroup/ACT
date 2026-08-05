@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/preview/profiles/alipay-ai-pay/payment-needed.schema.json",
+  "title": "Alipay AI Pay Payment-Needed Profile Preview",
+  "description": "Non-normative working contract for the currently documented Alipay Payment-Needed product shape. It is not an ACT 2.1 Core Schema.",
+  "x-act-status": "preview-non-normative",
+  "x-act-version": "0.9-preview.1",
+  "x-act-authority": "Alipay AI Pay public product documentation",
+  "x-act-source": "https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html",
+  "x-act-header": "Payment-Needed",
+  "x-act-header-encoding": "base64url",
+  "type": "object",
+  "required": [
+    "protocol",
+    "method"
+  ],
+  "properties": {
+    "protocol": {
+      "type": "object",
+      "required": [
+        "out_trade_no",
+        "amount",
+        "currency",
+        "resource_id",
+        "pay_before",
+        "seller_signature",
+        "seller_sign_type",
+        "seller_unique_id"
+      ],
+      "properties": {
+        "out_trade_no": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "minLength": 1
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "resource_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pay_before": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "seller_signature": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seller_sign_type": {
+          "const": "RSA2"
+        },
+        "seller_unique_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "method": {
+      "type": "object",
+      "required": [
+        "seller_name",
+        "seller_id",
+        "seller_app_id",
+        "goods_name",
+        "seller_unique_id_key",
+        "service_id"
+      ],
+      "properties": {
+        "seller_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seller_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seller_app_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goods_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seller_unique_id_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "service_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

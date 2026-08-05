@@ -6,8 +6,11 @@ public final class Main {
     public static void main(String[] args) throws Exception {
         Config config = Config.fromEnvironment();
         OfficialAlipayGateway gateway = new OfficialAlipayGateway(config);
-        PaidResourceServer server =
-                new PaidResourceServer(config, gateway, new BillSigner.Rsa2(config.privateKey));
+        PaidResourceServer server = new PaidResourceServer(
+                config,
+                gateway,
+                new BillSigner.Rsa2(config.privateKey),
+                DemoEventSink.fromEnvironment());
         Runtime.getRuntime().addShutdownHook(new Thread(server::close));
         server.start();
         System.out.println("ACT Alipay paid resource listening on http://localhost:"

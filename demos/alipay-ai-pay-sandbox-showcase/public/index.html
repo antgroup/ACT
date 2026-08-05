@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ACT × Alipay AI Pay 机器支付协议演示" />
+    <title>ACT × Alipay AI Pay · Protocol Live Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">ACT</span>
+          <span class="brand-cross">×</span>
+          <span>Alipay AI Pay</span>
+        </div>
+        <div class="baseline">
+          <span>当前演示基线</span>
+          <strong>INS / L1 + A402</strong>
+        </div>
+        <div class="mode-badge preview" id="modeBadge">UI PREVIEW · NOT PAYMENT EVIDENCE</div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <p class="eyebrow">ACT PAYMENT SERVICES · PROTOCOL WALKTHROUGH</p>
+          <h1>一眼看懂 Agent<br />如何购买机器服务</h1>
+        </div>
+        <p class="intro-copy">
+          跟着消息在角色之间流动：<strong>Agent 发起请求</strong>，<strong>支付宝完成支付</strong>，
+          <strong>卖方验款后交付资源</strong>。
+        </p>
+      </section>
+
+      <section class="layer-legend" aria-label="协议与产品分层">
+        <article>
+          <span class="legend-number">1</span>
+          <div><small>SCENARIO · 谁来决定付款</small><strong>INS / L1 用户逐笔确认</strong></div>
+        </article>
+        <article>
+          <span class="legend-number">2</span>
+          <div><small>PROTOCOL · 机器如何索款与验款</small><strong>A402 · Needed → Proof</strong></div>
+        </article>
+        <article>
+          <span class="legend-number">3</span>
+          <div><small>PRODUCT · 谁执行支付和收款</small><strong>Agent 支付 + AI 按量付费</strong></div>
+        </article>
+      </section>
+
+      <main>
+        <section class="stage panel" aria-labelledby="stageTitle">
+          <div class="stage-heading">
+            <div>
+              <p class="section-kicker">LIVE PROTOCOL STAGE</p>
+              <h2 id="stageTitle">当前正在发生什么？</h2>
+            </div>
+            <div class="stage-counter">
+              <strong id="eventCounter">0 / 11</strong>
+              <span id="layerCode">READY</span>
+            </div>
+          </div>
+
+          <nav class="phase-rail" id="phaseRail" aria-label="支付阶段"></nav>
+
+          <div class="actors" aria-label="协议参与方">
+            <article class="actor" id="principalActor" data-actor="principal">
+              <span class="actor-icon">人</span>
+              <div><small>PRINCIPAL</small><strong>用户</strong><p>确认是否付款</p></div>
+            </article>
+            <article class="actor" id="buyerActor" data-actor="buyer">
+              <span class="actor-icon">A</span>
+              <div><small>BUYER</small><strong>Buyer Agent</strong><p>请求并使用资源</p></div>
+            </article>
+            <article class="actor" id="sellerActor" data-actor="seller">
+              <span class="actor-icon">S</span>
+              <div><small>SELLER</small><strong>收费服务</strong><p>出账、验款、交付</p></div>
+            </article>
+            <article class="actor" id="pspActor" data-actor="psp">
+              <span class="actor-icon">支</span>
+              <div><small>PSP</small><strong>支付宝</strong><p>支付、查询、验款</p></div>
+            </article>
+          </div>
+
+          <article class="exchange-card idle" id="exchangeCard">
+            <div class="exchange-route">
+              <div>
+                <small>FROM</small>
+                <strong id="fromActor">—</strong>
+              </div>
+              <div class="route-line">
+                <span></span>
+                <b id="directionArrow">→</b>
+                <span></span>
+              </div>
+              <div>
+                <small>TO</small>
+                <strong id="toActor">—</strong>
+              </div>
+            </div>
+            <div class="message-focus">
+              <div class="message-title">
+                <span id="wireBadge">WAITING</span>
+                <h3 id="currentState">等待开始</h3>
+              </div>
+              <code id="wireMessage">选择一个场景，然后逐步播放协议消息</code>
+              <p id="stateExplanation">每一步都会明确展示发送方、接收方、协议消息和支付宝产品动作。</p>
+            </div>
+            <div class="layer-mapping">
+              <div><span>ACT</span><strong id="actComponent">—</strong></div>
+              <div><span>HTTP / BINDING</span><strong id="actBinding">—</strong></div>
+              <div><span>ALIPAY</span><strong id="alipayProduct">—</strong></div>
+            </div>
+          </article>
+
+          <ol class="timeline" id="timeline" aria-label="协议消息步骤"></ol>
+
+          <div class="control-deck">
+            <div class="mode-tabs" role="tablist" aria-label="演示输入模式">
+              <button class="mode-tab active" id="previewTab" type="button" role="tab" aria-selected="true">引导演示</button>
+              <button class="mode-tab" id="liveTab" type="button" role="tab" aria-selected="false">真实沙箱</button>
+              <button class="mode-tab" id="replayTab" type="button" role="tab" aria-selected="false">证据回放</button>
+            </div>
+
+            <div class="input-row" id="previewControls">
+              <label class="sr-only" for="scenarioSelect">演示场景</label>
+              <select id="scenarioSelect" aria-label="演示场景">
+                <option value="SUCCESS">成功闭环</option>
+                <option value="PAYMENT_PENDING">支付结果待确认</option>
+                <option value="PROOF_MISMATCH">Proof 不匹配</option>
+                <option value="VERIFICATION_UNAVAILABLE">验款暂不可用</option>
+                <option value="IDEMPOTENT_REPLAY">幂等重放</option>
+              </select>
+              <button class="primary-button" id="playPreview" type="button">播放完整演示</button>
+              <button class="secondary-button" id="resetPreview" type="button">重置</button>
+              <button class="step-button" id="stepPreview" type="button" aria-label="下一步">下一步 →</button>
+            </div>
+
+            <form class="input-row hidden" id="liveForm">
+              <label class="sr-only" for="eventStreamUrl">脱敏事件流地址</label>
+              <input id="eventStreamUrl" type="url" placeholder="https://…/act-events" autocomplete="off" />
+              <button class="primary-button" type="submit">连接事件流</button>
+            </form>
+
+            <div class="input-row hidden" id="replayControls">
+              <label class="file-button" for="replayFile">加载 NDJSON</label>
+              <input id="replayFile" type="file" accept=".ndjson,.jsonl,application/x-ndjson" />
+              <button class="secondary-button" id="playReplay" type="button" disabled>播放</button>
+              <button class="step-button" id="stepReplay" type="button" disabled>下一步 →</button>
+            </div>
+            <div class="control-status" id="controlStatus" role="status">
+              引导演示只解释协议，不代表真实支付或沙箱验证。
+            </div>
+          </div>
+        </section>
+
+        <section class="lower-grid">
+          <section class="panel story-panel" aria-labelledby="taskTitle">
+            <div class="panel-heading">
+              <div><p class="section-kicker">BUSINESS VIEW</p><h2 id="taskTitle">用户任务与资源</h2></div>
+              <span class="status-dot" id="taskStatusDot"></span>
+            </div>
+            <div class="story-flow">
+              <article class="message user-message">
+                <span>用户</span>
+                <p>帮我生成 AI 支付趋势报告，需要时可以购买专业数据。</p>
+              </article>
+              <article class="message agent-message">
+                <span>Agent</span>
+                <p id="agentMessage">等待开始。</p>
+              </article>
+            </div>
+            <article class="resource-card locked" id="resourceCard">
+              <div class="resource-topline"><span>付费资源</span><strong id="resourceState">LOCKED</strong></div>
+              <h3 id="resourceTitle">AI Payment Market Signal API</h3>
+              <p id="resourceDescription">只有支付验证通过，卖方才会交付资源。</p>
+              <div class="resource-meta"><span id="resourcePrice">— CNY</span><span id="resourceId">resource —</span></div>
+            </article>
+            <div class="task-result"><span>任务结果</span><p id="taskResult">等待付费数据，尚未生成最终报告。</p></div>
+          </section>
+
+          <section class="panel detail-panel" aria-labelledby="detailTitle">
+            <div class="panel-heading">
+              <div><p class="section-kicker">PROTOCOL RECEIPT</p><h2 id="detailTitle">关联与证据</h2></div>
+              <span class="domain-chip" id="actDomain">—</span>
+            </div>
+            <div class="fact-grid">
+              <article><small>SELECTED METHOD</small><strong id="methodId">—</strong></article>
+              <article><small>EVIDENCE</small><strong id="evidenceRef">NO EVIDENCE</strong></article>
+            </div>
+            <div class="correlation-box">
+              <small>同一笔交易如何贯穿全链路</small>
+              <p id="correlationChain">等待建立请求、订单、资源、交易和履约关联</p>
+            </div>
+            <dl id="evidenceDetails" class="evidence-details">
+              <div><dt>来源</dt><dd>—</dd></div>
+              <div><dt>时间</dt><dd>—</dd></div>
+              <div><dt>结果</dt><dd>—</dd></div>
+            </dl>
+            <div class="security-note">
+              <span>◆</span>
+              <p>只展示脱敏引用，不展示完整 Proof、签名、账号、密钥或可重放请求。</p>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <footer>
+        <span>TARGET BASELINE</span>
+        <strong>PSD-PAY-INS (L1)</strong><span>+</span><strong>PSD-PAY-A402</strong><span>+</span>
+        <strong>ALIPAY AI PAY PROFILE</strong>
+        <a href="https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html" target="_blank" rel="noreferrer">
+          产品接入以 AIPay 官网为准 ↗
+        </a>
+      </footer>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

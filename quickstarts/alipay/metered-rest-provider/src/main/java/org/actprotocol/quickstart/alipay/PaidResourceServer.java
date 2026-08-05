@@ -23,6 +23,7 @@ final class PaidResourceServer implements AutoCloseable {
     private final Config config;
     private final AlipayGateway gateway;
     private final BillSigner signer;
+    private final DemoEventSink demoEvents;
     private final A402Codec codec = new A402Codec();
     private final ObjectMapper json = new ObjectMapper();
     private final Map<String, Models.BillRecord> bills = new ConcurrentHashMap<>();
@@ -32,9 +33,18 @@ final class PaidResourceServer implements AutoCloseable {
     private HttpServer server;
 
     PaidResourceServer(Config config, AlipayGateway gateway, BillSigner signer) {
+        this(config, gateway, signer, DemoEventSink.noop());
+    }
+
+    PaidResourceServer(
+            Config config,
+            AlipayGateway gateway,
+            BillSigner signer,
+            DemoEventSink demoEvents) {
         this.config = config;
         this.gateway = gateway;
         this.signer = signer;
+        this.demoEvents = demoEvents;
     }
 
     void start() throws IOException {
@@ -66,17 +76,28 @@ final class PaidResourceServer implements AutoCloseable {
 
         String proofHeader = exchange.getRequestHeaders().getFirst("Payment-Proof");
         if (proofHeader == null || proofHeader.trim().isEmpty()) {
-            paymentRequired(exchange, "Payment Needed");
+            demoEvents.emit("RESOURCE_REQUESTED", mapOf(
+                    "resource_id", config.resourceId,
+                    "goods_name", config.goodsName));
+            paymentRequired(exchange, "Payment Needed", true);
             return;
         }
 
         try {
+            demoEvents.emit("RESOURCE_REQUEST_RETRIED", mapOf(
+                    "resource_id", config.resourceId,
+                    "http_method", exchange.getRequestMethod(),
+                    "result_summary", "original resource request retried with proof reference"));
             Models.PaymentProof proof = codec.decodePaymentProof(proofHeader);
             Models.VerificationResult verified = gateway.verify(proof);
             Models.BillRecord bill = verified.outTradeNo == null ? null : bills.get(verified.outTradeNo);
             String rejection = rejectionReason(proof, verified, bill);
             if (rejection != null) {
-                paymentRequired(exchange, rejection);
+                demoEvents.emit("PROOF_REJECTED", mapOf(
+                        "resource_id", config.resourceId,
+                        "recovery_action", "DO_NOT_DELIVER · REISSUE_OR_RECONCILE",
+                        "result_summary", rejection));
+                paymentRequired(exchange, rejection, false);
                 return;
             }
 
@@ -87,17 +108,36 @@ final class PaidResourceServer implements AutoCloseable {
             }
 
             boolean firstDelivery = priorResource == null;
+            demoEvents.emit("PAYMENT_VERIFIED", mapOf(
+                    "amount", verified.amount,
+                    "currency", config.currency,
+                    "resource_id", verified.resourceId,
+                    "validation_mapping", "ACT candidate Payment-Validation -> Alipay payment.verify",
+                    "result_summary", "active and merchant bill checks passed"));
             sendJson(exchange, 200, mapOf(
                     "resource_id", config.resourceId,
                     "content", "This resource was released after Alipay payment verification.",
                     "trade_no", verified.tradeNo,
                     "idempotent_replay", !firstDelivery));
+            demoEvents.emit("RESOURCE_DELIVERED", mapOf(
+                    "resource_id", verified.resourceId,
+                    "result_summary", firstDelivery
+                            ? "paid resource delivered"
+                            : "idempotent resource response"));
 
             if (firstDelivery) confirmFulfillmentAsync(verified.tradeNo);
         } catch (IllegalArgumentException exception) {
-            paymentRequired(exchange, "Invalid Payment-Proof");
+            demoEvents.emit("PROOF_REJECTED", mapOf(
+                    "resource_id", config.resourceId,
+                    "recovery_action", "DO_NOT_DELIVER · REQUEST_VALID_PROOF",
+                    "result_summary", "invalid proof encoding or shape"));
+            paymentRequired(exchange, "Invalid Payment-Proof", false);
         } catch (Exception exception) {
             System.err.println("payment verification unavailable: " + safeMessage(exception));
+            demoEvents.emit("VERIFICATION_UNAVAILABLE", mapOf(
+                    "resource_id", config.resourceId,
+                    "recovery_action", "RETRY_SAME_VERIFICATION · DO_NOT_DELIVER",
+                    "result_summary", "official verification temporarily unavailable"));
             exchange.getResponseHeaders().set("Retry-After", "3");
             sendJson(exchange, 503, mapOf("error", "payment_verification_unavailable"));
         }
@@ -117,7 +157,10 @@ final class PaidResourceServer implements AutoCloseable {
         return null;
     }
 
-    private void paymentRequired(HttpExchange exchange, String message) throws IOException {
+    private void paymentRequired(
+            HttpExchange exchange,
+            String message,
+            boolean emitInitialRequirement) throws IOException {
         try {
             Models.PaymentNeeded bill = newBill();
             String encoded = codec.encodePaymentNeeded(bill);
@@ -126,6 +169,14 @@ final class PaidResourceServer implements AutoCloseable {
                     "error", "Payment Needed",
                     "message", message,
                     "resourceId", config.resourceId));
+            if (emitInitialRequirement) {
+                demoEvents.emit("PAYMENT_REQUIRED", mapOf(
+                        "amount", bill.protocol.amount,
+                        "currency", bill.protocol.currency,
+                        "resource_id", bill.protocol.resourceId,
+                        "goods_name", bill.method.goodsName,
+                        "seller_name", bill.method.sellerName));
+            }
         } catch (Exception exception) {
             System.err.println("cannot create payment requirement: " + safeMessage(exception));
             sendJson(exchange, 500, mapOf("error", "payment_requirement_unavailable"));
@@ -164,6 +215,9 @@ final class PaidResourceServer implements AutoCloseable {
             try {
                 gateway.confirmFulfillment(tradeNo);
                 System.out.println("fulfillment confirmed for trade " + redact(tradeNo));
+                demoEvents.emit("FULFILLMENT_CONFIRMED", mapOf(
+                        "resource_id", config.resourceId,
+                        "result_summary", "seller fulfillment confirmed"));
             } catch (Exception exception) {
                 // A production implementation must persist this job and retry with backoff.
                 System.err.println(
@@ -211,5 +265,6 @@ final class PaidResourceServer implements AutoCloseable {
         if (server != null) server.stop(0);
         serverExecutor.shutdownNow();
         fulfillmentExecutor.shutdownNow();
+        demoEvents.close();
     }
 }

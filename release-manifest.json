@@ -1,0 +1,166 @@
+{
+  "manifest_version": "1",
+  "updated": "2026-08-03",
+  "repository_status": "act-2.1-candidate-unreleased",
+  "release_readiness": {
+    "status": "blocked",
+    "path": "docs/project/releases/release-readiness.json",
+    "default_target": "act-candidate-publication",
+    "allowed_claim": "ACT 2.1 Candidate Working Draft / Non-normative"
+  },
+  "components": {
+    "act-2.1": {
+      "kind": "protocol",
+      "version": "2.1-candidate",
+      "status": "candidate-working-draft",
+      "path": "specs/2.1/overview.md",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": []
+    },
+    "act-2.1-a402-machine-contract": {
+      "kind": "protocol-schema",
+      "version": "2.1-candidate.1",
+      "status": "candidate-working-draft",
+      "path": "specs/2.1/schemas/a402/README.md",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "act-2.1"
+      ]
+    },
+    "http-a402-binding": {
+      "kind": "binding",
+      "version": "0.2-working-draft",
+      "status": "preview",
+      "path": "bindings/http-a402/README.md",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "act-2.1",
+        "act-2.1-a402-machine-contract"
+      ]
+    },
+    "alipay-ai-pay-profile": {
+      "kind": "product-profile",
+      "version": "0.9-preview.1",
+      "status": "preview",
+      "path": "profiles/alipay-ai-pay/README.md",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "act-2.1",
+        "http-a402-binding"
+      ]
+    },
+    "alipay-payment-needed-preview-schema": {
+      "kind": "product-profile-schema",
+      "version": "0.9-preview.1",
+      "status": "preview-non-normative",
+      "path": "profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "alipay-ai-pay-profile"
+      ]
+    },
+    "alipay-payment-proof-preview-schema": {
+      "kind": "product-profile-schema",
+      "version": "0.9-preview.1",
+      "status": "preview-non-normative",
+      "path": "profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "alipay-ai-pay-profile"
+      ]
+    },
+    "alipay-payment-verification-preview-schema": {
+      "kind": "product-profile-schema",
+      "version": "0.9-preview.1",
+      "status": "preview-non-normative",
+      "path": "profiles/alipay-ai-pay/schemas/payment-verification-result.preview.schema.json",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "alipay-ai-pay-profile"
+      ]
+    },
+    "alipay-error-mapping-preview": {
+      "kind": "product-profile-mapping",
+      "version": "0.9-preview.1",
+      "status": "preview-non-normative",
+      "path": "profiles/alipay-ai-pay/schemas/error-mapping.preview.json",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "alipay-ai-pay-profile",
+        "act-2.1-a402-machine-contract"
+      ]
+    },
+    "alipay-buyer-quickstart": {
+      "kind": "quickstart",
+      "version": "0.1.0",
+      "status": "preview",
+      "path": "quickstarts/alipay/agent-payment/package.json",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "alipay-ai-pay-profile"
+      ]
+    },
+    "alipay-seller-quickstart": {
+      "kind": "quickstart",
+      "version": "0.1.0",
+      "status": "preview",
+      "path": "quickstarts/alipay/metered-rest-provider/pom.xml",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "alipay-ai-pay-profile"
+      ]
+    },
+    "alipay-local-a402-preview": {
+      "kind": "quickstart",
+      "version": "0.1.0",
+      "status": "non-payable-local-preview",
+      "path": "quickstarts/alipay/end-to-end-402/package.json",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "alipay-ai-pay-profile"
+      ]
+    }
+  },
+  "external_dependencies": {
+    "alipay-agent-payment": {
+      "authority": "Alipay official distribution",
+      "package": "@alipay/agent-payment",
+      "requested_specifier": "latest",
+      "resolved_version": null,
+      "resolved_integrity": null,
+      "resolution_status": "capture-at-validation-time",
+      "evidence_requirement": "Record the exact resolved version and integrity in the end-to-end evidence."
+    },
+    "alipay-ai-pay-product": {
+      "authority": "https://aipay.alipay.com/callpay",
+      "version": null,
+      "last_checked": "2026-08-03",
+      "integration_guide_updated_at": "2026-07-31T11:54:36+08:00",
+      "resolution_status": "official-site-is-source-of-truth",
+      "evidence_requirement": "Record the official documentation URL and access date used for validation."
+    }
+  },
+  "compatibility": [
+    {
+      "consumer": "alipay-local-a402-preview",
+      "provider": "alipay-ai-pay-profile",
+      "status": "structure-only-no-payment"
+    },
+    {
+      "consumer": "alipay-ai-pay-profile",
+      "provider": "act-2.1",
+      "status": "candidate-core-mapping-aligned-product-questions-remain"
+    }
+  ]
+}

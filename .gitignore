@@ -9,6 +9,8 @@ __pycache__/
 # Build outputs
 dist/
 build/
+target/
+output/
 *.so
 *.dylib
 *.class
@@ -39,6 +41,7 @@ sdks/
 
 # Temporary files
 tmp/
+.tmp/
 temp/
 *.tmp
 

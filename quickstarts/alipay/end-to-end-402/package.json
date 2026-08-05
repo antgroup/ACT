@@ -2,11 +2,15 @@
   "name": "@act-protocol/alipay-e2e-402-quickstart",
   "version": "0.1.0",
   "private": true,
-  "description": "Dependency-free inspector for an Alipay Payment-Needed response",
+  "description": "Dependency-free, non-payable local A402 Golden Path and Payment-Needed inspector",
   "type": "module",
   "scripts": {
     "inspect": "node inspect-402.mjs",
-    "test": "node --test inspect-402.test.mjs"
+    "local": "node local-golden-path.mjs",
+    "preview": "node local-preview-server.mjs",
+    "sandbox:preflight": "node sandbox-preflight.mjs",
+    "sandbox:preflight:json": "node sandbox-preflight.mjs --json",
+    "test": "node --test *.test.mjs"
   },
   "engines": {
     "node": ">=18"

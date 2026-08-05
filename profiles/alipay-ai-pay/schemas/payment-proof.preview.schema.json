@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.actprotocol.org/preview/profiles/alipay-ai-pay/payment-proof.schema.json",
+  "title": "Alipay AI Pay Payment-Proof Profile Preview",
+  "description": "Non-normative decoded product payload documented for the Alipay Payment-Proof Header. It is not the ACT Core Payment-Proof Schema.",
+  "x-act-status": "preview-non-normative",
+  "x-act-version": "0.9-preview.1",
+  "x-act-authority": "Alipay AI Pay public product documentation",
+  "x-act-source": "https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html",
+  "x-act-header": "Payment-Proof",
+  "x-act-header-encoding": "base64-as-documented-product-fact",
+  "type": "object",
+  "required": ["protocol", "method"],
+  "properties": {
+    "protocol": {
+      "type": "object",
+      "required": ["payment_proof", "trade_no"],
+      "properties": {
+        "payment_proof": {"type": "string", "minLength": 1},
+        "trade_no": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "method": {
+      "type": "object",
+      "properties": {
+        "client_session": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
