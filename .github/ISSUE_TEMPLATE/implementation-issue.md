@@ -7,7 +7,7 @@ labels: implementation
 
 ## 涉及的模块
 
-<!-- 如 quickstarts/alipay/metered-rest-provider 或 demos/alipay-ai-pay-sandbox-showcase -->
+<!-- 如 code/examples/alipay/metered-rest-provider 或 code/web-client/alipay-ai-pay-showcase -->
 
 ## 问题描述
 

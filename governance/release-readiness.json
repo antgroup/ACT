@@ -1,0 +1,254 @@
+{
+  "readiness_version": "1",
+  "updated": "2026-08-11",
+  "candidate": "ACT 2.1 four-domain Candidate Working Draft",
+  "publication_status": "blocked",
+  "allowed_claim": "Candidate Working Draft / Non-normative",
+  "targets": {
+    "act-candidate-publication": {
+      "description": "Publish the ACT 2.1 Candidate Working Draft and its non-normative machine contracts.",
+      "allowed_claim": "ACT 2.1 Candidate Working Draft / Non-normative"
+    },
+    "alipay-profile-preview": {
+      "description": "Publish the Alipay AI Pay mapping and integration assets without claiming live interoperability.",
+      "allowed_claim": "Alipay AI Pay Profile Preview / Sandbox validation pending"
+    },
+    "alipay-sandbox-verified": {
+      "description": "Claim one evidence-backed official Alipay sandbox end-to-end integration.",
+      "allowed_claim": "Alipay AI Pay Sandbox Verified for the recorded versions and evidence scope"
+    },
+    "act-sep-candidate": {
+      "description": "Enter the formal SEP Candidate stage after governance and independent implementations.",
+      "allowed_claim": "ACT SEP Candidate"
+    }
+  },
+  "forbidden_claims": [
+    "Stable",
+    "Recommendation",
+    "ACT 2.1 Conformance",
+    "Production Certified"
+  ],
+  "gates": [
+    {
+      "id": "protocol-sources",
+      "title": "Protocol source alignment",
+      "status": "passed",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "specs/2.1/revision-status.md",
+        "specs/2.1/domains/authorization-delegation.md",
+        "specs/2.1/domains/commerce-interaction.md",
+        "specs/2.1/domains/payment-services.md",
+        "specs/2.1/domains/trust-services.md",
+        "specs/2.1/scenarios.md"
+      ]
+    },
+    {
+      "id": "product-sources",
+      "title": "Alipay public product source alignment",
+      "status": "passed",
+      "required_for": [
+        "alipay-profile-preview",
+        "alipay-sandbox-verified"
+      ],
+      "evidence": [
+        "integrations/profiles/alipay-ai-pay/sources/audits/2026-08-08-product-update.md"
+      ]
+    },
+    {
+      "id": "candidate-content",
+      "title": "Four-domain semantic Candidate with PSD-first executable path",
+      "status": "passed",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "specs/2.1/overview.md",
+        "specs/2.1/domains/authorization-delegation.md",
+        "specs/2.1/domains/commerce-interaction.md",
+        "specs/2.1/domains/payment-services.md",
+        "specs/2.1/domains/trust-services.md",
+        "specs/2.1/scenarios.md",
+        "specs/2.1/a402/specification.md"
+      ]
+    },
+    {
+      "id": "local-verification",
+      "title": "Repository and local integration verification",
+      "status": "passed",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "scripts/verify.sh"
+      ]
+    },
+    {
+      "id": "legal",
+      "title": "Copyright, license allocation, and contribution terms",
+      "status": "passed",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "LICENSE",
+        "NOTICE",
+        "CONTRIBUTING.md",
+        "governance/decisions/legal-and-contribution-policy.md"
+      ]
+    },
+    {
+      "id": "security-reporting",
+      "title": "Private security reporting channel",
+      "status": "passed",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "SECURITY.md",
+        "governance/publication-config.json"
+      ]
+    },
+    {
+      "id": "public-distribution",
+      "title": "Public repository destination",
+      "status": "blocked-external",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "CONTRIBUTING.md",
+        "governance/publication-config.json"
+      ],
+      "blocker": "The current Git remote is internal; maintainers must confirm the public repository destination and permissions."
+    },
+    {
+      "id": "release-snapshot",
+      "title": "Clean reviewed commit and public CI",
+      "status": "pending-local",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "CHANGELOG.md",
+        "governance/releases/2026-08-03-candidate-publication.md",
+        "scripts/create_public_snapshot.py"
+      ],
+      "blocker": "The restructuring worktree is not yet a clean reviewed release commit."
+    },
+    {
+      "id": "protocol-decisions",
+      "title": "Candidate A402 machine-contract decisions",
+      "status": "passed",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "governance/decisions/a402-decision-register.json",
+        "governance/decisions/candidate-machine-contract-resolution-2026-08-03.md"
+      ]
+    },
+    {
+      "id": "core-machine-contract",
+      "title": "Canonical Core schemas, fixtures, validator, and errors",
+      "status": "passed",
+      "required_for": [
+        "act-candidate-publication",
+        "alipay-profile-preview",
+        "alipay-sandbox-verified",
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "specs/2.1/a402/schemas/README.md",
+        "specs/2.1/a402/fixtures/valid/payment-needed.json",
+        "specs/2.1/a402/fixtures/valid/payment-proof.json",
+        "specs/2.1/a402/fixtures/valid/payment-validation.json",
+        "scripts/validate_a402_contract.py"
+      ]
+    },
+    {
+      "id": "profile-content",
+      "title": "Alipay Profile mappings and Preview machine contracts",
+      "status": "passed",
+      "required_for": [
+        "alipay-profile-preview",
+        "alipay-sandbox-verified"
+      ],
+      "evidence": [
+        "integrations/profiles/alipay-ai-pay/README.md",
+        "integrations/profiles/alipay-ai-pay/mappings/fields.md",
+        "integrations/profiles/alipay-ai-pay/mappings/lifecycle.md",
+        "integrations/profiles/alipay-ai-pay/mappings/errors.md",
+        "integrations/profiles/alipay-ai-pay/profile-review-status.json",
+        "integrations/profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json",
+        "integrations/profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json",
+        "integrations/profiles/alipay-ai-pay/schemas/payment-verification-result.preview.schema.json",
+        "integrations/profiles/alipay-ai-pay/schemas/error-mapping.preview.json"
+      ]
+    },
+    {
+      "id": "sandbox-e2e",
+      "title": "Official Alipay sandbox end-to-end evidence",
+      "status": "blocked-external",
+      "required_for": [
+        "alipay-sandbox-verified"
+      ],
+      "evidence": [
+        "code/examples/alipay/end-to-end-402/sandbox-validation.md",
+        "governance/releases/evidence/2026-08-03-sandbox-preflight.json"
+      ],
+      "blocker": "2026-08-03 local preflight found an ignored seller .env, but required application, merchant and service values still contain placeholders and both the application private key and Alipay public key are unavailable. This blocks only the Sandbox Verified claim, not ACT Candidate or Profile Preview publication."
+    },
+    {
+      "id": "formal-governance",
+      "title": "Formal DWG/TSC ratification for SEP Candidate",
+      "status": "blocked-external",
+      "required_for": [
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "GOVERNANCE.md",
+        "governance/decisions/a402-decision-register.json"
+      ],
+      "blocker": "Candidate engineering decisions are complete, but the formal voting authority, public review record and ratification have not been established."
+    },
+    {
+      "id": "independent-validation",
+      "title": "Clean-room and independent implementation validation",
+      "status": "not-started",
+      "required_for": [
+        "act-sep-candidate"
+      ],
+      "evidence": [
+        "CONTRIBUTING.md"
+      ],
+      "blocker": "No independent implementation or clean-room developer report has been recorded."
+    }
+  ]
+}

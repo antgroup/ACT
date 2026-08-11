@@ -11,7 +11,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-READINESS = ROOT / "docs/project/releases/release-readiness.json"
+READINESS = ROOT / "governance/release-readiness.json"
+PUBLICATION_CONFIG = ROOT / "governance/publication-config.json"
 PASSING = {"passed"}
 
 
@@ -28,6 +29,7 @@ def git_output(*args: str) -> str:
 
 def evaluate(target: str) -> dict:
     data = json.loads(READINESS.read_text(encoding="utf-8"))
+    publication_config = json.loads(PUBLICATION_CONFIG.read_text(encoding="utf-8"))
     target_metadata = data["targets"][target]
     gates = []
     for gate in data["gates"]:
@@ -63,22 +65,45 @@ def evaluate(target: str) -> dict:
             )
 
     remotes = git_output("remote", "-v").splitlines()
-    public_remote = any(
+    configured_public_url = publication_config.get("public_repository_url")
+    public_remote = bool(configured_public_url) or any(
         "github.com" in line or "gitlab.com" in line for line in remotes
     )
     distribution = next(
         (gate for gate in gates if gate["id"] == "public-distribution"), None
     )
     if distribution is not None:
-        distribution["dynamic"] = {"public_remote_detected": public_remote}
+        distribution["dynamic"] = {
+            "public_remote_detected": public_remote,
+            "configured_url": configured_public_url,
+        }
         if not public_remote:
             distribution["status"] = "blocked-external"
+        else:
+            distribution["status"] = "passed"
+            distribution["blocker"] = None
+
+    security = next(
+        (gate for gate in gates if gate["id"] == "security-reporting"), None
+    )
+    security_ready = bool(publication_config.get("security_reporting_url")) and bool(
+        publication_config.get("security_contact")
+    )
+    if security is not None:
+        security["dynamic"] = {"configured": security_ready}
+        if security_ready:
+            security["status"] = "passed"
+            security["blocker"] = None
 
     blockers = [gate for gate in gates if gate["status"] not in PASSING]
     return {
         "target": target,
         "candidate": data["candidate"],
         "allowed_claim": target_metadata["allowed_claim"],
+        "publication_configuration": {
+            "public_repository_configured": bool(configured_public_url),
+            "security_reporting_configured": security_ready,
+        },
         "ready": not blockers,
         "gates": gates,
         "blockers": blockers,

@@ -1,6 +1,6 @@
 # AI 按量付费 Getting Started
 
-> 状态：July Preview / Non-normative  
+> 状态：Candidate Preview / Non-normative  
 > 公开接入基线：支付宝 AI 按量付费 HTTP 402 方案
 
 本指南面向希望让 API、MCP Tool、Skill、数字内容或算力资源按调用收费的服务提供方。开户、产品签约、密钥和沙箱操作以支付宝官网为准；本文只补充 ACT/Profile 责任和验收边界。
@@ -58,7 +58,7 @@ AI 按量付费也不是只属于 PSD。卖方接入主要落在 CID、PSD 和 T
 | PSD | 返回 402、接收 Proof、调用支付宝验款并确认履约 | 支付宝字段、RSA2 和 API 属于 Product Profile |
 | TSD | 形成支付完成和资源履约的可关联证据 | 产品日志/回调不自动等同于 ACT TSD 记录 |
 
-ACT v2.1 候选将 402 基础框架建模为独立的 `PSD-PAY-A402`。买方实际采用 `PSD-PAY-INS`、`PSD-PAY-DEL` 还是 `PSD-PAY-AUP` 取决于授权场景，A402 只负责支付接入交互。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/mappings/domains.md#4-卖方机器支付能力映射)。
+ACT v2.1 候选将 402 基础框架建模为独立的 `PSD-PAY-A402`。买方实际采用 `PSD-PAY-INS`、`PSD-PAY-DEL` 还是 `PSD-PAY-AUP` 取决于授权场景，A402 只负责支付接入交互。组件级说明见[双侧能力与 ACT 四域映射](../../integrations/profiles/alipay-ai-pay/mappings/domains.md#4-卖方机器支付能力映射)。
 
 ## 5. 第一步：返回支付要求
 
@@ -81,7 +81,7 @@ ACT 将其理解为产品无关的 Payment Requirement；`Payment-Needed` 的 `p
 - 私钥只在安全的服务端环境中使用。
 - 账单过期后不会静默修改旧账单并继续支付。
 
-准确字段和签名规则直接查阅[官网第一步：返回 402 账单](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)。ACT 工作映射见 [Field mapping](../../profiles/alipay-ai-pay/mappings/fields.md)。
+准确字段和签名规则直接查阅[官网第一步：返回 402 账单](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)。ACT 工作映射见 [Field mapping](../../integrations/profiles/alipay-ai-pay/mappings/fields.md)。
 
 ## 6. 第二步：验证支付凭证
 
@@ -147,8 +147,8 @@ Agent 支付后会携带 `Payment-Proof` 重试资源请求。服务端必须把
 
 ## 11. 下一步
 
-- 直接运行卖方入口：[Metered REST Provider Quickstart](../../quickstarts/alipay/metered-rest-provider/README.md)
+- 直接运行卖方入口：[Metered REST Provider Quickstart](../../code/examples/alipay/metered-rest-provider/README.md)
 - 联合验证 Agent 买方：[端到端 402 验证](end-to-end-402.md)
-- 查看生命周期：[Lifecycle mapping](../../profiles/alipay-ai-pay/mappings/lifecycle.md)
-- 查看错误恢复：[Error mapping](../../profiles/alipay-ai-pay/mappings/errors.md)
+- 查看生命周期：[Lifecycle mapping](../../integrations/profiles/alipay-ai-pay/mappings/lifecycle.md)
+- 查看错误恢复：[Error mapping](../../integrations/profiles/alipay-ai-pay/mappings/errors.md)
 - 查看支付宝官方示例：[aipay-402-example](https://github.com/alipay/ai/tree/main/code_example/aipay-402-example)

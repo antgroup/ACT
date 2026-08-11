@@ -13,8 +13,8 @@ from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_DIR = ROOT / "specs/2.1/schemas/a402"
-FIXTURE_DIR = ROOT / "specs/2.1/fixtures/a402"
+SCHEMA_DIR = ROOT / "specs/2.1/a402/schemas"
+FIXTURE_DIR = ROOT / "specs/2.1/a402/fixtures"
 
 SCHEMAS = {
     "payment-needed.schema.json",

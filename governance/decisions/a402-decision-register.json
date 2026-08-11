@@ -1,0 +1,325 @@
+{
+  "register_version": "1",
+  "status": "candidate-complete",
+  "updated": "2026-08-03",
+  "accepted_baseline": [
+    {
+      "id": "BASE-A402-001",
+      "status": "direction-aligned",
+      "statement": "PSD-PAY-A402 is a candidate payment access protocol that is independent from INS/L1, DEL/L2, and AUP/L3 authorization scenarios.",
+      "source": "../../specs/2.1/a402/specification.md#1-独立性"
+    },
+    {
+      "id": "BASE-A402-002",
+      "status": "direction-aligned",
+      "statement": "The completed PSD source provides a Candidate inventory of shared A402 payload fields, without freezing their header placement, requiredness, or wire schema.",
+      "source": "../../specs/2.1/a402/specification.md#51-基础载荷字段清单"
+    },
+    {
+      "id": "BASE-A402-003",
+      "status": "direction-aligned",
+      "statement": "The completed PSD source defines six transaction states and their allowed transitions; transition triggers, timeouts, compensation, and product mappings remain undecided.",
+      "source": "../../specs/2.1/a402/specification.md#8-候选状态机"
+    },
+    {
+      "id": "BASE-A402-004",
+      "status": "direction-aligned",
+      "statement": "The completed PSD source defines A402 error categories and recovery directions; the standard wire error object, codes, and valid_next_actions remain undecided.",
+      "source": "../../specs/2.1/a402/specification.md#9-幂等与错误恢复"
+    },
+    {
+      "id": "BASE-A402-005",
+      "status": "direction-aligned",
+      "statement": "All three ACT-native A402 Header values use Base64URL-encoded UTF-8 JSON with a protocol plus method envelope.",
+      "source": "../../specs/2.1/a402/specification.md#4-header-与编码"
+    },
+    {
+      "id": "BASE-A402-006",
+      "status": "direction-aligned",
+      "statement": "Payment-Validation is an optional seller response Header after proof validation; Product Profiles may map validation semantics without claiming the product emits that Header.",
+      "source": "../../specs/2.1/a402/specification.md#4-header-与编码"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "DP-A402-001",
+      "title": "Canonical machine-contract source and versioning",
+      "status": "candidate-accepted",
+      "owner_role": "ACT Core spec owner / PSD DWG",
+      "maps_pending_decisions": [],
+      "options": [
+        {
+          "id": "A",
+          "summary": "Protocol Buffers are authoritative; JSON Schema and language types are generated."
+        },
+        {
+          "id": "B",
+          "summary": "JSON Schema is authoritative for the HTTP-first candidate; language types are generated."
+        },
+        {
+          "id": "C",
+          "summary": "Normative prose remains authoritative and all machine contracts are illustrative."
+        }
+      ],
+      "recommended_option": "B",
+      "blocks": [
+        "ACT 2.1 Core message schemas",
+        "code generation",
+        "provider-neutral SDK",
+        "candidate TCK"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-002",
+      "title": "HTTP header envelopes and encoding",
+      "status": "source-settled",
+      "owner_role": "ACT Core spec owner / HTTP Binding owner / Product Profile maintainers",
+      "maps_pending_decisions": [],
+      "options": [
+        {
+          "id": "A",
+          "summary": "All ACT-native A402 headers use Base64URL-encoded UTF-8 JSON with one shared envelope."
+        },
+        {
+          "id": "B",
+          "summary": "Core defines logical objects; each versioned Binding defines its encoding and envelope."
+        },
+        {
+          "id": "C",
+          "summary": "Each Product Profile defines encoding without an ACT HTTP interoperability contract."
+        }
+      ],
+      "recommended_option": "B",
+      "blocks": [
+        "Payment-Needed Core schema",
+        "Payment-Proof Core schema",
+        "Payment-Validation wire mapping",
+        "cross-profile HTTP interoperability"
+      ],
+      "decision_record": "source-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-003",
+      "title": "method_id identity, version negotiation, and discovery",
+      "status": "candidate-accepted",
+      "owner_role": "CID and PSD DWG",
+      "maps_pending_decisions": [
+        "PD-2.1-003"
+      ],
+      "options": [
+        {
+          "id": "A",
+          "summary": "method_id is a globally namespaced stable identifier; version is a separate field."
+        },
+        {
+          "id": "B",
+          "summary": "method_id embeds its version and changes whenever the method contract changes."
+        },
+        {
+          "id": "C",
+          "summary": "method_id remains Product Profile local and is not interoperable across profiles."
+        }
+      ],
+      "recommended_option": "A",
+      "blocks": [
+        "CID-PCA-NEG schema",
+        "method schema resolution",
+        "unknown-method errors",
+        "capability discovery"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-004",
+      "title": "Original-request association, idempotency, and replay control",
+      "status": "candidate-accepted",
+      "owner_role": "HTTP Binding owner / PSD and Security DWG",
+      "maps_pending_decisions": [
+        "PD-2.1-005",
+        "PD-2.1-006"
+      ],
+      "options": [
+        {
+          "id": "A",
+          "summary": "Require byte-identical replay of method, target, selected headers, and body."
+        },
+        {
+          "id": "B",
+          "summary": "Bind proof to a canonical request fingerprint and require idempotency controls for non-idempotent delivery."
+        },
+        {
+          "id": "C",
+          "summary": "Require only business-resource association and leave HTTP replay rules to Product Profiles."
+        }
+      ],
+      "recommended_option": "B",
+      "blocks": [
+        "safe POST retry",
+        "proof replay tests",
+        "idempotency-key contract",
+        "request retention limits"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-005",
+      "title": "Fulfillment confirmation and evidence boundary",
+      "status": "candidate-accepted",
+      "owner_role": "PSD and TSD DWG / Product Profile maintainers",
+      "maps_pending_decisions": [
+        "PD-2.1-009"
+      ],
+      "options": [
+        {
+          "id": "A",
+          "summary": "A successful Payment-Validation result also proves business fulfillment and closes the evidence lifecycle."
+        },
+        {
+          "id": "B",
+          "summary": "Payment validation, resource delivery, method-specific fulfillment confirmation, and TSD evidence remain distinct correlated facts."
+        },
+        {
+          "id": "C",
+          "summary": "Fulfillment and evidence are entirely Product Profile local after A402 validation and delivery."
+        }
+      ],
+      "recommended_option": "B",
+      "blocks": [
+        "payment versus delivery evidence",
+        "fulfillment receipt mapping"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-006",
+      "title": "Lifecycle, errors, and valid next actions",
+      "status": "candidate-accepted",
+      "owner_role": "PSD DWG / Common Message owner",
+      "maps_pending_decisions": [
+        "PD-2.1-004"
+      ],
+      "options": [
+        {
+          "id": "A",
+          "summary": "Adopt the current six-state candidate transaction lifecycle as the complete Core lifecycle."
+        },
+        {
+          "id": "B",
+          "summary": "Define separate payment, validation, delivery, and fulfillment state machines."
+        },
+        {
+          "id": "C",
+          "summary": "Core preserves the six-state lifecycle as the public compatibility projection and adds structured phase outcomes and recovery actions; profiles map detailed states."
+        }
+      ],
+      "recommended_option": "C",
+      "blocks": [
+        "machine-readable error catalog",
+        "retryability semantics",
+        "timeout recovery",
+        "state-transition TCK"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-007",
+      "title": "Confirmed commerce facts and cross-domain correlation",
+      "status": "candidate-accepted",
+      "owner_role": "CID, PSD, and TSD DWG",
+      "maps_pending_decisions": [
+        "PD-2.1-007"
+      ],
+      "options": [
+        {
+          "id": "A",
+          "summary": "Payment-Needed carries the minimum order and resource facts without referencing a separate CID confirmation object."
+        },
+        {
+          "id": "B",
+          "summary": "Payment-Needed carries payment identifiers and must reference a separately retrievable CID confirmation object."
+        },
+        {
+          "id": "C",
+          "summary": "The protocol fixes minimum order/resource correlation; a future CID rule may additionally embed or reference a separately confirmed object."
+        }
+      ],
+      "recommended_option": "C",
+      "blocks": [
+        "CID-to-PSD field mapping",
+        "cart-change handling",
+        "order and resource correlation",
+        "TSD evidence chain"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-008",
+      "title": "L1/L2/L3 publication and conformance scope",
+      "status": "candidate-accepted",
+      "owner_role": "ACT Core spec owner / ADD and PSD DWG",
+      "maps_pending_decisions": [
+        "PD-2.1-010"
+      ],
+      "options": [
+        {
+          "id": "A",
+          "summary": "Publish INS/L1, DEL/L2, and AUP/L3 together with equal conformance status."
+        },
+        {
+          "id": "B",
+          "summary": "Publish an INS/L1 prototype baseline; keep DEL/L2 and AUP/L3 validation-pending until ASL dependencies are public."
+        },
+        {
+          "id": "C",
+          "summary": "Do not publish any A402 candidate until all three authorization levels are complete."
+        }
+      ],
+      "recommended_option": "B",
+      "blocks": [
+        "release scope",
+        "DEL/AUP security claims",
+        "conformance profile labels"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    },
+    {
+      "id": "DP-A402-009",
+      "title": "Workflow Binding encapsulation and evidence",
+      "status": "candidate-accepted",
+      "owner_role": "Binding DWG / Product Profile maintainers",
+      "maps_pending_decisions": [],
+      "options": [
+        {
+          "id": "A",
+          "summary": "Every Binding operation maps one-to-one to one Core message."
+        },
+        {
+          "id": "B",
+          "summary": "A workflow Binding may encapsulate multiple steps if it publishes coverage, inputs, observable outcomes, and evidence rules."
+        },
+        {
+          "id": "C",
+          "summary": "Workflow encapsulation is entirely Product Profile local and has no ACT coverage declaration."
+        }
+      ],
+      "recommended_option": "B",
+      "blocks": [
+        "Skill/CLI coverage manifest",
+        "host Agent integration contract",
+        "binding-level conformance evidence"
+      ],
+      "decision_record": "candidate-machine-contract-resolution-2026-08-03.md"
+    }
+  ],
+  "deferred_pending_decisions": [
+    {
+      "id": "PD-2.1-011",
+      "reason": "The PSD-PMT-BND to Alipay wallet lifecycle mapping belongs to the PSD foundation and Alipay Product Profile, not the minimum A402 wire-contract packet."
+    },
+    {
+      "id": "PD-2.1-012",
+      "reason": "AUP-specific machine error semantics belong to the AUP scenario specification; DP-A402-006 only defines the common A402 error envelope and recovery projection."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "config_version": "1",
+  "updated": "2026-08-11",
+  "public_repository_url": null,
+  "security_reporting_url": "https://security.alipay.com/",
+  "security_contact": "Ant Group Security Emergency Response Center (AntSRC)",
+  "note": "The public repository URL remains pending. Never add private credentials or personal contact data. No additional contributor signing gate is currently enabled."
+}

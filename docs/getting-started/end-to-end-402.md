@@ -5,7 +5,7 @@
 
 本指南不是新的支付实现。它验证同一机器支付链路的两侧能力：Agent 支付让买方 Agent 能够获得授权并支付，AI 按量付费让卖方服务能够出账、验款和履约。只有两侧互通，才能形成“接入 ACT Profile 即可接入支付宝 AI 付”的公开证据。
 
-本指南的角色、时序、标识和验收口径以[双侧能力接入契约 v0.1](../../profiles/alipay-ai-pay/capabilities/end-to-end-contract.md)为工作基线；两份文档均不替代正式 ACT Core 或支付宝官网接入要求。
+本指南的角色、时序、标识和验收口径以[双侧能力接入契约 v0.1](../../integrations/profiles/alipay-ai-pay/capabilities/end-to-end-contract.md)为工作基线；两份文档均不替代正式 ACT Core 或支付宝官网接入要求。
 
 ## 1. 验证对象
 
@@ -53,7 +53,7 @@ sequenceDiagram
 | PSD | 钱包可用；402、Proof、官方验款和支付结果形成闭环 | 脱敏账单、验证结果和支付宝交易号 |
 | TSD | 意图、订单、支付和履约证据可以关联，且没有把产品日志冒充标准存证 | 关联 ID、事件时间和证据来源 |
 
-首期用户逐笔确认对应 `PSD-PAY-INS`，同时消费候选 `PSD-PAY-A402` 接入协议。测试可以验证这一候选组合，但在 A402 公开规范发布前不能把结果提升为正式协议结论。完整说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/mappings/domains.md)。
+首期用户逐笔确认对应 `PSD-PAY-INS`，同时消费候选 `PSD-PAY-A402` 接入协议。测试可以验证这一候选组合，但在 A402 公开规范发布前不能把结果提升为正式协议结论。完整说明见[双侧能力与 ACT 四域映射](../../integrations/profiles/alipay-ai-pay/mappings/domains.md)。
 
 ## 4. 验证前准备
 
@@ -144,9 +144,9 @@ sequenceDiagram
 - 需要确认官网 Sandbox 是否能在同一链路覆盖 Agent 钱包买方和 402 卖方；如果分段验证，需要定义证据如何组合。
 - 金额单位、Proof 编码、`client_session` 条件和第三方代调用关系仍需产品复核。
 - Core 生命周期和 `valid_next_actions` 尚待协议修订确认。
-- 候选 `PSD-PAY-A402` 的正式版本、状态机、向后兼容策略以及 CID/TSD 边界尚待协议修订确认。
+- 候选 `PSD-PAY-A402` 已有 Candidate 版本与状态机；正式治理、向后兼容承诺，以及 CID/TSD 的 wire Schema 与产品映射仍待确认。
 - 买方 `402-buyer-fulfillment-ack` 与卖方 `fulfillment.confirm` 的关系、调用责任和幂等规则仍需产品确认。
 
-这些开放项在[修订追踪表](../project/revision-status.md)中维护。
+这些开放项在[修订追踪表](../../governance/revision-status.md)中维护。
 
 实际执行时复制并填写[端到端验证证据模板](end-to-end-evidence-template.md)，不要直接在本指南中粘贴真实凭证或运行日志。

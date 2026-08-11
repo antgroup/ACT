@@ -22,8 +22,8 @@
 ### 环境准备
 
 ```bash
-# 克隆仓库
-git clone https://github.com/act-protocol/act-protocol.git
+# 从公开仓库首页复制维护者确认的 Clone URL
+git clone <PUBLIC_REPOSITORY_URL>
 cd act-protocol
 
 # 运行仓库与全部 Quickstart 检查
@@ -124,7 +124,7 @@ ACT Protocol 使用 SEP 作为协议变更的标准流程。SEP 用于管理所�
 
 ### 3.1 A402 Candidate 决策评审
 
-A402 2.1 的开放语义使用[决策包](docs/project/decisions/protocol-decision-brief.md)、[机器 Register](docs/project/decisions/a402-decision-register.json)和[评审执行指南](docs/project/decisions/a402-review-guide.md)推进。参与者应为每个 `DP-A402-NNN` 建立独立公开 Issue。
+A402 2.1 的开放语义使用[决策包](governance/decisions/protocol-decision-brief.md)、[机器 Register](governance/decisions/a402-decision-register.json)和[评审执行指南](governance/decisions/a402-review-guide.md)推进。参与者应为每个 `DP-A402-NNN` 建立独立公开 Issue。
 
 - 推荐项不是正式 Accepted 决策；仓库可以用 `Candidate Accepted` 冻结可执行 Working Draft，但必须继续标记 Non-normative；
 - Product Profile 事实不能替代 Core 选择；
@@ -143,7 +143,7 @@ A402 2.1 的开放语义使用[决策包](docs/project/decisions/protocol-decisi
 - [ ] 新增字段须提供至少2个示例（正常场景+边界场景）
 - [ ] 破坏性变更须附带迁移说明；迁移目录将在版本策略确定后建立
 - [ ] 所有测试通过
-- [ ] 如项目发布了 CLA 签署机制，已按公开指引完成；当前机制仍待维护者确认
+- [ ] 确认自己有权提交相关内容，且贡献不包含未经授权的第三方材料
 
 #### PR 审查流程
 
@@ -256,17 +256,17 @@ Fixes #456
 ### 相关资源
 
 - [协议规范](specs/)
-- [Product Profile Preview Schema](profiles/alipay-ai-pay/schemas/)
-- [Quickstart](quickstarts/)
-- [Demo](demos/)
+- [Product Profile Preview Schema](integrations/profiles/alipay-ai-pay/schemas/)
+- [Quickstart](code/examples/)
+- [Demo](code/web-client/)
 - [治理规范](GOVERNANCE.md)
 
 ## 许可
 
-通过向 ACT Protocol 项目提交贡献，您确认有权提交相关内容，并同意贡献按照 [LICENSE](LICENSE) 中与文件类型和目录对应的许可证发布。正式贡献者协议或 CLA 机制仍需维护者确认。
+当前不要求额外签署贡献协议，也不要求提交 DCO sign-off。通过提交贡献，您确认自己有权提交相关内容，并同意被接受的贡献按照 [LICENSE](LICENSE) 中与文件类型和目录对应的许可证发布。第三方代码、文档、图片或数据必须保留必要的许可证与来源信息；无法确认授权的内容不得提交。
 
 ---
 
 *感谢所有为 ACT Protocol 做出贡献的社区成员！*
 
-*最后更新：2026年5月*
+*最后更新：2026年8月*

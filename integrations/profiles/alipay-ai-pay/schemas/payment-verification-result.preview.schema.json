@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "payment-verification-result.preview.schema.json",
+  "title": "Alipay AI Pay Payment Verification Result Profile Preview",
+  "description": "Non-normative minimum product facts a seller checks after the documented Alipay verification API succeeds. This is not a Payment-Validation Header schema.",
+  "x-act-status": "preview-non-normative",
+  "x-act-version": "0.9-preview.1",
+  "x-act-authority": "Alipay AI Pay public product documentation",
+  "x-act-source": "https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html",
+  "type": "object",
+  "required": ["trade_no", "out_trade_no", "amount", "resource_id", "active"],
+  "properties": {
+    "trade_no": {"type": "string", "minLength": 1},
+    "out_trade_no": {"type": "string", "minLength": 1},
+    "amount": {"type": "string", "minLength": 1},
+    "resource_id": {"type": "string", "minLength": 1},
+    "active": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

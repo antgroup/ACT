@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "transaction-state.schema.json",
+  "title": "ACT A402 Candidate Transaction State",
+  "$comment": "Candidate Working Draft / Non-normative",
+  "$defs": {
+    "state": {
+      "enum": [
+        "CREATE",
+        "WAIT_BUYER_PAY",
+        "WAIT_SELLER_FULFILLMENT",
+        "WAIT_BUYER_RECEIPT",
+        "TRADE_FINISHED",
+        "TRADE_CLOSED"
+      ]
+    }
+  },
+  "type": "object",
+  "required": ["from", "event", "to"],
+  "properties": {
+    "from": { "$ref": "#/$defs/state" },
+    "event": {
+      "enum": [
+        "PAYMENT_NEEDED_ISSUED",
+        "PAYMENT_VALIDATED",
+        "PAYMENT_TERMINATED",
+        "DELIVERY_COMMITTED",
+        "COMPENSATION_COMPLETED",
+        "FULFILLMENT_CONFIRMED",
+        "TRADE_TERMINATED"
+      ]
+    },
+    "to": { "$ref": "#/$defs/state" }
+  },
+  "additionalProperties": false
+}

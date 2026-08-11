@@ -1,6 +1,6 @@
 # Agent 支付 Getting Started
 
-> 状态：July Preview / Non-normative  
+> 状态：Candidate Preview / Non-normative  
 > 公开接入基线：支付宝官方 Wallet + Payment Skill/CLI
 
 本指南面向需要让 Agent 在用户授权下完成支付的开发者。它解释 ACT 与支付宝 Agent 支付的衔接，不复制支付宝钱包开通和绑定教程。
@@ -16,7 +16,7 @@
 - 使用官方支付能力提交支付并查询结果。
 - 在获得可信支付结果后恢复原任务。
 
-本指南不会让仓库中的 Python Mock Demo 变成真实支付实现。
+本指南不会把仓库中的 Guided Preview 或证据回放界面变成真实支付实现。
 
 ## 2. 前置条件
 
@@ -59,11 +59,11 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 | PSD | 钱包绑定、支付能力检查、用户确认支付和结果查询 | 支付宝官方 Skill/CLI |
 | TSD | 关联意图、订单、支付结果和履约证据 | ACT 实现 + 各证据提供方 |
 
-首期即使通过 HTTP 402 收到账单，用户逐笔确认后的支付执行仍按 `PSD-PAY-INS` 建模。v2.1 修订方向拟将 402 交互抽为独立的 `PSD-PAY-A402`，因此大会预览按“INS 场景 + 候选 A402 接入协议”组织；在公开规范发布前，该编号不构成正式合规声明。组件级说明见[双侧能力与 ACT 四域映射](../../profiles/alipay-ai-pay/mappings/domains.md#3-买方-agent-支付能力映射)。
+即使通过 HTTP 402 收到账单，用户逐笔确认后的支付执行仍按 `PSD-PAY-INS` 建模；独立的 Candidate `PSD-PAY-A402` 只承载支付接入交互。当前公开路径因此按“INS/L1 授权场景 + A402 Candidate 接入协议”组织；该 Candidate 编号不构成 Stable 或正式合规声明。组件级说明见[双侧能力与 ACT 四域映射](../../integrations/profiles/alipay-ai-pay/mappings/domains.md#3-买方-agent-支付能力映射)。
 
 ## 5. ACT 接入责任
 
-安装成功只代表 Agent 获得了产品能力。为了符合大会版 ACT/Profile 方向，Agent 还需要保留以下语义：
+安装成功只代表 Agent 获得了产品能力。为了符合当前 ACT/Profile Candidate 边界，Agent 还需要保留以下语义：
 
 | 阶段 | Agent 责任 | 当前归属 |
 |---|---|---|
@@ -75,7 +75,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 | 状态查询 | 对 pending/未知状态进行查询，不直接再次支付 | ACT Core 候选 + Profile |
 | 任务恢复 | 支付成功后恢复原请求；失败时提供安全的下一步动作 | ACT Core 候选 |
 
-详细映射见 [Agent Payment alignment](../../profiles/alipay-ai-pay/capabilities/agent-payment.md)。
+详细映射见 [Agent Payment alignment](../../integrations/profiles/alipay-ai-pay/capabilities/agent-payment.md)。
 
 ## 6. 两类支付入口
 
@@ -97,7 +97,7 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 
 卖方责任见[AI 按量付费 Getting Started](metered-payment.md)。
 
-真实 Skill/CLI 命令面和封装边界见[官方 Skill/CLI 行为核对](../../profiles/alipay-ai-pay/sources/audits/2026-07-21-skill-cli.md)。
+真实 Skill/CLI 命令面和封装边界见[官方 Skill/CLI 行为核对](../../integrations/profiles/alipay-ai-pay/sources/audits/2026-07-21-skill-cli.md)。
 
 ## 7. 验收清单
 
@@ -123,11 +123,11 @@ Agent 支付不是只属于 PSD。首期公开路径横跨四域，但不同责�
 | Skill/CLI 临时失败 | 保留原任务上下文，按官方结果决定重试或终止 |
 | 用户拒绝支付 | 终止当前支付，不伪造成功或继续交付 |
 
-候选错误和下一步动作见 [Error mapping](../../profiles/alipay-ai-pay/mappings/errors.md)。
+候选错误和下一步动作见 [Error mapping](../../integrations/profiles/alipay-ai-pay/mappings/errors.md)。
 
 ## 9. 下一步
 
-- 直接运行买方入口：[Agent Payment Quickstart](../../quickstarts/alipay/agent-payment/README.md)
+- 直接运行买方入口：[Agent Payment Quickstart](../../code/examples/alipay/agent-payment/README.md)
 - 验证买方和卖方完整链路：[端到端 402 验证](end-to-end-402.md)
-- 实现 Product Profile：[Alipay AI Pay Profile](../../profiles/alipay-ai-pay/README.md)
+- 实现 Product Profile：[Alipay AI Pay Profile](../../integrations/profiles/alipay-ai-pay/README.md)
 - 查看产品当前能力：[支付宝 AI 付概览](https://aipay.alipay.com/docs/overview.html)

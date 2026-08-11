@@ -89,12 +89,19 @@ def json_errors() -> list[str]:
         if text is None:
             continue
         try:
-            json.loads(text)
+            document = json.loads(text)
         except json.JSONDecodeError as exc:
             errors.append(
                 f"{path.relative_to(ROOT)}: invalid JSON at "
                 f"line {exc.lineno}, column {exc.colno}: {exc.msg}"
             )
+            continue
+        if isinstance(document, dict) and "$schema" in document and "$id" in document:
+            if document["$id"] != path.name:
+                errors.append(
+                    f"{path.relative_to(ROOT)}: JSON Schema $id must be the local "
+                    f"filename {path.name!r}, found {document['$id']!r}"
+                )
     return errors
 
 
@@ -117,70 +124,96 @@ def python_syntax_errors() -> list[str]:
 def repository_structure_errors() -> list[str]:
     required = [
         "CHANGELOG.md",
+        "MAINTAINERS.md",
+        "README.en.md",
         "release-manifest.json",
+        "code/README.md",
         "docs/README.md",
+        "governance/README.md",
+        "integrations/README.md",
         "specs/README.md",
-        "profiles/README.md",
+        "integrations/profiles/README.md",
         "LICENSE-APACHE-2.0",
         "LICENSE-CC-BY-4.0",
-        "bindings/http-a402/README.md",
-        "profiles/alipay-ai-pay/bindings/skill-cli/README.md",
-        "profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json",
-        "profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json",
-        "profiles/alipay-ai-pay/schemas/payment-verification-result.preview.schema.json",
-        "profiles/alipay-ai-pay/schemas/error-mapping.preview.json",
-        "profiles/alipay-ai-pay/profile-review-status.json",
-        "quickstarts/alipay/README.md",
-        "quickstarts/alipay/agent-payment/package.json",
-        "quickstarts/alipay/agent-payment/preflight.mjs",
-        "quickstarts/alipay/metered-rest-provider/pom.xml",
-        "quickstarts/alipay/metered-rest-provider/.env.example",
-        "quickstarts/alipay/metered-rest-provider/run.sh",
-        "quickstarts/alipay/end-to-end-402/package.json",
-        "quickstarts/alipay/end-to-end-402/inspect-402.mjs",
-        "quickstarts/alipay/end-to-end-402/local-golden-path.mjs",
-        "quickstarts/alipay/end-to-end-402/local-preview.http",
-        "quickstarts/alipay/end-to-end-402/sandbox-preflight.mjs",
-        "quickstarts/alipay/end-to-end-402/sandbox-preflight.test.mjs",
-        "specs/2.1/assertions/a402-core-assertions.json",
-        "specs/2.1/assertions/features/a402-local-preview.feature",
-        "specs/2.1/schemas/a402/README.md",
-        "specs/2.1/schemas/a402/payment-needed.schema.json",
-        "specs/2.1/schemas/a402/payment-proof.schema.json",
-        "specs/2.1/schemas/a402/payment-validation.schema.json",
-        "specs/2.1/schemas/a402/error.schema.json",
-        "specs/2.1/schemas/a402/error-catalog.json",
-        "specs/2.1/fixtures/a402/valid/payment-needed.json",
-        "specs/2.1/fixtures/a402/valid/payment-proof.json",
-        "specs/2.1/fixtures/a402/valid/payment-validation.json",
+        "integrations/bindings/http-a402/README.md",
+        "integrations/profiles/alipay-ai-pay/bindings/skill-cli/README.md",
+        "integrations/profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json",
+        "integrations/profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json",
+        "integrations/profiles/alipay-ai-pay/schemas/payment-verification-result.preview.schema.json",
+        "integrations/profiles/alipay-ai-pay/schemas/error-mapping.preview.json",
+        "integrations/profiles/alipay-ai-pay/profile-review-status.json",
+        "code/examples/alipay/README.md",
+        "code/examples/alipay/agent-payment/package.json",
+        "code/examples/alipay/agent-payment/run.sh",
+        "code/examples/alipay/agent-payment/preflight.mjs",
+        "code/examples/alipay/metered-rest-provider/pom.xml",
+        "code/examples/alipay/metered-rest-provider/.env.example",
+        "code/examples/alipay/metered-rest-provider/run.sh",
+        "code/examples/alipay/end-to-end-402/package.json",
+        "code/examples/alipay/end-to-end-402/run.sh",
+        "code/examples/alipay/end-to-end-402/inspect-402.mjs",
+        "code/examples/alipay/end-to-end-402/local-golden-path.mjs",
+        "code/examples/alipay/end-to-end-402/local-preview.http",
+        "code/examples/alipay/end-to-end-402/sandbox-preflight.mjs",
+        "code/examples/alipay/end-to-end-402/sandbox-preflight.test.mjs",
+        "specs/2.1/a402/assertions/a402-core-assertions.json",
+        "specs/2.1/domains/authorization-delegation.md",
+        "specs/2.1/domains/commerce-interaction.md",
+        "specs/2.1/domains/trust-services.md",
+        "specs/2.1/scenarios.md",
+        "specs/2.1/a402/assertions/features/a402-local-preview.feature",
+        "specs/2.1/a402/schemas/README.md",
+        "specs/2.1/a402/schemas/payment-needed.schema.json",
+        "specs/2.1/a402/schemas/payment-proof.schema.json",
+        "specs/2.1/a402/schemas/payment-validation.schema.json",
+        "specs/2.1/a402/schemas/error.schema.json",
+        "specs/2.1/a402/schemas/error-catalog.json",
+        "specs/2.1/a402/fixtures/valid/payment-needed.json",
+        "specs/2.1/a402/fixtures/valid/payment-proof.json",
+        "specs/2.1/a402/fixtures/valid/payment-validation.json",
         "scripts/validate_a402_contract.py",
-        "demos/alipay-ai-pay-sandbox-showcase/README.md",
-        "demos/alipay-ai-pay-sandbox-showcase/public/index.html",
-        "demos/alipay-ai-pay-sandbox-showcase/public/app.js",
-        "demos/alipay-ai-pay-sandbox-showcase/bridge-server.mjs",
-        "docs/project/releases/2026-bund-payment-open-source-plan.md",
-        "docs/project/releases/2026-07-31-july-preview.md",
-        "docs/project/releases/2026-08-03-candidate-publication.md",
-        "docs/project/releases/release-readiness.json",
+        "code/web-client/alipay-ai-pay-showcase/README.md",
+        "code/web-client/alipay-ai-pay-showcase/public/index.html",
+        "code/web-client/alipay-ai-pay-showcase/public/app.js",
+        "code/web-client/alipay-ai-pay-showcase/bridge-server.mjs",
+        "governance/releases/2026-07-31-july-preview.md",
+        "governance/releases/2026-08-03-candidate-publication.md",
+        "governance/release-readiness.json",
+        "governance/publication-config.json",
+        "governance/decisions/legal-and-contribution-policy.md",
+        "scripts/create_public_snapshot.py",
+        "scripts/check_protocol_source_drift.py",
+        "scripts/check_product_source_drift.py",
+        ".github/workflows/product-source-drift.yml",
+        "governance/protocol-sources.json",
         "scripts/release_readiness.py",
-        "profiles/alipay-ai-pay/sources/audits/2026-08-03-product-update.md",
-        "docs/project/decisions/README.md",
-        "docs/project/decisions/protocol-decision-brief.md",
-        "docs/project/decisions/a402-decision-register.json",
-        "docs/project/decisions/a402-decision-register.schema.json",
-        "docs/project/decisions/candidate-machine-contract-resolution-2026-08-03.md",
-        "docs/project/decisions/adr-template.md",
-        "docs/project/decisions/a402-review-guide.md",
-        "docs/project/decisions/a402-review-minutes-template.md",
+        "integrations/profiles/alipay-ai-pay/sources/audits/2026-08-08-product-update.md",
+        "governance/decisions/README.md",
+        "governance/decisions/protocol-decision-brief.md",
+        "governance/decisions/a402-decision-register.json",
+        "governance/decisions/a402-decision-register.schema.json",
+        "governance/decisions/candidate-machine-contract-resolution-2026-08-03.md",
+        "governance/decisions/adr-template.md",
+        "governance/decisions/a402-review-guide.md",
+        "governance/decisions/a402-review-minutes-template.md",
         ".github/ISSUE_TEMPLATE/a402-protocol-decision.md",
-        "docs/project/releases/evidence/2026-08-03-sandbox-preflight.json",
+        "governance/releases/evidence/2026-08-03-sandbox-preflight.json",
     ]
     errors = [
         f"missing required repository asset: {path}"
         for path in required
         if not (ROOT / path).is_file()
     ]
-    forbidden_directories = ["impl", "conformance", "reference-implementations"]
+    forbidden_directories = [
+        "impl",
+        "conformance",
+        "reference-implementations",
+        "bindings",
+        "profiles",
+        "quickstarts",
+        "demos",
+        "docs/project",
+    ]
     errors.extend(
         f"obsolete or empty top-level directory must not be published: {path}"
         for path in forbidden_directories
@@ -199,6 +232,57 @@ def repository_structure_errors() -> list[str]:
     return errors
 
 
+def protocol_source_registry_errors() -> list[str]:
+    """Keep the public ACT source registry complete and free of placeholders."""
+
+    path = ROOT / "governance/protocol-sources.json"
+    try:
+        registry = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"governance/protocol-sources.json: cannot validate ({exc})"]
+
+    errors: list[str] = []
+    if registry.get("authority") != "https://www.act-protocol.com/":
+        errors.append("governance/protocol-sources.json: invalid ACT authority")
+    if registry.get("source_of_truth") != "official-publication":
+        errors.append("governance/protocol-sources.json: source_of_truth must be official-publication")
+    expected_pages = {
+        "overview": "https://www.act-protocol.com/documentation/overview",
+        "scenarios": "https://www.act-protocol.com/documentation/scenarios",
+        "delegation": "https://www.act-protocol.com/documentation/delegation",
+        "commerce": "https://www.act-protocol.com/documentation/commerce",
+        "payment": "https://www.act-protocol.com/documentation/payment",
+        "trust": "https://www.act-protocol.com/documentation/trust",
+    }
+    pages = registry.get("pages")
+    if not isinstance(pages, list):
+        return errors + ["governance/protocol-sources.json: pages must be an array"]
+    observed: dict[str, str] = {}
+    for page in pages:
+        if not isinstance(page, dict):
+            errors.append("governance/protocol-sources.json: each page must be an object")
+            continue
+        page_id = page.get("id")
+        if not isinstance(page_id, str) or page_id in observed:
+            errors.append(f"governance/protocol-sources.json: invalid/duplicate page id {page_id!r}")
+            continue
+        observed[page_id] = page.get("url")
+        if not re.fullmatch(r"[0-9a-f]{64}", str(page.get("visible_text_sha256", ""))):
+            errors.append(
+                f"governance/protocol-sources.json: {page_id} has no captured SHA-256"
+            )
+        if not page.get("title_marker"):
+            errors.append(
+                f"governance/protocol-sources.json: {page_id} has no title marker"
+            )
+    if observed != expected_pages:
+        errors.append(
+            "governance/protocol-sources.json: official page inventory does not match "
+            f"{expected_pages}"
+        )
+    return errors
+
+
 def payment_services_domain_errors() -> list[str]:
     """Protect the completed PSD source alignment from silent regression."""
 
@@ -213,17 +297,12 @@ def payment_services_domain_errors() -> list[str]:
         "PSD-PAY-AUP",
         "PSD-PAY-A402",
     }
-    completed_source_url = (
-        "https://yuque.antfin.com/hknzlf/fvle20/dve0b9g2u1t3cs33"
-    )
-    revision_history_url = (
-        "https://yuque.antfin.com/hknzlf/fvle20/dh5iwcigwa65hkds"
-    )
+    completed_source_url = "https://www.act-protocol.com/documentation/payment"
 
     tracked_paths = [
         ROOT / "specs/2.1/overview.md",
-        ROOT / "specs/2.1/payment-services-domain-spec.md",
-        ROOT / "specs/2.1/a402-binding.md",
+        ROOT / "specs/2.1/domains/payment-services.md",
+        ROOT / "specs/2.1/a402/specification.md",
         ROOT / "specs/2.1/revision-status.md",
     ]
     tracked_texts: dict[Path, str] = {}
@@ -232,11 +311,10 @@ def payment_services_domain_errors() -> list[str]:
         if text is None:
             continue
         tracked_texts[path] = text
-        for source_url in (completed_source_url, revision_history_url):
-            if source_url not in text:
-                errors.append(
-                    f"{path.relative_to(ROOT)}: missing PSD source {source_url}"
-                )
+        if completed_source_url not in text:
+            errors.append(
+                f"{path.relative_to(ROOT)}: missing PSD source {completed_source_url}"
+            )
 
     revision_status = tracked_texts.get(ROOT / "specs/2.1/revision-status.md", "")
     for source_fact in (
@@ -262,7 +340,7 @@ def payment_services_domain_errors() -> list[str]:
 
     for relative_path in (
         "specs/2.1/overview.md",
-        "specs/2.1/payment-services-domain-spec.md",
+        "specs/2.1/domains/payment-services.md",
     ):
         path = ROOT / relative_path
         text = tracked_texts.get(path, "")
@@ -272,7 +350,7 @@ def payment_services_domain_errors() -> list[str]:
                 f"{relative_path}: incomplete PSD component inventory; missing {missing}"
             )
 
-    profile_path = ROOT / "profiles/alipay-ai-pay/mappings/domains.md"
+    profile_path = ROOT / "integrations/profiles/alipay-ai-pay/mappings/domains.md"
     profile_text = decode_text(profile_path, errors) or ""
     profile_components = set(
         re.findall(r"PSD-(?:PMT|AGT|PAY)-[A-Z0-9]+", profile_text)
@@ -290,7 +368,7 @@ def payment_services_domain_errors() -> list[str]:
             f"{unknown_profile_components}"
         )
 
-    a402_path = ROOT / "specs/2.1/a402-binding.md"
+    a402_path = ROOT / "specs/2.1/a402/specification.md"
     a402_text = tracked_texts.get(a402_path, "")
     base_fields = {
         "method_id",
@@ -365,7 +443,7 @@ def payment_services_domain_errors() -> list[str]:
             )
 
     seller_script_path = (
-        ROOT / "quickstarts/alipay/metered-rest-provider/run.sh"
+        ROOT / "code/examples/alipay/metered-rest-provider/run.sh"
     )
     seller_script = decode_text(seller_script_path, errors) or ""
     for mode in ("init", "test", "package", "run"):
@@ -374,7 +452,7 @@ def payment_services_domain_errors() -> list[str]:
                 f"{seller_script_path.relative_to(ROOT)}: missing mode {mode}"
             )
 
-    assertion_path = ROOT / "specs/2.1/assertions/a402-core-assertions.json"
+    assertion_path = ROOT / "specs/2.1/a402/assertions/a402-core-assertions.json"
     assertion_text = decode_text(assertion_path, errors) or ""
     for assertion_id in (
         "PSD-CAND-001",
@@ -386,6 +464,244 @@ def payment_services_domain_errors() -> list[str]:
         if assertion_id not in assertion_text:
             errors.append(
                 f"{assertion_path.relative_to(ROOT)}: missing {assertion_id}"
+            )
+
+    return errors
+
+
+def commerce_interaction_domain_errors() -> list[str]:
+    """Protect the official CID source alignment from silent regression."""
+
+    errors: list[str] = []
+    source_url = "https://www.act-protocol.com/documentation/commerce"
+    expected_components = {
+        "CID-MER-CAT",
+        "CID-INT-XFR",
+        "CID-PCA-NEG",
+        "CID-CART-CFM",
+    }
+    tracked_paths = [
+        ROOT / "specs/2.1/overview.md",
+        ROOT / "specs/2.1/domains/commerce-interaction.md",
+        ROOT / "specs/2.1/domains/commerce-payment-negotiation.md",
+        ROOT / "specs/2.1/revision-status.md",
+        ROOT / "integrations/profiles/alipay-ai-pay/mappings/domains.md",
+    ]
+    tracked_texts: dict[Path, str] = {}
+    for path in tracked_paths:
+        text = decode_text(path, errors)
+        if text is None:
+            continue
+        tracked_texts[path] = text
+        if source_url not in text:
+            errors.append(f"{path.relative_to(ROOT)}: missing CID source {source_url}")
+
+    cid_path = ROOT / "specs/2.1/domains/commerce-interaction.md"
+    cid_text = tracked_texts.get(cid_path, "")
+    for marker in ("Candidate Working Draft", "Non-normative"):
+        if marker not in cid_text:
+            errors.append(f"{cid_path.relative_to(ROOT)}: missing status {marker}")
+    missing_components = sorted(
+        component for component in expected_components if component not in cid_text
+    )
+    if missing_components:
+        errors.append(
+            f"{cid_path.relative_to(ROOT)}: incomplete CID component inventory; "
+            f"missing {missing_components}"
+        )
+    for semantic_field in (
+        "capability_url",
+        "negotiation_endpoint",
+        "supported_methods",
+        "method_id",
+        "psp_id",
+        "endpoint",
+        "method_schema_url",
+        "commerce_confirmation",
+    ):
+        if f"`{semantic_field}`" not in cid_text:
+            errors.append(
+                f"{cid_path.relative_to(ROOT)}: missing CID semantic field "
+                f"{semantic_field}"
+            )
+    for highlighted_security_fact in (
+        "历史修订证据",
+        "商户已声明的能力地址",
+        "伪造、篡改或替换",
+        "不得继续能力匹配或支付",
+    ):
+        if highlighted_security_fact not in cid_text:
+            errors.append(
+                f"{cid_path.relative_to(ROOT)}: missing highlighted CID security "
+                f"fact {highlighted_security_fact}"
+            )
+
+    revision_path = ROOT / "specs/2.1/revision-status.md"
+    revision_text = tracked_texts.get(revision_path, "")
+    for source_fact in (
+        "545380139",
+        "2026-05-20T02:50:37.000Z",
+        "2026-05-19T07:27:46.000Z",
+        "7a7259c4d2b6ea5bdd1ab3e88ad1be72b327558a0493293ed73db6e75d210113",
+        "6,701",
+    ):
+        if source_fact not in revision_text:
+            errors.append(
+                f"{revision_path.relative_to(ROOT)}: missing CID source fact "
+                f"{source_fact}"
+            )
+    for pending_id in ("PD-2.1-013", "PD-2.1-014", "PD-2.1-015"):
+        if pending_id not in revision_text:
+            errors.append(
+                f"{revision_path.relative_to(ROOT)}: missing CID pending decision "
+                f"{pending_id}"
+            )
+
+    profile_path = ROOT / "integrations/profiles/alipay-ai-pay/mappings/domains.md"
+    profile_text = tracked_texts.get(profile_path, "")
+    profile_components = set(re.findall(r"CID-[A-Z]+-[A-Z]+", profile_text))
+    missing_profile_components = sorted(expected_components - profile_components)
+    if missing_profile_components:
+        errors.append(
+            f"{profile_path.relative_to(ROOT)}: missing CID mappings "
+            f"{missing_profile_components}"
+        )
+
+    return errors
+
+
+def additional_domain_source_errors() -> list[str]:
+    """Protect ADD, TSD, and cross-domain scenario source alignment."""
+
+    errors: list[str] = []
+    sources = {
+        "add": "https://www.act-protocol.com/documentation/delegation",
+        "scenarios": "https://www.act-protocol.com/documentation/scenarios",
+        "trust": "https://www.act-protocol.com/documentation/trust",
+    }
+    paths = {
+        "overview": ROOT / "specs/2.1/overview.md",
+        "add": ROOT / "specs/2.1/domains/authorization-delegation.md",
+        "tsd": ROOT / "specs/2.1/domains/trust-services.md",
+        "scenarios": ROOT / "specs/2.1/scenarios.md",
+        "revision": ROOT / "specs/2.1/revision-status.md",
+        "profile": ROOT / "integrations/profiles/alipay-ai-pay/mappings/domains.md",
+    }
+    texts: dict[str, str] = {}
+    for name, path in paths.items():
+        text = decode_text(path, errors)
+        if text is not None:
+            texts[name] = text
+
+    for name in ("add", "tsd", "scenarios"):
+        text = texts.get(name, "")
+        for marker in ("Candidate Working Draft", "Non-normative"):
+            if marker not in text:
+                errors.append(f"{paths[name].relative_to(ROOT)}: missing status {marker}")
+
+    for name in ("overview", "revision"):
+        for source_url in sources.values():
+            if source_url not in texts.get(name, ""):
+                errors.append(
+                    f"{paths[name].relative_to(ROOT)}: missing domain source {source_url}"
+                )
+
+    add_text = texts.get("add", "")
+    for component in ("ADD-INT-ICS", "ADD-IAC-ISS", "ADD-IAC-LCM"):
+        if component not in add_text:
+            errors.append(f"{paths['add'].relative_to(ROOT)}: missing {component}")
+    for fact in (
+        "price_deviation_tolerance",
+        "price_deviation_action",
+        "source_isr_digest",
+        "status_reference",
+        "Active",
+        "Suspended",
+        "Revoked",
+        "Expired",
+        "历史修订证据",
+    ):
+        if fact not in add_text:
+            errors.append(f"{paths['add'].relative_to(ROOT)}: missing ADD fact {fact}")
+
+    tsd_text = texts.get("tsd", "")
+    tsd_components = {
+        "TSD-ATT-EVT",
+        "TSD-ATT-OFF",
+        "TSD-ATT-OCA",
+        "TSD-ATT-SVF",
+        "TSD-ATT-DSP",
+        "TSD-CRD-ASC",
+        "TSD-CRD-MAP",
+        "TSD-CRD-LCM",
+        "TSD-CRD-VER",
+        "TSD-CRD-AUTH",
+    }
+    for component in sorted(tsd_components):
+        if component not in tsd_text:
+            errors.append(f"{paths['tsd'].relative_to(ROOT)}: missing {component}")
+    for fact in (
+        "链下完整记录 + 链上摘要锚定",
+        "ASSOCIATED_CREDIT",
+        "DIRECT_SIGNATURE",
+        "ATTESTED_CONFIRMATION",
+        "逐次授权",
+        "平台代理查询",
+        "不生成虚构",
+    ):
+        if fact not in tsd_text:
+            errors.append(f"{paths['tsd'].relative_to(ROOT)}: missing TSD fact {fact}")
+
+    scenario_text = texts.get("scenarios", "")
+    for fact in (
+        "用户在场的即时支付",
+        "平台或多租户 Agent 的定向委托",
+        "用户专属 Agent 的定向委托",
+        "自主化委托支付",
+        "PSD-PAY-A402",
+        "以对应域正文为准",
+        "异步、非阻塞",
+    ):
+        if fact not in scenario_text:
+            errors.append(
+                f"{paths['scenarios'].relative_to(ROOT)}: missing scenario fact {fact}"
+            )
+
+    revision_text = texts.get("revision", "")
+    for source_fact in (
+        "545380123",
+        "bad030eca08f1b4b723a97fd3f53f2348922b00622f1d2a5d53c299797a6b0af",
+        "545380100",
+        "41ef13fd14d2d7d87fca1237ab40912b80c387c4ff623e9e1ae6db0027159494",
+        "545380294",
+        "d312af952b242e1d31af6a95e3dabc64ff4028686955e142a29f33c731f15282",
+        "565985641",
+        "1e024d74f813ff4ae41ce54e446f9f8ed5242927e0b8abb7fa722a641fcda3dd",
+        "PD-2.1-016",
+        "PD-2.1-017",
+        "PD-2.1-018",
+    ):
+        if source_fact not in revision_text:
+            errors.append(
+                f"{paths['revision'].relative_to(ROOT)}: missing source/pending fact "
+                f"{source_fact}"
+            )
+
+    profile_text = texts.get("profile", "")
+    for source_url in (sources["add"], sources["trust"]):
+        if source_url not in profile_text:
+            errors.append(
+                f"{paths['profile'].relative_to(ROOT)}: missing domain source {source_url}"
+            )
+    for component in ("ADD-INT-ICS", "ADD-IAC-ISS", "ADD-IAC-LCM"):
+        if component not in profile_text:
+            errors.append(
+                f"{paths['profile'].relative_to(ROOT)}: missing ADD mapping {component}"
+            )
+    for family in ("TSD-ATT-*", "TSD-CRD-*"):
+        if family not in profile_text:
+            errors.append(
+                f"{paths['profile'].relative_to(ROOT)}: missing TSD mapping {family}"
             )
 
     return errors
@@ -458,6 +774,28 @@ def release_manifest_errors() -> list[str]:
     if "act-2.0" in components:
         errors.append("release-manifest.json: legacy act-2.0 must not be published")
 
+    showcase = components.get("alipay-ai-pay-showcase", {})
+    if showcase.get("kind") != "demo":
+        errors.append("release-manifest.json: Showcase must be declared as a demo")
+    if showcase.get("status") != "guided-preview-and-evidence-replay":
+        errors.append(
+            "release-manifest.json: Showcase status must preserve its preview boundary"
+        )
+    if showcase.get("normative") is not False:
+        errors.append("release-manifest.json: Showcase must remain non-normative")
+
+    product = manifest.get("external_dependencies", {}).get(
+        "alipay-ai-pay-product", {}
+    )
+    if product.get("last_checked") != "2026-08-08":
+        errors.append(
+            "release-manifest.json: Alipay product source must record 2026-08-08 review"
+        )
+    if product.get("integration_guide_updated_at") != "2026-08-07T21:51:27+08:00":
+        errors.append(
+            "release-manifest.json: Alipay guide timestamp must match the latest audit"
+        )
+
     readiness = manifest.get("release_readiness")
     if not isinstance(readiness, dict):
         errors.append("release-manifest.json: release_readiness must be an object")
@@ -484,9 +822,77 @@ def release_manifest_errors() -> list[str]:
     return errors
 
 
+def publication_configuration_errors() -> list[str]:
+    """Keep public endpoints explicit without accepting placeholders as real config."""
+
+    errors: list[str] = []
+    config_path = ROOT / "governance/publication-config.json"
+    try:
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"{config_path.relative_to(ROOT)}: cannot validate ({exc})"]
+
+    if config.get("config_version") != "1":
+        errors.append(f"{config_path.relative_to(ROOT)}: config_version must be '1'")
+    required = {
+        "public_repository_url",
+        "security_reporting_url",
+        "security_contact",
+    }
+    missing = sorted(required - set(config))
+    if missing:
+        errors.append(
+            f"{config_path.relative_to(ROOT)}: missing publication keys {missing}"
+        )
+
+    for field in (
+        "public_repository_url",
+        "security_reporting_url",
+    ):
+        value = config.get(field)
+        if value is not None and (
+            not isinstance(value, str)
+            or not value.startswith("https://")
+            or "<" in value
+            or "example." in value
+        ):
+            errors.append(
+                f"{config_path.relative_to(ROOT)}: {field} must be null or a real HTTPS URL"
+            )
+    contact = config.get("security_contact")
+    if contact is not None and (not isinstance(contact, str) or not contact.strip()):
+        errors.append(
+            f"{config_path.relative_to(ROOT)}: security_contact must be null or non-empty"
+        )
+    if config.get("security_reporting_url") != "https://security.alipay.com/":
+        errors.append(
+            f"{config_path.relative_to(ROOT)}: security reporting must use AntSRC"
+        )
+    return errors
+
+
+def public_snapshot_boundary_errors() -> list[str]:
+    """Ensure public documents and gates do not depend on excluded private files."""
+
+    errors: list[str] = []
+    private_root = ROOT / "governance/internal"
+    for pattern in ("*.md", "*.json"):
+        for path in repository_files(pattern):
+            if private_root in path.parents:
+                continue
+            text = decode_text(path, errors)
+            if text is None:
+                continue
+            if "governance/internal/" in text or "](internal/" in text or "](../internal/" in text:
+                errors.append(
+                    f"{path.relative_to(ROOT)}: public content depends on private governance material"
+                )
+    return errors
+
+
 def release_readiness_errors() -> list[str]:
     errors: list[str] = []
-    readiness_path = ROOT / "docs/project/releases/release-readiness.json"
+    readiness_path = ROOT / "governance/release-readiness.json"
     try:
         readiness = json.loads(readiness_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -620,7 +1026,7 @@ def release_readiness_errors() -> list[str]:
 
 def candidate_assertion_errors() -> list[str]:
     errors: list[str] = []
-    catalog_path = ROOT / "specs/2.1/assertions/a402-core-assertions.json"
+    catalog_path = ROOT / "specs/2.1/a402/assertions/a402-core-assertions.json"
     try:
         catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -715,7 +1121,7 @@ def candidate_assertion_errors() -> list[str]:
                             f"token is missing: {executable_token}"
                         )
 
-    feature_path = ROOT / "specs/2.1/assertions/features/a402-local-preview.feature"
+    feature_path = ROOT / "specs/2.1/a402/assertions/features/a402-local-preview.feature"
     feature_text = decode_text(feature_path, errors) if feature_path.is_file() else None
     if feature_text is not None:
         for executable_id in ("A402-CAND-002", "A402-CAND-003"):
@@ -736,7 +1142,7 @@ def profile_preview_schema_errors() -> list[str]:
     )
     schemas = {}
     for schema_name in schema_names:
-        schema_path = ROOT / "profiles/alipay-ai-pay/schemas" / schema_name
+        schema_path = ROOT / "integrations/profiles/alipay-ai-pay/schemas" / schema_name
         try:
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
@@ -752,7 +1158,7 @@ def profile_preview_schema_errors() -> list[str]:
                 f"{schema_path.relative_to(ROOT)}: must use Profile 0.9-preview.1"
             )
 
-    schema_path = ROOT / "profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json"
+    schema_path = ROOT / "integrations/profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json"
     schema = schemas.get("payment-needed.preview.schema.json", {})
     if schema.get("x-act-header") != "Payment-Needed":
         errors.append(f"{schema_path.relative_to(ROOT)}: unexpected header mapping")
@@ -774,7 +1180,7 @@ def profile_preview_schema_errors() -> list[str]:
     for field in ("payment_proof", "trade_no"):
         if field not in proof_protocol_required:
             errors.append(
-                "profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json: "
+                "integrations/profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json: "
                 f"protocol must require {field}"
             )
 
@@ -785,13 +1191,13 @@ def profile_preview_schema_errors() -> list[str]:
     for field in ("trade_no", "out_trade_no", "amount", "resource_id", "active"):
         if field not in verification_required:
             errors.append(
-                "profiles/alipay-ai-pay/schemas/"
+                "integrations/profiles/alipay-ai-pay/schemas/"
                 "payment-verification-result.preview.schema.json: "
                 f"must require {field}"
             )
 
     inspector_path = (
-        ROOT / "quickstarts/alipay/end-to-end-402/inspect-402.mjs"
+        ROOT / "code/examples/alipay/end-to-end-402/inspect-402.mjs"
     )
     inspector_text = decode_text(inspector_path, errors)
     if inspector_text is not None:
@@ -805,7 +1211,7 @@ def profile_preview_schema_errors() -> list[str]:
                 "duplicated as hard-coded arrays"
             )
 
-    review_path = ROOT / "profiles/alipay-ai-pay/profile-review-status.json"
+    review_path = ROOT / "integrations/profiles/alipay-ai-pay/profile-review-status.json"
     try:
         review_status = json.loads(review_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -853,9 +1259,9 @@ def profile_preview_schema_errors() -> list[str]:
                     )
 
     error_mapping_path = (
-        ROOT / "profiles/alipay-ai-pay/schemas/error-mapping.preview.json"
+        ROOT / "integrations/profiles/alipay-ai-pay/schemas/error-mapping.preview.json"
     )
-    core_error_catalog_path = ROOT / "specs/2.1/schemas/a402/error-catalog.json"
+    core_error_catalog_path = ROOT / "specs/2.1/a402/schemas/error-catalog.json"
     try:
         error_mapping = json.loads(error_mapping_path.read_text(encoding="utf-8"))
         core_error_catalog = json.loads(
@@ -924,7 +1330,7 @@ def repository_hygiene_errors() -> list[str]:
             if required_pattern not in patterns:
                 errors.append(f".gitignore: missing {required_pattern}")
 
-    public_roots = [ROOT / "docs/getting-started", ROOT / "quickstarts"]
+    public_roots = [ROOT / "docs/getting-started", ROOT / "code/examples"]
     for public_root in public_roots:
         for path in sorted(public_root.rglob("*.md")):
             text = decode_text(path, errors)
@@ -969,7 +1375,7 @@ def repository_hygiene_errors() -> list[str]:
 
 def a402_decision_register_errors() -> list[str]:
     errors: list[str] = []
-    register_path = ROOT / "docs/project/decisions/a402-decision-register.json"
+    register_path = ROOT / "governance/decisions/a402-decision-register.json"
     try:
         register = json.loads(register_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -997,7 +1403,7 @@ def a402_decision_register_errors() -> list[str]:
     actual_ids: set[str] = set()
     mapped_pending: list[str] = []
     decisions_by_id: dict[str, dict] = {}
-    brief_path = ROOT / "docs/project/decisions/protocol-decision-brief.md"
+    brief_path = ROOT / "governance/decisions/protocol-decision-brief.md"
     brief_text = decode_text(brief_path, errors)
 
     for decision in decisions:
@@ -1207,8 +1613,8 @@ def a402_review_workflow_errors() -> list[str]:
     errors: list[str] = []
     workflow_files = {
         "issue": ROOT / ".github/ISSUE_TEMPLATE/a402-protocol-decision.md",
-        "guide": ROOT / "docs/project/decisions/a402-review-guide.md",
-        "minutes": ROOT / "docs/project/decisions/a402-review-minutes-template.md",
+        "guide": ROOT / "governance/decisions/a402-review-guide.md",
+        "minutes": ROOT / "governance/decisions/a402-review-minutes-template.md",
         "contributing": ROOT / "CONTRIBUTING.md",
         "governance": ROOT / "GOVERNANCE.md",
     }
@@ -1283,8 +1689,13 @@ def main() -> int:
         ("UTF-8 and JSON syntax", json_errors),
         ("Python syntax", python_syntax_errors),
         ("Repository structure", repository_structure_errors),
+        ("Official ACT source registry", protocol_source_registry_errors),
         ("Completed PSD source alignment", payment_services_domain_errors),
+        ("Current CID source alignment", commerce_interaction_domain_errors),
+        ("ADD, TSD, and scenario source alignment", additional_domain_source_errors),
         ("Release manifest", release_manifest_errors),
+        ("Publication configuration", publication_configuration_errors),
+        ("Public snapshot boundary", public_snapshot_boundary_errors),
         ("Release readiness gates", release_readiness_errors),
         ("ACT 2.1 candidate assertions", candidate_assertion_errors),
         ("Alipay Profile Preview Schema", profile_preview_schema_errors),

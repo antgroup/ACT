@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a402-decision-register.schema.json",
+  "title": "ACT A402 Decision Register",
+  "type": "object",
+  "required": [
+    "register_version",
+    "status",
+    "updated",
+    "accepted_baseline",
+    "decisions",
+    "deferred_pending_decisions"
+  ],
+  "properties": {
+    "register_version": {
+      "const": "1"
+    },
+    "status": {
+      "enum": [
+        "ready-for-review",
+        "partially-decided",
+        "candidate-complete",
+        "complete"
+      ]
+    },
+    "updated": {
+      "type": "string",
+      "format": "date"
+    },
+    "accepted_baseline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "statement",
+          "source"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "const": "direction-aligned"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "owner_role",
+          "maps_pending_decisions",
+          "options",
+          "recommended_option",
+          "blocks",
+          "decision_record"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^DP-A402-[0-9]{3}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ready-for-review",
+              "needs-product-input",
+              "deferred",
+              "source-settled",
+              "candidate-accepted",
+              "accepted",
+              "rejected",
+              "superseded"
+            ]
+          },
+          "owner_role": {
+            "type": "string"
+          },
+          "maps_pending_decisions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^PD-2\\.1-[0-9]{3}$"
+            }
+          },
+          "options": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "summary"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Z]$"
+                },
+                "summary": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "recommended_option": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "decision_record": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "deferred_pending_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^PD-2\\.1-[0-9]{3}$"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workflow-binding-manifest.schema.json",
+  "title": "ACT A402 Candidate Workflow Binding Manifest",
+  "$comment": "Candidate Working Draft / Non-normative",
+  "type": "object",
+  "required": ["binding_id", "binding_version", "covers", "inputs", "observable_outcomes", "evidence", "redaction"],
+  "properties": {
+    "binding_id": { "$ref": "common.schema.json#/$defs/methodId" },
+    "binding_version": { "$ref": "common.schema.json#/$defs/methodVersion" },
+    "covers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["PAYMENT_REQUIREMENT", "AUTHORIZATION", "PAYMENT", "ORIGINAL_REQUEST_RETRY", "PROOF_VALIDATION", "DELIVERY", "FULFILLMENT", "EVIDENCE"]
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "observable_outcomes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "redaction": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "additionalProperties": false
+}

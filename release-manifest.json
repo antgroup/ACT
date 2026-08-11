@@ -1,10 +1,10 @@
 {
   "manifest_version": "1",
-  "updated": "2026-08-03",
+  "updated": "2026-08-11",
   "repository_status": "act-2.1-candidate-unreleased",
   "release_readiness": {
     "status": "blocked",
-    "path": "docs/project/releases/release-readiness.json",
+    "path": "governance/release-readiness.json",
     "default_target": "act-candidate-publication",
     "allowed_claim": "ACT 2.1 Candidate Working Draft / Non-normative"
   },
@@ -22,7 +22,7 @@
       "kind": "protocol-schema",
       "version": "2.1-candidate.1",
       "status": "candidate-working-draft",
-      "path": "specs/2.1/schemas/a402/README.md",
+      "path": "specs/2.1/a402/schemas/README.md",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -33,7 +33,7 @@
       "kind": "binding",
       "version": "0.2-working-draft",
       "status": "preview",
-      "path": "bindings/http-a402/README.md",
+      "path": "integrations/bindings/http-a402/README.md",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -45,7 +45,7 @@
       "kind": "product-profile",
       "version": "0.9-preview.1",
       "status": "preview",
-      "path": "profiles/alipay-ai-pay/README.md",
+      "path": "integrations/profiles/alipay-ai-pay/README.md",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -57,7 +57,7 @@
       "kind": "product-profile-schema",
       "version": "0.9-preview.1",
       "status": "preview-non-normative",
-      "path": "profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json",
+      "path": "integrations/profiles/alipay-ai-pay/schemas/payment-needed.preview.schema.json",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -68,7 +68,7 @@
       "kind": "product-profile-schema",
       "version": "0.9-preview.1",
       "status": "preview-non-normative",
-      "path": "profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json",
+      "path": "integrations/profiles/alipay-ai-pay/schemas/payment-proof.preview.schema.json",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -79,7 +79,7 @@
       "kind": "product-profile-schema",
       "version": "0.9-preview.1",
       "status": "preview-non-normative",
-      "path": "profiles/alipay-ai-pay/schemas/payment-verification-result.preview.schema.json",
+      "path": "integrations/profiles/alipay-ai-pay/schemas/payment-verification-result.preview.schema.json",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -90,7 +90,7 @@
       "kind": "product-profile-mapping",
       "version": "0.9-preview.1",
       "status": "preview-non-normative",
-      "path": "profiles/alipay-ai-pay/schemas/error-mapping.preview.json",
+      "path": "integrations/profiles/alipay-ai-pay/schemas/error-mapping.preview.json",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -102,7 +102,7 @@
       "kind": "quickstart",
       "version": "0.1.0",
       "status": "preview",
-      "path": "quickstarts/alipay/agent-payment/package.json",
+      "path": "code/examples/alipay/agent-payment/package.json",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -113,7 +113,7 @@
       "kind": "quickstart",
       "version": "0.1.0",
       "status": "preview",
-      "path": "quickstarts/alipay/metered-rest-provider/pom.xml",
+      "path": "code/examples/alipay/metered-rest-provider/pom.xml",
       "normative": false,
       "production_certified": false,
       "depends_on": [
@@ -124,15 +124,37 @@
       "kind": "quickstart",
       "version": "0.1.0",
       "status": "non-payable-local-preview",
-      "path": "quickstarts/alipay/end-to-end-402/package.json",
+      "path": "code/examples/alipay/end-to-end-402/package.json",
       "normative": false,
       "production_certified": false,
       "depends_on": [
         "alipay-ai-pay-profile"
       ]
+    },
+    "alipay-ai-pay-showcase": {
+      "kind": "demo",
+      "version": "0.1.0",
+      "status": "guided-preview-and-evidence-replay",
+      "path": "code/web-client/alipay-ai-pay-showcase/package.json",
+      "normative": false,
+      "production_certified": false,
+      "depends_on": [
+        "act-2.1",
+        "act-2.1-a402-machine-contract",
+        "alipay-ai-pay-profile",
+        "alipay-local-a402-preview"
+      ]
     }
   },
   "external_dependencies": {
+    "act-protocol-publication": {
+      "authority": "https://www.act-protocol.com/",
+      "version": null,
+      "last_checked": "2026-08-10",
+      "source_registry": "governance/protocol-sources.json",
+      "resolution_status": "official-publication-is-source-of-truth; candidate-semantic-refresh-pending",
+      "evidence_requirement": "Review structure and semantic diffs before updating the Candidate after an official-page change."
+    },
     "alipay-agent-payment": {
       "authority": "Alipay official distribution",
       "package": "@alipay/agent-payment",
@@ -145,8 +167,8 @@
     "alipay-ai-pay-product": {
       "authority": "https://aipay.alipay.com/callpay",
       "version": null,
-      "last_checked": "2026-08-03",
-      "integration_guide_updated_at": "2026-07-31T11:54:36+08:00",
+      "last_checked": "2026-08-08",
+      "integration_guide_updated_at": "2026-08-07T21:51:27+08:00",
       "resolution_status": "official-site-is-source-of-truth",
       "evidence_requirement": "Record the official documentation URL and access date used for validation."
     }
@@ -161,6 +183,11 @@
       "consumer": "alipay-ai-pay-profile",
       "provider": "act-2.1",
       "status": "candidate-core-mapping-aligned-product-questions-remain"
+    },
+    {
+      "consumer": "alipay-ai-pay-showcase",
+      "provider": "alipay-ai-pay-profile",
+      "status": "guided-l1-l2-l3-preview-live-evidence-l1-only"
     }
   ]
 }
