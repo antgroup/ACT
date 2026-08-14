@@ -116,7 +116,7 @@ export function validateEvidenceEvent(event, index, mode, scenario = "SUCCESS") 
   if (typeof event.correlation_ref !== "string" || event.correlation_ref.trim() === "") {
     throw new Error(`event ${index + 1} is missing correlation_ref`);
   }
-  if (!METHOD_ID.test(event.method_id || "")) throw new Error("method_id must use the Candidate namespace syntax");
+  if (!METHOD_ID.test(event.method_id || "")) throw new Error("method_id must use the A402 artifact namespace syntax");
   if (!METHOD_VERSION.test(event.method_version || "")) throw new Error("method_version must be SemVer");
   validateStateFacts(event, index, requiredStates, scenario);
   if (mode === "LIVE_SANDBOX" && event.environment !== "SANDBOX") {

@@ -78,7 +78,7 @@ a { color: inherit; }
   font: 9px var(--mono);
   box-shadow: var(--shadow-sm);
 }
-.mode-badge.preview { border-color: #cfe2ff; background: var(--blue-soft); color: var(--blue); }
+.mode-badge.demo { border-color: #cfe2ff; background: var(--blue-soft); color: var(--blue); }
 .mode-badge.live { border-color: #bfeada; background: var(--green-soft); color: var(--green); }
 .mode-badge.replay { border-color: #ffe0b7; background: var(--orange-soft); color: #c96a0a; }
 

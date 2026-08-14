@@ -16,11 +16,4 @@ This removes the former signing and pull-request verification dependency. Normal
 
 ## Publication boundary
 
-This decision is sufficient to describe ownership and outbound licensing in a public source snapshot. The following operational values remain external configuration and must not be guessed in repository content:
-
-- public repository URL;
-- public repository URL.
-
-The private security reporting channel is [AntSRC](https://security.alipay.com/), operated by the Ant Group Security Emergency Response Center.
-
-Their current state is machine-readable in [`publication-config.json`](../publication-config.json) and [`release-readiness.json`](../release-readiness.json).
+This decision is sufficient to describe ownership and outbound licensing in a public source snapshot. The private security reporting channel is [AntSRC](https://security.alipay.com/), operated by the Ant Group Security Emergency Response Center.

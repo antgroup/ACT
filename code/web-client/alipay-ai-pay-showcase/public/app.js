@@ -36,57 +36,57 @@ const stateCatalog = {
   },
   SPECIFIED_INTENT_CAPTURED: {
     label: "明确自动支付意图", phase: "ADD / L2", domain: "ADD", component: "ADD-INT-ICS · SPECIFIED",
-    binding: "指定商品、商户、金额与受托 Agent", profile: "L2 产品映射 Validation-pending",
-    product: "未来委托支付 Profile · 未声明已上线", code: "ADD · SPECIFIED",
+    binding: "指定商品、商户、金额与受托 Agent", profile: "ACT L2 协议语义",
+    product: "本仓库未提供支付宝 L2 实现", code: "ADD · SPECIFIED",
     explanation: "用户预先明确商品、商户、金额和次数，生成 SPECIFIED 意图；完全匹配后自动支付，执行时用户可以不在场。",
     agent: "我已取得明确的委托目标：只允许向指定数据服务购买一次 0.01 元资源。",
   },
   SPECIFIED_IAC_ISSUED: {
     label: "签发 SPECIFIED IAC", phase: "ADD / L2", domain: "ADD", component: "ADD-IAC-ISS",
     binding: "完整 IAC + delegation_id", profile: "IAC wire Schema 尚未冻结",
-    product: "未来委托支付 Profile · Validation-pending", code: "IAC · SPECIFIED",
+    product: "本仓库未提供支付宝 L2 实现", code: "IAC · SPECIFIED",
     explanation: "授权服务签发绑定委托人、受托 Agent、商户、商品、金额和有效期的 SPECIFIED IAC。",
     agent: "定向委托凭证已经签发；后续支付必须严格匹配指定商户、资源和金额。",
   },
   SPECIFIED_IAC_VERIFIED: {
     label: "本地核对定向授权", phase: "DEL / L2", domain: "ADD + PSD", component: "PSD-PAY-DEL · local precheck",
     binding: "检查 IAC 状态、范围和 Agent 绑定", profile: "本地检查不能替代 PSP 权威核验",
-    product: "未来委托支付 Profile · Validation-pending", code: "DEL · PRECHECK",
+    product: "本仓库未提供支付宝 L2 实现", code: "DEL · PRECHECK",
     explanation: "Agent 在付款前检查 IAC 有效状态、指定商户、资源、金额和当前运行身份。",
     agent: "本笔交易与 SPECIFIED IAC 完全匹配，可以在用户不在场时提交支付。",
   },
   DEL_PSP_AUTHORIZED: {
     label: "授权通过并自动支付", phase: "DEL / L2", domain: "PSD", component: "PSD-PAY-DEL · L2",
-    binding: "PSP 验证签名、防重放、IAC 与绑定关系", profile: "支付宝 L2 产品能力尚未公开验证",
-    product: "Future / Validation-pending", code: "DEL · VERIFY",
+    binding: "PSP 验证签名、防重放、IAC 与绑定关系", profile: "ACT L2 协议角色",
+    product: "本仓库未提供支付宝 L2 实现", code: "DEL · VERIFY",
     explanation: "PSP 权威验证完整 IAC、签名、状态、受托人绑定、订单和金额；执行时不要求逐笔用户核身。",
     agent: "支付受理方已验证定向委托边界，现在可以执行本笔支付。",
   },
   BOUNDED_INTENT_CAPTURED: {
     label: "定义自主任务边界", phase: "ADD / L3", domain: "ADD", component: "ADD-INT-ICS · BOUNDED",
-    binding: "任务目标、总预算、商户/类目与有效期", profile: "L3 产品映射 Validation-pending",
-    product: "未来自主支付 Profile · 未声明已上线", code: "ADD · BOUNDED",
+    binding: "任务目标、总预算、商户/类目与有效期", profile: "ACT L3 协议语义",
+    product: "本仓库未提供支付宝 L3 实现", code: "ADD · BOUNDED",
     explanation: "用户授权任务目标和可执行边界，具体服务选择由 Agent 在边界内自主决定。",
     agent: "我获得了一个 BOUNDED 任务：在 1 元总预算内购买完成报告所需的数据服务。",
   },
   BOUNDED_IAC_ISSUED: {
     label: "签发 BOUNDED IAC", phase: "ADD / L3", domain: "ADD", component: "ADD-IAC-ISS",
     binding: "BOUNDED IAC + delegation_id", profile: "IAC wire Schema 与状态查询仍待治理",
-    product: "未来自主支付 Profile · Validation-pending", code: "IAC · BOUNDED",
+    product: "本仓库未提供支付宝 L3 实现", code: "IAC · BOUNDED",
     explanation: "授权服务签发任务级凭证，约束总预算、单笔上限、类目、商户范围、有效期和受托 Agent。",
     agent: "自主任务凭证已经签发；每一笔子支付都必须重新检查剩余预算和交易边界。",
   },
   AUP_BOUNDARY_CHECKED: {
     label: "检查自主支付边界", phase: "AUP / L3", domain: "ADD + PSD", component: "PSD-PAY-AUP · boundary check",
     binding: "检查 BOUNDED IAC、单笔/累计额度和目标范围", profile: "不依赖用户逐笔确认",
-    product: "未来自主支付 Profile · Validation-pending", code: "AUP · CHECK",
+    product: "本仓库未提供支付宝 L3 实现", code: "AUP · CHECK",
     explanation: "Agent 检查本笔 0.01 元交易是否落在任务、类目、商户、单笔和累计预算边界内。",
     agent: "本笔数据服务调用符合 BOUNDED IAC，支付后剩余任务预算为 0.99 元。",
   },
   AUP_PSP_AUTHORIZED: {
     label: "PSP 验证自主授权", phase: "AUP / L3", domain: "PSD", component: "PSD-PAY-AUP · L3",
-    binding: "PSP 权威验证 IAC、Agent、额度和防重放", profile: "支付宝 L3 产品能力尚未公开验证",
-    product: "Future / Validation-pending", code: "AUP · VERIFY",
+    binding: "PSP 权威验证 IAC、Agent、额度和防重放", profile: "ACT L3 协议角色",
+    product: "本仓库未提供支付宝 L3 实现", code: "AUP · VERIFY",
     explanation: "PSP 对本笔子支付执行权威边界核验；AUP 可在任务周期内循环，但每笔仍需独立校验。",
     agent: "支付受理方已确认本笔子支付处于授权边界内，可以自主执行。",
   },
@@ -97,7 +97,7 @@ const stateCatalog = {
     component: "CID-PCA-NEG",
     binding: "能力协商：选择 method_id 与接入端点",
     profile: "演示证据映射，不是支付宝线上字段",
-    product: "支付宝 AI 付 Profile",
+    product: "支付宝 AI 付",
     code: "CID · NEG",
     explanation: "Buyer 与 Seller 在支付前确认 method_id、PSP 和接入端点。A402 不隐含某个支付场景。",
     agent: "已确认该服务支持支付宝 AI 付，并选择双方共同支持的支付方法。",
@@ -132,7 +132,7 @@ const stateCatalog = {
     domain: "PSD",
     component: "PSD-PAY-A402 · Payment-Needed",
     binding: "HTTP 402 + Payment-Needed",
-    profile: "ACT Candidate 索款要求 ↔ 支付宝产品账单",
+    profile: "ACT 2.1 索款要求 ↔ 支付宝产品账单",
     product: "AI 按量付费 · 机器账单",
     code: "A402 · 402",
     explanation: "Seller 返回机器可读 Payment-Needed，并回显已协商的 method_id；资源继续锁定。",
@@ -192,10 +192,10 @@ const stateCatalog = {
     domain: "PSD",
     component: "Proof verification / Validation mapping",
     binding: "支付宝 payment.verify",
-    profile: "候选 Payment-Validation ↔ 支付宝验款结果",
+    profile: "ACT 2.1 Payment-Validation ↔ 支付宝验款结果",
     product: "AI 按量付费 · payment.verify",
     code: "A402 · VERIFY",
-    explanation: "Seller 通过支付宝官方接口核验状态、金额、订单、资源和防重。候选 Payment-Validation 映射到验款结果，不冒充已上线 Header。",
+    explanation: "Seller 通过支付宝官方接口核验状态、金额、订单、资源和防重。ACT 2.1 Payment-Validation 映射到验款结果，不冒充已上线 Header。",
     agent: "卖方已通过支付宝官方接口完成验款，正在准备交付资源。",
   },
   RESOURCE_DELIVERED: {
@@ -213,13 +213,13 @@ const stateCatalog = {
   FULFILLMENT_CONFIRMED: {
     label: "履约确认",
     phase: "FULFILLMENT",
-    domain: "PSD / PRODUCT PROFILE",
+    domain: "PSD / PRODUCT",
     component: "Method fulfillment confirmation",
     binding: "支付宝 fulfillment.confirm · 卖方观察",
     profile: "产品履约确认与可选 TSD 证据相互独立",
     product: "AI 按量付费 · 履约确认",
     code: "RECEIPT",
-    explanation: "卖方已完成支付宝产品履约确认。本 Demo 不把该调用冒充 TSD 事件；买方 ack 与卖方 confirm 的正式关系仍是 Profile 待确认项。",
+    explanation: "卖方已完成支付宝产品履约确认。本 Demo 不把该调用冒充 TSD 事件；买方 ack 与卖方 confirm 是不同方向的产品动作。",
     agent: "资源已交付，卖方产品履约确认已完成；可选 TSD 证据仍独立异步处理。",
   },
   PAYMENT_PENDING: {
@@ -353,12 +353,12 @@ const detailKeys = [
   "resource_id", "amount", "currency", "validation_mapping", "delivery_ref", "fulfillment_ref",
   "idempotent_replay", "recovery_action",
 ];
-const previewBase = {
-  mode: "GUIDED_PREVIEW",
-  source: "illustrative-ui-preview",
+const demoBase = {
+  mode: "GUIDED_DEMO",
+  source: "illustrative-ui-demo",
   environment: "NOT_APPLICABLE",
-  evidence_ref: "UI-PREVIEW-NOT-PAYMENT-EVIDENCE",
-  correlation_ref: "corr-preview-7f3a",
+  evidence_ref: "UI-DEMO-NOT-PAYMENT-EVIDENCE",
+  correlation_ref: "corr-demo-7f3a",
 };
 
 const authorizationCopy = {
@@ -367,7 +367,7 @@ const authorizationCopy = {
     title: "每一笔都由用户核身确认",
     description: "Agent 可以准备订单，但每笔扣款前都必须回到用户确认金额、商户与支付方式。",
     facts: ["用户逐笔在场", "逐笔核身确认", "Agent 不可自动扣款"],
-    prompt: "帮我生成《2026 AI 支付趋势报告》，需要付款时每一笔都让我核身确认。",
+    userRequest: "帮我生成《2026 AI 支付趋势报告》，需要付款时每一笔都让我核身确认。",
     intro: "L1 中 Agent 可以寻找并报价，但每一笔支付都必须由用户在场核身确认。本页演示首次绑定、逐笔确认、扫码付款和数据交付。",
     idle: "我会先寻找专业数据；收到报价后必须请你对本笔支付核身确认。",
   },
@@ -376,7 +376,7 @@ const authorizationCopy = {
     title: "明确商品、商户和金额后自动支付",
     description: "用户预先把这一笔交易说清楚并签发 SPECIFIED IAC；执行时 Agent 不再逐笔打断用户。",
     facts: ["指定商品", "指定商户与金额", "单笔自动执行"],
-    prompt: "授权你自动向“示例专业数据服务”购买一次“AI 支付行业趋势数据 API”，金额必须是 0.01 元。",
+    userRequest: "授权你自动向“示例专业数据服务”购买一次“AI 支付行业趋势数据 API”，金额必须是 0.01 元。",
     intro: "L2 中用户提前明确商品、商户、金额和次数。Agent 只能自动执行这笔指定交易，不能换商品、换商户或提高金额。",
     idle: "我会严格匹配你指定的商品、商户和 0.01 元金额，匹配成功后自动执行，不再逐笔询问。",
   },
@@ -385,7 +385,7 @@ const authorizationCopy = {
     title: "Agent 在任务边界内自主决策和支付",
     description: "用户授权任务目标和预算边界；Agent 可以自主选服务并执行多笔子支付，但每笔都必须重新校验边界。",
     facts: ["Agent 自主选服务", "总预算 1.00 元", "每笔不超过 0.20 元"],
-    prompt: "在 1 元总预算内自主购买完成《2026 AI 支付趋势报告》所需的数据，每笔不得超过 0.20 元。",
+    userRequest: "在 1 元总预算内自主购买完成《2026 AI 支付趋势报告》所需的数据，每笔不得超过 0.20 元。",
     intro: "L3 中用户不指定某一笔交易，而是给出任务、总预算和单笔边界。Agent 自主选择服务并支付，每一笔都重新检查授权范围。",
     idle: "我会在任务和预算边界内自主选择数据服务，并对每笔子支付重新检查范围和剩余预算。",
   },
@@ -397,9 +397,9 @@ const elements = Object.fromEntries(
     "correlationChain", "currentState", "eventCounter", "eventStreamUrl", "evidenceDetails", "baselineValue", "footerScenarioValue",
     "evidenceRef", "exchangeCard", "fromActor", "directionArrow", "layerCode", "liveForm",
     "liveTab", "methodId", "modeBadge", "phaseRail", "playReplay",
-    "replayControls", "replayFile", "replayTab", "playPreview", "previewControls", "previewTab",
-    "resetPreview", "resourceCard", "resourceDescription", "resourceId", "resourcePrice",
-    "resourceState", "resourceTitle", "scenarioSelect", "stateExplanation", "stepPreview",
+    "replayControls", "replayFile", "replayTab", "playDemo", "demoControls", "demoTab",
+    "resetDemo", "resourceCard", "resourceDescription", "resourceId", "resourcePrice",
+    "resourceState", "resourceTitle", "scenarioSelect", "stateExplanation", "stepDemo",
     "stepReplay", "taskResult", "taskStatusDot", "timeline", "toActor", "wireBadge", "wireMessage",
     "principalActor", "buyerActor", "sellerActor", "pspActor", "authActor", "profileMapping", "tsdStatus",
     "businessJourney", "purchaseStatus", "businessActionTitle", "agentThinkingLabel",
@@ -408,11 +408,11 @@ const elements = Object.fromEntries(
     "authorizationCardStatus", "authorizationCardDescription", "authorizationFacts", "bindingQr", "bindingCommand", "protocolLayerValue",
     "productLayerValue", "footerProfileValue", "pspActorIcon", "pspActorName", "pspActorDescription", "layerExplanation",
     "authorizationSummary", "authorizationSummaryLevel", "authorizationSummaryEyebrow", "authorizationSummaryTitle",
-    "authorizationSummaryDescription", "authorizationSummaryFacts", "userPrompt", "introScenarioCopy",
+    "authorizationSummaryDescription", "authorizationSummaryFacts", "userRequest", "introScenarioCopy",
   ].map((id) => [id, document.getElementById(id)]),
 );
 
-let mode = "GUIDED_PREVIEW";
+let mode = "GUIDED_DEMO";
 let scenario = "SUCCESS";
 let authorizationLevel = "L1";
 let events = [];
@@ -420,9 +420,9 @@ let replayEvents = [];
 let replayIndex = 0;
 let replayTimer = null;
 let eventSource = null;
-let previewEvents = [];
-let previewIndex = 0;
-let previewTimer = null;
+let demoEvents = [];
+let demoIndex = 0;
+let demoTimer = null;
 
 const operationalL1Flow = [
   "CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED",
@@ -431,7 +431,7 @@ const operationalL1Flow = [
 ];
 
 function successFlow() {
-  if (mode !== "GUIDED_PREVIEW") return operationalL1Flow;
+  if (mode !== "GUIDED_DEMO") return operationalL1Flow;
   return authorizationFlows[authorizationLevel] || authorizationFlows.L1;
 }
 
@@ -472,8 +472,8 @@ function displayState(id, index) {
       phase: delegated ? "DEL / L2" : "AUP / L3",
       component: delegated ? "PSD-PAY-DEL · L2" : "PSD-PAY-AUP · L3",
       binding: delegated ? "SPECIFIED IAC 授权下的支付执行" : "BOUNDED IAC 边界内的子支付执行",
-      profile: "协议语义演示；支付宝产品映射 Validation-pending",
-      product: "Future / Validation-pending · 不代表支付宝已上线能力",
+      profile: "ACT 协议语义演示",
+      product: "本仓库未提供对应的支付宝实现",
       label: id === "PAYMENT_PROCESSING" ? (delegated ? "委托支付处理中" : "自主子支付处理中") : state.label,
       code: delegated ? `DEL · ${id === "PAYMENT_RESULT_RECEIVED" ? "RESULT" : id === "PAYMENT_PENDING" ? "PENDING" : "PAY"}`
         : `AUP · ${id === "PAYMENT_RESULT_RECEIVED" ? "RESULT" : id === "PAYMENT_PENDING" ? "PENDING" : "PAY"}`,
@@ -481,7 +481,7 @@ function displayState(id, index) {
         ? `${delegated ? "定向委托" : "自主支付"}结果已确认，并产生可供 A402 重试使用的脱敏 Proof 引用；该页面只演示 ACT 语义。`
         : id === "PAYMENT_PENDING"
           ? "授权范围内的原交易结果仍未知；只能查询原交易，不能生成第二笔支付。"
-          : `${delegated ? "DEL" : "AUP"} 在 IAC 约束下执行本笔支付；支付宝侧产品映射尚待验证。`,
+          : `${delegated ? "DEL" : "AUP"} 在 IAC 约束下执行本笔支付；本仓库未提供对应的支付宝实现。`,
       agent: id === "PAYMENT_PROCESSING"
         ? `正在演示 ${delegated ? "DEL 定向委托" : "AUP 自主"}支付；这不是支付宝产品上线声明。`
         : state.agent,
@@ -651,11 +651,11 @@ function renderAgentExecution(stateId = null, current = null) {
   elements.paymentCardKind.textContent = authorizationLevel === "L1"
     ? "ALIPAY · 付款确认"
     : authorizationLevel === "L2"
-      ? "DEL / L2 · 委托支付语义预览"
-      : "AUP / L3 · 自主支付语义预览";
+      ? "DEL / L2 · 委托支付语义演示"
+      : "AUP / L3 · 自主支付语义演示";
   elements.paymentCardTitle.textContent = authorizationLevel === "L1"
     ? "专业数据服务调用"
-    : "产品映射 Validation-pending";
+    : "ACT 协议支付语义";
   elements.paymentQr.classList.toggle("hidden", authorizationLevel !== "L1"
     || !["PAYMENT_QR_PRESENTED", "PAYMENT_PROCESSING"].includes(stateId));
   elements.paymentCardStatus.textContent = {
@@ -696,7 +696,7 @@ function renderAgentExecution(stateId = null, current = null) {
     DEL_PSP_AUTHORIZED: "指定商品、商户、金额和次数完全匹配，授权通过后自动执行；这里不声称支付宝已提供对应产品能力。",
     AUP_BOUNDARY_CHECKED: "Agent 已检查本笔金额、目标和累计预算均处于任务边界内。",
     AUP_PSP_AUTHORIZED: "PSP 权威校验自主授权；这里不声称支付宝已提供对应产品能力。",
-    PAYMENT_PROCESSING: "正在演示授权范围内的协议支付执行；产品映射仍待验证。",
+    PAYMENT_PROCESSING: "正在演示授权范围内的协议支付执行；本仓库未提供对应的支付宝实现。",
     PAYMENT_PENDING: "结果未知，只查询原交易，不得再次支付。",
     PAYMENT_RESULT_RECEIVED: "支付结果已确认，Agent 将携脱敏凭据恢复原工具调用。",
     RESOURCE_REQUEST_RETRIED: "Agent 正在使用同一付款结果重新请求数据。",
@@ -739,12 +739,12 @@ function renderAuthorizationCard(stateId = null, failure = false) {
   }
 
   const specified = authorizationLevel === "L2";
-  elements.authorizationCardKind.textContent = `${specified ? "DEL / L2" : "AUP / L3"} · ACT CANDIDATE`;
+  elements.authorizationCardKind.textContent = `${specified ? "DEL / L2" : "AUP / L3"} · ACT 2.1`;
   elements.authorizationCardTitle.textContent = specified ? "SPECIFIED 定向委托" : "BOUNDED 自主任务授权";
   elements.authorizationCardStatus.textContent = ready ? "IAC 已签发" : "定义边界";
   elements.authorizationCardDescription.textContent = specified
-    ? "商品、商户、金额和次数已明确；完全匹配后自动支付，不再逐笔询问用户。支付宝产品映射仍待验证。"
-    : "允许 Agent 在任务、预算、类目、商户和有效期边界内执行多笔子支付；支付宝产品映射仍待验证。";
+    ? "商品、商户、金额和次数已明确；完全匹配后自动支付，不再逐笔询问用户。本仓库未提供对应的支付宝实现。"
+    : "允许 Agent 在任务、预算、类目、商户和有效期边界内执行多笔子支付；本仓库未提供对应的支付宝实现。";
   const facts = specified
     ? ["资源：market-signal-demo", "金额：0.01 CNY", "次数：1 次"]
     : ["总预算：1.00 CNY", "单笔：≤ 0.20 CNY", "每笔重新校验"];
@@ -754,18 +754,18 @@ function renderAuthorizationCard(stateId = null, failure = false) {
 function setMode(nextMode) {
   stopInputs();
   mode = nextMode;
-  authorizationLevel = mode === "GUIDED_PREVIEW" ? elements.authorizationSelect.value : "L1";
-  scenario = mode === "GUIDED_PREVIEW" ? elements.scenarioSelect.value : "SUCCESS";
+  authorizationLevel = mode === "GUIDED_DEMO" ? elements.authorizationSelect.value : "L1";
+  scenario = mode === "GUIDED_DEMO" ? elements.scenarioSelect.value : "SUCCESS";
   events = [];
   replayEvents = [];
   replayIndex = 0;
-  previewEvents = createPreviewEvents();
-  previewIndex = 0;
-  elements.previewTab.classList.toggle("active", mode === "GUIDED_PREVIEW");
+  demoEvents = createDemoEvents();
+  demoIndex = 0;
+  elements.demoTab.classList.toggle("active", mode === "GUIDED_DEMO");
   elements.liveTab.classList.toggle("active", mode === "LIVE_SANDBOX");
   elements.replayTab.classList.toggle("active", mode === "SANITIZED_REPLAY");
-  elements.previewControls.classList.toggle("hidden", mode !== "GUIDED_PREVIEW");
-  elements.authorizationSummary.classList.toggle("hidden", mode !== "GUIDED_PREVIEW");
+  elements.demoControls.classList.toggle("hidden", mode !== "GUIDED_DEMO");
+  elements.authorizationSummary.classList.toggle("hidden", mode !== "GUIDED_DEMO");
   elements.liveForm.classList.toggle("hidden", mode !== "LIVE_SANDBOX");
   elements.replayControls.classList.toggle("hidden", mode !== "SANITIZED_REPLAY");
   const baseline = authorizationLevel === "L1" ? "PMT-BND + INS / L1 + A402"
@@ -773,8 +773,8 @@ function setMode(nextMode) {
   elements.baselineValue.textContent = baseline;
   elements.protocolLayerValue.textContent = baseline;
   elements.footerScenarioValue.textContent = authorizationLevel === "L1" ? "PSD-PAY-INS (L1)" : authorizationLevel === "L2" ? "PSD-PAY-DEL (L2)" : "PSD-PAY-AUP (L3)";
-  elements.productLayerValue.textContent = authorizationLevel === "L1" ? "Agent 支付 + AI 按量付费" : "产品映射待验证 · 不声明已上线";
-  elements.footerProfileValue.textContent = authorizationLevel === "L1" ? "ALIPAY AI PAY PROFILE" : "ALIPAY PROFILE · VALIDATION-PENDING";
+  elements.productLayerValue.textContent = authorizationLevel === "L1" ? "Agent 支付 + AI 按量付费" : "本仓库未提供 L2/L3 支付宝实现";
+  elements.footerProfileValue.textContent = authorizationLevel === "L1" ? "ALIPAY AI PAY" : "ACT PROTOCOL ONLY";
   const copy = authorizationCopy[authorizationLevel];
   elements.authorizationSummary.dataset.level = authorizationLevel;
   elements.authorizationSummaryLevel.textContent = authorizationLevel;
@@ -782,22 +782,22 @@ function setMode(nextMode) {
   elements.authorizationSummaryTitle.textContent = copy.title;
   elements.authorizationSummaryDescription.textContent = copy.description;
   elements.authorizationSummaryFacts.innerHTML = copy.facts.map((fact) => `<span>${fact}</span>`).join("");
-  elements.userPrompt.textContent = copy.prompt;
+  elements.userRequest.textContent = copy.userRequest;
   elements.introScenarioCopy.textContent = copy.intro;
   elements.pspActorIcon.textContent = authorizationLevel === "L1" ? "支" : "P";
-  elements.pspActorName.textContent = authorizationLevel === "L1" ? "支付宝" : "PSP（待验证）";
+  elements.pspActorName.textContent = authorizationLevel === "L1" ? "支付宝" : "PSP（协议角色）";
   elements.pspActorDescription.textContent = authorizationLevel === "L1" ? "支付、查询、验款" : "协议角色，非产品声明";
   elements.layerExplanation.textContent = authorizationLevel === "L1"
     ? "先看懂上面的购买故事，再用这里核对协议边界：ACT 描述协商、授权和支付服务消息；支付宝产品完成支付与验款；示例服务负责真正的数据交付。"
-    : "本档只对照 ACT Candidate 的授权与支付语义；PSP 是协议角色，支付宝侧 L2/L3 产品能力仍待验证；示例服务只负责资源交付。";
-  if (mode === "GUIDED_PREVIEW") {
+    : "本档只对照 ACT 2.1 的授权与支付语义；PSP 是协议角色，本仓库未提供支付宝 L2/L3 接入实现；示例服务只负责资源交付。";
+  if (mode === "GUIDED_DEMO") {
     elements.modeBadge.textContent = authorizationLevel === "L1"
-      ? "UI PREVIEW · NOT PAYMENT EVIDENCE"
-      : `CANDIDATE ${authorizationLevel} · PRODUCT PENDING`;
-    elements.modeBadge.className = "mode-badge preview";
+      ? "GUIDED DEMO · NOT PAYMENT EVIDENCE"
+      : `ACT 2.1 ${authorizationLevel} · NO ALIPAY INTEGRATION`;
+    elements.modeBadge.className = "mode-badge demo";
     setStatus(authorizationLevel === "L1"
       ? "说明性数据展示首次绑定、笔笔核身确认和 A402 恢复，不代表真实支付或兼容性证据。"
-      : `${authorizationLevel} 仅演示 ACT Candidate 协议语义；支付宝产品映射 Validation-pending。`);
+      : `${authorizationLevel} 演示 ACT 2.1 协议语义；本仓库未提供对应的支付宝实现。`);
   } else if (mode === "LIVE_SANDBOX") {
     elements.eventStreamUrl.value = `${window.location.origin}/events`;
     elements.modeBadge.textContent = "LIVE · NOT CONNECTED";
@@ -817,17 +817,17 @@ function stopInputs() {
   if (eventSource) eventSource.close();
   eventSource = null;
   if (replayTimer) clearInterval(replayTimer);
-  if (previewTimer) clearInterval(previewTimer);
+  if (demoTimer) clearInterval(demoTimer);
   replayTimer = null;
-  previewTimer = null;
+  demoTimer = null;
   elements.playReplay.textContent = "播放";
-  elements.playPreview.textContent = "播放当前场景";
+  elements.playDemo.textContent = "播放当前场景";
 }
 
-function createPreviewEvents() {
+function createDemoEvents() {
   const startedAt = Date.now();
   const shared = {
-    ...previewBase,
+    ...demoBase,
     scenario,
     authorization_level: authorizationLevel,
     goods_name: "AI 支付行业趋势专业数据",
@@ -835,7 +835,7 @@ function createPreviewEvents() {
   };
   const capability = {
     method_id: "example:a402/alipay-ai-pay",
-    method_version: "0.1.0-preview.1",
+    method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-6cc2",
     method_schema_ref: "schema-sha256-3bd1",
@@ -850,7 +850,7 @@ function createPreviewEvents() {
     resource_id: "market-signal-demo",
     order_ref: "order-sha256-92ae",
     request_fingerprint: "sha-256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_CANDIDATE_EVIDENCE",
+    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
   };
   const payment = { transaction_ref: "trade-sha256-8c11", proof_ref: "proof-sha256-a831" };
   const delivery = { delivery_ref: "delivery-sha256-42bd" };
@@ -884,7 +884,7 @@ function createPreviewEvents() {
       sequence: index + 1,
       state: id,
       occurred_at: new Date(startedAt + index * 1000).toISOString(),
-      validation_mapping: id === "PAYMENT_VERIFIED" ? "ACT candidate evidence ← Alipay payment.verify result" : undefined,
+      validation_mapping: id === "PAYMENT_VERIFIED" ? "ACT 2.1 evidence ← Alipay payment.verify result" : undefined,
       idempotent_replay: replayStep && id === "RESOURCE_DELIVERED" ? true : undefined,
       payment_action: replayStep ? "NO_NEW_PAYMENT" : undefined,
       delivery_action: replayStep && id === "RESOURCE_DELIVERED" ? "RETURN_PRIOR_RESULT" : undefined,
@@ -924,15 +924,15 @@ function validateEvent(event, expectedIndex, expectedMode) {
   if (!event.source || /mock/i.test(event.source)) throw new Error("事件必须标明非 Mock 来源");
   if (!event.evidence_ref || !event.correlation_ref) throw new Error("事件缺少证据或关联引用");
   if (!Number.isFinite(Date.parse(event.occurred_at))) throw new Error("事件时间格式无效");
-  validateCandidateEvidence(event, expectedIndex);
+  validateDemoEvidence(event, expectedIndex);
   if (expectedMode === "LIVE_SANDBOX" && event.environment !== "SANDBOX") {
     throw new Error("Live 事件必须声明 SANDBOX 环境");
   }
   if (expectedMode === "SANITIZED_REPLAY" && (event.sanitized !== true || !event.origin_validation_id)) {
     throw new Error("Replay 事件必须包含脱敏标记和原验证编号");
   }
-  if (expectedMode === "GUIDED_PREVIEW"
-      && (event.source !== previewBase.source || event.evidence_ref !== previewBase.evidence_ref)) {
+  if (expectedMode === "GUIDED_DEMO"
+      && (event.source !== demoBase.source || event.evidence_ref !== demoBase.evidence_ref)) {
     throw new Error("演示预览不能冒充支付证据");
   }
 }
@@ -941,10 +941,10 @@ const methodIdPattern = /^[a-z][a-z0-9+.-]*:[a-z0-9][a-z0-9._/-]*$/;
 const methodVersionPattern = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$/;
 const fingerprintPattern = /^sha-256:[A-Za-z0-9_-]{43}$/;
 
-function validateCandidateEvidence(event, expectedIndex) {
+function validateDemoEvidence(event, expectedIndex) {
   const capabilityIndex = flow().indexOf("CAPABILITY_NEGOTIATED");
   if (expectedIndex >= capabilityIndex) {
-    if (!methodIdPattern.test(event.method_id || "")) throw new Error("method_id 不符合 Candidate 命名空间格式");
+    if (!methodIdPattern.test(event.method_id || "")) throw new Error("method_id 不符合 A402 artifact 命名空间格式");
     if (!methodVersionPattern.test(event.method_version || "")) throw new Error("method_version 必须使用 SemVer");
   }
   if (authorizationLevel !== "L1") {
@@ -1217,13 +1217,13 @@ function escapeHtml(value) {
   })[character]);
 }
 
-function stepPreview() {
-  if (previewIndex >= previewEvents.length) return;
+function stepDemo() {
+  if (demoIndex >= demoEvents.length) return;
   try {
-    addEvent(previewEvents[previewIndex++]);
-    if (previewIndex === previewEvents.length) {
+    addEvent(demoEvents[demoIndex++]);
+    if (demoIndex === demoEvents.length) {
       stopInputs();
-      elements.playPreview.textContent = "重新播放";
+      elements.playDemo.textContent = "重新播放";
       setStatus("当前场景演示完成。以上为说明性数据，不是支付或沙箱验证证据。");
     }
   } catch (error) {
@@ -1232,31 +1232,31 @@ function stepPreview() {
   }
 }
 
-elements.previewTab.addEventListener("click", () => setMode("GUIDED_PREVIEW"));
+elements.demoTab.addEventListener("click", () => setMode("GUIDED_DEMO"));
 elements.liveTab.addEventListener("click", () => setMode("LIVE_SANDBOX"));
 elements.replayTab.addEventListener("click", () => setMode("SANITIZED_REPLAY"));
-elements.scenarioSelect.addEventListener("change", () => setMode("GUIDED_PREVIEW"));
-elements.authorizationSelect.addEventListener("change", () => setMode("GUIDED_PREVIEW"));
-elements.stepPreview.addEventListener("click", stepPreview);
-elements.resetPreview.addEventListener("click", () => setMode("GUIDED_PREVIEW"));
-elements.playPreview.addEventListener("click", () => {
-  if (previewIndex >= previewEvents.length) {
+elements.scenarioSelect.addEventListener("change", () => setMode("GUIDED_DEMO"));
+elements.authorizationSelect.addEventListener("change", () => setMode("GUIDED_DEMO"));
+elements.stepDemo.addEventListener("click", stepDemo);
+elements.resetDemo.addEventListener("click", () => setMode("GUIDED_DEMO"));
+elements.playDemo.addEventListener("click", () => {
+  if (demoIndex >= demoEvents.length) {
     events = [];
-    previewEvents = createPreviewEvents();
-    previewIndex = 0;
+    demoEvents = createDemoEvents();
+    demoIndex = 0;
     render();
   }
-  if (previewTimer) {
-    clearInterval(previewTimer);
-    previewTimer = null;
-    elements.playPreview.textContent = "继续";
+  if (demoTimer) {
+    clearInterval(demoTimer);
+    demoTimer = null;
+    elements.playDemo.textContent = "继续";
     setStatus("演示预览已暂停。");
     return;
   }
-  elements.playPreview.textContent = "暂停";
+  elements.playDemo.textContent = "暂停";
   setStatus("正在播放说明性链路，页面不会调用任何支付能力。");
-  stepPreview();
-  if (previewIndex < previewEvents.length) previewTimer = setInterval(stepPreview, 900);
+  stepDemo();
+  if (demoIndex < demoEvents.length) demoTimer = setInterval(stepDemo, 900);
 });
 
 elements.liveForm.addEventListener("submit", (submitEvent) => {
@@ -1371,4 +1371,4 @@ elements.playReplay.addEventListener("click", () => {
   }, 900);
 });
 
-setMode("GUIDED_PREVIEW");
+setMode("GUIDED_DEMO");

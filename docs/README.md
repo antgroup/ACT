@@ -1,11 +1,16 @@
-# ACT 文档
+# ACT 2.1 Documentation
 
-文档按读者任务组织：
+This directory is the human-readable ACT 2.1 documentation set.
 
-| 入口 | 适合谁 | 内容 |
-|---|---|---|
-| [Getting Started](getting-started/README.md) | Agent 和收费服务开发者 | 选择接入路径并连接支付宝官方产品或沙箱 |
-| [项目架构](architecture/README.md) | 协议、Profile 和 Binding 实现者 | 理解分层、目录责任和依赖方向 |
-| [项目路线与修订状态](../governance/README.md) | 贡献者和维护者 | 路线、决策、审计和阶段发布状态 |
+- [Specification overview](specification/overview.md)
+- [Authorization & Delegation Domain](specification/authorization-delegation.md)
+- [Commerce Interaction Domain](specification/commerce-interaction.md)
+- [Payment Services Domain](specification/payment-services.md)
+- [Trust Services Domain](specification/trust-services.md)
+- [A402](specification/a402.md)
+- [Commerce-to-payment negotiation](specification/commerce-payment-negotiation.md)
+- [Scenarios and business flows](flows/scenarios.md)
+- [Glossary](glossary.md)
+- [FAQ](faq.md)
 
-规范性要求只通过协议治理进入 [`specs/`](../specs/README.md)。本目录的指南、架构和计划不能替代正式规范或支付宝官方产品文档。
+Protocol requirements are defined only by the specification documents. Runnable artifacts are under [`code/`](../code/README.md), and product-specific implementations are under [`integrations/`](../integrations/README.md).

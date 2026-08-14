@@ -4,26 +4,29 @@ set -eu
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$ROOT"
 
-echo "[1/7] Repository integrity"
+echo "[1/8] Repository integrity"
 python3 scripts/check_repository.py
 
-echo "[2/7] Public release snapshot"
+echo "[2/8] Public release snapshot"
 python3 scripts/create_public_snapshot.py --check
 
-echo "[3/7] A402 Candidate machine contracts"
+echo "[3/8] A402 implementation artifacts"
 python3 scripts/validate_a402_contract.py
 
-echo "[4/7] Buyer Agent Quickstart"
-npm --prefix code/examples/alipay/agent-payment test
+echo "[4/8] Product-neutral A402 sample"
+npm --prefix code/samples/local-a402 test
 
-echo "[5/7] End-to-end 402 inspector"
-npm --prefix code/examples/alipay/end-to-end-402 test
+echo "[5/8] Alipay buyer integration"
+npm --prefix integrations/alipay/buyer-agent test
 
-echo "[6/7] Metered REST provider"
-mvn -f code/examples/alipay/metered-rest-provider/pom.xml test
+echo "[6/8] Alipay seller integration"
+mvn -f integrations/alipay/seller-java/pom.xml test
 
-echo "[7/7] Sandbox showcase evidence validator"
+echo "[7/8] Alipay validation tools"
+node --test integrations/alipay/validation/*.test.mjs
+
+echo "[8/8] Machine payment showcase"
 npm --prefix code/web-client/alipay-ai-pay-showcase test
 npm --prefix code/web-client/alipay-ai-pay-showcase run build
 
-echo "All repository, Quickstart, and Demo checks passed."
+echo "All repository checks passed."

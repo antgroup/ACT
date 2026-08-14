@@ -1,13 +1,13 @@
 ---
 name: 实现与工具问题
-about: 报告 Quickstart、Demo、Binding 或开发者工具中的问题
+about: 报告样例、产品接入、Demo 或开发者工具中的问题
 title: '[实现] '
 labels: implementation
 ---
 
 ## 涉及的模块
 
-<!-- 如 code/examples/alipay/metered-rest-provider 或 code/web-client/alipay-ai-pay-showcase -->
+<!-- 如 integrations/alipay/seller-java 或 code/web-client/alipay-ai-pay-showcase -->
 
 ## 问题描述
 

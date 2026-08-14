@@ -7,7 +7,7 @@ import { createDemoServer } from "./bridge-server.mjs";
 const root = join(dirname(fileURLToPath(import.meta.url)), "public");
 const capabilityFacts = {
   method_id: "example:a402/alipay-ai-pay",
-  method_version: "0.1.0-preview.1",
+  method_version: "1.0.0",
   psp_id: "alipay",
   endpoint_ref: "endpoint-sha256-a1b2",
   method_schema_ref: "schema-sha256-a1b2",
@@ -23,7 +23,7 @@ const chainFacts = {
   resource_id: "resource-demo",
   amount: "0.01",
   currency: "CNY",
-  profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_CANDIDATE_EVIDENCE",
+  profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
   transaction_ref: "trade-sha256-a1b2",
   proof_ref: "proof-sha256-a1b2",
 };
@@ -154,7 +154,7 @@ test("accepts a complete correlated success chain", async () => {
             proof_ref: chainFacts.proof_ref,
           } : {}),
           ...(state === "PAYMENT_VERIFIED" ? {
-            validation_mapping: "ACT candidate evidence ← Alipay payment.verify result",
+            validation_mapping: "ACT 2.1 evidence ← Alipay payment.verify result",
           } : {}),
           ...(state === "RESOURCE_DELIVERED" ? { delivery_ref: "delivery-sha256-a1b2" } : {}),
           ...(state === "FULFILLMENT_CONFIRMED" ? {

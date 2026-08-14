@@ -4,8 +4,8 @@ Copyright (c) 2026 Ant Group Co., Ltd.
 
 Unless a file states otherwise, this repository uses two licenses:
 
-1. Documentation is licensed under Creative Commons Attribution 4.0 International (`CC-BY-4.0`). This includes Markdown and other documentation under `specs/`, `docs/`, `integrations/`, and `governance/`, plus the root project documentation. See `LICENSE-CC-BY-4.0`.
-2. Source code, JSON Schema, executable examples, tests, and build or automation files are licensed under Apache License 2.0 (`Apache-2.0`). This includes code and related assets under `specs/**/schemas/`, `code/`, `scripts/`, and `.github/`. See `LICENSE-APACHE-2.0`.
+1. Documentation is licensed under Creative Commons Attribution 4.0 International (`CC-BY-4.0`). This includes Markdown and other documentation under `docs/`, `integrations/`, and `governance/`, plus the root project documentation. See `LICENSE-CC-BY-4.0`.
+2. Source code, JSON Schema, fixtures, executable examples, tests, and build or automation files are licensed under Apache License 2.0 (`Apache-2.0`). This includes code and related assets under `code/`, executable implementation files under `integrations/`, and files under `scripts/` and `.github/`. See `LICENSE-APACHE-2.0`.
 
 When a directory contains both documentation and code, the file type and an explicit per-file notice take precedence over the directory default. Third-party dependencies and linked external projects remain under their own licenses.
 

@@ -15,7 +15,7 @@ function liveEvents() {
     evidence_ref: `E2E-20260727-001#step-${index + 1}`,
     correlation_ref: "corr-sha256-a1b2",
     method_id: "example:a402/alipay-ai-pay",
-    method_version: "0.1.0-preview.1",
+    method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-a1b2",
     method_schema_ref: "schema-sha256-a1b2",
@@ -29,13 +29,13 @@ function liveEvents() {
     resource_id: "resource-demo",
     amount: "0.01",
     currency: "CNY",
-    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_CANDIDATE_EVIDENCE",
+    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
     transaction_ref: "trade-sha256-8c11",
     proof_ref: "proof-sha256-8c11",
     delivery_ref: "delivery-sha256-8c11",
     fulfillment_ref: "fulfillment-sha256-8c11",
     product_fulfillment_status: "CONFIRMED",
-    ...(state === "PAYMENT_VERIFIED" ? { validation_mapping: "ACT candidate evidence ← Alipay payment.verify result" } : {}),
+    ...(state === "PAYMENT_VERIFIED" ? { validation_mapping: "ACT 2.1 evidence ← Alipay payment.verify result" } : {}),
   }));
 }
 

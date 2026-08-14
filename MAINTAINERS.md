@@ -1,15 +1,10 @@
 # Maintainers
 
-> Status: Active bootstrap ownership / Non-normative  
-> Updated: 2026-08-08
-
-This file records current working ownership for the unreleased ACT 2.1 Candidate. It does not create TSC voting seats or grant authority to publish a Stable/Recommendation specification.
-
-| Area | Working owner | Responsibility |
+| Area | Maintainer | Responsibility |
 |---|---|---|
-| ACT protocol sources and Candidate semantics | 观岳 | Resolve source interpretation, domain semantics, and protocol-level pending decisions |
-| Repository architecture, Alipay Profile, validation, and release preparation | 念箴 | Maintain public structure, product mapping, examples, tests, and release gates |
+| ACT specification | 观岳 | Normative semantics, errata and future protocol revisions |
+| Repository and integrations | 念箴 | Architecture, Alipay integration, tests and releases |
 
-Pull-request assignment must use the confirmed accounts of these owners after the public repository is created. Security incidents must use the private channel in [`SECURITY.md`](SECURITY.md), not personal contact details or public issues.
+Use the repository review workflow for changes. Report security issues through the private channel in [SECURITY.md](SECURITY.md), not to personal contacts or public issues.
 
-Formal TSC/DWG membership, voting rights, terms, security response ownership, and additional maintainers remain unassigned until recorded through the public governance process. Current machine-readable publication dependencies are in [`governance/publication-config.json`](governance/publication-config.json) and [`governance/release-readiness.json`](governance/release-readiness.json).
+Public project coordination: `alipay.ai@service.alipay.com`. Code of Conduct reports must follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Repository permissions and review assignment are managed through the hosting organization's maintainer team rather than personal credentials recorded in this file.

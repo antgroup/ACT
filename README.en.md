@@ -2,55 +2,51 @@
 
 [简体中文](README.md) | English
 
-ACT (Agentic Commerce Trust Protocol) is an open protocol project for agentic commerce. The current implementation path is payment-services-first: the ACT 2.1 Candidate defines payment instruments, L1/L2/L3 authorization scenarios, and the independent A402 payment interaction; product profiles and runnable examples connect those semantics to public Alipay AI Pay capabilities.
+ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. ACT 2.1 defines four cooperating domains: Authorization & Delegation, Commerce Interaction, Payment Services, and Trust Services.
 
-> [!IMPORTANT]
-> This repository contains an unreleased **ACT 2.1 Candidate Working Draft / Non-normative**. It is not Stable, a Recommendation, production certified, or an ACT conformance claim. The public tree intentionally excludes ACT 2.0 assets.
+## Start here
 
-The [ACT Protocol website](https://www.act-protocol.com/) is the public protocol source of truth. Files under `specs/2.1/` are reviewable Candidate snapshots, not an authoritative website mirror. An official-page change requires a structure and semantic diff before this repository is updated.
+| Goal | Entry |
+|---|---|
+| Read ACT 2.1 | [Specification overview](docs/specification/overview.md) |
+| Understand end-to-end flows | [Scenarios](docs/flows/scenarios.md) |
+| Run the safe local A402 sample | [Local A402 Sample](code/samples/local-a402/README.md) |
+| Explore the interactive flow | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
+| Integrate Alipay | [Alipay Reference Integration](integrations/alipay/README.md) |
 
-## Choose your path
+Human-readable protocol text lives in `docs/specification/`. JSON Schemas, fixtures, and tests live in `code/schemas/`; they support implementation without adding requirements that are absent from the specification.
 
-| Goal | Start here | What is authoritative |
-|---|---|---|
-| Add payment capability to an Agent | [Agent Payment Getting Started](docs/getting-started/agent-payment.md) | ACT Candidate for protocol semantics; the [Alipay wallet guide](https://aipay.alipay.com/wallet-guide) for product behavior |
-| Charge for an API, MCP Tool, Skill, or digital resource | [Metered Payment Getting Started](docs/getting-started/metered-payment.md) | ACT Candidate and HTTP A402 Binding for protocol transport; the [Alipay metered-payment guide](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html) for product behavior |
-| Understand ACT 2.1 | [Candidate overview](specs/2.1/overview.md) | The [ACT Protocol website](https://www.act-protocol.com/); `specs/2.1/` is the reviewable Candidate snapshot |
-| Review status and publication gates | [Release readiness](governance/release-readiness.json) | Machine-readable component and gate state |
+The files under `docs/specification/` in this repository release are the versioned ACT 2.1 publication. [act-protocol.com](https://www.act-protocol.com/) is the continuously updated public protocol portal. If portal content differs from a repository release, interpret each by its stated version; unversioned portal content does not silently replace this release's ACT 2.1 text.
 
-## One machine-payment loop
+## Repository layout
 
-The buyer Agent requests a paid resource, the seller returns `402 Payment Required` plus `Payment-Needed`, the buyer pays through an official product capability and retries the original request with `Payment-Proof`, and the seller verifies the proof before delivering the resource and confirming fulfillment.
+```text
+docs/                 ACT 2.1 specification, flows, and supporting material
+code/schemas/         Machine-readable implementation artifacts
+code/samples/         Runnable protocol samples
+code/web-client/      Interactive demo
+integrations/alipay/  Alipay reference integration and validation
+governance/           Accepted project decisions
+scripts/              Repository verification
+```
 
-ACT keeps the layers separate:
-
-- `specs/`: product-neutral Candidate semantics and A402 machine contracts;
-- `integrations/bindings/`: cross-product transport bindings;
-- `integrations/profiles/`: current product fields, APIs, errors, and workflows;
-- `code/examples/`: runnable onboarding and validation paths;
-- `code/web-client/`: a Guided Preview and sanitized evidence replay, not a payment implementation;
-- `docs/`: developer guidance; `governance/`: decisions and release state.
-
-Alipay's official site is the source of truth for wallet authorization, sandbox access, credentials, payment execution, verification, and fulfillment APIs. This repository links to that product environment; it does not reproduce it.
+The dependency direction is specification → artifacts → product integration → sample/demo. Product code and demos do not define ACT semantics.
 
 ## Run locally
 
-Run the safe, non-payable A402 Golden Path without credentials:
-
 ```bash
-npm --prefix code/examples/alipay/end-to-end-402 run local
+npm --prefix code/samples/local-a402 run local
+npm --prefix code/web-client/alipay-ai-pay-showcase run demo
 ```
 
-Run all repository, contract, example, and Showcase checks:
+The local A402 sample performs no payment. The Showcase explains the protocol flow and does not constitute a payment implementation or conformance claim.
+
+For Alipay onboarding, credentials, sandbox operation, and current product behavior, use the [AIPay website](https://aipay.alipay.com/callpay) and its [official integration guide](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html).
+
+Run all checks with:
 
 ```bash
 ./scripts/verify.sh
 ```
 
-## Maturity and contribution
-
-The four ACT domains have semantic Candidate coverage. A402 additionally has Candidate JSON Schemas, fixtures, validation, errors, and state transitions. ADD, CID, and TSD do not yet publish stable wire schemas. L2/L3 are protocol Candidate scenarios and are not claimed as verified Alipay product capabilities.
-
-Before contributing, read [CONTRIBUTING.md](CONTRIBUTING.md), [GOVERNANCE.md](GOVERNANCE.md), [MAINTAINERS.md](MAINTAINERS.md), and [SECURITY.md](SECURITY.md). No additional contributor agreement or sign-off is currently required. Security issues must be reported privately through [AntSRC](https://security.alipay.com/), not a public issue.
-
-Copyright (c) 2026 Ant Group Co., Ltd. Specifications and documentation use CC BY 4.0; code, Schema, and executable examples use Apache 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+See [CONTRIBUTING.md](CONTRIBUTING.md), [GOVERNANCE.md](GOVERNANCE.md), and [SECURITY.md](SECURITY.md). Documentation is licensed under CC BY 4.0; code is licensed under Apache License 2.0. Copyright Ant Group Co., Ltd.

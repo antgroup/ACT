@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dependency-free drift and fixture checks for the A402 Candidate contracts."""
+"""Dependency-free drift and fixture checks for A402 implementation artifacts."""
 
 from __future__ import annotations
 
@@ -13,8 +13,9 @@ from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_DIR = ROOT / "specs/2.1/a402/schemas"
-FIXTURE_DIR = ROOT / "specs/2.1/a402/fixtures"
+SCHEMA_DIR = ROOT / "code/schemas/a402"
+FIXTURE_DIR = SCHEMA_DIR / "fixtures"
+ASSERTION_DIR = SCHEMA_DIR / "tests"
 
 SCHEMAS = {
     "payment-needed.schema.json",
@@ -181,7 +182,7 @@ def validate(instance, schema, document_path: Path, at: str = "$") -> list[str]:
 
 
 def semantic_payload_errors(payload: dict, kind: str) -> list[str]:
-    # A402-CAND-005: validation, delivery and fulfillment stay distinct outcomes.
+    # ACT 2.1 invariant: validation, delivery and fulfillment stay distinct outcomes.
     errors: list[str] = []
     protocol = payload.get("protocol", {})
     method = protocol.get("request_method")
@@ -214,13 +215,50 @@ def check_schema_set() -> list[str]:
         if not schema_id or schema_id in ids:
             errors.append(f"{name}: missing or duplicate $id")
         ids.add(schema_id)
-        if "Candidate Working Draft / Non-normative" not in schema.get("$comment", ""):
-            errors.append(f"{name}: missing Candidate / Non-normative marker")
+        if "Implementation Artifact / Non-normative" not in schema.get("$comment", ""):
+            errors.append(f"{name}: missing Implementation Artifact / Non-normative marker")
+    return errors
+
+
+def check_assertion_catalog() -> list[str]:
+    errors: list[str] = []
+    schema_path = ASSERTION_DIR / "assertion-catalog.schema.json"
+    catalog_path = ASSERTION_DIR / "a402-assertions.json"
+    schema = load_json(schema_path)
+    catalog = load_json(catalog_path)
+    errors.extend(
+        f"tests/a402-assertions.json: {error}"
+        for error in validate(catalog, schema, schema_path)
+    )
+
+    assertions = catalog.get("assertions", [])
+    expected_ids = {
+        *(f"A402-TEST-{number:03d}" for number in range(1, 9)),
+        *(f"PSD-TEST-{number:03d}" for number in range(1, 6)),
+    }
+    actual_ids = [assertion.get("id") for assertion in assertions if isinstance(assertion, dict)]
+    if set(actual_ids) != expected_ids or len(actual_ids) != len(expected_ids):
+        errors.append("tests/a402-assertions.json: stable assertion ID set drift")
+
+    for assertion in assertions:
+        if not isinstance(assertion, dict):
+            continue
+        assertion_id = assertion.get("id", "unknown")
+        source = assertion.get("source")
+        if isinstance(source, str):
+            source_path = (ASSERTION_DIR / source.split("#", 1)[0]).resolve()
+            if not source_path.is_file():
+                errors.append(f"{assertion_id}: specification source does not exist")
+        executable = assertion.get("executable_check")
+        if isinstance(executable, str):
+            executable_path = ROOT / executable.split("#", 1)[0]
+            if not executable_path.is_file():
+                errors.append(f"{assertion_id}: executable check target does not exist")
     return errors
 
 
 def check_fixtures() -> list[str]:
-    # A402-CAND-004 / A402-CAND-006: proof validation and request correlation.
+    # ACT 2.1 invariants: proof validation and original-request correlation.
     errors: list[str] = []
     valid_dir = FIXTURE_DIR / "valid"
     invalid_dir = FIXTURE_DIR / "invalid"
@@ -272,13 +310,13 @@ def check_fixtures() -> list[str]:
 
 
 def check_errors_and_states() -> list[str]:
-    # A402-CAND-008: failures retain phase, retryability and valid next actions.
+    # ACT 2.1 invariant: failures retain phase, retryability and valid next actions.
     errors: list[str] = []
     error_schema_path = SCHEMA_DIR / "error.schema.json"
     error_schema = load_json(error_schema_path)
     catalog = load_json(SCHEMA_DIR / "error-catalog.json")
-    if catalog.get("status") != "candidate-working-draft" or catalog.get("normative") is not False:
-        errors.append("error-catalog.json: must remain Candidate and non-normative")
+    if catalog.get("status") != "implementation-artifact" or catalog.get("normative") is not False:
+        errors.append("error-catalog.json: must remain an implementation artifact and non-normative")
     entries = catalog.get("errors", [])
     categories = [entry.get("category") for entry in entries]
     ids = [entry.get("error_id") for entry in entries]
@@ -313,15 +351,21 @@ def check_errors_and_states() -> list[str]:
 
 
 def main() -> int:
-    errors = check_schema_set() + check_fixtures() + check_errors_and_states()
+    errors = (
+        check_schema_set()
+        + check_assertion_catalog()
+        + check_fixtures()
+        + check_errors_and_states()
+    )
     if errors:
-        print("A402 Candidate contract validation failed:", file=sys.stderr)
+        print("A402 implementation artifact validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
     print(
-        "A402 Candidate contracts passed: 7 schemas, 5 valid fixtures, "
-        "3 invalid fixtures, 11 errors, 7 state transitions, and Base64URL round-trips."
+        "A402 implementation artifacts passed: 7 schemas, 13 assertions, "
+        "5 valid fixtures, 3 invalid fixtures, 11 errors, 7 state transitions, "
+        "and Base64URL round-trips."
     )
     return 0
 

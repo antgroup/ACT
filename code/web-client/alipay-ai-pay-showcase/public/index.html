@@ -19,7 +19,7 @@
           <span>当前演示基线</span>
           <strong id="baselineValue">INS / L1 + A402</strong>
         </div>
-        <div class="mode-badge preview" id="modeBadge">UI PREVIEW · NOT PAYMENT EVIDENCE</div>
+        <div class="mode-badge demo" id="modeBadge">GUIDED DEMO · NOT PAYMENT EVIDENCE</div>
       </header>
 
       <section class="intro">
@@ -38,13 +38,13 @@
         <div class="playback-toolbar-heading">
           <div><p class="section-kicker">DEMO CONTROL</p><strong>选择场景并控制左右两侧同步运行</strong></div>
           <div class="mode-tabs" role="tablist" aria-label="演示输入模式">
-            <button class="mode-tab active" id="previewTab" type="button" role="tab" aria-selected="true">引导演示</button>
+            <button class="mode-tab active" id="demoTab" type="button" role="tab" aria-selected="true">引导演示</button>
             <button class="mode-tab" id="liveTab" type="button" role="tab" aria-selected="false">真实沙箱</button>
             <button class="mode-tab" id="replayTab" type="button" role="tab" aria-selected="false">证据回放</button>
           </div>
         </div>
 
-        <div class="input-row" id="previewControls">
+        <div class="input-row" id="demoControls">
           <label class="sr-only" for="authorizationSelect">支付授权级别</label>
           <select id="authorizationSelect" aria-label="支付授权级别">
             <option value="L1">L1 · 笔笔核身确认</option>
@@ -59,9 +59,9 @@
             <option value="VERIFICATION_UNAVAILABLE">服务方暂时无法验款</option>
             <option value="IDEMPOTENT_REPLAY">同一请求重复提交</option>
           </select>
-          <button class="primary-button" id="playPreview" type="button">播放完整演示</button>
-          <button class="secondary-button" id="resetPreview" type="button">重置</button>
-          <button class="step-button" id="stepPreview" type="button" aria-label="下一步">下一步 →</button>
+          <button class="primary-button" id="playDemo" type="button">播放完整演示</button>
+          <button class="secondary-button" id="resetDemo" type="button">重置</button>
+          <button class="step-button" id="stepDemo" type="button" aria-label="下一步">下一步 →</button>
         </div>
 
         <div class="authorization-summary" id="authorizationSummary">
@@ -106,7 +106,7 @@
           <div class="chat-thread">
             <article class="chat-message user-chat">
               <span class="chat-avatar">你</span>
-              <div><small>用户</small><p id="userPrompt">帮我生成《2026 AI 支付趋势报告》，需要付款时每一笔都让我核身确认。</p></div>
+              <div><small>用户</small><p id="userRequest">帮我生成《2026 AI 支付趋势报告》，需要付款时每一笔都让我核身确认。</p></div>
             </article>
 
             <article class="chat-message assistant-chat">
@@ -286,9 +286,9 @@
       </main>
 
       <footer>
-        <span>CANDIDATE / PROFILE PREVIEW</span>
+        <span>ACT 2.1 / DEMO</span>
         <strong id="footerScenarioValue">PSD-PAY-INS (L1)</strong><span>+</span><strong>PSD-PAY-A402</strong><span>+</span>
-        <strong id="footerProfileValue">ALIPAY AI PAY PROFILE</strong>
+        <strong id="footerProfileValue">ALIPAY AI PAY</strong>
         <a href="https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html" target="_blank" rel="noreferrer">
           产品接入以 AIPay 官网为准 ↗
         </a>

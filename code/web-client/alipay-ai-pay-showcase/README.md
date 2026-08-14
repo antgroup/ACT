@@ -1,8 +1,8 @@
-# Alipay AI Pay Sandbox Showcase
+# ACT 2.1 Machine Payment Showcase
 
-> 状态：Guided Preview 与证据回放工具已实现 / Agent Runtime 接线与沙箱证据待完成；ACT 2.1 Candidate / Non-normative
+> 类型：Demo / Non-normative。支持内置场景演示和脱敏证据回放。
 
-本 Demo 用于向观众展示买方 Agent 与卖方收费服务如何通过 ACT 支付服务域和 A402 形成一条机器支付闭环。它不实现钱包、支付、验凭证或沙箱，只消费 Quickstart 与官方产品能力产生的脱敏事件。
+本 Demo 用于向观众展示买方 Agent 与卖方收费服务如何通过 ACT 支付服务域和 A402 形成一条机器支付闭环。它不实现钱包、支付、验凭证或沙箱，只消费接入示例与官方产品能力产生的脱敏事件。
 
 引导演示可切换三个授权级别：
 
@@ -10,14 +10,14 @@
 - `L2`：`ADD + PSD-PAY-DEL + A402`。用户预先明确商品、商户、金额和次数并签发 `SPECIFIED IAC`，完全匹配后由 Agent 自动执行这一笔；
 - `L3`：`ADD + PSD-PAY-AUP + A402`。用户只定义任务目标与预算边界，Agent 自主选择服务并执行多笔子支付，每笔重新校验边界。
 
-支付宝公开产品事实仅覆盖页面明确映射的 L1 开通绑定、Agent 支付与 AI 按量付费。L2/L3 在页面中始终标注 `Candidate`、`Product pending` 或 `Validation-pending`，只解释 ACT 协议语义，不声明支付宝已经上线对应产品能力。真实开通、绑定和二维码以[支付宝钱包指南](https://aipay.alipay.com/wallet-guide)及官方支付页面为准。
+支付宝公开产品事实仅覆盖页面明确映射的 L1 开通绑定、Agent 支付与 AI 按量付费。本仓库不提供支付宝 L2/L3 接入实现；页面中的 L2/L3 只演示 ACT 2.1 已定稿的协议语义，不代表支付宝产品能力。真实开通、绑定和二维码以[支付宝钱包指南](https://aipay.alipay.com/wallet-guide)及官方支付页面为准。
 
 主页面采用“协议过程舞台”，阅读顺序固定为：
 
 1. 阶段导航：按所选级别展示 PMT-BND/ADD、CID、A402、INS/DEL/AUP 和履约；
 2. 参与方：用户、Buyer Agent、收费服务、PSP，以及 L2/L3 的授权服务；
 3. 当前消息：明确展示发送方、接收方、消息方向和线上的协议消息；
-4. 四层映射：同一动作对应的 ACT Candidate、Profile Adapter、HTTP/Workflow 与支付宝产品能力；
+4. 四层映射：同一动作对应的 ACT 2.1、integration mapping、HTTP/Workflow 与支付宝产品能力；
 5. 业务结果：资源保持锁定、成功交付或因异常拒绝交付；
 6. 关联与证据：请求、订单、资源、支付交易与履约的脱敏关联链。
 
@@ -27,11 +27,11 @@
 
 | 模式 | 是否开箱可用 | 数据含义 |
 |---|---|---|
-| `GUIDED_PREVIEW` | 是 | 内置说明性数据，用于完整体验页面与讲解路径；始终标注 `NOT PAYMENT EVIDENCE` |
-| `LIVE_SANDBOX` | 需要事件 Adapter | 消费官网沙箱与 Quickstart 产生的真实脱敏 SSE |
+| `GUIDED_DEMO` | 是 | 内置说明性数据，用于完整体验页面与讲解路径；始终标注 `NOT PAYMENT EVIDENCE` |
+| `LIVE_SANDBOX` | 需要事件 Adapter | 消费官网沙箱与接入示例产生的真实脱敏 SSE |
 | `SANITIZED_REPLAY` | 需要真实证据文件 | 播放已经通过验证的官网沙箱脱敏记录 |
 
-`GUIDED_PREVIEW` 解决首次运行时的空白问题，但不会被证据校验器接受，也不能用于任何产品兼容声明。
+`GUIDED_DEMO` 解决首次运行时的空白问题，但不会被证据校验器接受，也不能用于任何产品兼容声明。
 
 ## 真实沙箱 / Replay 的 L1 证据链路
 
@@ -49,9 +49,9 @@ CAPABILITY_NEGOTIATED
 → FULFILLMENT_CONFIRMED
 ```
 
-状态必须来自实际 Quickstart 事件，不得由 UI 定时器自动推进为成功。
+状态必须来自实际接入事件，不得由 UI 定时器自动推进为成功。
 
-Guided Preview 还可切换：
+Guided Demo 还可切换：
 
 - 首次绑定：检查支付能力、打开官方授权二维码、返回不落日志的短时绑定指令；
 - L2 定向委托：签发和验证 `SPECIFIED IAC`，再由 DEL 执行指定交易；
@@ -65,7 +65,7 @@ Guided Preview 还可切换：
 
 | 模式 | 事件来源 | 用途 | 展示要求 |
 |---|---|---|---|
-| `LIVE_SANDBOX` | 官方 Skill/CLI、卖方 Quickstart、支付宝 Sandbox/OpenAPI | 大会主演示 | 显示 Sandbox，不输出凭证和密钥 |
+| `LIVE_SANDBOX` | 官方 Skill/CLI、卖方接入示例、支付宝 Sandbox/OpenAPI | 大会主演示 | 显示 Sandbox，不输出凭证和密钥 |
 | `SANITIZED_REPLAY` | 已验证链路的脱敏事件记录 | 网络或沙箱异常时备用 | 全程明显显示 Replay，不冒充实时支付 |
 
 ## 运行证据校验器
@@ -77,7 +77,7 @@ npm test
 node validate-evidence.mjs /absolute/path/to/sanitized-events.ndjson
 ```
 
-校验器按场景要求状态严格有序，验证能力来源、Candidate 方法格式、请求指纹以及订单/资源/金额/交易关联不变量，并拒绝 `MOCK` 模式、明显的密钥字段和完整 `Payment-Proof`。成功场景要求 11 个状态；幂等重放要求 14 个状态和不重复副作用证据；失败场景必须停在对应失败终态。它证明的是演示证据完整性和 Candidate 映射一致性，不代替支付验款或 ACT Conformance。
+校验器按场景要求状态严格有序，验证能力来源、非规范性 artifact 方法格式、请求指纹以及订单/资源/金额/交易关联不变量，并拒绝 `MOCK` 模式、明显的密钥字段和完整 `Payment-Proof`。成功场景要求 11 个状态；幂等重放要求 14 个状态和不重复副作用证据；失败场景必须停在对应失败终态。它证明的是演示证据完整性和映射一致性，不代替支付验款或 ACT Conformance。
 
 ## 启动 Web 演示台
 
@@ -90,7 +90,7 @@ npm run build
 npm run demo
 ```
 
-浏览器打开终端输出的本地地址，默认选择 `GUIDED_PREVIEW`。选择场景并点击“播放当前场景”即可观看完整状态机，不需要账号、密钥、沙箱或 Replay 文件。
+浏览器打开终端输出的本地地址，默认选择 `GUIDED_DEMO`。选择场景并点击“播放当前场景”即可观看完整状态机，不需要账号、密钥、沙箱或 Replay 文件。
 
 ### Live Sandbox
 
@@ -112,7 +112,7 @@ POST /events/reset  开始一条新链路
 curl -X POST http://127.0.0.1:4173/events/reset
 ```
 
-Live 事件由 Quickstart Adapter 或演示编排器生成；官方 Skill/CLI、卖方服务和支付宝 OpenAPI 仍是产品行为来源。
+Live 事件由接入 Adapter 或演示编排器生成；官方 Skill/CLI、卖方服务和支付宝 OpenAPI 仍是产品行为来源。
 
 #### 买方 Agent Adapter
 
@@ -139,7 +139,7 @@ npm run adapt:buyer -- /absolute/path/to/sanitized-buyer-signal.json
   "evidence_ref": "E2E-YYYYMMDD-NNN#capability",
   "correlation_ref": "corr-sha256-a1b2",
   "method_id": "example:a402/alipay-ai-pay",
-  "method_version": "0.1.0-preview.1",
+  "method_version": "1.0.0",
   "psp_id": "alipay",
   "endpoint_ref": "endpoint-sha256-redacted",
   "method_schema_ref": "schema-sha256-redacted",
@@ -148,7 +148,7 @@ npm run adapt:buyer -- /absolute/path/to/sanitized-buyer-signal.json
 }
 ```
 
-上面的 `example:` 标识只允许用于 Guided Preview 和测试。真实沙箱证据必须使用由已验证能力来源取得的受治理 `method_id` 与版本。订单确认使用 `ORDER_CONFIRMED` 信号并提供独立 `commerce_confirmation_ref`；A402 `request_fingerprint` 与支付订单引用由卖方在生成 `Payment-Needed` 时建立，不能伪装成 CID 确认摘要。
+上面的 `example:` 标识只允许用于 Guided Demo 和测试。真实沙箱证据必须使用由已验证能力来源取得的受治理 `method_id` 与版本。订单确认使用 `ORDER_CONFIRMED` 信号并提供独立 `commerce_confirmation_ref`；A402 `request_fingerprint` 与支付订单引用由卖方在生成 `Payment-Needed` 时建立，不能伪装成 CID 确认摘要。
 
 宿主 Agent 只有在官方支付宝支付工作流产生对应真实状态后，才能依次提交：
 
@@ -161,7 +161,7 @@ npm run adapt:buyer -- /absolute/path/to/sanitized-buyer-signal.json
 
 `PAYMENT_SUCCEEDED` 必须提供脱敏 `transaction_ref` 和 `proof_ref`；`PAYMENT_PENDING` 必须提供 `recovery_action`。错误来源、能力声明来源未验证、关联事实漂移、敏感字段或乱序事件都会被拒绝。
 
-#### 卖方 Quickstart Adapter
+#### 卖方接入 Adapter
 
 在卖方服务的本地环境中增加：
 
@@ -171,7 +171,7 @@ ACT_DEMO_VALIDATION_ID=E2E-YYYYMMDD-NNN
 ACT_DEMO_CORRELATION_REF=corr-sha256-redacted
 ```
 
-启用后，卖方 Quickstart 会以非阻断方式输出：
+启用后，卖方接入示例会以非阻断方式输出：
 
 - 首次资源请求；
 - 402 账单；
@@ -211,15 +211,15 @@ node validate-evidence.mjs /absolute/path/to/sanitized-replay.ndjson
 
 `--ack-sanitized` 是人工复核声明，不是自动脱敏功能。工具会再次检查完整性和明显敏感文本，但不能代替安全审查。
 
-## 复用的 Quickstart
+## 复用的接入与样例
 
-- [买方 Agent Payment](../../examples/alipay/agent-payment/README.md)
-- [卖方 Metered REST Provider](../../examples/alipay/metered-rest-provider/README.md)
-- [端到端 402](../../examples/alipay/end-to-end-402/README.md)
+- [买方 Agent Payment](../../../integrations/alipay/buyer-agent/README.md)
+- [卖方 Metered REST Provider](../../../integrations/alipay/seller-java/README.md)
+- [通用本地 A402 样例](../../samples/local-a402/README.md)
 
-Demo 不能复制这些目录中的协议或产品逻辑。需要改变支付处理时先修改并验证 Quickstart，再由 Demo 消费其事件。
+Demo 不能复制这些目录中的协议或产品逻辑。需要改变支付处理时先修改并验证相应接入，再由 Demo 消费其事件。
 
-沙箱联调使用 [AIPay 官网接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)；完成后按 [ACT 沙箱验证补充](../../examples/alipay/end-to-end-402/sandbox-validation.md)生成大会证据。
+沙箱联调使用 [AIPay 官网接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)；完成后按 [ACT 沙箱验证补充](../../../integrations/alipay/validation/README.md)生成脱敏证据。
 
 ## 安全边界
 
@@ -242,16 +242,16 @@ Demo 不能复制这些目录中的协议或产品逻辑。需要改变支付处
 - [ ] Demo 机器不依赖个人目录、隐式登录态或未记录配置；
 - [ ] 现场网络异常时可以切换 Replay，且不改变演示口径。
 
-## 协议候选项与产品事实
+## ACT 2.1 与产品事实
 
-ACT v2.1 Candidate 使用 `method_id`、`CID-PCA-NEG` 和 `Payment-Validation`。Demo 通过 [A402 Candidate / Product Adapter](../../../integrations/profiles/alipay-ai-pay/mappings/a402-candidate-adapter.md)展示映射，不修改支付宝官网产品报文；对于 `Payment-Validation`，当前只展示：
+ACT 2.1 使用 `method_id`、`CID-PCA-NEG` 和 `Payment-Validation`。Demo 在界面中并列展示 ACT 语义和支付宝实现映射，不修改支付宝官网产品报文；对于 `Payment-Validation`，当前只展示：
 
 ```text
-ACT candidate Payment-Validation → Alipay payment.verify result
+ACT 2.1 Payment-Validation → Alipay payment.verify result
 ```
 
 这不是在声明支付宝官网已支持同名响应 Header。产品接入、沙箱与正式接口事实始终以 AIPay 官网为准。
 
-## 当前状态
+## 能力边界
 
-Guided Preview、Live Bridge、多场景状态机、Buyer Runtime Adapter 契约、卖方 Quickstart Adapter、完整证据导出和 Replay 准备工具已经建立。下一步是在选定的 Agent Runtime 中把官方 Skill/CLI 真实状态接到 Buyer Adapter，并使用官网沙箱生成首份 Replay；在此之前页面只标记 `TARGET BASELINE`，不提交虚构的成功事件夹具。
+Guided Demo、Live Bridge、多场景状态机、Buyer Runtime Adapter、卖方接入 Adapter、完整证据导出和 Replay 准备工具均已提供。Guided Demo 是说明性数据；Live 与 Replay 只有在接入官方 Skill/CLI 和官网沙箱产生真实脱敏事件后，才能作为特定版本的互操作证据。

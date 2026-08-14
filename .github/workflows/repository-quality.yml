@@ -31,5 +31,5 @@ jobs:
           java-version: "8"
           cache: maven
 
-      - name: Verify repository and Quickstarts
+      - name: Verify repository
         run: ./scripts/verify.sh

@@ -14,7 +14,7 @@ function liveEvents() {
     scenario: "SUCCESS",
     correlation_ref: "corr-sha256-a1b2",
     method_id: "example:a402/alipay-ai-pay",
-    method_version: "0.1.0-preview.1",
+    method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-a1b2",
     method_schema_ref: "schema-sha256-a1b2",
@@ -27,13 +27,13 @@ function liveEvents() {
     resource_id: "resource-demo",
     amount: "0.01",
     currency: "CNY",
-    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_CANDIDATE_EVIDENCE",
+    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
     transaction_ref: "trade-sha256-e5f6",
     proof_ref: "proof-sha256-e5f6",
     delivery_ref: "delivery-sha256-e5f6",
     fulfillment_ref: "fulfillment-sha256-e5f6",
     product_fulfillment_status: "CONFIRMED",
-    ...(state === "PAYMENT_VERIFIED" ? { validation_mapping: "ACT candidate evidence ← Alipay payment.verify result" } : {}),
+    ...(state === "PAYMENT_VERIFIED" ? { validation_mapping: "ACT 2.1 evidence ← Alipay payment.verify result" } : {}),
   }));
 }
 
@@ -63,7 +63,7 @@ test("accepts a terminal failure scenario without claiming delivery", () => {
     evidence_ref: `E2E-PENDING#step-${index + 1}`,
     correlation_ref: "corr-sha256-pending",
     method_id: "example:a402/alipay-ai-pay",
-    method_version: "0.1.0-preview.1",
+    method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-p1",
     method_schema_ref: "schema-sha256-p1",
@@ -76,7 +76,7 @@ test("accepts a terminal failure scenario without claiming delivery", () => {
     resource_id: "resource-pending",
     amount: "0.01",
     currency: "CNY",
-    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_CANDIDATE_EVIDENCE",
+    profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
     transaction_ref: "trade-sha256-p1",
     proof_ref: "proof-sha256-p1",
   }));
@@ -103,7 +103,7 @@ test("requires replay provenance on every replay event", () => {
 test("rejects invalid method identifiers and cross-step fingerprint drift", () => {
   const invalidMethod = liveEvents();
   invalidMethod.forEach((event) => { event.method_id = "alipay-ai-pay"; });
-  assert.throws(() => validateEvents(invalidMethod), /Candidate namespace syntax/);
+  assert.throws(() => validateEvents(invalidMethod), /A402 artifact namespace syntax/);
 
   const changedFingerprint = liveEvents();
   changedFingerprint[8].request_fingerprint = "sha-256:BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
@@ -120,7 +120,7 @@ test("requires a real second submission for idempotent replay evidence", () => {
     occurred_at: new Date(Date.UTC(2026, 6, 22, 14, 0, index)).toISOString(),
     evidence_ref: `E2E-REPLAY#step-${index + 1}`,
     validation_mapping: state === "PAYMENT_VERIFIED"
-      ? "ACT candidate evidence ← Alipay payment.verify result"
+      ? "ACT 2.1 evidence ← Alipay payment.verify result"
       : undefined,
   }));
   assert.throws(() => validateEvents(events), /must prove no repeated payment/);
