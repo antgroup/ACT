@@ -31,10 +31,10 @@ code/samples/         Runnable protocol samples
 code/web-client/      Interactive demo
 integrations/alipay/  Alipay reference integration and validation
 governance/           Accepted project decisions
-scripts/              Repository verification
+tools/                Repository quality and release tooling
 ```
 
-The dependency direction is specification → artifacts → product integration → sample/demo. Product code and demos do not define ACT semantics.
+The dependency direction is specification → artifacts → product integration → sample/demo. Product code, demos, and repository tools do not define ACT semantics. `tools/` is active CI and release infrastructure, not deprecated implementation code.
 
 ## Run locally
 
@@ -50,7 +50,7 @@ For Alipay onboarding, credentials, sandbox operation, and current product behav
 Run all checks with:
 
 ```bash
-./scripts/verify.sh
+./tools/verify.sh
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [GOVERNANCE.md](GOVERNANCE.md), and [SECURITY.md](SECURITY.md). Documentation is licensed under CC BY 4.0; code is licensed under Apache License 2.0. Copyright Ant Group Co., Ltd.

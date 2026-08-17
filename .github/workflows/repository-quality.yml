@@ -32,4 +32,4 @@ jobs:
           cache: maven
 
       - name: Verify repository
-        run: ./scripts/verify.sh
+        run: ./tools/verify.sh

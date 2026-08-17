@@ -24,7 +24,7 @@
 运行：
 
 ```bash
-python3 scripts/validate_a402_contract.py
+python3 tools/a402/validate_contract.py
 ```
 
 校验器会检查 Schema 自身、有效/无效 fixtures、三类 Header 的 Base64URL 无填充往返、跨消息关联、状态转移、错误目录和 Workflow Binding manifest。任何 Schema、fixture、错误目录或清单单边修改都会使仓库验证失败。

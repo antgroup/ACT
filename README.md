@@ -41,7 +41,7 @@ act-protocol/
 ├── integrations/
 │   └── alipay/                   # 支付宝参考接入代码与验证
 ├── governance/                   # 已接受的项目决策
-└── scripts/                      # 质量检查
+└── tools/                        # 仓库质量与发布工具
 ```
 
 依赖方向是单向的：
@@ -56,7 +56,7 @@ product integration
 sample / demo
 ```
 
-产品实现和演示不得反向定义协议语义。
+产品实现、演示和 `tools/` 下的验证程序不得反向定义协议语义。工具目录是仓库 CI 与发布检查的有效组成部分，并非废弃实现。
 
 ## 运行本地样例
 
@@ -91,7 +91,7 @@ npm --prefix code/web-client/alipay-ai-pay-showcase run demo
 完整检查需要 Python 3、Node.js 18+、JDK 8+ 和 Maven 3.8+：
 
 ```bash
-./scripts/verify.sh
+./tools/verify.sh
 ```
 
 ## 项目政策

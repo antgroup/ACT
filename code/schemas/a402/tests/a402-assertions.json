@@ -24,7 +24,7 @@
       "expected_output": [
         "INS/L1, DEL/L2, and AUP/L3 can each reference A402 without changing their authorization semantics."
       ],
-      "executable_check": "scripts/check_repository.py#A402-TEST-001"
+      "executable_check": "tools/quality/check_repository.py#A402-TEST-001"
     },
     {
       "id": "A402-TEST-002",
@@ -89,7 +89,7 @@
       "expected_output": [
         "Delivery occurs only after all profile-required authenticity, expiry, replay, and consistency checks pass."
       ],
-      "executable_check": "scripts/validate_a402_contract.py#A402-TEST-004"
+      "executable_check": "tools/a402/validate_contract.py#A402-TEST-004"
     },
     {
       "id": "A402-TEST-005",
@@ -110,7 +110,7 @@
       "expected_output": [
         "Payment, delivery, and fulfillment remain separately observable outcomes."
       ],
-      "executable_check": "scripts/validate_a402_contract.py#A402-TEST-005"
+      "executable_check": "tools/a402/validate_contract.py#A402-TEST-005"
     },
     {
       "id": "A402-TEST-006",
@@ -131,7 +131,7 @@
       "expected_output": [
         "The proof cannot be silently reassigned to another resource, service, or order."
       ],
-      "executable_check": "scripts/validate_a402_contract.py#A402-TEST-006"
+      "executable_check": "tools/a402/validate_contract.py#A402-TEST-006"
     },
     {
       "id": "A402-TEST-007",
@@ -174,7 +174,7 @@
       "expected_output": [
         "The result identifies the failed or unknown phase without claiming later phases succeeded."
       ],
-      "executable_check": "scripts/validate_a402_contract.py#A402-TEST-008"
+      "executable_check": "tools/a402/validate_contract.py#A402-TEST-008"
     },
     {
       "id": "PSD-TEST-001",
@@ -195,7 +195,7 @@
       "expected_output": [
         "The declaration uses only the six ACT 2.1 components and does not merge A402 into AUP."
       ],
-      "executable_check": "scripts/check_repository.py#PSD-TEST-001"
+      "executable_check": "tools/quality/check_repository.py#PSD-TEST-001"
     },
     {
       "id": "PSD-TEST-002",

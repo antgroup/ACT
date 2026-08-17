@@ -3,7 +3,7 @@
   "release": "ACT 2.1",
   "release_date": "2026-08-14",
   "specification_finalized": "2026-08-11",
-  "updated": "2026-08-15",
+  "updated": "2026-08-17",
   "components": {
     "specification": {"path": "docs/specification/overview.md", "status": "final", "normative": true},
     "a402-machine-artifacts": {"path": "code/schemas/a402/README.md", "status": "implementation-artifact", "normative": false},
@@ -11,7 +11,8 @@
     "alipay-buyer-integration": {"path": "integrations/alipay/buyer-agent/README.md", "status": "reference-integration", "normative": false},
     "alipay-seller-integration": {"path": "integrations/alipay/seller-java/README.md", "status": "reference-integration", "normative": false},
     "alipay-validation": {"path": "integrations/alipay/validation/README.md", "status": "validation-guidance", "normative": false},
-    "showcase": {"path": "code/web-client/alipay-ai-pay-showcase/README.md", "status": "demo", "normative": false}
+    "showcase": {"path": "code/web-client/alipay-ai-pay-showcase/README.md", "status": "demo", "normative": false},
+    "repository-tooling": {"path": "tools/README.md", "status": "release-tooling", "normative": false}
   },
   "authorities": {
     "act_2_1_versioned_release": "docs/specification/overview.md",
