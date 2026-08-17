@@ -14,7 +14,7 @@ function liveEvents() {
     occurred_at: `2026-07-27T12:00:${String(index).padStart(2, "0")}Z`,
     evidence_ref: `E2E-20260727-001#step-${index + 1}`,
     correlation_ref: "corr-sha256-a1b2",
-    method_id: "example:a402/alipay-ai-pay",
+    method_id: "act-integration:a402/alipay-ai-pay",
     method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-a1b2",

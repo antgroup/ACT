@@ -43,7 +43,7 @@ const stateCatalog = {
   },
   SPECIFIED_IAC_ISSUED: {
     label: "签发 SPECIFIED IAC", phase: "ADD / L2", domain: "ADD", component: "ADD-IAC-ISS",
-    binding: "完整 IAC + delegation_id", profile: "IAC wire Schema 尚未冻结",
+    binding: "完整 IAC + delegation_id", profile: "ACT 2.1 不规定统一 IAC wire Schema",
     product: "本仓库未提供支付宝 L2 实现", code: "IAC · SPECIFIED",
     explanation: "授权服务签发绑定委托人、受托 Agent、商户、商品、金额和有效期的 SPECIFIED IAC。",
     agent: "定向委托凭证已经签发；后续支付必须严格匹配指定商户、资源和金额。",
@@ -71,7 +71,7 @@ const stateCatalog = {
   },
   BOUNDED_IAC_ISSUED: {
     label: "签发 BOUNDED IAC", phase: "ADD / L3", domain: "ADD", component: "ADD-IAC-ISS",
-    binding: "BOUNDED IAC + delegation_id", profile: "IAC wire Schema 与状态查询仍待治理",
+    binding: "BOUNDED IAC + delegation_id", profile: "ACT 2.1 不规定统一 IAC wire Schema 或状态查询协议",
     product: "本仓库未提供支付宝 L3 实现", code: "IAC · BOUNDED",
     explanation: "授权服务签发任务级凭证，约束总预算、单笔上限、类目、商户范围、有效期和受托 Agent。",
     agent: "自主任务凭证已经签发；每一笔子支付都必须重新检查剩余预算和交易边界。",
@@ -792,15 +792,15 @@ function setMode(nextMode) {
     : "本档只对照 ACT 2.1 的授权与支付语义；PSP 是协议角色，本仓库未提供支付宝 L2/L3 接入实现；示例服务只负责资源交付。";
   if (mode === "GUIDED_DEMO") {
     elements.modeBadge.textContent = authorizationLevel === "L1"
-      ? "GUIDED DEMO · NOT PAYMENT EVIDENCE"
-      : `ACT 2.1 ${authorizationLevel} · NO ALIPAY INTEGRATION`;
+      ? "引导演示 · 非支付证据"
+      : `ACT 2.1 ${authorizationLevel} · 无支付宝实现`;
     elements.modeBadge.className = "mode-badge demo";
     setStatus(authorizationLevel === "L1"
       ? "说明性数据展示首次绑定、笔笔核身确认和 A402 恢复，不代表真实支付或兼容性证据。"
       : `${authorizationLevel} 演示 ACT 2.1 协议语义；本仓库未提供对应的支付宝实现。`);
   } else if (mode === "LIVE_SANDBOX") {
     elements.eventStreamUrl.value = `${window.location.origin}/events`;
-    elements.modeBadge.textContent = "LIVE · NOT CONNECTED";
+    elements.modeBadge.textContent = "官方沙箱事件 · 未连接";
     elements.modeBadge.className = "mode-badge live";
     setStatus("Demo 不生成支付结果。请连接真实脱敏事件流。");
   } else {
@@ -834,7 +834,7 @@ function createDemoEvents() {
     seller_name: "示例专业数据服务",
   };
   const capability = {
-    method_id: "example:a402/alipay-ai-pay",
+    method_id: "act-integration:a402/alipay-ai-pay",
     method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-6cc2",
@@ -1269,10 +1269,10 @@ elements.liveForm.addEventListener("submit", (submitEvent) => {
   renderTimeline();
   render();
   eventSource = new EventSource(url);
-  elements.modeBadge.textContent = "LIVE · CONNECTING";
-  setStatus("正在连接真实沙箱事件流…");
+  elements.modeBadge.textContent = "官方沙箱事件 · 连接中";
+  setStatus("正在连接由官方沙箱链路产生的脱敏事件流…");
   eventSource.onopen = () => {
-    elements.modeBadge.textContent = "LIVE SANDBOX · TARGET BASELINE";
+    elements.modeBadge.textContent = "官方沙箱事件 · 已连接";
     setStatus("已连接。等待真实事件，不会自动推进状态。");
   };
   eventSource.onmessage = (message) => {
@@ -1301,7 +1301,7 @@ elements.liveForm.addEventListener("submit", (submitEvent) => {
   });
   eventSource.onerror = () => {
     eventSource.close();
-    elements.modeBadge.textContent = "LIVE · DISCONNECTED";
+    elements.modeBadge.textContent = "官方沙箱事件 · 已断开";
     setStatus("事件流连接中断。页面不会推断后续支付结果。", true);
   };
 });

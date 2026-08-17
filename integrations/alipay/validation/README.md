@@ -49,6 +49,7 @@ cd integrations/alipay/seller-java
 产品操作按官网完成后，使用[端到端证据模板](evidence-template.md)记录：
 
 - ACT、支付宝接入示例和官方 Skill/CLI 的精确版本；
+- 仓库维护的 `act-integration:a402/alipay-ai-pay` 映射版本与对应 Commit；
 - 原资源请求、账单、订单、交易、验款和履约之间的脱敏关联；
 - `active`、金额、订单、资源和防重复履约检查结果；
 - pending、失败、过期、字段不匹配和重放场景的恢复行为；

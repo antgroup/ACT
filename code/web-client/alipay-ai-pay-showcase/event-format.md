@@ -7,7 +7,7 @@
 证据文件使用 NDJSON，每行一个对象。成功闭环必须按顺序包含 11 个状态：
 
 ```json
-{"sequence":1,"state":"CAPABILITY_NEGOTIATED","scenario":"SUCCESS","mode":"LIVE_SANDBOX","source":"buyer-agent-quickstart","environment":"SANDBOX","occurred_at":"2026-07-22T12:00:00Z","evidence_ref":"E2E-20260722-001#step-1","correlation_ref":"corr-sha256-a1b2","method_id":"example:a402/alipay-ai-pay","method_version":"1.0.0","psp_id":"alipay","endpoint_ref":"endpoint-sha256-redacted","method_schema_ref":"schema-sha256-redacted","capability_source_ref":"capability-sha256-redacted","capability_source_validated":true}
+{"sequence":1,"state":"CAPABILITY_NEGOTIATED","scenario":"SUCCESS","mode":"LIVE_SANDBOX","source":"buyer-agent-quickstart","environment":"SANDBOX","occurred_at":"2026-07-22T12:00:00Z","evidence_ref":"E2E-20260722-001#step-1","correlation_ref":"corr-sha256-a1b2","method_id":"act-integration:a402/alipay-ai-pay","method_version":"1.0.0","psp_id":"alipay","endpoint_ref":"endpoint-sha256-redacted","method_schema_ref":"schema-sha256-redacted","capability_source_ref":"capability-sha256-redacted","capability_source_validated":true}
 ```
 
 ```text

@@ -9,6 +9,19 @@ export function parseNodeMajor(version = process.versions.node) {
   return Number.isFinite(major) ? major : 0;
 }
 
+export function parseNpmMajor(version) {
+  const major = Number.parseInt(String(version || "").trim().split(".")[0], 10);
+  return Number.isFinite(major) ? major : 0;
+}
+
+export function commandVersion(command, args = ["--version"]) {
+  const result = spawnSync(command, args, {
+    encoding: "utf8",
+    stdio: "pipe",
+  });
+  return result.status === 0 ? String(result.stdout || "").trim() : "";
+}
+
 export function commandAvailable(command, args = ["--version"]) {
   const result = spawnSync(command, args, {
     encoding: "utf8",
@@ -20,12 +33,16 @@ export function commandAvailable(command, args = ["--version"]) {
 export function runPreflight() {
   const failures = [];
   const nodeMajor = parseNodeMajor();
+  const npmVersion = commandVersion("npm");
+  const npmMajor = parseNpmMajor(npmVersion);
 
-  if (nodeMajor < 18) {
-    failures.push(`Node.js 18+ is required; found ${process.versions.node}.`);
+  if (nodeMajor < 22) {
+    failures.push(`Node.js 22+ is required by the current AIPay guide; found ${process.versions.node}.`);
   }
-  if (!commandAvailable("npm")) {
+  if (!npmVersion) {
     failures.push("npm is not available on PATH.");
+  } else if (npmMajor < 10) {
+    failures.push(`npm 10+ is required by the current AIPay guide; found ${npmVersion}.`);
   }
 
   const cliInstalled = commandAvailable("alipay-bot", ["--help"]);
@@ -35,7 +52,7 @@ export function runPreflight() {
 function main() {
   const result = runPreflight();
   console.log(`Node.js: ${process.versions.node}`);
-  console.log(`npm: ${commandAvailable("npm") ? "available" : "missing"}`);
+  console.log(`npm: ${commandVersion("npm") || "missing"}`);
   console.log(`alipay-bot: ${result.cliInstalled ? "available" : "not found"}`);
   console.log(`Official install: ${OFFICIAL_INSTALL_COMMAND}`);
 

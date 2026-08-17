@@ -6,7 +6,7 @@
 
 ## 1. 运行本地预检
 
-需要 Node.js 18 或更高版本。
+按照当前 [AIPay 商户指南](https://aipay.alipay.com/merchant-guide)的联调前置要求，需要 Node.js 22 或更高版本、npm 10 或更高版本。这个要求只适用于支付宝买方接入；仓库中的产品无关样例仍可使用根 README 标明的最低版本。
 
 ```bash
 cd integrations/alipay/buyer-agent

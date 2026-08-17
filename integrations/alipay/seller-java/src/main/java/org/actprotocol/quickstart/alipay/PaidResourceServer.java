@@ -31,6 +31,7 @@ final class PaidResourceServer implements AutoCloseable {
     private final A402Codec codec = new A402Codec();
     private final ObjectMapper json = new ObjectMapper();
     private final Map<String, Models.BillRecord> bills = new ConcurrentHashMap<>();
+    private final Map<String, Models.BillRecord> billsByRequest = new ConcurrentHashMap<>();
     private final Map<String, String> fulfilledOccupancies = new ConcurrentHashMap<>();
     private final Map<String, String> deliveredRequests = new ConcurrentHashMap<>();
     private final Object deliveryLock = new Object();
@@ -89,7 +90,7 @@ final class PaidResourceServer implements AutoCloseable {
                     "goods_name", config.goodsName,
                     "http_method", exchange.getRequestMethod(),
                     "request_ref", requestRef));
-            paymentRequired(exchange, "Payment Needed", true, null, requestFingerprint, requestRef);
+            paymentRequired(exchange, "Payment Needed", requestFingerprint, requestRef);
             return;
         }
 
@@ -103,13 +104,21 @@ final class PaidResourceServer implements AutoCloseable {
             Models.PaymentProof proof = codec.decodePaymentProof(proofHeader);
             Models.VerificationResult verified = gateway.verify(proof);
             Models.BillRecord bill = verified.outTradeNo == null ? null : bills.get(verified.outTradeNo);
+            if (!verified.active) {
+                demoEvents.emit("PROOF_REJECTED", mapOf(
+                        "resource_id", config.resourceId,
+                        "recovery_action", "DO_NOT_DELIVER · REISSUE_AFTER_VERIFIED_INACTIVE",
+                        "result_summary", "Payment proof is inactive"));
+                paymentRequired(exchange, "Payment proof is inactive", requestFingerprint, requestRef);
+                return;
+            }
             String rejection = rejectionReason(proof, verified, bill, requestFingerprint);
             if (rejection != null) {
                 demoEvents.emit("PROOF_REJECTED", mapOf(
                         "resource_id", config.resourceId,
-                        "recovery_action", "DO_NOT_DELIVER · REISSUE_OR_RECONCILE",
+                        "recovery_action", "DO_NOT_DELIVER · RECONCILE_BEFORE_NEW_PAYMENT",
                         "result_summary", rejection));
-                paymentRequired(exchange, rejection, false, bill, requestFingerprint, requestRef);
+                proofRejected(exchange, rejection);
                 return;
             }
 
@@ -143,7 +152,7 @@ final class PaidResourceServer implements AutoCloseable {
             sendJson(exchange, 200, mapOf(
                     "resource_id", config.resourceId,
                     "content", "This resource was released after Alipay payment verification.",
-                    "trade_no", verified.tradeNo,
+                    "transaction_ref", transactionRef,
                     "idempotent_replay", !firstDelivery));
             demoEvents.emit("RESOURCE_DELIVERED", mapOf(
                     "resource_id", verified.resourceId,
@@ -166,7 +175,10 @@ final class PaidResourceServer implements AutoCloseable {
                     "resource_id", config.resourceId,
                     "recovery_action", "DO_NOT_DELIVER · REQUEST_VALID_PROOF",
                     "result_summary", "invalid proof encoding or shape"));
-            paymentRequired(exchange, "Invalid Payment-Proof", false, null, requestFingerprint, requestRef);
+            sendJson(exchange, 400, mapOf(
+                    "error", "invalid_payment_proof",
+                    "message", "Invalid Payment-Proof",
+                    "recovery_action", "request_valid_proof"));
         } catch (Exception exception) {
             System.err.println("payment verification unavailable: " + safeMessage(exception));
             demoEvents.emit("VERIFICATION_UNAVAILABLE", mapOf(
@@ -178,14 +190,19 @@ final class PaidResourceServer implements AutoCloseable {
         }
     }
 
+    private void proofRejected(HttpExchange exchange, String message) throws IOException {
+        sendJson(exchange, 409, mapOf(
+                "error", "payment_proof_rejected",
+                "message", message,
+                "recovery_action", "reconcile_transaction_before_requesting_new_payment"));
+    }
+
     private String rejectionReason(
             Models.PaymentProof proof,
             Models.VerificationResult verified,
             Models.BillRecord bill,
             String requestFingerprint) {
-        if (!verified.active) return "Payment proof is inactive";
         if (bill == null) return "Unknown merchant order";
-        if (OffsetDateTime.now().isAfter(bill.expiresAt)) return "Payment requirement expired";
         if (!equal(verified.tradeNo, proof.protocol.tradeNo)) return "Trade number mismatch";
         if (!equal(verified.amount, bill.value.protocol.amount)) return "Amount mismatch";
         if (!equal(verified.resourceId, bill.value.protocol.resourceId)) return "Resource mismatch";
@@ -197,14 +214,10 @@ final class PaidResourceServer implements AutoCloseable {
     private void paymentRequired(
             HttpExchange exchange,
             String message,
-            boolean emitInitialRequirement,
-            Models.BillRecord existingBill,
             String requestFingerprint,
             String requestRef) throws IOException {
         try {
-            Models.BillRecord record = existingBill == null
-                    ? newBill(requestFingerprint, requestRef)
-                    : existingBill;
+            Models.BillRecord record = currentOrNewBill(requestFingerprint, requestRef);
             Models.PaymentNeeded bill = record.value;
             String encoded = codec.encodePaymentNeeded(record.value);
             exchange.getResponseHeaders().set("Payment-Needed", encoded);
@@ -212,21 +225,32 @@ final class PaidResourceServer implements AutoCloseable {
                     "error", "Payment Needed",
                     "message", message,
                     "resourceId", config.resourceId));
-            if (emitInitialRequirement) {
-                demoEvents.emit("PAYMENT_REQUIRED", mapOf(
-                        "amount", bill.protocol.amount,
-                        "currency", bill.protocol.currency,
-                        "resource_id", bill.protocol.resourceId,
-                        "request_ref", record.requestRef,
-                        "request_fingerprint", record.requestFingerprint,
-                        "order_ref", record.orderRef,
-                        "profile_mapping", "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
-                        "goods_name", bill.method.goodsName,
-                        "seller_name", bill.method.sellerName));
-            }
+            demoEvents.emit("PAYMENT_REQUIRED", mapOf(
+                    "amount", bill.protocol.amount,
+                    "currency", bill.protocol.currency,
+                    "resource_id", bill.protocol.resourceId,
+                    "request_ref", record.requestRef,
+                    "request_fingerprint", record.requestFingerprint,
+                    "order_ref", record.orderRef,
+                    "profile_mapping", "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
+                    "goods_name", bill.method.goodsName,
+                    "seller_name", bill.method.sellerName));
         } catch (Exception exception) {
             System.err.println("cannot create payment requirement: " + safeMessage(exception));
             sendJson(exchange, 500, mapOf("error", "payment_requirement_unavailable"));
+        }
+    }
+
+    private Models.BillRecord currentOrNewBill(String requestFingerprint, String requestRef)
+            throws Exception {
+        Models.BillRecord current = billsByRequest.get(requestFingerprint);
+        if (current != null && OffsetDateTime.now().isBefore(current.expiresAt)) return current;
+        synchronized (billsByRequest) {
+            current = billsByRequest.get(requestFingerprint);
+            if (current != null && OffsetDateTime.now().isBefore(current.expiresAt)) return current;
+            Models.BillRecord replacement = newBill(requestFingerprint, requestRef);
+            billsByRequest.put(requestFingerprint, replacement);
+            return replacement;
         }
     }
 

@@ -8,7 +8,7 @@
   --line-strong: #dbe3ec;
   --text: #18202c;
   --muted: #6d7787;
-  --muted-light: #929cac;
+  --muted-light: #7e8999;
   --blue: #1677ff;
   --blue-bright: #179eff;
   --blue-soft: #eaf3ff;
@@ -841,7 +841,7 @@ footer a:hover { text-decoration: underline; }
   .authorization-summary-facts { grid-column: 1 / -1; justify-content: flex-start; }
   .purchase-story.business-pane { position: static; }
   .baseline { display: none; }
-  .mode-badge { max-width: 145px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mode-badge { max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .intro { grid-template-columns: 1fr; gap: 17px; padding: 36px 2px 24px; }
   h1 { font-size: 41px; }
   .intro-copy { font-size: 14px; }
@@ -864,7 +864,7 @@ footer a:hover { text-decoration: underline; }
 @media (max-width: 430px) {
   .brand > span:last-child { font-size: 12px; }
   .brand-mark { width: 40px; }
-  .mode-badge { max-width: 110px; }
+  .mode-badge { max-width: 150px; }
   .actors { grid-template-columns: 1fr; }
   .input-row { grid-template-columns: 1fr; }
   .primary-button, .secondary-button, .step-button, .file-button { width: 100%; }

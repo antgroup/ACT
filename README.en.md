@@ -14,7 +14,11 @@ ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. 
 | Explore the interactive flow | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
 | Integrate Alipay | [Alipay Reference Integration](integrations/alipay/README.md) |
 
+For a first visit: read the [overview](docs/specification/overview.md), keep the [bilingual glossary](docs/glossary.md) open, run the local sample, and then choose the buyer or seller Alipay integration. The local sample intentionally demonstrates safe rejection rather than manufacturing payment success; a successful paid delivery requires verified proof from the official product workflow.
+
 Human-readable protocol text lives in `docs/specification/`. JSON Schemas, fixtures, and tests live in `code/schemas/`; they support implementation without adding requirements that are absent from the specification.
+
+The normative ACT 2.1 specification in this release is currently published in Chinese. This English README is an informative navigation summary and does not replace the normative text.
 
 The files under `docs/specification/` in this repository release are the versioned ACT 2.1 publication. [act-protocol.com](https://www.act-protocol.com/) is the continuously updated public protocol portal. If portal content differs from a repository release, interpret each by its stated version; unversioned portal content does not silently replace this release's ACT 2.1 text.
 

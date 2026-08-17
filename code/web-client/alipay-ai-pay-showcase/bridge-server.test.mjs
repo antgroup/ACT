@@ -6,7 +6,7 @@ import { createDemoServer } from "./bridge-server.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "public");
 const capabilityFacts = {
-  method_id: "example:a402/alipay-ai-pay",
+  method_id: "act-integration:a402/alipay-ai-pay",
   method_version: "1.0.0",
   psp_id: "alipay",
   endpoint_ref: "endpoint-sha256-a1b2",

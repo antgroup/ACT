@@ -21,19 +21,19 @@
 5. 业务结果：资源保持锁定、成功交付或因异常拒绝交付；
 6. 关联与证据：请求、订单、资源、支付交易与履约的脱敏关联链。
 
-引导模式的 L1 成功路径为 16 步，L2/L3 为 14 步；异常场景会在对应恢复状态停止。真实沙箱和证据回放仍使用当前 Adapter 的 11 步 L1 证据基线，幂等重放共 14 步，避免 UI 说明步骤改变既有证据接口。
+引导模式的 L1 成功路径为 16 步，L2/L3 为 14 步；异常场景会在对应恢复状态停止。官方沙箱事件和证据回放使用 Adapter 的 11 步 L1 证据基线，幂等重放共 14 步，避免 UI 说明步骤改变既有证据接口。
 
 ## 开箱即用的三种模式
 
 | 模式 | 是否开箱可用 | 数据含义 |
 |---|---|---|
 | `GUIDED_DEMO` | 是 | 内置说明性数据，用于完整体验页面与讲解路径；始终标注 `NOT PAYMENT EVIDENCE` |
-| `LIVE_SANDBOX` | 需要事件 Adapter | 消费官网沙箱与接入示例产生的真实脱敏 SSE |
+| `LIVE_SANDBOX` | 需要事件 Adapter | 消费官网沙箱与接入示例产生的真实脱敏 SSE；仓库本身不提供沙箱 |
 | `SANITIZED_REPLAY` | 需要真实证据文件 | 播放已经通过验证的官网沙箱脱敏记录 |
 
 `GUIDED_DEMO` 解决首次运行时的空白问题，但不会被证据校验器接受，也不能用于任何产品兼容声明。
 
-## 真实沙箱 / Replay 的 L1 证据链路
+## 官方沙箱事件 / Replay 的 L1 证据链路
 
 ```text
 CAPABILITY_NEGOTIATED
@@ -65,7 +65,7 @@ Guided Demo 还可切换：
 
 | 模式 | 事件来源 | 用途 | 展示要求 |
 |---|---|---|---|
-| `LIVE_SANDBOX` | 官方 Skill/CLI、卖方接入示例、支付宝 Sandbox/OpenAPI | 大会主演示 | 显示 Sandbox，不输出凭证和密钥 |
+| `LIVE_SANDBOX` | 官方 Skill/CLI、卖方接入示例、支付宝 Sandbox/OpenAPI | 联调观察 | 显示 Sandbox，不输出凭证和密钥 |
 | `SANITIZED_REPLAY` | 已验证链路的脱敏事件记录 | 网络或沙箱异常时备用 | 全程明显显示 Replay，不冒充实时支付 |
 
 ## 运行证据校验器
@@ -138,7 +138,7 @@ npm run adapt:buyer -- /absolute/path/to/sanitized-buyer-signal.json
   "source": "your-agent-runtime",
   "evidence_ref": "E2E-YYYYMMDD-NNN#capability",
   "correlation_ref": "corr-sha256-a1b2",
-  "method_id": "example:a402/alipay-ai-pay",
+  "method_id": "act-integration:a402/alipay-ai-pay",
   "method_version": "1.0.0",
   "psp_id": "alipay",
   "endpoint_ref": "endpoint-sha256-redacted",
@@ -148,7 +148,7 @@ npm run adapt:buyer -- /absolute/path/to/sanitized-buyer-signal.json
 }
 ```
 
-上面的 `example:` 标识只允许用于 Guided Demo 和测试。真实沙箱证据必须使用由已验证能力来源取得的受治理 `method_id` 与版本。订单确认使用 `ORDER_CONFIRMED` 信号并提供独立 `commerce_confirmation_ref`；A402 `request_fingerprint` 与支付订单引用由卖方在生成 `Payment-Needed` 时建立，不能伪装成 CID 确认摘要。
+`act-integration:a402/alipay-ai-pay` 是本仓库为 ACT A402 与支付宝 AI 按量付费映射维护的非规范性集成标识，不是支付宝产品报文字段，也不代表 ACT 全局注册。官方沙箱联调证据必须固定使用已发布的映射版本，并同时记录仓库 Commit 和已核验的支付宝产品来源。订单确认使用 `ORDER_CONFIRMED` 信号并提供独立 `commerce_confirmation_ref`；A402 `request_fingerprint` 与支付订单引用由卖方在生成 `Payment-Needed` 时建立，不能伪装成 CID 确认摘要。
 
 宿主 Agent 只有在官方支付宝支付工作流产生对应真实状态后，才能依次提交：
 
@@ -230,17 +230,6 @@ Demo 不能复制这些目录中的协议或产品逻辑。需要改变支付处
 - 完整 `Payment-Proof` 或 `client_session`；
 - 可重放 HTTP 请求；
 - 完整订单号、交易号和用户标识。
-
-## 大会验收清单
-
-- [ ] LIVE 模式完成一次官方沙箱闭环；
-- [ ] Replay 数据来自该闭环并通过脱敏复核；
-- [ ] 正常链路在 3 分钟内完成；
-- [ ] 连续运行 10 次无阻断；
-- [ ] 失败、超时或需要重新授权时不会显示成功；
-- [ ] UI 清楚区分协议步骤、支付宝产品步骤和资源交付；
-- [ ] Demo 机器不依赖个人目录、隐式登录态或未记录配置；
-- [ ] 现场网络异常时可以切换 Replay，且不改变演示口径。
 
 ## ACT 2.1 与产品事实
 

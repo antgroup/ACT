@@ -69,6 +69,7 @@ export const REQUIRED_STATES = SCENARIO_STATES.SUCCESS;
 const MODES = new Set(["LIVE_SANDBOX", "SANITIZED_REPLAY"]);
 const FORBIDDEN_KEYS = /(^|_)(secret|private_key|access_token|app_auth_token|payment_proof|client_session|binding_code|password)($|_)/i;
 const METHOD_ID = /^[a-z][a-z0-9+.-]*:[a-z0-9][a-z0-9._/-]*$/;
+const ALIPAY_INTEGRATION_METHOD_ID = "act-integration:a402/alipay-ai-pay";
 const METHOD_VERSION = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$/;
 const REQUEST_FINGERPRINT = /^sha-256:[A-Za-z0-9_-]{43}$/;
 
@@ -117,6 +118,9 @@ export function validateEvidenceEvent(event, index, mode, scenario = "SUCCESS") 
     throw new Error(`event ${index + 1} is missing correlation_ref`);
   }
   if (!METHOD_ID.test(event.method_id || "")) throw new Error("method_id must use the A402 artifact namespace syntax");
+  if (event.method_id !== ALIPAY_INTEGRATION_METHOD_ID) {
+    throw new Error(`method_id must identify the published Alipay integration mapping: ${ALIPAY_INTEGRATION_METHOD_ID}`);
+  }
   if (!METHOD_VERSION.test(event.method_version || "")) throw new Error("method_version must be SemVer");
   validateStateFacts(event, index, requiredStates, scenario);
   if (mode === "LIVE_SANDBOX" && event.environment !== "SANDBOX") {

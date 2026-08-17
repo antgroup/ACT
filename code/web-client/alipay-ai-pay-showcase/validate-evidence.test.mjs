@@ -13,7 +13,7 @@ function liveEvents() {
     evidence_ref: `E2E-20260722-001#step-${index + 1}`,
     scenario: "SUCCESS",
     correlation_ref: "corr-sha256-a1b2",
-    method_id: "example:a402/alipay-ai-pay",
+    method_id: "act-integration:a402/alipay-ai-pay",
     method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-a1b2",
@@ -62,7 +62,7 @@ test("accepts a terminal failure scenario without claiming delivery", () => {
     occurred_at: new Date(Date.UTC(2026, 6, 22, 13, 0, index)).toISOString(),
     evidence_ref: `E2E-PENDING#step-${index + 1}`,
     correlation_ref: "corr-sha256-pending",
-    method_id: "example:a402/alipay-ai-pay",
+    method_id: "act-integration:a402/alipay-ai-pay",
     method_version: "1.0.0",
     psp_id: "alipay",
     endpoint_ref: "endpoint-sha256-p1",
@@ -104,6 +104,10 @@ test("rejects invalid method identifiers and cross-step fingerprint drift", () =
   const invalidMethod = liveEvents();
   invalidMethod.forEach((event) => { event.method_id = "alipay-ai-pay"; });
   assert.throws(() => validateEvents(invalidMethod), /A402 artifact namespace syntax/);
+
+  const unpublishedMapping = liveEvents();
+  unpublishedMapping.forEach((event) => { event.method_id = "example:a402/alipay-ai-pay"; });
+  assert.throws(() => validateEvents(unpublishedMapping), /published Alipay integration mapping/);
 
   const changedFingerprint = liveEvents();
   changedFingerprint[8].request_fingerprint = "sha-256:BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";

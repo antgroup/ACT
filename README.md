@@ -14,6 +14,15 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 | 查看交互演示 | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
 | 接入支付宝 | [Alipay Reference Integration](integrations/alipay/README.md) |
 
+第一次进入仓库，建议按以下顺序阅读：
+
+1. 用 2 分钟阅读[协议概览](docs/specification/overview.md)，先区分 ADD、CID、PSD、TSD 与 A402；
+2. 遇到缩写时查看[中英术语表](docs/glossary.md)；
+3. 运行 Local A402 Sample，观察 `402 → Payment-Needed → 伪 Proof 被拒绝` 的安全路径；
+4. 需要真实成功链路时，选择[支付宝买方](integrations/alipay/buyer-agent/README.md)或[卖方 Java](integrations/alipay/seller-java/README.md)，并在官网沙箱完成授权和支付。
+
+本地样例有意不伪造支付成功。真实资源交付必须来自已经验真的支付证明，因此“本地安全失败路径”和“官网沙箱成功路径”是两个不同的接入阶段。
+
 ACT 2.1 的人类可读协议正文位于 `docs/specification/`。JSON Schema、fixtures 和测试位于 `code/schemas/`，用于帮助实现与验证，不增加协议正文未规定的要求。
 
 本仓库 Release 中的 `docs/specification/` 是 ACT 2.1 的版本化发布正文；[act-protocol.com](https://www.act-protocol.com/)是持续更新的公共协议入口。网站内容与特定仓库版本存在差异时，应按各自标明的版本识别，不得用未标明版本的网页内容覆盖本 Release 的 2.1 正文。

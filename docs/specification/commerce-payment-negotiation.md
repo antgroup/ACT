@@ -12,9 +12,9 @@
 | 字段 | 规范含义 | 2.1 状态 |
 |---|---|---|
 | `method_id` | 所选支付方法标识 | 语义已定稿；仓库非规范性机器产物使用稳定命名空间 ID 和独立 `method_version` |
-| `psp_id` | 所选支付服务方标识 | CID 语义已明确；跨组织标识体系待治理 |
-| `endpoint` | 后续支付或方法端点 | CID 要求来源和一致性检查；认证、重定向和可达性规则待治理 |
-| `method_schema_url` | 方法载荷结构说明 | CID 要求一致性检查；完整性、缓存和版本规则待治理 |
+| `psp_id` | 所选支付服务方标识 | CID 语义已明确；ACT 2.1 不规定跨组织注册和冲突解决机制 |
+| `endpoint` | 后续支付或方法端点 | CID 要求来源和一致性检查；ACT 2.1 不规定认证、重定向和可达性 wire 规则 |
+| `method_schema_url` | 方法载荷结构说明 | CID 要求一致性检查；ACT 2.1 不规定完整性、缓存和版本 wire 规则 |
 
 这些字段属于 ACT 2.1 语义，不代表支付宝当前产品报文必须逐字段包含同名属性。
 
@@ -72,6 +72,6 @@ ACT 2.1 明确了两条接入路径的最小关联方式：
 
 ## 7. 来源
 
-- 当前 CID 协议事实源：[商业交互域](https://www.act-protocol.com/documentation/commerce)
-- PSD 协议事实源：[支付服务域](https://www.act-protocol.com/documentation/payment)
+- CID 公共协议入口：[商业交互域](https://www.act-protocol.com/documentation/commerce)；未标明版本的网页内容不得覆盖本 Release
+- PSD 公共协议入口：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明版本的网页内容不得覆盖本 Release
 - 跨域上位参考：[协议概览](https://www.act-protocol.com/documentation/overview)

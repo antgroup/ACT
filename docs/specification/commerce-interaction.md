@@ -167,6 +167,6 @@ Agent Card 可以使用 `capability_url` 指向单向能力声明，或使用 `n
 
 ## 8. 来源
 
-- 当前 CID 协议事实源：[商业交互域](https://www.act-protocol.com/documentation/commerce)
-- PSD 协议事实源：[支付服务域](https://www.act-protocol.com/documentation/payment)
+- CID 公共协议入口：[商业交互域](https://www.act-protocol.com/documentation/commerce)；未标明版本的网页内容不得覆盖本 Release
+- PSD 公共协议入口：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明版本的网页内容不得覆盖本 Release
 - 跨域上位参考：[协议概览](https://www.act-protocol.com/documentation/overview)

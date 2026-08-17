@@ -147,7 +147,7 @@ ACT 2.1 明确了数据字典、存在性和处理语义，但没有发布 ISR/I
 
 ## 7. 来源
 
-- 当前 ADD 协议事实源：[委托授权域](https://www.act-protocol.com/documentation/delegation)
+- ADD 公共协议入口：[委托授权域](https://www.act-protocol.com/documentation/delegation)；未标明版本的网页内容不得覆盖本 Release
 - 跨域场景参考：[典型场景与业务流程](https://www.act-protocol.com/documentation/scenarios)
 - CID：[商业交互域](https://www.act-protocol.com/documentation/commerce)
 - PSD：[支付服务域](https://www.act-protocol.com/documentation/payment)

@@ -67,17 +67,19 @@ curl -i http://127.0.0.1:8080/paid-resource
 - 在 `biz_content` 中传递官网要求的 `client_session`；当前固定 SDK 的生成式 Model 尚无该字段 setter，测试会锁定实际发送的三个字段，避免升级时丢失。
 - 校验 `active`、金额、商户订单、资源 ID 和交易号。
 - 同一交易不能用于不同资源。
+- 相同未支付请求复用仍有效的账单，避免刷新请求时制造多个可支付订单。
+- 官方验款明确返回 inactive 时才返回新的 402；关联事实不一致时只返回机器可读冲突，调用方必须先查询或对账，服务端不会自动诱导第二次付款。已经验为有效且关联一致的 Proof 不会仅因原支付截止时间已经过去而被拒绝交付。
 - 在卖方可信上下文计算并保存非规范性 A402 产物请求指纹；支付宝官网产品报文保持不变。
 - 使用 `(method_id, trade_no, out_trade_no, resource_id)` 占用键和 `(method_id, trade_no, request_fingerprint)` 交付键处理重放。
 - 幂等重试返回同一资源，不会创建新支付或重复安排履约确认。
 - 资源交付后异步执行履约确认。
-- 日志对交易号脱敏，且不输出密钥或完整凭证。
+- 日志和资源响应只输出脱敏 `transaction_ref`，不输出完整交易号、密钥或完整凭证。
 
 ## 5. 可选 Sandbox Showcase 事件
 
 本示例可以向本机 [Demo Bridge](../../../code/web-client/alipay-ai-pay-showcase/README.md#live-sandbox)发送脱敏状态。配置 `ACT_DEMO_BRIDGE_URL`、`ACT_DEMO_VALIDATION_ID` 和双方共享的 `ACT_DEMO_CORRELATION_REF` 后，它会观察首次资源请求、402、携 Proof 的原请求重试、验款结论、资源交付和履约确认。Buyer Adapter 必须先输出能力协商与独立商业确认，并在调用官方支付能力时输出 L1 授权、处理状态和支付结果。
 
-`ACT_A402_METHOD_ID` 和 `ACT_A402_METHOD_VERSION` 只用于非规范性实现产物的可信本地上下文及防重键，不会写入支付宝产品报文，也不是支付宝产品字段。默认 `example:a402/alipay-ai-pay` 仅供本地示例；真实沙箱证据必须改为经能力来源验证的受治理标识。
+`ACT_A402_METHOD_ID` 和 `ACT_A402_METHOD_VERSION` 只用于非规范性实现产物的可信本地上下文及防重键，不会写入支付宝产品报文，也不是支付宝产品字段。仓库为这份映射固定使用集成层标识 `act-integration:a402/alipay-ai-pay` 和版本 `1.0.0`；它由本仓库维护，不声称由支付宝产品返回，也不是 ACT 2.1 的全局注册项。官方沙箱联调证据应同时记录该映射版本、仓库 Commit 和支付宝官方产品来源。
 
 该功能默认关闭、异步执行且失败不阻断产品链路。它不发送完整账单、Proof、交易号、订单号、`client_session`、签名或密钥。用户授权和支付处理中状态必须由实际官方 Agent Payment Adapter 提供。
 

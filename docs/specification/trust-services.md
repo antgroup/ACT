@@ -219,6 +219,6 @@ ACT 2.1 指定 ACT Trust Chain 为锚定基础设施，但没有定义可直接�
 
 ## 15. 来源
 
-- 当前 TSD 协议事实源：[信任服务域](https://www.act-protocol.com/documentation/trust)
+- TSD 公共协议入口：[信任服务域](https://www.act-protocol.com/documentation/trust)；未标明版本的网页内容不得覆盖本 Release
 - ADD：[委托授权域](https://www.act-protocol.com/documentation/delegation)
 - 跨域场景参考：[典型场景与业务流程](https://www.act-protocol.com/documentation/scenarios)

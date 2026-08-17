@@ -232,6 +232,6 @@ AUP 复用 DEL 的 IAC 已过期/吊销/暂停、身份不匹配、单笔/累计
 
 ## 11. 来源
 
-- 当前协议事实源：[支付服务域](https://www.act-protocol.com/documentation/payment)
+- PSD 公共协议入口：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明版本的网页内容不得覆盖本 Release
 - 上位参考：[协议概览](https://www.act-protocol.com/documentation/overview)
 - 支付宝产品事实：[AI 按量付费接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)

@@ -44,7 +44,7 @@ final class Config {
         this(
                 gatewayUrl, appId, privateKey, alipayPublicKey, appAuthToken, sellerId, sellerName,
                 serviceId, goodsName, resourceId, amount, currency, port, billValidityMinutes,
-                "example:a402/alipay-ai-pay", "1.0.0");
+                "act-integration:a402/alipay-ai-pay", "1.0.0");
     }
 
     Config(
@@ -104,7 +104,7 @@ final class Config {
                 env.getOrDefault("ALIPAY_CURRENCY", "CNY"),
                 integer(env, "ALIPAY_PORT", 8080),
                 integer(env, "ALIPAY_BILL_VALIDITY_MINUTES", 10),
-                env.getOrDefault("ACT_A402_METHOD_ID", "example:a402/alipay-ai-pay"),
+                env.getOrDefault("ACT_A402_METHOD_ID", "act-integration:a402/alipay-ai-pay"),
                 env.getOrDefault("ACT_A402_METHOD_VERSION", "1.0.0"));
     }
 

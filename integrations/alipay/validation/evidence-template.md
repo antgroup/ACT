@@ -14,6 +14,7 @@
 | 代码分支/提交 |  |
 | ACT Core 版本 |  |
 | 支付宝接入示例版本 |  |
+| ACT–Alipay 映射 | `act-integration:a402/alipay-ai-pay` / `1.0.0` |
 | A402 机器产物版本 |  |
 | 官方 Skill/CLI 版本 |  |
 | 支付宝环境 | Sandbox / 其他公开测试环境 |
@@ -117,7 +118,7 @@
 - `Payment-Proof` 的 Base64/Base64URL 实际编码。
 - `client_session` 是否出现及何时必填。
 - Proof 是否对宿主 Agent 可见。
-- `tradeNo` 与 `outShakeNo` 的实际用途。
+- `trade_no` 与 `out_trade_no` 的实际用途。
 - 买方 fulfillment ack 与卖方 fulfillment confirm 的调用关系。
 
 ## 9. 安全检查

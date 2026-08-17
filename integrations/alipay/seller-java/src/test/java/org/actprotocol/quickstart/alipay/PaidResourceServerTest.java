@@ -45,7 +45,10 @@ final class PaidResourceServerTest {
         HttpURLConnection paid = request(proof);
 
         assertEquals(200, paid.getResponseCode());
-        assertTrue(read(paid.getInputStream()).contains("released after Alipay payment verification"));
+        String response = read(paid.getInputStream());
+        assertTrue(response.contains("released after Alipay payment verification"));
+        assertTrue(response.contains("transaction_ref"));
+        assertTrue(!response.contains("2026072200000001"));
         assertTrue(gateway.confirmed.await(2, TimeUnit.SECONDS));
         assertEquals("2026072200000001", gateway.confirmedTradeNo);
     }
@@ -67,7 +70,9 @@ final class PaidResourceServerTest {
                 "2026072200000002",
                 bill.protocol.resourceId);
 
-        assertEquals(402, request(proof("2026072200000002")).getResponseCode());
+        HttpURLConnection rejected = request(proof("2026072200000002"));
+        assertEquals(409, rejected.getResponseCode());
+        assertEquals(null, rejected.getHeaderField("Payment-Needed"));
     }
 
     @Test
@@ -114,7 +119,67 @@ final class PaidResourceServerTest {
                 "2026072200000004",
                 bill.protocol.resourceId);
 
-        assertEquals(402, request("/paid-resource?variant=other", proof("2026072200000004")).getResponseCode());
+        assertEquals(409, request("/paid-resource?variant=other", proof("2026072200000004")).getResponseCode());
+        assertEquals(0, gateway.confirmCalls.get());
+    }
+
+    @Test
+    void repeatedUnpaidRequestReusesTheActiveRequirement() throws Exception {
+        MutableGateway gateway = new MutableGateway();
+        server = new PaidResourceServer(testConfig(), gateway, content -> "test-signature");
+        server.start();
+
+        HttpURLConnection first = request(null);
+        assertEquals(402, first.getResponseCode());
+        String firstRequirement = first.getHeaderField("Payment-Needed");
+        HttpURLConnection second = request(null);
+        assertEquals(402, second.getResponseCode());
+        assertEquals(firstRequirement, second.getHeaderField("Payment-Needed"));
+    }
+
+    @Test
+    void validMatchingProofStillDeliversAfterThePaymentDeadline() throws Exception {
+        MutableGateway gateway = new MutableGateway();
+        server = new PaidResourceServer(testConfig(0), gateway, content -> "test-signature");
+        server.start();
+
+        HttpURLConnection unpaid = request(null);
+        assertEquals(402, unpaid.getResponseCode());
+        Models.PaymentNeeded bill = new A402Codec().decodePaymentNeeded(
+                unpaid.getHeaderField("Payment-Needed"));
+        gateway.result = new Models.VerificationResult(
+                true,
+                bill.protocol.amount,
+                bill.protocol.outTradeNo,
+                "2026072200000005",
+                bill.protocol.resourceId);
+
+        HttpURLConnection paid = request(proof("2026072200000005"));
+        assertEquals(200, paid.getResponseCode());
+        assertTrue(gateway.confirmed.await(2, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void inactiveProofGetsAFreshRequirementWithoutReusingTheExpiredBill() throws Exception {
+        MutableGateway gateway = new MutableGateway();
+        server = new PaidResourceServer(testConfig(0), gateway, content -> "test-signature");
+        server.start();
+
+        HttpURLConnection unpaid = request(null);
+        assertEquals(402, unpaid.getResponseCode());
+        String originalRequirement = unpaid.getHeaderField("Payment-Needed");
+        Models.PaymentNeeded bill = new A402Codec().decodePaymentNeeded(originalRequirement);
+        gateway.result = new Models.VerificationResult(
+                false,
+                bill.protocol.amount,
+                bill.protocol.outTradeNo,
+                "2026072200000006",
+                bill.protocol.resourceId);
+
+        HttpURLConnection rejected = request(proof("2026072200000006"));
+        assertEquals(402, rejected.getResponseCode());
+        assertNotNull(rejected.getHeaderField("Payment-Needed"));
+        assertTrue(!originalRequirement.equals(rejected.getHeaderField("Payment-Needed")));
         assertEquals(0, gateway.confirmCalls.get());
     }
 
@@ -141,6 +206,10 @@ final class PaidResourceServerTest {
     }
 
     private static Config testConfig() {
+        return testConfig(10);
+    }
+
+    private static Config testConfig(int billValidityMinutes) {
         return new Config(
                 "https://example.invalid",
                 "app-test",
@@ -155,7 +224,7 @@ final class PaidResourceServerTest {
                 "0.01",
                 "CNY",
                 0,
-                10);
+                billValidityMinutes);
     }
 
     private static String read(InputStream input) throws Exception {
