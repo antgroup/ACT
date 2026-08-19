@@ -2,7 +2,7 @@
 
 [English](README.en.md) | 简体中文
 
-ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放协议。ACT 2.1 定义委托授权、商业交互、支付服务和信任服务四个协作域，当前开源实现重点展示 Agent 如何发现并购买付费数字资源。
+ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放协议。ACT 2.1 定义委托授权、商业交互、支付服务和信任服务四个协作域。本仓库以“Agent 发现并购买付费数字资源”为贯穿场景，分别提供协议正文、产品无关的安全样例、交互演示和支付宝参考接入；这些层次不互相替代。
 
 ## 从这里开始
 
@@ -25,7 +25,7 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 
 ACT 2.1 的人类可读协议正文位于 `docs/specification/`。JSON Schema、fixtures 和测试位于 `code/schemas/`，用于帮助实现与验证，不增加协议正文未规定的要求。
 
-本仓库 Release 中的 `docs/specification/` 是 ACT 2.1 的版本化发布正文；[act-protocol.com](https://www.act-protocol.com/)是持续更新的公共协议入口。网站内容与特定仓库版本存在差异时，应按各自标明的版本识别，不得用未标明版本的网页内容覆盖本 Release 的 2.1 正文。
+本仓库发布版本中的 `docs/specification/` 是 ACT 2.1 的版本化正文；[act-protocol.com](https://www.act-protocol.com/) 是持续更新的公共协议入口。网站内容与特定仓库版本存在差异时，应按各自标明的版本识别，不得用未标明版本的网页内容覆盖本仓库发布的 2.1 正文。
 
 ## 仓库结构
 
@@ -40,7 +40,7 @@ act-protocol/
 │   └── web-client/
 ├── integrations/
 │   └── alipay/                   # 支付宝参考接入代码与验证
-├── governance/                   # 已接受的项目决策
+├── governance/                   # 已接受的项目决策与发布记录
 └── tools/                        # 仓库质量与发布工具
 ```
 
@@ -56,11 +56,11 @@ product integration
 sample / demo
 ```
 
-产品实现、演示和 `tools/` 下的验证程序不得反向定义协议语义。工具目录是仓库 CI 与发布检查的有效组成部分，并非废弃实现。
+产品实现、演示和 `tools/` 下的验证程序不得反向定义协议语义。
 
 ## 运行本地样例
 
-需要 Node.js 18 或更高版本：
+下载或 clone 本仓库后，在仓库根目录执行以下命令，需要 Node.js 18 或更高版本：
 
 ```bash
 npm --prefix code/samples/local-a402 run local

@@ -2,7 +2,7 @@
 
 [简体中文](README.md) | English
 
-ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. ACT 2.1 defines four cooperating domains: Authorization & Delegation, Commerce Interaction, Payment Services, and Trust Services.
+ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. ACT 2.1 defines four cooperating domains: Authorization & Delegation, Commerce Interaction, Payment Services, and Trust Services. This repository uses an agent discovering and purchasing paid digital resources as its end-to-end scenario, while keeping the specification, product-neutral safety sample, interactive demo, and Alipay reference integration separate.
 
 ## Start here
 
@@ -30,13 +30,15 @@ code/schemas/         Machine-readable implementation artifacts
 code/samples/         Runnable protocol samples
 code/web-client/      Interactive demo
 integrations/alipay/  Alipay reference integration and validation
-governance/           Accepted project decisions
+governance/           Accepted project decisions and release records
 tools/                Repository quality and release tooling
 ```
 
-The dependency direction is specification → artifacts → product integration → sample/demo. Product code, demos, and repository tools do not define ACT semantics. `tools/` is active CI and release infrastructure, not deprecated implementation code.
+The dependency direction is specification → artifacts → product integration → sample/demo. Product code, demos, and repository tools do not define ACT semantics.
 
 ## Run locally
+
+After downloading or cloning this repository, run from the repository root using Node.js 18 or later:
 
 ```bash
 npm --prefix code/samples/local-a402 run local
