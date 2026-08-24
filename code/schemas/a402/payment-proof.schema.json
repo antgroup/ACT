@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "payment-proof.schema.json",
+  "title": "ACT 2.1 A402 Payment-Proof Implementation Payload",
+  "$comment": "Decoded Header payload; Implementation Artifact / Non-normative",
+  "type": "object",
+  "required": ["protocol", "method"],
+  "properties": {
+    "protocol": {
+      "type": "object",
+      "required": [
+        "method_id", "method_version", "out_trade_no", "resource_id",
+        "buyer_unique_id", "payment_proof", "trade_no", "expires_at",
+        "request_method", "request_fingerprint"
+      ],
+      "properties": {
+        "method_id": { "$ref": "common.schema.json#/$defs/methodId" },
+        "method_version": { "$ref": "common.schema.json#/$defs/methodVersion" },
+        "out_trade_no": { "$ref": "common.schema.json#/$defs/identifier" },
+        "resource_id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "buyer_unique_id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "payment_proof": { "$ref": "common.schema.json#/$defs/base64url" },
+        "trade_no": { "$ref": "common.schema.json#/$defs/identifier" },
+        "expires_at": { "$ref": "common.schema.json#/$defs/dateTime" },
+        "request_method": { "$ref": "common.schema.json#/$defs/httpMethod" },
+        "request_fingerprint": { "$ref": "common.schema.json#/$defs/requestFingerprint" },
+        "idempotency_key": { "$ref": "common.schema.json#/$defs/identifier" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "request_method": { "not": { "enum": ["GET", "HEAD", "OPTIONS", "TRACE"] } }
+            },
+            "required": ["request_method"]
+          },
+          "then": { "required": ["idempotency_key"] }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "method": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

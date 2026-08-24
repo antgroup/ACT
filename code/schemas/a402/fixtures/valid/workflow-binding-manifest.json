@@ -1,0 +1,9 @@
+{
+  "binding_id": "example:a402/workflow",
+  "binding_version": "1.0.0",
+  "covers": ["PAYMENT_REQUIREMENT", "AUTHORIZATION", "PAYMENT", "ORIGINAL_REQUEST_RETRY", "PROOF_VALIDATION"],
+  "inputs": ["paid resource request", "Payment-Needed", "user authorization"],
+  "observable_outcomes": ["payment status", "original request retry status", "proof validation status"],
+  "evidence": ["sanitized transaction correlation", "phase outcome timestamps"],
+  "redaction": ["payment proof", "authorization headers", "cookies", "replayable requests"]
+}

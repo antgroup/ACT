@@ -1,0 +1,16 @@
+# Changelog
+
+本文件记录各公开发布版本的变更。版本标识与发布日期与 [`release-manifest.json`](release-manifest.json) 及 [`governance/releases/`](governance/releases/) 中的发布记录保持一致；规范定版日期以 [`governance/decisions/`](governance/decisions/) 的决策记录为准。规范语义变更遵循 [GOVERNANCE.md](GOVERNANCE.md)：ACT 2.1 已定版，非勘误性质的规范性变更须以新的协议版本发布。
+
+## ACT 2.1 — 2026-08-14
+
+- 发布 ADD、CID、PSD、TSD 四域规范，以及独立 A402 接入协议和 L1/L2/L3 场景指南。
+- 将 A402 JSON Schema、fixtures 与测试断言作为非规范性机器实现产物发布。
+- 提供通用本地 A402 样例、支付宝买卖方接入示例、沙箱验证指引和机器支付 Demo。
+- 采用 `docs/`、`code/`、`integrations/` 三层结构，明确协议、通用工程产物与产品实现边界。
+- 公开发布树仅包含 ACT 2.1 规范、实现辅助产物、样例、产品接入和必要治理记录，不包含 ACT 2.0 或内部治理资料。
+- 收口 ISR 术语、CID–PSD 机器契约边界和公共协议入口的版本权威说明。
+- 支付宝买方预检对齐官网 Node.js 22+ / npm 10+ 要求，并固定仓库维护的 ACT–Alipay 集成映射标识。
+- 卖方示例补充有效账单复用、Proof 拒绝后的先对账恢复规则和交易号最小披露，避免重复支付或返回过期账单。
+- Demo 明确区分引导演示、官方沙箱事件与证据回放，并移除活动过程材料。
+- 将仓库质量与发布程序收敛到 `tools/` 主架构，统一提供 `./tools/verify.sh` 验证入口，并明确工具不定义协议语义。

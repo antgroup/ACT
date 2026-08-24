@@ -1,0 +1,9 @@
+### Health
+GET http://127.0.0.1:18080/health
+
+### Request the protected resource
+GET http://127.0.0.1:18080/paid-resource
+
+### Retry with an explicitly fake proof; the sample must still return 402
+GET http://127.0.0.1:18080/paid-resource
+Payment-Proof: NON_PAYABLE_FAKE_PROOF

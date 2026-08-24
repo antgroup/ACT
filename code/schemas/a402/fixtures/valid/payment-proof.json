@@ -1,0 +1,18 @@
+{
+  "protocol": {
+    "method_id": "example:a402/test-pay",
+    "method_version": "1.0.0",
+    "out_trade_no": "ORDER-20260803-001",
+    "resource_id": "resource-weather-001",
+    "buyer_unique_id": "buyer-agent-001",
+    "payment_proof": "c2FuaXRpemVkLW9wYXF1ZS1wcm9vZg",
+    "trade_no": "TRADE-20260803-001",
+    "expires_at": "2026-08-03T13:00:00Z",
+    "request_method": "POST",
+    "request_fingerprint": "sha-256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "idempotency_key": "delivery-ORDER-20260803-001"
+  },
+  "method": {
+    "validation_endpoint": "https://psp.example/verify"
+  }
+}

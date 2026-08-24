@@ -1,0 +1,28 @@
+{
+  "protocol": {
+    "method_id": "example:a402/test-pay",
+    "method_version": "1.0.0",
+    "out_trade_no": "ORDER-20260803-001",
+    "resource_id": "resource-weather-001",
+    "trade_no": "TRADE-20260803-001",
+    "request_fingerprint": "sha-256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "validation_status": "VALID",
+    "delivery_status": "DELIVERED",
+    "fulfillment_status": "PENDING",
+    "transaction_state": "WAIT_BUYER_RECEIPT",
+    "validated_at": "2026-08-03T12:02:00Z",
+    "evidence_refs": [
+      {
+        "type": "VALIDATION",
+        "digest": "sha-256:CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+      },
+      {
+        "type": "DELIVERY",
+        "digest": "sha-256:DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+      }
+    ]
+  },
+  "method": {
+    "profile_status": "verified"
+  }
+}

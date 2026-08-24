@@ -1,0 +1,9 @@
+{
+  "protocol": {
+    "method_version": "1.0.0",
+    "out_trade_no": "ORDER-INVALID",
+    "amount": 0.01,
+    "currency": "cny"
+  },
+  "method": {}
+}

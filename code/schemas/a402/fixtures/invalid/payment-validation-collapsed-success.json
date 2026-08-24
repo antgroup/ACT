@@ -1,0 +1,13 @@
+{
+  "protocol": {
+    "method_id": "example:a402/test-pay",
+    "method_version": "1.0.0",
+    "out_trade_no": "ORDER-20260803-001",
+    "resource_id": "resource-weather-001",
+    "trade_no": "TRADE-20260803-001",
+    "request_fingerprint": "sha-256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "status": "SUCCESS",
+    "validated_at": "not-a-date"
+  },
+  "method": {}
+}
