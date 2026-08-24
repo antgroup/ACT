@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-request-proof-invalid",
+  "description": "A request whose relying-party proof cannot be verified returns REQUEST_PROOF_INVALID.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "request proof verification fails"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "REQUEST_PROOF_INVALID",
+  "expectedValid": true
+}

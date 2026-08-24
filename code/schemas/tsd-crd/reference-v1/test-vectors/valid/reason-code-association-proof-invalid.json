@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-association-proof-invalid",
+  "description": "An association credential with an invalid signature returns ASSOCIATION_PROOF_INVALID.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "association credential proof verification fails"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "ASSOCIATION_PROOF_INVALID",
+  "expectedValid": true
+}

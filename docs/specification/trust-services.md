@@ -207,15 +207,16 @@ ACT 2.1 指定 ACT Trust Chain 为锚定基础设施，但没有定义可直接�
 
 ## 14. 当前机器契约与实现边界
 
-两份来源给出了完整语义、字段存在性、状态和原因码，但以下内容仍未形成可声明正式兼容的公开机器契约：
+ACT 2.1 已冻结信用关联的业务语义、对象必备性、状态和原因码，但没有冻结整个 TSD 统一的英文 wire 字段名、规范性 JSON Schema、版本协商、错误封装或统一 HTTP 接口。以下内容仍不构成 ACT 2.1 的正式机器契约：
 
-- TSD 统一对象的英文 wire 字段名、JSON Schema、版本协商和错误封装；
 - ACT Trust Chain 公开网络、节点接口、认证、隐私通道和正式 JWS 载荷 Schema；
 - 每种 `event_body` 的字段级 Schema 与事件提交/查询接口；
-- 信用关联凭证、信用声明、查询授权、验证请求/响应的正式封装与算法套件；
-- 身份解析、历史公钥获取、状态查询和映射规则注册协议。
+- TSD 各子篇共用的身份解析、历史公钥获取、状态查询和注册协议；
+- 全域统一的算法协商、传输封装和 Conformance Profile。
 
-因此当前仓库不生成虚构的 TSD Schema、节点实现、信用模型或“链上沙箱”。
+仓库在 [`code/schemas/tsd-crd/reference-v1`](../../code/schemas/tsd-crd/reference-v1/README.md) 提供一套明确标为非规范性的 TSD-CRD Reference Profile，并在 [`code/samples/tsd-crd-reference`](../../code/samples/tsd-crd-reference/README.md) 提供本地 Reference Implementation。该 Profile 选择 `camelCase` 字段、Ed25519、确定性 JSON 签名投影和本地 HTTP 绑定，只是可选实现约定，不能反向解释为 ACT 2.1 要求或 TSD 统一 wire 契约。
+
+参考实现只使用 Mock 身份/信用/映射、内存存储和临时测试密钥。Schema 校验、测试和基础一致性 Runner 通过，仅证明当前 `reference-v1` 路径满足仓库内已执行检查；不等于 ACT 2.1 全量 Conformance、真实信用服务、ACT Trust Chain 节点或生产安全证明。仓库仍不虚构信用模型、链上网络或生产身份/密钥基础设施。
 
 ## 15. 来源
 

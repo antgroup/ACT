@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-replay-detected",
+  "description": "Reuse of an accepted anti-replay value returns REPLAY_DETECTED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "anti-replay nonce has already been consumed"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "REPLAY_DETECTED",
+  "expectedValid": true
+}

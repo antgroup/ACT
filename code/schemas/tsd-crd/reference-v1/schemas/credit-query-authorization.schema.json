@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "credit-query-authorization.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Credit Query Authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authorizationId",
+    "authorizationVersion",
+    "mode",
+    "subjectId",
+    "relyingPartyIds",
+    "agentIds",
+    "verificationLevel",
+    "purpose",
+    "allowedDataItems",
+    "validFrom",
+    "expiresAt",
+    "resultUseRestrictions",
+    "status",
+    "authorizationProof"
+  ],
+  "properties": {
+    "authorizationId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "authorizationVersion": {
+      "type": "string",
+      "const": "reference-v1"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "PER_REQUEST",
+        "PLATFORM_DELEGATED"
+      ]
+    },
+    "subjectId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "relyingPartyIds": {
+      "$ref": "common.schema.json#/$defs/stringSet"
+    },
+    "platformDelegateId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "agentIds": {
+      "$ref": "common.schema.json#/$defs/stringSet"
+    },
+    "verificationLevel": {
+      "type": "string",
+      "const": "ASSOCIATED_CREDIT"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowedDataItems": {
+      "$ref": "common.schema.json#/$defs/stringSet"
+    },
+    "validFrom": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expiresAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "frequencyLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxRequestsPerWindow",
+        "windowDurationSeconds"
+      ],
+      "properties": {
+        "maxRequestsPerWindow": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "windowDurationSeconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "resultUseRestrictions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mayStore",
+        "mayTransfer"
+      ],
+      "properties": {
+        "mayStore": {
+          "type": "boolean"
+        },
+        "retentionSeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mayTransfer": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mayStore": {
+                "const": true
+              }
+            },
+            "required": [
+              "mayStore"
+            ]
+          },
+          "then": {
+            "required": [
+              "retentionSeconds"
+            ]
+          }
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "REVOKED",
+        "EXPIRED"
+      ]
+    },
+    "boundRequestId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "authorizationProof": {
+      "$ref": "common.schema.json#/$defs/proof"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "PER_REQUEST"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "boundRequestId"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "platformDelegateId"
+              ]
+            },
+            {
+              "required": [
+                "frequencyLimit"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "PLATFORM_DELEGATED"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "platformDelegateId",
+          "frequencyLimit"
+        ],
+        "not": {
+          "required": [
+            "boundRequestId"
+          ]
+        }
+      }
+    }
+  ]
+}

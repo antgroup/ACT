@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "association-application.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Credit Association Application",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "applicationId",
+    "messageVersion",
+    "subjectId",
+    "agentId",
+    "associationRole",
+    "relationshipEvidenceRefs",
+    "confirmationMethod",
+    "issuerId",
+    "purpose",
+    "scope",
+    "authorizationMode",
+    "requestedAt",
+    "validFrom",
+    "antiReplay"
+  ],
+  "properties": {
+    "applicationId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "messageVersion": {
+      "type": "string",
+      "const": "reference-v1"
+    },
+    "subjectId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "agentId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "associationRole": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Examples include DEVELOPER, DEPLOYER, OPERATOR, CONTROLLER and RESPONSIBLE_PARTY."
+    },
+    "relationshipEvidenceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "common.schema.json#/$defs/uriReference"
+      }
+    },
+    "confirmationMethod": {
+      "$ref": "common.schema.json#/$defs/confirmationMethod"
+    },
+    "issuerId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "$ref": "common.schema.json#/$defs/stringSet"
+    },
+    "authorizationMode": {
+      "type": "string",
+      "enum": [
+        "PER_REQUEST",
+        "PLATFORM_DELEGATED"
+      ]
+    },
+    "requestedAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "validFrom": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expiresAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "antiReplay": {
+      "$ref": "common.schema.json#/$defs/antiReplay"
+    }
+  }
+}

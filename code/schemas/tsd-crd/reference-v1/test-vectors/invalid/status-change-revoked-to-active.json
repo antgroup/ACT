@@ -1,0 +1,10 @@
+{
+  "id": "status-change-revoked-to-active",
+  "description": "REVOKED is terminal and cannot transition back to ACTIVE.",
+  "operation": "lifecycleTransition",
+  "input": {
+    "fromStatus": "REVOKED",
+    "toStatus": "ACTIVE"
+  },
+  "expectedAllowed": false
+}

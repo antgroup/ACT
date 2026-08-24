@@ -1,0 +1,9 @@
+{
+  "id": "canonical-ed25519-verification",
+  "description": "Fixed Ed25519 verification vector over recursively key-sorted compact JSON. It includes public verification material only.",
+  "algorithm": "Ed25519",
+  "canonicalPayload": "{\"a\":\"ACP\",\"nested\":{\"a\":[3,2,1],\"b\":true},\"z\":1}",
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAisjuaN/cm2+zxRuis/oJCmsv0UWOjyF+JeaLSheU9CQ=\n-----END PUBLIC KEY-----\n",
+  "signature": "DyNGvXbGY2EJ-DX2FacPkLLUj63-EshC6IaLTDSpAagbGjp_PIcKg0E8CLmEy2h3okyfjNfhtOplpZ64-MuiAQ",
+  "expectedValid": true
+}

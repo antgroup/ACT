@@ -1,0 +1,361 @@
+openapi: 3.1.0
+info:
+  title: TSD-CRD Credit Association Reference API
+  version: 1.0.0
+  description: >-
+    Non-normative local Sandbox binding for the ACT 2.1 TSD-CRD
+    reference-v1 implementation profile. ACT 2.1 does not require these HTTP
+    paths or wire names. The
+    protocol baseline supports ATTESTED_CONFIRMATION with an issuer outer
+    signature and DIRECT_SIGNATURE with a subject inner signature plus an
+    issuer outer signature. Agent key registration and Agent proof of
+    possession are optional extensions and are absent from this core API.
+servers:
+  - url: http://127.0.0.1:8787
+    description: Local reference sandbox
+tags:
+  - name: Association
+  - name: Credential
+  - name: Authorization
+  - name: Verification
+paths:
+  /v1/association-applications:
+    post:
+      tags: [Association]
+      operationId: createAssociationApplication
+      summary: Create a pending credit association application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/association-application.schema.json
+            examples:
+              attested:
+                externalValue: ../examples/association-application-attested.json
+      responses:
+        "201":
+          description: Application accepted
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/association-application.schema.json
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/association-applications/{applicationId}/confirmations:
+    parameters:
+      - $ref: "#/components/parameters/ApplicationId"
+    post:
+      tags: [Association]
+      operationId: confirmAssociationApplication
+      summary: Confirm, map and issue a credit association credential
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/AttestedConfirmation"
+                - $ref: "#/components/schemas/DirectConfirmation"
+      responses:
+        "201":
+          description: Credential issued and active
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/association-credential.schema.json
+              examples:
+                attested:
+                  externalValue: ../examples/association-credential-attested.json
+                direct:
+                  externalValue: ../examples/association-credential-direct.json
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/association-applications/{applicationId}/preparations:
+    parameters:
+      - $ref: "#/components/parameters/ApplicationId"
+    post:
+      tags: [Association]
+      operationId: prepareDirectAssociationConfirmation
+      summary: Prepare the deterministic DIRECT_SIGNATURE payload
+      description: >-
+        Returns the frozen credential draft and signing payload. The subject
+        signs the returned signingPayload locally; its private key is never
+        submitted to the Sandbox.
+      responses:
+        "200":
+          description: DIRECT_SIGNATURE payload prepared
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DirectPreparation"
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/association-credentials/{credentialId}:
+    parameters:
+      - $ref: "#/components/parameters/CredentialId"
+    get:
+      tags: [Credential]
+      operationId: getAssociationCredential
+      summary: Get a credit association credential
+      responses:
+        "200":
+          description: Credential
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/association-credential.schema.json
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/association-credentials/{credentialId}/status:
+    parameters:
+      - $ref: "#/components/parameters/CredentialId"
+    get:
+      tags: [Credential]
+      operationId: getAssociationCredentialStatus
+      summary: Get the current credential status
+      responses:
+        "200":
+          description: Current status
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/credential-status.schema.json
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/association-credentials/{credentialId}/suspensions:
+    parameters:
+      - $ref: "#/components/parameters/CredentialId"
+    post:
+      tags: [Credential]
+      operationId: suspendAssociationCredential
+      summary: Suspend an active credential
+      requestBody:
+        $ref: "#/components/requestBodies/StatusChange"
+      responses:
+        "200":
+          $ref: "#/components/responses/CredentialStatus"
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/association-credentials/{credentialId}/resumptions:
+    parameters:
+      - $ref: "#/components/parameters/CredentialId"
+    post:
+      tags: [Credential]
+      operationId: resumeAssociationCredential
+      summary: Resume a suspended credential
+      requestBody:
+        $ref: "#/components/requestBodies/StatusChange"
+      responses:
+        "200":
+          $ref: "#/components/responses/CredentialStatus"
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/association-credentials/{credentialId}/revocations:
+    parameters:
+      - $ref: "#/components/parameters/CredentialId"
+    post:
+      tags: [Credential]
+      operationId: revokeAssociationCredential
+      summary: Irreversibly revoke a credential
+      requestBody:
+        $ref: "#/components/requestBodies/StatusChange"
+      responses:
+        "200":
+          $ref: "#/components/responses/CredentialStatus"
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/credit-query-authorizations:
+    post:
+      tags: [Authorization]
+      operationId: createCreditQueryAuthorization
+      summary: Create per-request or platform-delegated query authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/credit-query-authorization.schema.json
+            examples:
+              perRequest:
+                externalValue: ../examples/credit-query-authorization-per-request.json
+              platformDelegated:
+                externalValue: ../examples/credit-query-authorization-platform-delegated.json
+      responses:
+        "201":
+          description: Authorization created
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/credit-query-authorization.schema.json
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/credit-query-authorizations/{authorizationId}/revocations:
+    parameters:
+      - $ref: "#/components/parameters/AuthorizationId"
+    post:
+      tags: [Authorization]
+      operationId: revokeCreditQueryAuthorization
+      summary: Revoke a credit query authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/authorization-revocation-request.schema.json
+      responses:
+        "200":
+          description: Revoked authorization
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/credit-query-authorization.schema.json
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+        "404":
+          $ref: "#/components/responses/ProtocolError"
+  /v1/verifications:
+    post:
+      tags: [Verification]
+      operationId: verifyAssociatedCredit
+      summary: Verify a credential or its associated credit information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/verification-request.schema.json
+            examples:
+              credential:
+                externalValue: ../examples/verification-request-credential.json
+              associatedCredit:
+                externalValue: ../examples/verification-request-associated-credit.json
+      responses:
+        "200":
+          description: Signed verification result
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/verification-response.schema.json
+              examples:
+                credential:
+                  externalValue: ../examples/verification-response-credential-pass.json
+                associatedCredit:
+                  externalValue: ../examples/verification-response-associated-credit-pass.json
+        "400":
+          $ref: "#/components/responses/ProtocolError"
+components:
+  parameters:
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+    CredentialId:
+      name: credentialId
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+    AuthorizationId:
+      name: authorizationId
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+  requestBodies:
+    StatusChange:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/status-change-request.schema.json
+  responses:
+    CredentialStatus:
+      description: Updated credential status
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/credential-status.schema.json
+    ProtocolError:
+      description: Protocol or input error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    DirectPreparation:
+      type: object
+      additionalProperties: false
+      required: [applicationId, credential, signingPayload]
+      properties:
+        applicationId:
+          type: string
+          minLength: 1
+        credential:
+          $ref: ../schemas/direct-signing-payload.schema.json
+        signingPayload:
+          $ref: ../schemas/direct-signing-payload.schema.json
+    AttestedConfirmation:
+      type: object
+      additionalProperties: false
+      required:
+        - confirmationMethod
+      properties:
+        confirmationMethod:
+          const: ATTESTED_CONFIRMATION
+        attestationRef:
+          type: string
+          format: uri-reference
+      description: >-
+        Produces a credential with the issuer outer signature only. Subject
+        public-key and subject-signature fields are absent.
+    DirectConfirmation:
+      type: object
+      additionalProperties: false
+      required:
+        - confirmationMethod
+        - subjectPublicKey
+        - subjectSignature
+        - subjectSignatureAlgorithm
+      properties:
+        confirmationMethod:
+          const: DIRECT_SIGNATURE
+        subjectPublicKey:
+          $ref: ../schemas/common.schema.json#/$defs/publicKey
+        subjectSignature:
+          type: string
+          minLength: 1
+        subjectSignatureAlgorithm:
+          type: string
+          minLength: 1
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              minLength: 1
+            message:
+              type: string
+              minLength: 1

@@ -1,0 +1,34 @@
+{
+  "id": "credit-query-authorization-per-request-missing-binding",
+  "description": "Per-request authorization requires the request identifier it authorizes.",
+  "schema": "credit-query-authorization.schema.json",
+  "expectedValid": false,
+  "instance": {
+    "authorizationId": "authorization-invalid-per-request-001",
+    "authorizationVersion": "reference-v1",
+    "mode": "PER_REQUEST",
+    "subjectId": "subject:vector:alice",
+    "relyingPartyIds": [
+      "relying-party:vector:merchant"
+    ],
+    "agentIds": [
+      "agent:vector:shopping-assistant"
+    ],
+    "verificationLevel": "ASSOCIATED_CREDIT",
+    "purpose": "MERCHANT_RISK_REFERENCE",
+    "allowedDataItems": [
+      "associatedCreditValue"
+    ],
+    "validFrom": "2026-08-12T10:25:00Z",
+    "expiresAt": "2026-08-12T10:30:00Z",
+    "resultUseRestrictions": {
+      "mayStore": false,
+      "mayTransfer": false
+    },
+    "status": "ACTIVE",
+    "authorizationProof": {
+      "signatureAlgorithm": "Ed25519",
+      "signatureValue": "VECTOR_AUTHORIZATION_SIGNATURE"
+    }
+  }
+}

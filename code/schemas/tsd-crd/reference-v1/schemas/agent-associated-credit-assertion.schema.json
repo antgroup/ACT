@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-associated-credit-assertion.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Agent Associated Credit Assertion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "assertionId",
+    "assertionVersion",
+    "creditServiceId",
+    "agentId",
+    "associationCredentialRef",
+    "subjectCreditAssertionRef",
+    "associatedCreditValue",
+    "creditSource",
+    "mappingPolicy",
+    "purpose",
+    "scope",
+    "issuedAt",
+    "validFrom",
+    "status"
+  ],
+  "properties": {
+    "assertionId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "assertionVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "creditServiceId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "agentId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "associationCredentialRef": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "subjectCreditAssertionRef": {
+      "$ref": "common.schema.json#/$defs/uriReference"
+    },
+    "associatedCreditValue": {
+      "$ref": "common.schema.json#/$defs/associatedCreditValue"
+    },
+    "creditSource": {
+      "type": "string",
+      "const": "ASSOCIATED_CREDIT"
+    },
+    "mappingPolicy": {
+      "$ref": "common.schema.json#/$defs/mappingPolicy"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "$ref": "common.schema.json#/$defs/stringSet"
+    },
+    "issuedAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "validFrom": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expiresAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "SUSPENDED",
+        "REVOKED",
+        "EXPIRED"
+      ]
+    },
+    "assertionProof": {
+      "$ref": "common.schema.json#/$defs/proof"
+    }
+  }
+}
