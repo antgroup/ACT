@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "status-change-request.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Credential Status Change Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "credentialId",
+    "targetStatus",
+    "reasonCode",
+    "requestedBy",
+    "requestedAt",
+    "antiReplay",
+    "requestProof"
+  ],
+  "properties": {
+    "requestId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "credentialId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "targetStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "SUSPENDED",
+        "REVOKED"
+      ]
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requestedBy": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "requestedAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "antiReplay": {
+      "$ref": "common.schema.json#/$defs/antiReplay"
+    },
+    "requestProof": {
+      "$ref": "common.schema.json#/$defs/proof"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "canonical-ed25519-tampered",
+  "description": "The valid reference signature must fail after the canonical payload is changed.",
+  "algorithm": "Ed25519",
+  "canonicalPayload": "{\"a\":\"ACP-TAMPERED\",\"nested\":{\"a\":[3,2,1],\"b\":true},\"z\":1}",
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAisjuaN/cm2+zxRuis/oJCmsv0UWOjyF+JeaLSheU9CQ=\n-----END PUBLIC KEY-----\n",
+  "signature": "DyNGvXbGY2EJ-DX2FacPkLLUj63-EshC6IaLTDSpAagbGjp_PIcKg0E8CLmEy2h3okyfjNfhtOplpZ64-MuiAQ",
+  "expectedValid": false
+}

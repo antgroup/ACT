@@ -1,5 +1,12 @@
 # Changelog
 
+## Repository update — 2026-08-24
+
+- 将 TSD-CRD 作为 ACT 2.1 信任服务域的信用关联子篇集成到现有发布树。
+- 在 `code/schemas/tsd-crd/reference-v1/` 发布非规范性 JSON Schema、OpenAPI、本地示例和固定测试向量，并保留既有 wire 契约与签名向量。
+- 在 `code/samples/tsd-crd-reference/` 提供非生产 Reference Implementation、Sandbox、CLI、Demo、测试和基础一致性 Runner。
+- 将 TSD-CRD 机器产物与参考实现接入根级导航、发布清单、仓库完整性检查和 `./tools/verify.sh`；通过不构成 ACT 2.1 全量 Conformance 或生产就绪声明。
+
 ## ACT 2.1 — 2026-08-14
 
 - 发布 ADD、CID、PSD、TSD 四域规范，以及独立 A402 接入协议和 L1/L2/L3 场景指南。

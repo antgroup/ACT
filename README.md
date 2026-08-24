@@ -10,6 +10,7 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 |---|---|
 | 阅读 ACT 2.1 | [协议概览](docs/specification/overview.md) |
 | 理解完整业务流程 | [典型场景](docs/flows/scenarios.md) |
+| 运行 TSD-CRD 信用关联参考链路 | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | 本地运行安全的 A402 样例 | [Local A402 Sample](code/samples/local-a402/README.md) |
 | 查看交互演示 | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
 | 接入支付宝 | [Alipay Reference Integration](integrations/alipay/README.md) |
@@ -18,10 +19,11 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 
 1. 用 2 分钟阅读[协议概览](docs/specification/overview.md)，先区分 ADD、CID、PSD、TSD 与 A402；
 2. 遇到缩写时查看[中英术语表](docs/glossary.md)；
-3. 运行 Local A402 Sample，观察 `402 → Payment-Needed → 伪 Proof 被拒绝` 的安全路径；
-4. 需要真实成功链路时，选择[支付宝买方](integrations/alipay/buyer-agent/README.md)或[卖方 Java](integrations/alipay/seller-java/README.md)，并在官网沙箱完成授权和支付。
+3. 需要理解信用关联时，运行 TSD-CRD Reference Implementation，观察关联、映射、生命周期、查询授权和验证；
+4. 运行 Local A402 Sample，观察 `402 → Payment-Needed → 伪 Proof 被拒绝` 的安全路径；
+5. 需要真实支付成功链路时，选择[支付宝买方](integrations/alipay/buyer-agent/README.md)或[卖方 Java](integrations/alipay/seller-java/README.md)，并在官网沙箱完成授权和支付。
 
-本地样例有意不伪造支付成功。真实资源交付必须来自已经验真的支付证明，因此“本地安全失败路径”和“官网沙箱成功路径”是两个不同的接入阶段。
+Local A402 Sample 有意不伪造支付成功。真实资源交付必须来自已经验真的支付证明，因此“本地安全失败路径”和“官网沙箱成功路径”是两个不同的接入阶段。TSD-CRD Reference Implementation 同样只使用 Mock 能力和测试密钥，不是生产信用服务。
 
 ACT 2.1 的人类可读协议正文位于 `docs/specification/`。JSON Schema、fixtures 和测试位于 `code/schemas/`，用于帮助实现与验证，不增加协议正文未规定的要求。
 
@@ -68,6 +70,15 @@ npm --prefix code/samples/local-a402 run local
 
 这个样例返回 `402 Payment Required`、解码 `Payment-Needed`，并验证伪造的 `Payment-Proof` 不会导致资源交付。它不连接支付产品，也不会执行支付。
 
+运行 TSD-CRD 测试、基础一致性检查和本地 Demo 需要 Node.js 22.18 或更高版本：
+
+```bash
+npm --prefix code/samples/tsd-crd-reference run check
+npm --prefix code/samples/tsd-crd-reference run demo
+```
+
+该套件采用非规范性的 `reference-v1` 机器 Profile。测试通过只证明仓库内参考路径，不等于 ACT 2.1 全量 Conformance 或生产就绪。
+
 运行交互演示：
 
 ```bash
@@ -88,7 +99,7 @@ npm --prefix code/web-client/alipay-ai-pay-showcase run demo
 
 ## 质量检查
 
-完整检查需要 Python 3、Node.js 18+、JDK 8+ 和 Maven 3.8+：
+完整检查需要 Python 3、Node.js 22.18+、JDK 8+ 和 Maven 3.8+：
 
 ```bash
 ./tools/verify.sh

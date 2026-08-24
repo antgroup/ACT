@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "direct-signing-payload.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "DIRECT_SIGNATURE Signing Payload",
+  "description": "Frozen credential draft signed by the associated subject before issuer signing.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "credentialId",
+    "credentialVersion",
+    "associationApplicationId",
+    "agentId",
+    "subjectId",
+    "associationRole",
+    "issuerId",
+    "relationshipEvidenceRef",
+    "confirmationMethod",
+    "subjectCreditAssertionRef",
+    "associatedCreditValue",
+    "creditSource",
+    "mappingPolicy",
+    "confirmationStatement",
+    "purpose",
+    "scope",
+    "associationApplicationRequestedAt",
+    "associationApplicationAntiReplay",
+    "issuedAt",
+    "validFrom",
+    "statusQuery"
+  ],
+  "properties": {
+    "credentialId": {
+      "$ref": "association-credential.schema.json#/properties/credentialId"
+    },
+    "credentialVersion": {
+      "$ref": "association-credential.schema.json#/properties/credentialVersion"
+    },
+    "associationApplicationId": {
+      "$ref": "association-credential.schema.json#/properties/associationApplicationId"
+    },
+    "agentId": {
+      "$ref": "association-credential.schema.json#/properties/agentId"
+    },
+    "subjectId": {
+      "$ref": "association-credential.schema.json#/properties/subjectId"
+    },
+    "associationRole": {
+      "$ref": "association-credential.schema.json#/properties/associationRole"
+    },
+    "issuerId": {
+      "$ref": "association-credential.schema.json#/properties/issuerId"
+    },
+    "relationshipEvidenceRef": {
+      "$ref": "association-credential.schema.json#/properties/relationshipEvidenceRef"
+    },
+    "confirmationMethod": {
+      "const": "DIRECT_SIGNATURE"
+    },
+    "subjectCreditAssertionRef": {
+      "$ref": "association-credential.schema.json#/properties/subjectCreditAssertionRef"
+    },
+    "associatedCreditValue": {
+      "$ref": "association-credential.schema.json#/properties/associatedCreditValue"
+    },
+    "creditSource": {
+      "const": "ASSOCIATED_CREDIT"
+    },
+    "mappingPolicy": {
+      "$ref": "association-credential.schema.json#/properties/mappingPolicy"
+    },
+    "confirmationStatement": {
+      "$ref": "association-credential.schema.json#/properties/confirmationStatement"
+    },
+    "purpose": {
+      "$ref": "association-credential.schema.json#/properties/purpose"
+    },
+    "scope": {
+      "$ref": "association-credential.schema.json#/properties/scope"
+    },
+    "associationApplicationRequestedAt": {
+      "$ref": "association-credential.schema.json#/properties/associationApplicationRequestedAt"
+    },
+    "associationApplicationAntiReplay": {
+      "$ref": "association-credential.schema.json#/properties/associationApplicationAntiReplay"
+    },
+    "issuedAt": {
+      "$ref": "association-credential.schema.json#/properties/issuedAt"
+    },
+    "validFrom": {
+      "$ref": "association-credential.schema.json#/properties/validFrom"
+    },
+    "expiresAt": {
+      "$ref": "association-credential.schema.json#/properties/expiresAt"
+    },
+    "statusQuery": {
+      "$ref": "association-credential.schema.json#/properties/statusQuery"
+    }
+  }
+}

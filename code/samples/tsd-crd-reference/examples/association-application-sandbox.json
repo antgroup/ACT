@@ -1,0 +1,23 @@
+{
+  "applicationId": "association-application-demo-001",
+  "messageVersion": "reference-v1",
+  "subjectId": "subject-demo-alice",
+  "agentId": "agent-demo-shopping",
+  "associationRole": "OPERATOR",
+  "relationshipEvidenceRefs": [
+    "relationship-demo-alice-shopping-agent"
+  ],
+  "confirmationMethod": "ATTESTED_CONFIRMATION",
+  "issuerId": "issuer-demo-reference-suite",
+  "purpose": "DEMO_TRUST_CHECK",
+  "scope": [
+    "shopping-assistant"
+  ],
+  "authorizationMode": "PER_REQUEST",
+  "requestedAt": "2026-01-01T00:00:00.000Z",
+  "validFrom": "2026-01-01T00:00:00.000Z",
+  "expiresAt": "2030-01-01T00:00:00.000Z",
+  "antiReplay": {
+    "nonce": "demo-association-nonce-001"
+  }
+}

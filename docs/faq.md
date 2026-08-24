@@ -14,7 +14,11 @@ No. It is an explanatory user interface for protocol flows.
 
 ## Where are the machine-readable schemas?
 
-Under [`code/schemas/a402/`](../code/schemas/a402/README.md). They are implementation aids and do not add requirements absent from the ACT 2.1 text.
+Under [`code/schemas/`](../code/schemas/README.md). It currently contains A402 artifacts and the optional TSD-CRD `reference-v1` implementation profile. They are implementation aids and do not add requirements absent from the ACT 2.1 text.
+
+## Is the TSD-CRD Sandbox a production credit service?
+
+No. [`code/samples/tsd-crd-reference/`](../code/samples/tsd-crd-reference/README.md) is a non-normative, non-production reference implementation using Mock identity/credit providers, in-memory state, and temporary test keys. Its tests and basic conformance runner do not prove full ACT 2.1 conformance or production readiness.
 
 ## Where do I configure an Alipay sandbox?
 

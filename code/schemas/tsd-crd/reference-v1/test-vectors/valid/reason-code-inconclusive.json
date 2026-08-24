@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-inconclusive",
+  "description": "An undetermined verification outcome returns INCONCLUSIVE.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "verification cannot reach a deterministic result"
+  },
+  "expectedResult": "INCONCLUSIVE",
+  "expectedReasonCode": "INCONCLUSIVE",
+  "expectedValid": true
+}

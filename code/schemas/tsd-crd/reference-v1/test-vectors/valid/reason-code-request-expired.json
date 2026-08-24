@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-request-expired",
+  "description": "A verification request outside its accepted time window returns REQUEST_EXPIRED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "request timestamp is outside the accepted time window"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "REQUEST_EXPIRED",
+  "expectedValid": true
+}

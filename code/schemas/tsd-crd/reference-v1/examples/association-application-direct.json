@@ -1,0 +1,23 @@
+{
+  "applicationId": "application-direct-001",
+  "messageVersion": "reference-v1",
+  "subjectId": "subject:example:company",
+  "agentId": "agent:example:service-assistant",
+  "associationRole": "CONTROLLER",
+  "relationshipEvidenceRefs": [
+    "urn:example:evidence:company-controls-service-assistant"
+  ],
+  "confirmationMethod": "DIRECT_SIGNATURE",
+  "issuerId": "issuer:example:reference-service",
+  "purpose": "B2B_COUNTERPARTY_REVIEW",
+  "scope": [
+    "business:example:procurement"
+  ],
+  "authorizationMode": "PLATFORM_DELEGATED",
+  "requestedAt": "2026-08-12T08:05:00Z",
+  "validFrom": "2026-08-12T08:05:00Z",
+  "expiresAt": "2027-08-12T08:05:00Z",
+  "antiReplay": {
+    "idempotencyKey": "association-direct-001"
+  }
+}

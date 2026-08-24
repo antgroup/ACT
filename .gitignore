@@ -18,6 +18,7 @@ output/
 # IDE
 .idea/
 .vscode/
+.codefuse/
 *.swp
 *.swo
 *~

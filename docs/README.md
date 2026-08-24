@@ -14,3 +14,5 @@ This directory is the human-readable ACT 2.1 documentation set. The normative re
 - [FAQ](faq.md)
 
 Protocol requirements are defined only by the specification documents. Runnable artifacts are under [`code/`](../code/README.md), and product-specific implementations are under [`integrations/`](../integrations/README.md).
+
+The non-normative TSD-CRD machine profile and runnable reference implementation are under [`code/schemas/tsd-crd/`](../code/schemas/tsd-crd/README.md) and [`code/samples/tsd-crd-reference/`](../code/samples/tsd-crd-reference/README.md).

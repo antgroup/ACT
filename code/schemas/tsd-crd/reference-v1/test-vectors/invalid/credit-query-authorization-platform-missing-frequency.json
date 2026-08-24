@@ -1,0 +1,35 @@
+{
+  "id": "credit-query-authorization-platform-missing-frequency",
+  "description": "Platform-delegated authorization requires a machine-readable frequency limit.",
+  "schema": "credit-query-authorization.schema.json",
+  "expectedValid": false,
+  "instance": {
+    "authorizationId": "authorization-invalid-platform-001",
+    "authorizationVersion": "reference-v1",
+    "mode": "PLATFORM_DELEGATED",
+    "subjectId": "subject:vector:company",
+    "relyingPartyIds": [
+      "relying-party:vector:procurement"
+    ],
+    "platformDelegateId": "platform-delegate:vector:procurement",
+    "agentIds": [
+      "agent:vector:service-assistant"
+    ],
+    "verificationLevel": "ASSOCIATED_CREDIT",
+    "purpose": "B2B_COUNTERPARTY_REVIEW",
+    "allowedDataItems": [
+      "associatedCreditValue"
+    ],
+    "validFrom": "2026-08-12T10:20:00Z",
+    "expiresAt": "2026-09-12T10:20:00Z",
+    "resultUseRestrictions": {
+      "mayStore": false,
+      "mayTransfer": false
+    },
+    "status": "ACTIVE",
+    "authorizationProof": {
+      "signatureAlgorithm": "Ed25519",
+      "signatureValue": "VECTOR_AUTHORIZATION_SIGNATURE"
+    }
+  }
+}

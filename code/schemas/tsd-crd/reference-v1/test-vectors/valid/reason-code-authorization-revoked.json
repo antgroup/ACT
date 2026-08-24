@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-authorization-revoked",
+  "description": "Use of a revoked authorization returns AUTHORIZATION_REVOKED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "query authorization has been revoked"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "AUTHORIZATION_REVOKED",
+  "expectedValid": true
+}

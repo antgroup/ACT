@@ -9,6 +9,8 @@
 | CID | 商业交互域 | Commerce Interaction Domain |
 | PSD | 支付服务域 | Payment Services Domain |
 | TSD | 信任服务域 | Trust Services Domain |
+| TSD-CRD | 信用关联子篇 | Credit Association subprotocol within the ACT 2.1 Trust Services Domain |
+| `ASSOCIATED_CREDIT` | 关联信用来源标记 | Marks credit information mapped from a verified associated subject; it is not the Agent's independent credit or reputation |
 | Principal / Delegator | 委托人 | The user or principal whose intent and authority the Agent acts upon |
 | Buyer Agent | 买方智能体 | The Agent that acts for the principal to discover, negotiate and purchase |
 | Seller Service | 卖方服务方 | The merchant, service, Agent or endpoint that protects and delivers a paid resource |
