@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-mapping-policy-unsupported",
+  "description": "An unsupported mapping policy returns MAPPING_POLICY_UNSUPPORTED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "credential mapping policy is not supported by the verifier"
+  },
+  "expectedResult": "INCONCLUSIVE",
+  "expectedReasonCode": "MAPPING_POLICY_UNSUPPORTED",
+  "expectedValid": true
+}

@@ -1,0 +1,32 @@
+{
+  "requestId": "verification-request-associated-credit-001",
+  "messageVersion": "reference-v1",
+  "relyingPartyId": "relying-party:example:merchant",
+  "agentId": "agent:example:shopping-assistant",
+  "verificationLevel": "ASSOCIATED_CREDIT",
+  "subjectCreditAssertionRef": "urn:example:credit-assertion:subject-credit-assertion-001",
+  "authorizationId": "authorization-per-request-001",
+  "purpose": "MERCHANT_RISK_REFERENCE",
+  "businessContext": {
+    "orderId": "order-example-001",
+    "transactionType": "PURCHASE"
+  },
+  "requestedDataItems": [
+    "associatedCreditValue",
+    "mappingPolicy",
+    "subjectCreditAssertionValid"
+  ],
+  "credential": {
+    "credentialId": "credential-attested-001",
+    "uri": "https://issuer.example/credentials/credential-attested-001"
+  },
+  "requestedAt": "2026-08-12T08:21:00Z",
+  "antiReplay": {
+    "nonce": "verification-nonce-associated-credit-001"
+  },
+  "requestProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "relying-party:example:merchant#key-1",
+    "signatureValue": "ASSOCIATED_CREDIT_VERIFICATION_REQUEST_TEST_SIGNATURE"
+  }
+}

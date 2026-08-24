@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "TSD-CRD Reference Profile v1 Common Types",
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "uriReference": {
+      "type": "string",
+      "format": "uri-reference",
+      "minLength": 1
+    },
+    "stringSet": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "confirmationMethod": {
+      "type": "string",
+      "enum": [
+        "DIRECT_SIGNATURE",
+        "ATTESTED_CONFIRMATION"
+      ]
+    },
+    "credentialStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "ACTIVE",
+        "SUSPENDED",
+        "REVOKED",
+        "EXPIRED"
+      ]
+    },
+    "verificationLevel": {
+      "type": "string",
+      "enum": [
+        "CREDENTIAL",
+        "ASSOCIATED_CREDIT"
+      ]
+    },
+    "verificationResult": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "INCONCLUSIVE",
+        "REVIEW_REQUIRED"
+      ]
+    },
+    "reasonCode": {
+      "type": "string",
+      "enum": [
+        "VERIFIED",
+        "INVALID_REQUEST",
+        "REQUEST_PROOF_INVALID",
+        "REQUEST_EXPIRED",
+        "REPLAY_DETECTED",
+        "AUTHORIZATION_REQUIRED",
+        "AUTHORIZATION_EXPIRED",
+        "AUTHORIZATION_REVOKED",
+        "AUTHORIZATION_SCOPE_MISMATCH",
+        "AGENT_NOT_REGISTERED",
+        "ASSOCIATION_CREDENTIAL_NOT_FOUND",
+        "ASSOCIATION_CREDENTIAL_NOT_ACTIVE",
+        "ASSOCIATION_PROOF_INVALID",
+        "CREDIT_ASSERTION_UNAVAILABLE",
+        "CREDIT_ASSERTION_INVALID",
+        "MAPPING_POLICY_UNSUPPORTED",
+        "INCONCLUSIVE",
+        "REVIEW_REQUIRED"
+      ]
+    },
+    "mappingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "associatedCreditValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "object",
+          "minProperties": 1
+        },
+        {
+          "type": "array",
+          "minItems": 1
+        }
+      ]
+    },
+    "statusQuery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST"
+          ],
+          "default": "GET"
+        }
+      }
+    },
+    "publicKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "keyId",
+        "format",
+        "value"
+      ],
+      "properties": {
+        "keyId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "format": {
+          "type": "string",
+          "const": "pem-spki",
+          "description": "PEM-encoded SubjectPublicKeyInfo."
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "minProperties": 1
+            }
+          ]
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signatureAlgorithm",
+        "signatureValue"
+      ],
+      "properties": {
+        "signatureAlgorithm": {
+          "type": "string",
+          "const": "Ed25519"
+        },
+        "keyId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "signatureValue": {
+          "type": "string",
+          "minLength": 1,
+          "contentEncoding": "base64url"
+        }
+      }
+    },
+    "antiReplay": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "nonce": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 256
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 256
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "nonce"
+          ]
+        },
+        {
+          "required": [
+            "idempotencyKey"
+          ]
+        }
+      ]
+    },
+    "businessContext": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 32,
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "integer",
+          "boolean"
+        ]
+      }
+    },
+    "credentialReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credentialId"
+      ],
+      "properties": {
+        "credentialId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

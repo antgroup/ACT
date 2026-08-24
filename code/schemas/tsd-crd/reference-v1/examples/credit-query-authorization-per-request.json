@@ -1,0 +1,32 @@
+{
+  "authorizationId": "authorization-per-request-001",
+  "authorizationVersion": "reference-v1",
+  "mode": "PER_REQUEST",
+  "subjectId": "subject:example:alice",
+  "relyingPartyIds": [
+    "relying-party:example:merchant"
+  ],
+  "agentIds": [
+    "agent:example:shopping-assistant"
+  ],
+  "verificationLevel": "ASSOCIATED_CREDIT",
+  "purpose": "MERCHANT_RISK_REFERENCE",
+  "allowedDataItems": [
+    "associatedCreditValue",
+    "mappingPolicy",
+    "subjectCreditAssertionValid"
+  ],
+  "validFrom": "2026-08-12T08:20:00Z",
+  "expiresAt": "2026-08-12T08:25:00Z",
+  "resultUseRestrictions": {
+    "mayStore": false,
+    "mayTransfer": false
+  },
+  "status": "ACTIVE",
+  "boundRequestId": "verification-request-associated-credit-001",
+  "authorizationProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "subject:example:alice#key-1",
+    "signatureValue": "PER_REQUEST_AUTHORIZATION_TEST_SIGNATURE"
+  }
+}

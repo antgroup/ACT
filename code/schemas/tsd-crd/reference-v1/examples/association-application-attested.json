@@ -1,0 +1,24 @@
+{
+  "applicationId": "application-attested-001",
+  "messageVersion": "reference-v1",
+  "subjectId": "subject:example:alice",
+  "agentId": "agent:example:shopping-assistant",
+  "associationRole": "OPERATOR",
+  "relationshipEvidenceRefs": [
+    "urn:example:evidence:alice-operates-shopping-assistant"
+  ],
+  "confirmationMethod": "ATTESTED_CONFIRMATION",
+  "issuerId": "issuer:example:reference-service",
+  "purpose": "MERCHANT_RISK_REFERENCE",
+  "scope": [
+    "merchant:example:demo-store",
+    "transaction:purchase"
+  ],
+  "authorizationMode": "PER_REQUEST",
+  "requestedAt": "2026-08-12T08:00:00Z",
+  "validFrom": "2026-08-12T08:00:00Z",
+  "expiresAt": "2027-08-12T08:00:00Z",
+  "antiReplay": {
+    "nonce": "association-nonce-attested-001"
+  }
+}

@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
-IGNORED = {".git", ".tmp", ".venv", "node_modules", "__pycache__", "output", "target"}
+IGNORED = {".git", ".tmp", ".venv", ".codefuse", "node_modules", "__pycache__", "output", "target"}
 LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 
 
@@ -55,13 +55,17 @@ def structure_errors() -> list[str]:
         "README.md", "README.en.md", "LICENSE", "SECURITY.md", "release-manifest.json",
         "docs/specification/overview.md", "docs/specification/a402.md", "docs/flows/scenarios.md",
         "code/schemas/a402/README.md", "code/schemas/a402/payment-needed.schema.json",
+        "code/schemas/tsd-crd/reference-v1/README.md",
+        "code/schemas/tsd-crd/reference-v1/schemas/association-credential.schema.json",
         "code/samples/local-a402/package.json", "code/web-client/alipay-ai-pay-showcase/package.json",
+        "code/samples/tsd-crd-reference/package.json",
         "integrations/alipay/buyer-agent/package.json", "integrations/alipay/seller-java/pom.xml",
         "integrations/alipay/validation/README.md",
         "tools/verify.sh",
         "tools/quality/check_repository.py",
         "tools/quality/create_public_snapshot.py",
         "tools/a402/validate_contract.py",
+        "tools/tsd-crd/validate_contract.py",
     ]
     errors = [f"missing required asset: {p}" for p in required if not (ROOT / p).is_file()]
     forbidden = [

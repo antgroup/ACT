@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "verification-request.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Associated Credit Verification Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "messageVersion",
+    "relyingPartyId",
+    "agentId",
+    "verificationLevel",
+    "purpose",
+    "businessContext",
+    "requestedDataItems",
+    "credential",
+    "requestedAt",
+    "antiReplay",
+    "requestProof"
+  ],
+  "properties": {
+    "requestId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "messageVersion": {
+      "type": "string",
+      "const": "reference-v1"
+    },
+    "relyingPartyId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "agentId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "verificationLevel": {
+      "$ref": "common.schema.json#/$defs/verificationLevel"
+    },
+    "subjectCreditAssertionRef": {
+      "$ref": "common.schema.json#/$defs/uriReference"
+    },
+    "authorizationId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "platformDelegateId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "businessContext": {
+      "$ref": "common.schema.json#/$defs/businessContext"
+    },
+    "requestedDataItems": {
+      "$ref": "common.schema.json#/$defs/stringSet"
+    },
+    "credential": {
+      "oneOf": [
+        {
+          "$ref": "association-credential.schema.json"
+        },
+        {
+          "$ref": "common.schema.json#/$defs/credentialReference"
+        }
+      ]
+    },
+    "requestedAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "antiReplay": {
+      "$ref": "common.schema.json#/$defs/antiReplay"
+    },
+    "requestProof": {
+      "$ref": "common.schema.json#/$defs/proof"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verificationLevel": {
+            "const": "ASSOCIATED_CREDIT"
+          }
+        },
+        "required": [
+          "verificationLevel"
+        ]
+      },
+      "then": {
+        "required": [
+          "subjectCreditAssertionRef",
+          "authorizationId"
+        ]
+      }
+    }
+  ]
+}

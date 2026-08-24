@@ -4,7 +4,7 @@
 > **用于理解跨域组合，不是独立协议组件、正式实现规范或 Conformance 证据。**  
 > **版本基线：2026-08-11（UTC+8）。**
 
-本文把 ADD、CID、PSD 和 TSD 组合成端到端业务场景，帮助开发者判断何时需要 IAC、采用哪一种支付授权级别，以及何时异步形成可信事件。本 Release 中的本文是 ACT 2.1 的版本化场景指南；ACT Protocol 官网的[典型场景与业务流程](https://www.act-protocol.com/documentation/scenarios)是持续更新的公开入口。
+本文把 ADD、CID、PSD 和 TSD 组合成端到端业务场景，帮助开发者判断何时需要 IAC、采用哪一种支付授权级别、何时异步形成可信事件，以及何时按需验证关联信用。本 Release 中的本文是 ACT 2.1 的版本化场景指南；ACT Protocol 官网的[典型场景与业务流程](https://www.act-protocol.com/documentation/scenarios)是持续更新的公开入口。
 
 ACT 2.1 在场景分类和组件清单中明确 L1/L2/L3，并列入 `PSD-PAY-A402`。本指南与[支付服务域](../specification/payment-services.md)一致：A402 是可被 INS、DEL、AUP 引用的独立接入组件，不是新的授权等级。若场景说明与域正文发生冲突，以对应域正文为准。
 
@@ -26,13 +26,15 @@ flowchart LR
     ADD["ADD：意图、ISR、IAC 与状态"] --> CID["CID：发现、意图传递、支付协商与交易确认"]
     CID --> PSD["PSD：支付工具、授权核验、支付与 A402"]
     PSD --> FUL["业务履约或资源交付"]
-    ADD -. "intent_id / delegation_id" .-> TSD["TSD：异步事件、证据、核验与争议"]
+    ADD -. "intent_id / delegation_id" .-> TSD["TSD：可信存证与关联信用"]
     CID -. "order / decision" .-> TSD
     PSD -. "payment transaction" .-> TSD
     FUL -. "fulfillment" .-> TSD
 ```
 
-TSD 上报是异步、非阻塞的附加流程。未完成 TSD 上报不应使已经满足 ADD/CID/PSD 条件的在线支付停在主链路；相反，业务或支付失败也不得伪造完成事件。
+`TSD-ATT` 存证上报是异步、非阻塞的附加流程。未完成存证上报不应使已经满足 ADD/CID/PSD 条件的在线支付停在主链路；相反，业务或支付失败也不得伪造完成事件。
+
+`TSD-CRD-VER` 是按需信用验证，可在业务自己的风险判断阶段同步调用，也可以离线使用；它不属于存证上报链路。其 `PASS` 只表示指定范围、目的和时点下的关联信用验证通过，不构成 IAC、交易准入、授信或支付批准。
 
 ## 3. 场景一：用户在场的即时支付
 
@@ -114,7 +116,7 @@ TSD 上报是异步、非阻塞的附加流程。未完成 TSD 上报不应使�
 
 - 首期真实产品接入优先实现 L1：`ADD-INT-ICS + CID-CART-CFM + PSD-PMT-BND + PSD-PAY-INS + PSD-PAY-A402`。
 - 实现 L2/L3 前，需要同时具备 IAC 签发、状态查询、Agent 身份/密钥、PSP 权威授权核验和完整异常恢复，不能只在请求中增加 `delegation_id`。
-- TSD 规范语义已经定稿，但本仓库没有可运行的 ACT Trust Chain 或信用服务。产品日志和沙箱证据可以作为未来映射输入，但不得据此声明已实现 TSD。
+- TSD 规范语义已经定稿，但本仓库没有可运行的 ACT Trust Chain 或生产信用服务。[TSD-CRD Reference Implementation](../../code/samples/tsd-crd-reference/README.md) 只使用 Mock 能力和内存状态；产品日志、Demo 或基础一致性结果不得据此声明已完成 TSD 全量 Conformance 或生产接入。
 
 ## 9. 来源
 

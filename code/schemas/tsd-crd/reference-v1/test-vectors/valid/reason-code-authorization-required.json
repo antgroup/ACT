@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-authorization-required",
+  "description": "Associated-credit verification without a query authorization returns AUTHORIZATION_REQUIRED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "associated-credit verification omits authorization"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "AUTHORIZATION_REQUIRED",
+  "expectedValid": true
+}

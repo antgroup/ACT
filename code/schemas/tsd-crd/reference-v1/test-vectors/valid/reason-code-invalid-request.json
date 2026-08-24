@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-invalid-request",
+  "description": "A malformed or semantically invalid verification request returns INVALID_REQUEST.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "verification request fails input validation"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "INVALID_REQUEST",
+  "expectedValid": true
+}

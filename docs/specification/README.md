@@ -10,4 +10,4 @@ ACT 2.1 is organized into four domains and their cross-domain payment access rul
 6. [A402 payment access protocol](a402.md)
 7. [Commerce-to-payment negotiation](commerce-payment-negotiation.md)
 
-The [scenario guide](../flows/scenarios.md) is informative. JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
+The [scenario guide](../flows/scenarios.md) is informative. JSON Schemas, examples, and test vectors are implementation aids under [`code/schemas/`](../../code/schemas/README.md); the TSD-CRD `reference-v1` profile is explicitly non-normative.

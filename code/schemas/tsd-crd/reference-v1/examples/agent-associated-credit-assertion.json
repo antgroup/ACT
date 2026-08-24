@@ -1,0 +1,31 @@
+{
+  "assertionId": "agent-associated-credit-assertion-001",
+  "assertionVersion": "reference-v1",
+  "creditServiceId": "credit-service:example:provider",
+  "agentId": "agent:example:shopping-assistant",
+  "associationCredentialRef": "credential-attested-001",
+  "subjectCreditAssertionRef": "urn:example:credit-assertion:subject-credit-assertion-001",
+  "associatedCreditValue": {
+    "level": "A-ASSOCIATED",
+    "standing": "ELIGIBLE_FOR_REFERENCE"
+  },
+  "creditSource": "ASSOCIATED_CREDIT",
+  "mappingPolicy": {
+    "id": "reference-level-mapping",
+    "version": "1.0"
+  },
+  "purpose": "MERCHANT_RISK_REFERENCE",
+  "scope": [
+    "merchant:example:demo-store",
+    "transaction:purchase"
+  ],
+  "issuedAt": "2026-08-12T08:10:00Z",
+  "validFrom": "2026-08-12T08:10:00Z",
+  "expiresAt": "2026-09-12T07:55:00Z",
+  "status": "ACTIVE",
+  "assertionProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "credit-service:example:provider#key-1",
+    "signatureValue": "AGENT_ASSOCIATED_CREDIT_ASSERTION_TEST_SIGNATURE"
+  }
+}
