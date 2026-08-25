@@ -1,5 +1,7 @@
 # Changelog
 
+本文件记录各公开发布版本的变更。版本标识与发布日期与 [`release-manifest.json`](release-manifest.json) 及 [`governance/releases/`](governance/releases/) 中的发布记录保持一致；规范定版日期以 [`governance/decisions/`](governance/decisions/) 的决策记录为准。规范语义变更遵循 [GOVERNANCE.md](GOVERNANCE.md)：ACT 2.1 已定版，非勘误性质的规范性变更须以新的协议版本发布。
+
 ## ACT 2.1 — 2026-08-14
 
 - 发布 ADD、CID、PSD、TSD 四域规范，以及独立 A402 接入协议和 L1/L2/L3 场景指南。
