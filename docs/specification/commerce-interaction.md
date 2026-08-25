@@ -1,12 +1,14 @@
 # ACT 2.1 商业交互域
 
+中文 | [English](commerce-interaction.en.md)
+
 > **状态：ACT 2.1 Specification / Final / Normative**
 > **协议内容已经定稿；是否符合本规范需要独立 Conformance 证据。**
 > 版本基线：2026-08-11（UTC+8）
 
 商业交互域（Commerce Interaction Domain，CID）规定支付执行前的商业交互语义：商品或服务如何形成机器可读候选，意图上下文如何传递，双方如何对齐支付能力，以及交易如何在进入支付服务域前完成最终确认。
 
-本域是 ACT 2.1 的规范性商业交互域文本。本 Release 中的本文是 2.1 版本化正文；[ACT Protocol 商业交互域](https://www.act-protocol.com/documentation/commerce)是持续更新的公开入口。
+本域是 ACT 2.1 的规范性商业交互域文本。本 Release 中的本文是 2.1 版本化正文；[ACT Protocol 商业交互域网页](https://www.act-protocol.com/documentation/commerce)是未版本化的信息性参考。
 
 ## 1. 范围与边界
 
@@ -140,7 +142,7 @@ Agent Card 可以使用 `capability_url` 指向单向能力声明，或使用 `n
 - 最终价格是否在允许容差内；
 - 委托支付场景中的 ISR/IAC 授权边界。
 
-任一检验失败时不得直接进入支付。若已有越界策略，应执行该策略；暂停通知时等待用户重新确认或调整约束，自动取消时记录原因并终止。没有明确策略时，宜默认暂停并通知。
+任一检验失败时不得直接进入支付。若已有越界策略，应执行该策略；`PAUSE_AND_NOTIFY` 等待用户重新确认或调整约束，`AUTO_CANCEL` 记录原因并终止。没有明确策略时，宜默认暂停并通知。
 
 ### 6.2 提交、锁定与结果
 
@@ -167,6 +169,6 @@ Agent Card 可以使用 `capability_url` 指向单向能力声明，或使用 `n
 
 ## 8. 来源
 
-- CID 公共协议入口：[商业交互域](https://www.act-protocol.com/documentation/commerce)；未标明版本的网页内容不得覆盖本 Release
-- PSD 公共协议入口：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明版本的网页内容不得覆盖本 Release
+- CID 相关网站参考：[商业交互域](https://www.act-protocol.com/documentation/commerce)；未标明 ACT 2.1 的网页内容不是本 Release 的规范来源
+- PSD 相关网站参考：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明 ACT 2.1 的网页内容不是本 Release 的规范来源
 - 跨域上位参考：[协议概览](https://www.act-protocol.com/documentation/overview)

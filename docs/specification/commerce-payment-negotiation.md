@@ -1,5 +1,7 @@
 # ACT 2.1 商业交互到支付的连接规则
 
+中文 | [English](commerce-payment-negotiation.en.md)
+
 > **状态：ACT 2.1 Specification / Final / Normative**
 > 本文记录商业交互域与支付服务域的规范连接关系；完整 CID 见[商业交互域](commerce-interaction.md)。
 
@@ -72,6 +74,6 @@ ACT 2.1 明确了两条接入路径的最小关联方式：
 
 ## 7. 来源
 
-- CID 公共协议入口：[商业交互域](https://www.act-protocol.com/documentation/commerce)；未标明版本的网页内容不得覆盖本 Release
-- PSD 公共协议入口：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明版本的网页内容不得覆盖本 Release
+- CID 相关网站参考：[商业交互域](https://www.act-protocol.com/documentation/commerce)；未标明 ACT 2.1 的网页内容不是本 Release 的规范来源
+- PSD 相关网站参考：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明 ACT 2.1 的网页内容不是本 Release 的规范来源
 - 跨域上位参考：[协议概览](https://www.act-protocol.com/documentation/overview)
