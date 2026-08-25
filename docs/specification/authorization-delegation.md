@@ -1,12 +1,14 @@
 # ACT 2.1 委托授权域
 
+中文 | [English](authorization-delegation.en.md)
+
 > **状态：ACT 2.1 Specification / Final / Normative**
 > **协议内容已经定稿；是否符合本规范需要独立 Conformance 证据。**
 > 版本基线：2026-08-11（UTC+8）
 
 委托授权域（Authorization & Delegation Domain，ADD）规定用户意图的表达、确认、结构化约束、授权凭证签发和生命周期管理，为 Agent 代表用户开展商业活动提供可表达、可约束、可验证、可追溯的授权基础。
 
-本域是 ACT 2.1 的规范性委托授权域文本。本 Release 中的本文是 2.1 版本化正文；[ACT Protocol 委托授权域](https://www.act-protocol.com/documentation/delegation)是持续更新的公开入口。
+本域是 ACT 2.1 的规范性委托授权域文本。本 Release 中的本文是 2.1 版本化正文；[ACT Protocol 委托授权域网页](https://www.act-protocol.com/documentation/delegation)是未版本化的信息性参考。
 
 ## 1. 范围与边界
 
@@ -147,7 +149,7 @@ ACT 2.1 明确了数据字典、存在性和处理语义，但没有发布 ISR/I
 
 ## 7. 来源
 
-- ADD 公共协议入口：[委托授权域](https://www.act-protocol.com/documentation/delegation)；未标明版本的网页内容不得覆盖本 Release
+- ADD 相关网站参考：[委托授权域](https://www.act-protocol.com/documentation/delegation)；未标明 ACT 2.1 的网页内容不是本 Release 的规范来源
 - 跨域场景参考：[典型场景与业务流程](https://www.act-protocol.com/documentation/scenarios)
 - CID：[商业交互域](https://www.act-protocol.com/documentation/commerce)
 - PSD：[支付服务域](https://www.act-protocol.com/documentation/payment)

@@ -1,13 +1,17 @@
 # ACT 2.1 Specification
 
-ACT 2.1 is organized into four domains and their cross-domain payment access rules.
+ACT 2.1 is organized into four domains and their cross-domain payment access rules. English files are official informative translations of the final Chinese publication. If a translation discrepancy is found, the Chinese publication remains controlling until governance resolves it.
 
-1. [Overview](overview.md)
-2. [Authorization & Delegation Domain](authorization-delegation.md)
-3. [Commerce Interaction Domain](commerce-interaction.md)
-4. [Payment Services Domain](payment-services.md)
-5. [Trust Services Domain](trust-services.md)
-6. [A402 payment access protocol](a402.md)
-7. [Commerce-to-payment negotiation](commerce-payment-negotiation.md)
+Requirement keywords in both languages follow the [normative-language table](overview.en.md#normative-language). The corresponding [Chinese table](overview.md#规范性用语) is controlling.
 
-The [scenario guide](../flows/scenarios.md) is informative. JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
+| Specification | English | 中文 |
+|---|---|---|
+| Overview | [English](overview.en.md) | [中文](overview.md) |
+| Authorization & Delegation Domain | [English](authorization-delegation.en.md) | [中文](authorization-delegation.md) |
+| Commerce Interaction Domain | [English](commerce-interaction.en.md) | [中文](commerce-interaction.md) |
+| Payment Services Domain | [English](payment-services.en.md) | [中文](payment-services.md) |
+| Trust Services Domain | [English](trust-services.en.md) | [中文](trust-services.md) |
+| A402 payment access protocol | [English](a402.en.md) | [中文](a402.md) |
+| Commerce-to-payment negotiation | [English](commerce-payment-negotiation.en.md) | [中文](commerce-payment-negotiation.md) |
+
+The scenario guide is informative: [English](../flows/scenarios.en.md) / [中文](../flows/scenarios.md). JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).

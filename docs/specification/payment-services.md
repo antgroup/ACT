@@ -1,5 +1,7 @@
 # ACT 2.1 支付服务域
 
+中文 | [English](payment-services.en.md)
+
 > **状态：ACT 2.1 Specification / Final / Normative**
 > **版本基线：2026-08-11（UTC+8）。** 本文是 ACT 2.1 的规范性 PSD 文本。文中的“应/不应/宜”表达规范要求；具体产品兼容和 Conformance 仍需独立证据。
 
@@ -19,7 +21,7 @@
 
 版本与实现边界：
 
-1. ACT 2.1 Release 中的本文是 2.1 版本化文本；ACT Protocol 官网[支付服务域](https://www.act-protocol.com/documentation/payment)是持续更新的公开入口。
+1. ACT 2.1 Release 中的本文是 2.1 版本化文本；ACT Protocol 官网[支付服务域](https://www.act-protocol.com/documentation/payment)是未版本化的信息性参考。
 2. `PSD-PAY-A402` 是独立接入组件，可被 INS/L1、DEL/L2、AUP/L3 引用。
 3. 支付宝渠道字段、API、签名和沙箱流程只进入支付宝实现层，不反向改写本规范。
 4. 公开包不恢复 `specs/2.0`、旧 Schema 或旧示例；ACT 2.1 没有规定的 wire 细节属于非规范性实现产物或未来版本工作。
@@ -232,6 +234,6 @@ AUP 复用 DEL 的 IAC 已过期/吊销/暂停、身份不匹配、单笔/累计
 
 ## 11. 来源
 
-- PSD 公共协议入口：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明版本的网页内容不得覆盖本 Release
+- PSD 相关网站参考：[支付服务域](https://www.act-protocol.com/documentation/payment)；未标明 ACT 2.1 的网页内容不是本 Release 的规范来源
 - 上位参考：[协议概览](https://www.act-protocol.com/documentation/overview)
 - 支付宝产品事实：[AI 按量付费接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)

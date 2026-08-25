@@ -1,12 +1,14 @@
 # ACT 2.1 信任服务域
 
+中文 | [English](trust-services.en.md)
+
 > **状态：ACT 2.1 Specification / Final / Normative**
 > **协议内容已经定稿；是否符合本规范需要独立 Conformance 证据。**
 > **版本基线：2026-08-11（UTC+8）。**
 
 信任服务域（Trust Services Domain，TSD）为 ACT 的跨域事实提供可验证、可追溯和可复核的信任支撑，包含两个并列子篇：可信存证（Trusted Attestation）与信用关联（Credit Association）。
 
-本域是 ACT 2.1 的规范性信任服务域文本。ACT 2.1 Release 中的本文是 2.1 版本化文本；[ACT Protocol 信任服务域](https://www.act-protocol.com/documentation/trust)是持续更新的公开入口。
+本域是 ACT 2.1 的规范性信任服务域文本。ACT 2.1 Release 中的本文是 2.1 版本化文本；[ACT Protocol 信任服务域网页](https://www.act-protocol.com/documentation/trust)是未版本化的信息性参考。
 
 ## 1. 子篇关系与边界
 
@@ -219,6 +221,6 @@ ACT 2.1 指定 ACT Trust Chain 为锚定基础设施，但没有定义可直接�
 
 ## 15. 来源
 
-- TSD 公共协议入口：[信任服务域](https://www.act-protocol.com/documentation/trust)；未标明版本的网页内容不得覆盖本 Release
+- TSD 相关网站参考：[信任服务域](https://www.act-protocol.com/documentation/trust)；未标明 ACT 2.1 的网页内容不是本 Release 的规范来源
 - ADD：[委托授权域](https://www.act-protocol.com/documentation/delegation)
 - 跨域场景参考：[典型场景与业务流程](https://www.act-protocol.com/documentation/scenarios)

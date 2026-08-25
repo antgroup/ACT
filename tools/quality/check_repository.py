@@ -12,6 +12,8 @@ from urllib.parse import unquote, urlparse
 ROOT = Path(__file__).resolve().parents[2]
 IGNORED = {".git", ".tmp", ".venv", "node_modules", "__pycache__", "output", "target"}
 LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+HEADING = re.compile(r"^(#{1,6})\s+", re.M)
+CODE_SPAN = re.compile(r"`([^`\n]+)`")
 
 
 def files(pattern: str) -> list[Path]:
@@ -53,7 +55,16 @@ def syntax_errors() -> list[str]:
 def structure_errors() -> list[str]:
     required = [
         "README.md", "README.en.md", "LICENSE", "SECURITY.md", "release-manifest.json",
-        "docs/specification/overview.md", "docs/specification/a402.md", "docs/flows/scenarios.md",
+        "docs/specification/README.md",
+        "docs/specification/overview.md", "docs/specification/overview.en.md",
+        "docs/specification/authorization-delegation.md", "docs/specification/authorization-delegation.en.md",
+        "docs/specification/commerce-interaction.md", "docs/specification/commerce-interaction.en.md",
+        "docs/specification/payment-services.md", "docs/specification/payment-services.en.md",
+        "docs/specification/trust-services.md", "docs/specification/trust-services.en.md",
+        "docs/specification/a402.md", "docs/specification/a402.en.md",
+        "docs/specification/commerce-payment-negotiation.md",
+        "docs/specification/commerce-payment-negotiation.en.md",
+        "docs/flows/scenarios.md", "docs/flows/scenarios.en.md",
         "code/schemas/a402/README.md", "code/schemas/a402/payment-needed.schema.json",
         "code/samples/local-a402/package.json", "code/web-client/alipay-ai-pay-showcase/package.json",
         "integrations/alipay/buyer-agent/package.json", "integrations/alipay/seller-java/pom.xml",
@@ -103,6 +114,11 @@ def manifest_errors() -> list[str]:
         errors.append("release-manifest.json: release date must match the ACT 2.1 release note")
     if manifest.get("specification_finalized") != "2026-08-11":
         errors.append("release-manifest.json: specification finalization date is missing")
+    languages = manifest.get("languages", {})
+    if languages.get("normative") != "zh-CN":
+        errors.append("release-manifest.json: normative language must be zh-CN")
+    if "en" not in languages.get("official_informative_translations", []):
+        errors.append("release-manifest.json: English informative translation is missing")
     release_authority = manifest.get("authorities", {}).get("act_2_1_versioned_release")
     if not isinstance(release_authority, str) or not (ROOT / release_authority).is_file():
         errors.append("release-manifest.json: invalid ACT 2.1 versioned release authority")
@@ -110,6 +126,62 @@ def manifest_errors() -> list[str]:
         target = component.get("path")
         if not isinstance(target, str) or not (ROOT / target).is_file():
             errors.append(f"release-manifest.json: invalid component path for {name}")
+        translation_of = component.get("translation_of")
+        if translation_of is not None and (
+            not isinstance(translation_of, str) or not (ROOT / translation_of).is_file()
+        ):
+            errors.append(f"release-manifest.json: invalid translation source for {name}")
+    required_normative = {
+        "docs/specification/overview.md",
+        "docs/specification/authorization-delegation.md",
+        "docs/specification/commerce-interaction.md",
+        "docs/specification/payment-services.md",
+        "docs/specification/trust-services.md",
+        "docs/specification/a402.md",
+        "docs/specification/commerce-payment-negotiation.md",
+    }
+    declared_normative = {
+        component.get("path")
+        for component in manifest.get("components", {}).values()
+        if component.get("normative") is True
+    }
+    if declared_normative != required_normative:
+        errors.append("release-manifest.json: normative specification set is incomplete or incorrect")
+    return errors
+
+
+def translation_errors() -> list[str]:
+    """Keep official informative translations structurally tied to Chinese sources."""
+    errors = []
+    pairs = [
+        ("docs/specification/overview.md", "docs/specification/overview.en.md"),
+        ("docs/specification/authorization-delegation.md", "docs/specification/authorization-delegation.en.md"),
+        ("docs/specification/commerce-interaction.md", "docs/specification/commerce-interaction.en.md"),
+        ("docs/specification/payment-services.md", "docs/specification/payment-services.en.md"),
+        ("docs/specification/trust-services.md", "docs/specification/trust-services.en.md"),
+        ("docs/specification/a402.md", "docs/specification/a402.en.md"),
+        (
+            "docs/specification/commerce-payment-negotiation.md",
+            "docs/specification/commerce-payment-negotiation.en.md",
+        ),
+        ("docs/flows/scenarios.md", "docs/flows/scenarios.en.md"),
+    ]
+    translation_marker = "Translation status: Official English translation / Informative"
+    for source_name, translation_name in pairs:
+        source = (ROOT / source_name).read_text(encoding="utf-8")
+        translation = (ROOT / translation_name).read_text(encoding="utf-8")
+        if translation_marker not in translation:
+            errors.append(f"{translation_name}: missing official informative translation marker")
+        if "Chinese ACT 2.1 publication remains controlling" not in translation:
+            errors.append(f"{translation_name}: missing Chinese controlling-language notice")
+        source_headings = HEADING.findall(source)
+        translation_headings = HEADING.findall(translation)
+        if source_headings != translation_headings:
+            errors.append(f"{translation_name}: heading structure differs from {source_name}")
+        source_tokens = set(CODE_SPAN.findall(source))
+        translation_tokens = set(CODE_SPAN.findall(translation))
+        if source_tokens != translation_tokens:
+            errors.append(f"{translation_name}: wire/code tokens differ from {source_name}")
     return errors
 
 
@@ -129,6 +201,10 @@ def release_wording_errors() -> list[str]:
         "website-sync dependency": re.compile(r"官网同步完成前"),
         "historical revision evidence": re.compile(r"历史修订证据"),
         "highlight revision note": re.compile(r"(?:本轮黄色修订|黄色(?:高亮|段落|安全段落))"),
+        "website as protocol authority": re.compile(
+            r"(?:持续更新的公共协议入口|continuously updated public protocol entry|"
+            r"public protocol entry point[^\n]*(?:authority|controls)|官网同步完成前)", re.I
+        ),
     }
     checked = [p for p in files("*.md") if "governance/decisions" not in p.as_posix()]
     checked += files("*.json")
@@ -146,6 +222,7 @@ def main() -> int:
         ("JSON and Python syntax", syntax_errors),
         ("Release structure", structure_errors),
         ("Release manifest", manifest_errors),
+        ("Official English translations", translation_errors),
         ("Release wording", release_wording_errors),
     ]
     failures = 0
