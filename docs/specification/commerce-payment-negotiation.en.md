@@ -2,13 +2,13 @@
 
 [中文](commerce-payment-negotiation.md) | English
 
-> **Chinese source publication: ACT 2.1 Specification / Final / Normative**
-> This translation records the normative connection defined by the Chinese publication between the Commerce Interaction Domain and the Payment Services Domain. See the [Commerce Interaction Domain](commerce-interaction.en.md) for the complete CID translation.
-> **Translation status: Official English translation / Informative. If a translation discrepancy is found, the Chinese ACT 2.1 publication remains controlling until the discrepancy is resolved through project governance.**
+> **Status: ACT 2.1 / Final / Non-normative cross-domain guide**
+> This guide summarizes the connection between the Commerce Interaction Domain and Payment Services Domain without adding normative semantics. See the complete [Commerce Interaction Domain](commerce-interaction.en.md) and [Payment Services Domain](payment-services.en.md); those domain specifications control if this guide differs.
+> **Translation status: Official English translation / Informative. If a translation discrepancy is found, the Chinese ACT 2.1 publication remains controlling until the translation is corrected in a subsequent repository release.**
 
 ## 1. Purpose
 
-`CID-PCA-NEG` determines the mutually usable payment method and access information before the parties enter payment interaction. The Payment Services Domain treats this component, or an equivalent mechanism, as a prerequisite for A402 and allows INS, DEL, and AUP to select A402, a conventional merchant-platform order-and-pay flow, or the corresponding MCP/API interface.
+`CID-PCA-NEG` determines the mutually usable payment method and access information before the parties enter payment interaction. The Payment Services Domain treats this component, or an equivalent mechanism, as a prerequisite for A402 and allows INS, DEL, and AUP to select Skill, A402, a conventional merchant-platform order-and-pay flow, or the corresponding MCP/OpenAPI interface.
 
 The negotiation result in the source documentation covers at least:
 

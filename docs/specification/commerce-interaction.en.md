@@ -2,174 +2,358 @@
 
 [中文](commerce-interaction.md) | English
 
-> **Chinese source publication: ACT 2.1 Specification / Final / Normative**
-> **The protocol content is final. Conformance with this specification requires independent conformance evidence.**
-> **Version baseline: 2026-08-11 (UTC+8).**
-> **Translation status: Official English translation / Informative. If a translation discrepancy is found, the Chinese ACT 2.1 publication remains controlling until the discrepancy is resolved through project governance.**
+> **Status: ACT 2.1 Specification / Final / Informative English Translation**
+> **Translation status: Official English translation / Informative**
+> **This English edition is a complete translation of the finalized Chinese specification published on 2026-08-11. The Chinese edition is authoritative if the two editions differ.**
+> **The Chinese ACT 2.1 publication remains controlling if the two editions differ.**
 
-The Commerce Interaction Domain (CID) specifies the commercial-interaction semantics that precede payment execution: how goods or services become machine-readable candidates, how intent context is transferred, how the parties align payment capabilities, and how a transaction is finally confirmed before entering the Payment Services Domain.
+# Scope
+## Domain Positioning
+Commerce Interaction Domain (Commerce Interaction Domain, CID) provides for a uniform, citation and commerce interaction synonym between Agent and Merchant, Merchant-side Agent or other Agent for the pre-payment identification of goods or services, Intent Context transmission, alignment of capacity to pay and transaction recognition.
 
-This document is the official informative English translation of the normative ACT 2.1 Commerce Interaction Domain text in this release. The [ACT Protocol Commerce Interaction page](https://www.act-protocol.com/documentation/commerce) is an unversioned informative reference.
+## Domain Responsibilities
+This domain covers the following:
 
-## 1. Scope and boundaries
++ (b) Minimum information requirements for the discovery of goods and services;
++ Organization, transmission and return of candidate results Intent Context;
++ Payment Capability Advertisement, capacity recognition and capacity consultation;
++ Cart Confirmation, pre-checking of rules and confirmation of transactions;
++ Pre-payment business consensus to form key objects, state semantics and cross-domain reference relationships.
 
-CID covers:
+The following are not regulated in this domain:
 
-- minimum information requirements for product and service discovery results;
-- organization and transfer of intent context and return of candidate results;
-- declaration, confirmation, and negotiation of payment capabilities;
-- cart confirmation, preflight rule validation, and transaction-confirmation results;
-- objects, state semantics, and cross-domain references needed for commercial consensus before payment.
++ Agent Internal decision algorithms, ranking strategies, preference extrapolations and model reasoning processes;
++ Merchant In-house operations processing, stock deductions, order management and performance systems achieved;
++ Generic multi-operative Agent collaboration protocols, tasking and service discovery protocols;
 
-CID does not specify:
+# The list of components and relationships in this field
+## Component Overview
+Commerce Interaction Domain consists of four protocol components that jointly complete the full chain from the discovery of goods or services, Intent Context transfer and pre-payment capacity, to the completion of the transaction and the beginning of the payment phase.
 
-- an Agent's internal reasoning, ranking, preference inference, or decision algorithms;
-- a merchant's internal operations, inventory deduction, order management, or fulfillment implementation;
-- general multi-Agent collaboration, task orchestration, or service-discovery protocols;
-- payment execution, credential validation, or funds processing, which belong to the [Payment Services Domain](payment-services.en.md);
-- common structures and governance for trustworthy events, which belong to the Trust Services Domain.
+The functional positioning of the components is as follows.
 
-## 2. Components and core objects
++ **CID-MER-CAT: Merchant Catalog interface.** Regulates the minimum information requirements when opening the catalogue of goods or services in structured form to Merchant to support machine-readable goods or services.
++ **CID-INT-XFR: Intent Context Passage.** Responsible for regulating the Buyer Agent transmission of Intent Context to Merchant or to the platform in relation to the current mandate, and for receiving requests/responses to the outcome of the candidate goods or services.
++ **CID-PCA-NEG: Payment Capability Negotiation.** It is responsible for regulating the process of capacity statements and consultations between buyers and sellers before payments can be made, using payment method, Payment Service Provider, interface endpoints and associated load modes.
++ **CID-CART-CFM: Cart Confirmation.** Be responsible for regulating the process of final confirmation and pre-checking of rules on the subject matter of the transaction, the amount, conditions of performance and related constraints before entering the payment process Buyer Agent.
 
-| Component | Purpose | Primary output |
-|---|---|---|
-| `CID-MER-CAT` | Product and service catalog interface; specifies minimum discovery-result information without defining one catalog protocol | Candidate product or service results |
-| `CID-INT-XFR` | Transfer the current task's intent context to a merchant or platform and receive candidates | Request-correlated candidate results or errors |
-| `CID-PCA-NEG` | Align payment methods, providers, endpoints, and payload modes before payment | Payment-capability negotiation result |
-| `CID-CART-CFM` | Finally confirm the transaction subject, amount, fulfillment terms, and authorization constraints | Transaction-confirmation result that PSD can reference |
+## Core Object & Identification
+Commerce Interaction Domain uses a standard core set of objects and identifiers to describe key information at the pre-payment stage. The core objects of the domain and their role can be summarized as follows.
 
-The domain uses four core object types:
+|** Object or Identification**|** Meaning**|** Mainly Generate Location**|** Main Use Location**|
+| --- | --- | --- | --- |
+|Intent Context|Buyer Agent Structured Intent Information around Current Tasks, Carrying Needs, Constraints and Necessary Backgrounds, and Upstream Inputs as Commodity Screening, Matching and Transaction Recognition|ADD-INT-ICS, also constructed locally by Buyer Agent based on upstream intent objects, if necessary|Candidate matching process CID-INT-XFR, CID-CART-CFM, and Merchant or platform|
+|Results of candidate goods or services|Merchant, platform or selleragent returned the structured candidate results for the pre-screening, comparison and follow-up rule test at Buyer Agent|CID-MER-CAT、CID-INT-XFR|CID-CART-CFM and Buyer Agent local decision-making processes|
+|Transaction confirmation result|The final confirmation of the order as a result of phase Cart Confirmation typically includes the subject matter of the transaction, the amount, Merchant identification, the order transaction number and related confirmation time information|CID-CART-CFM|Payment Services Domain, and trusted attestation with ex post facto dispute resolution support|
+|Results Payment Capability Negotiation|Convergence between buyers and sellers on the use of payment method, Payment Service Provider, interface endpoints and methodological models|CID-PCA-NEG|payment request Construction and implementation of subsequent Payment Services Domain|
 
-| Object | Produced by | Primarily used by |
-|---|---|---|
-| Intent context | `ADD-INT-ICS`, or locally constructed by the Buyer Agent from upstream intent | `CID-INT-XFR`, `CID-CART-CFM`, and candidate matching |
-| Candidate product or service result | `CID-MER-CAT`, `CID-INT-XFR` | Local buyer decision and `CID-CART-CFM` |
-| Payment-capability negotiation result | `CID-PCA-NEG` | Payment-request construction and path selection |
-| Transaction-confirmation result | `CID-CART-CFM` | PSD and subsequent evidence and dispute handling |
+## Dependence and Cross-domain Reference
+Both CID-MER-CAT and CID-INT-XFR may be used as upstream sources for candidate products or service outcomes to provide subsequent Cart Confirmation input.
 
-ADD provides ISR and related constraint context to CID. PSD consumes the transaction-confirmation result, order transaction number, and payment-capability negotiation result. TSD maintains event types and evidence-governance rules; CID does not redefine them.
+The role of CID-PCA-NEG occurs primarily in the pre-payment phase and is used to determine, if necessary, the payment method, Payment Service Provider and interface endpoints used for the transaction, thus providing the basis for the subsequent payment request construction.
 
-## 3. `CID-MER-CAT`: product and service catalog interface
+CID-CART-CFM is the key component in the field for pre-discovering, screening, negotiating and forming the final confirmation of the order level, the output of which will have a direct impact on whether the subsequent Payment Services Domain can initiate payment execution.
 
-### 3.1 Minimum information requirements
+Authorization & Delegation Domain provides the domain primarily with ISR and the context of the relevant constraints; Payment Services Domain refers primarily to the transaction confirmation results, order transaction numbers, Payment Capability Negotiation results; Trust Services Domaintrusted attestation sub-sections harmonize the maintenance of the type of relevant event and certificate governance rules, and do not repeat the definition. Agent credit association statements defined in sub-section credit association can be used to assist judgement of the local domain ' s authorized link, such as the identification and screening of goods or services, and the transmission of Intent Context, but may not replace the inspection, confirmation and consultation rules prescribed by the components of this domain.
 
-Each product or service detail that a Buyer Agent can consume MUST contain:
+# CID-MER-CAT: Merchant Catalog Interface
+## Overview
+Merchant Catalog Interface (Catalog Interface, CID-MER-CAT) sets the minimum information requirements for Merchant opening a structured catalogue of goods or services to Agent to support machine-readable discovery of goods or services. The candidate goods or services output of this component may serve as upstream input for Buyer Agent subsequent comparative decision-making and Cart Confirmation.
 
-- a product or service identifier uniquely resolvable globally or within the merchant domain;
-- a product or service name;
-- a category or classification usable for matching intent constraints;
-- an explicit listed price and currency unit.
+The current version of this component does not define a uniform catalogue protocol for the time being, but provides for the minimum information requirements to be met by SHALL before commerce interaction enters the follow-up.
 
-The result SHOULD additionally contain:
+This component does not regulate the sorting logic of cataloguing, recommended algorithms, Merchant internal commodity modelling, and internal processing Merchant such as stock deductions, price calculations and order performance.
 
-- inventory, saleability, or service-availability state;
-- price-expiration time or quote-update time;
-- delivery, fulfillment, or service-completion time;
-- merchant identifier, merchant-reference URL, or detail-reference URL.
+## Participants and prefix
+This component involves the following Participants: Merchant or platform for providing information on goods or services, and Buyer Agent for initiating cataloguing visits and consuming returns.
 
-A result that does not satisfy the minimum information requirements SHOULD NOT directly enter `CID-CART-CFM`. If the result can only be displayed, the implementation SHOULD first obtain the information needed for preflight rule validation.
+Before entering this component, SHALL satisfies the following preconditions.
 
-### 3.2 Content intentionally not standardized
++ Merchant or the platform already has the capacity to provide external information on structured goods or services.
++ Buyer Agent The basic commercial context relevant to the current mission has been established and allows for local screening, comparison or subsequent confirmation of return results.
++ When the subsequent link needs to be tested under user intent against the binding enforcement rules, Buyer Agent SHALL be able to link the directory back to the relevant Intent Context provided by Authorization & Delegation Domain.
 
-ACT 2.1 does not specify a common catalog path, HTTP method, authentication, pagination, retrieval ranking, recommendation algorithm, or merchant-internal product model. Implementations MAY reuse an industry protocol, merchant API, or platform catalog, provided that the result satisfies the minimum information requirements above.
+## Minimum return information requirement
+Merchant returned catalogue data for goods or services SHALL meet the minimum information availability requirement to ensure that follow-up commerce interaction and confirmation before payment can proceed normally.
 
-## 4. `CID-INT-XFR`: intent-context transfer
+For each item of goods or services available for Buyer Agent consumption, the return result SHALL contain the following information.
 
-### 4.1 Intent context
++ Goods or services identification, SHALL, is the only globally or in the Merchant domain that can be deciphered.
++ Trade name or service name, SHALL may support Buyer Agent and subsequent processing to identify the subject of the transaction.
++ Commodity group or service category, SHALL support subsequent alignment with user intent binding.
++ Clear pricing and currency units, SHALL support value comparisons, rule pre-tests and pre-payment confirmations.
 
-Intent context is organized around the current task and commonly includes:
+In addition to the minimum information required above, the return result on the side of Merchant SHOULD further contains the following information.
 
-- purchase or service requirements explicitly expressed by the user;
-- supplemental requirements inferred by the Agent from confirmed context;
-- constraints such as amount, category, merchant, and fulfillment timing;
-- background strictly necessary for candidate matching;
-- preference information that the implementation permits and that is applicable.
++ Current stock, marketable status or service availability.
++ The price is valid at the deadline or the price update.
++ Anticipated delivery times, time limits for performance or service delivery.
++ Merchant Identification, Merchant Reference Address or Trade Details Reference Address.
 
-Explicit requirements and constraints SHOULD be primary. Implicit requirements or preferences MUST NOT conflict with user-confirmed constraints or ISR/IAC authorization boundaries. The implementation is responsible for informed consent and data protection.
+Buyer Agent SHOULD NOT is used directly for Cart Confirmation or for payment of pre-connection when the results of the directory cannot be satisfied. When the return result is only shown and is not sufficient to support the pre-checking of the rules, the achiever SHOULD supplements the necessary fields before entering CID-CART-CFM.
 
-### 4.2 Requests, responses, and updates
+> The current version of ACT does not provide for uniform access paths, request methods, authentication mechanisms and page breaks for the directory interface.
+>
 
-A request SHOULD include a unique request identifier, intent context, necessary cross-domain correlation identifiers, constraints, response-format requirements, and source-authentication information. The response MUST be correlatable to the original request and MUST at least return candidate details that can be filtered and confirmed. If the request cannot be processed, the response MUST return machine-recognizable error semantics.
+## Statement of compatibility
+This may be achieved in conjunction with existing industry protocols, Merchant open interfaces or existing catalogue services of the platform, as long as its return results meet the minimum information requirements specified in this component.
 
-Each multi-turn update MUST receive a new request identifier and correlate to the preceding request. It SHOULD carry only changes from the current turn. Error semantics SHOULD cover malformed input, no matches, restricted access, constraint conflicts, and excessive request frequency. The Buyer Agent MAY use these errors to retry, switch merchants, adjust the request, or notify the user.
+# CID-INT-XFR: Intent Context Passage
+## Overview
+Intent ContextTransfer, CID-INT-XFR provides for Buyer Agent transmission to Merchant or to the platform of Merchant and receives a request/response process for the results of the candidate goods or services. Intent Context used for this component may be quoted as ISR and associated binding syntax, and may be entered upstream as a follow-up candidate selection, pre-test and Cart Confirmation.
 
-The Buyer Agent MAY query multiple merchants or platforms concurrently. Candidate aggregation, comparison, and final decision remain local implementation concerns and are not CID protocol rules.
+This component deals with the matching of intent transmission with candidate at the pre-payment stage and does not regulate internal intent understanding, preference extrapolation and decision algorithms Buyer Agent.
 
-## 5. `CID-PCA-NEG`: payment-capability negotiation
+## Participants and prefix
+This component involves the following Participants: Buyer Agent for initiating the intended request, and Merchant for receiving the request and returning the candidate results, the platform or its proxy interface.
 
-### 5.1 Capability declaration
+Before entering this component, SHALL satisfies the following preconditions.
 
-A seller, merchant, or its Agent MAY declare payment-negotiation capabilities under an Agent Card `capabilities` node, or publish `act-payment-capability.json` at an agreed location. The declaration MUST express:
++ Buyer Agent The basic commercial context relevant to the current mission has been established and can be constructed to transmit Intent Context.
++ Merchant or the platform already has the capacity to receive intended requests and return to structured candidate results.
++ When the subsequent link needs to be tested against User objectives and binding enforcement rules, Buyer Agent SHALL be able to connect Intent Context to the relevant binding synonyms provided by Authorization & Delegation Domain.
 
-- negotiation mode;
-- supported payment methods;
-- the payment service provider for each method;
-- payment-interface endpoints;
-- payload mode or structure description.
+## Composition Intent Context
+Buyer Agent Passes Intent Context SHALL organize around current tasks and can support Merchant or platform matching. Intent Context typically include the following.
 
-An Agent Card MAY use `capability_url` to reference a one-way capability declaration, or `negotiation_endpoint` to reference a two-way negotiation interface. The source documentation provides structural examples; it does not provide a JSON Schema, version-negotiation mechanism, or signature format that can independently establish formal compatibility.
++ Visible intent demand, i.e. User clearly expressed purchase target or service demand.
++ Implicit intent needs, i.e. Buyer Agent supplementary needs based on the context of the current mandate, User confirmed information or continuous interactive content.
++ Limitations, i.e., amount, category, Merchant, time for performance, etc., relevant to the task.
++ The necessary background information, i.e. the additional context required to complete the candidate matching.
++ Preferable information that may be transmitted with the permission of the realizing party and subject to the applicable conditions.
 
-### 5.2 One-way declaration
+Visible intent needs and constraints SHOULD be the main components of Intent Context. Implicit intent needs and preferences can be transmitted as optional messages that conflict with the authorized boundary as expressed in ISR/ IAC by User explicitly identified binding conditions or Authorization & Delegation Domain.
 
-The Buyer Agent reads the seller's published capabilities and filters `supported_methods` for methods that satisfy the transaction conditions and upstream authorization constraints. The selected result MUST at least identify:
+When transmitting information about hidden intent needs or preferences, the achiever SHALL processes the relevant informed consent and data protection requirements on its own.
 
-- `method_id`: payment-method identifier;
-- `psp_id`: payment service provider identifier;
-- `endpoint`: endpoint for the subsequent payment request;
-- `method_schema_url`: description of the method payload structure.
+## Requests and responses
+Buyer Agent When initiating a request for intent, SHALL constructs can be analysed by Merchant or the Platform. The request contains the following key elements.
 
-If no method matches, the Buyer Agent MUST NOT proceed to payment.
++ Request for marking to be used only to mark the current request and to support a response link.
++ Intent Context related to current mandate.
++ Link identifiers used when cross-domain linkages are required.
++ Required binding conditions and responsiveness to formal requirements.
++ Request for authentication information from sources.
 
-### 5.3 Two-way negotiation
+At least SHALL contain details of the goods or services that can be selected for subsequent screening and confirmation. When Merchant or the platform is unable to return the valid candidate, SHALL return the wrong response and gives the wrong synonym that can be identified by Buyer Agent.
 
-The Buyer Agent sends a request to `negotiation_endpoint`. The request semantics include the Buyer Agent identifier, buyer-supported methods, currency, and estimated amount. The seller returns the method, PSP, endpoint, and method Schema that match the current transaction conditions.
+## Dynamic Update and Wrong Semantics
+Buyer Agent SHALL Supports the dynamic update of Intent Context in multiple rounds of interaction. Each dynamic update generates a new request identifier and links it to the previous request. The dynamic update request SHOULD carries only the intended content of this change.
 
-If the parties share no method, the Buyer Agent MUST NOT proceed to payment and MUST switch methods, switch counterparties, or terminate the transaction according to business policy. When multiple results exist, final ranking and selection are handled locally by the Buyer Agent.
+When Merchant or the platform is unable to process the request normally, the wrong synonym SHOULD cover the categories of error in format, lack of matching results, restricted access, restricted conflicts and excessive frequency of requests. Buyer Agent Depending on the type of error, retrying, switching Merchant, adjustment request or notification User.
 
-### 5.4 Security requirements
+## Multiple Merchant route
+In the actual business network, Buyer Agent can be accompanied by a request for intent to multiple Merchant or platforms and a summary of the results of each party’s return. The comparison of the results with the final decision is Buyer Agent local processing, which is not part of this component instruction Scope.
 
-Before using a capability declaration, the Buyer Agent MUST verify that it came from the capability address declared by the merchant. When parsing the result, it MUST check consistency among critical fields such as `psp_id`, `endpoint`, and `method_schema_url` to prevent forgery, tampering, or substitution. If the source cannot be verified or a critical-field check fails, capability matching and payment MUST NOT continue.
+> Note: Where key business nodes need to be recorded, this will be achieved before the `act:commerce:decision-logged` event marker is used for follow-up certificate processing after the decision is completed.
+>
 
-## 6. `CID-CART-CFM`: cart confirmation
+# CID-PCA-NEG: Payment Capability Negotiation
+## Overview
+Payment Capability Negotiation (Payment Capitalisation, CID-PCA-NEG) provides for a process of capacity statement and consultation between buyers and sellers on the use of payment method, Payment Service Provider, interface endpoints and related load modalities before entering payment execution.
 
-### 6.1 Preflight rule validation
+This component applies mainly to multiple agentic commerce interactive scenarios in which the seller Agent participates, as well as to other scenarios where capacity to pay needs to be aligned before payment is made. The output of this component Payment Capability Negotiation can be used as a follow-up Payment Services Domain construct payment request and input to choose the payment path.
 
-Before payment, the Buyer Agent MUST validate the proposed transaction against:
+This component does not define common service discovery, information exchange, tasking and collaborative interaction protocols, but only regulates the semantics of Payment Capability Advertisement and Payment Capability Negotiation required to pay for the pre-connection.
 
-- per-transaction and cumulative amount boundaries;
-- allowed and forbidden categories;
-- allowed and forbidden merchants;
-- delivery, completion, or service-fulfillment timing;
-- whether the final price is within the permitted tolerance;
-- ISR/IAC authorization boundaries in delegated-payment scenarios.
+## Participants and prefix
+This component involves the following: Participants: Buyer Agent initiating Payment Capability Negotiation, and Merchant external declaration of capacity to pay and return to the results of the consultations, Agent seller or its proxy interface.
 
-If any validation fails, the transaction MUST NOT proceed directly to payment. If an out-of-bounds policy already exists, that policy MUST be applied. `PAUSE_AND_NOTIFY` waits for the user to reconfirm or adjust constraints; `AUTO_CANCEL` records the reason and terminates. If there is no explicit policy, the implementation SHOULD pause and notify by default.
+Before entering this component, SHALL satisfies the following preconditions.
 
-### 6.2 Submission, locking, and result
++ The buyer and the seller have developed a basic commercial context in which to enter the pre-payment phase.
++ Buyer Agent already identifies the amount of the transaction, the currency, the subject of the transaction and other necessary transaction parameters.
++ The seller ' s side has the capability to publish Payment Capability Advertisement or respond to Payment Capability Negotiation requests.
++ When the transaction is subject to user intent or authorized boundaries, Buyer Agent SHALL be able to determine the availability of the candidate payment method according to the relevant binding syntax.
 
-After validation passes, the confirmation request SHOULD include product or service details, final price, currency, fulfillment requirements, and necessary correlation context. After accepting, the counterparty MUST lock the order-level price, inventory, or service capacity and return a stably referenceable order transaction number. If locking fails, the counterparty MUST return an explicit failure and MUST NOT treat the transaction as confirmed.
+## Payment Capability Advertisement
+### Declaration Mode
+The seller's side can make its Payment Capability Advertisement public through a standardized path. Under the seller's Agent scene, Payment Capability Advertisement can be published through `capabilities` node in its Agent Card, with a statement of the mode of consultation supported by the seller and the corresponding interface address.
 
-The transaction-confirmation result SHOULD at least contain:
+Payment Capability Advertisement SHALL be able to convey the following message.
 
-- confirmed product or service details;
-- final amount and currency;
-- counterparty identifier;
-- order transaction number;
-- confirmation time;
-- necessary cross-domain correlation identifiers.
++ Modalities for consultations supported by this party.
++ The list of payment methods supported by this side.
++ Each corresponding Payment Service Provider identifier.
++ Each corresponding payment interface endpoint payment method.
++ Each corresponding load mode or description of the payload structure payment method.
 
-This does not require the payment request to contain the entire cart. A402 establishes minimum correlation through order, resource, amount, and currency, and MAY reference a separate confirmation object through `commerce_confirmation`. See the [commerce-to-payment connection rules](commerce-payment-negotiation.en.md).
+When the seller's side supports the one-way declaration model, SHALL in its public capability description is able to provide `capability_url` or equivalent capability statement portals, for example, Agent Card:
 
-## 7. Current machine-contract boundary
+```plain
+{
+  "agent_id": "did:act:alipay.com/Agent-alice-001",
+  "capabilities": {
+    "act:payment:negotiation": {
+      "mode": "one-way",
+      "capability_url": "https://merchant.com/.well-known/act-payment-capability.json"
+    }
+  }
+}
+```
 
-Two-way negotiation requests use `currency`; responses and the “no common method” decision use `supported_methods`. `amount_currency` and `matched_methods` are not ACT 2.1 field names.
+When the seller's side supports the two-way negotiation model, SHALL of its public capability description provides `negotiation_endpoint` or the interface portal for the equivalent, for example, Agent Card:
 
-This document consistently uses the existing field names `capability_url`, `psp_id`, and `method_schema_url`. Spellings without underscores are not additional wire fields. ACT 2.1 does not publish the corresponding JSON Schema, version negotiation, signature, authentication, redirect, or cache rules. Implementations MUST NOT expand examples into additional normative requirements.
+```plain
+{
+  "agent_id": "did:act:enterprise.com/premiumbot-02",
+  "capabilities": {
+    "act:payment:negotiation": {
+      "mode": "two-way",
+      "negotiation_endpoint": "https://api.enterprise.com/act/payment/negotiate"
+    }
+  }
+}
+```
 
-The source mentions `act:commerce:decision-logged` and `act:commerce:cart-confirmed` as event identifiers that later evidence may reference. Event structure and governance remain part of TSD.
+### One-way declaration mode
+The one-way declaration model applies to a scenario where the seller side is fully open Payment Capability Advertisement, Buyer Agent which is directly accessible without additional consultation and interaction. Under this model, Buyer Agent SHALL reads Payment Capability Advertisement which is publicly available on the seller side and selects payment method from `supported_methods` the candidate matching the terms of the transaction.
 
-## 8. Sources
+When Buyer Agent is bound by payment method from an upstream intention or authorized boundary, SHALL be chosen only from a candidate payment method that meets the relevant restriction.
 
-- Related CID website reference: [Commerce Interaction Domain](https://www.act-protocol.com/documentation/commerce); content not labeled ACT 2.1 is not a normative source for this release
-- Related PSD website reference: [Payment Services Domain](https://www.act-protocol.com/documentation/payment); content not labeled ACT 2.1 is not a normative source for this release
-- Cross-domain reference: [Protocol Overview](https://www.act-protocol.com/documentation/overview)
+Buyer Agent After the screening has been completed, SHALL extracts the corresponding `method_id`, `psp_id`, `endpoint` and `method_schema_url` for subsequent payment request construction input.
+
+If there is no available match in the public statement payment method, Buyer Agent SHALL NOT continues to be paid.
+
+Examples of the format of the capacity to pay document (`act-payment-capability.json`) are as follows:
+
+```plain
+{
+  "version": "1.0",
+  "role": "payee",
+  "agent_id": "did:act:merchant.com/servicebot-01",
+  "supported_methods": [
+    {
+      "method_id": "urn:act:payment:alipay",
+      "psps": [
+        {
+          "psp_id": "urn:act:psp:alipay-official",
+          "endpoint": "https://openapi.alipay.com/act-psp/v1",
+          "method_schema_url": "https://alipay.com/act/schemas/payment-payload.json"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Two-way consultation model
+The two-way consultation model applies to situations where the seller ' s side needs to match payment method with the context of the buyer ' s request. Under this model, Buyer Agent SHALL initiate a request for consultation with `negotiation_endpoint` declared to the seller ' s side.
+
+The request SHOULD contain at least the following elements.
+
++ `agent_id`, to mark Buyer Agent for initiating consultations.
++ `buyer_supported_methods` for a list of payment method acceptable to the buyer at present.
++ `currency`, to be used to declare the currency of the transaction.
++ `estimated_amount`, to be used to state the estimated amount of the transaction.
+
+Upon receipt of the request by the seller, SHALL return the result of capacity to pay that matches the current terms of the transaction. `supported_methods` SHOULD in the response contains at least the following elements.
+
++ `method_id` for marking success payment method.
++ `psp_id` for marking Payment Service Provider corresponding to payment method.
++ `endpoint`, to identify the target interface address for follow-up payment request.
++ `method_schema_url` to identify the corresponding payment load description for payment method.
+
+When `supported_methods` is empty, SHALL be deemed to have failed to complete the matching of capacity to pay. In that case, Buyer Agent SHALL NOT continues to enter the payment phase and SHALL decides whether to replace payment method, replace the counterparty or terminate the transaction in accordance with the business strategy.
+
+The examples are as follows:
+
+**First step (buyer initiated)**: Buyer Agent Send HTTP POST request to `negotiation_endpoint` declared by seller Agent containing a list of payment method intended items supported by buyer, currency and estimated amount:
+
+```plain
+{
+  "agent_id": "did:act:platform.com/Agent-alice-001",
+  "buyer_supported_methods": ["urn:act:payment:alipay", "urn:act:payment:credit_card"],
+  "currency": "CNY",
+  "estimated_amount": 500.00
+}
+```
+
+**Second step (seller response)** The seller Agent returns the matching payment method and the corresponding PSP information:
+
+```plain
+{
+  "supported_methods": [
+    {
+      "method_id": "urn:act:payment:alipay",
+      "psp_id": "urn:act:psp:alipay-official",
+      "endpoint": "https://openapi.alipay.com/act-psp/v1",
+      "method_schema_url": "https://alipay.com/act/schemas/payment-payload.json"
+    }
+  ]
+}
+```
+
+If the response `supported_methods` is empty, it indicates that the parties have no available common payment method and that the transaction cannot continue, Buyer Agent SHALL suspends the process and gives feedback to Principal.
+
+## Outcome of the consultations
+The final output of Payment Capability Negotiation aligns a set of capabilities available for subsequent payment. The result is at least SHALL to specify four parameters: `method_id`, `psp_id`, `endpoint` and `method_schema_url`.
+
+Where there are multiple optional outcomes, the selection logic is Buyer Agent locally and this component is not specified.
+
+## Security Considerations
+Buyer Agent Before using Payment Capability Advertisement (`act-payment-capability.json`), the source should be verified and the statement confirmed as having been issued by the business's stated capability address (`capabilityurl`).
+
+Buyer Agent In the analysis of `supported_methods`, the paragraphs `pspid`, `endpoint`, and `methodschemaurl` are checked consistently to avoid Payment Service Provider unauthorized access due to the falsification, alteration or replacement of a capability statement.
+
+Payment Capability Advertisement for failure to confirm the source or key fields, Buyer Agent may not continue to use its initiation of a subsequent capacity to pay matching or payment process.
+
+# CID-CART-CFM: Cart Confirmation
+## Overview
+Cart Confirmation(Cart Regulation, CID-CART-CFM) requires Buyer Agent to enforce the treatment requirements for final confirmation of the subject matter, amount, terms of performance and related constraints of the transaction before entering the payment process.
+
+This component assumes the responsibility for order-level confirmation in the pre-payment phase, which is used to anchor the results of front-line goods or services discovery, candidate screening, matching of conditions and matching of capacity to pay into the confirmation of transactions that can be entered into payment execution.
+
+This component does not regulate internal candidate comparison algorithms, ranking strategies and decision logic Buyer Agent or internal order management, inventory deductions and compliance systems.
+
+## Participants and prefix
+This component involves the following Participants: Buyer Agent for initiating the confirmation of the transaction, and Merchant for receiving the confirmation request and generating the order-level result, platform, seller Agent or its proxy interface.
+
+Before entering this component, SHALL satisfies the following preconditions.
+
++ Buyer Agent Candidatures for identifiable goods or services have been obtained.
++ The subject matter of the transaction, the amount, currency and necessary performance information are clearly identified.
++ When the transaction is controlled by User objectives, bounds or authorized borders, Buyer Agent can be quoted in the relevant meanings of intent and constraint provided by Authorization & Delegation Domain.
+
+## Pre-test for rules
+Cart Confirmation Before formally submitting Cart Confirmation to the counterparty and obtaining the order transaction number, Buyer Agent SHALL pre-tests the rules for enforcement of the transaction to be confirmed, based on the relevant intent and binding information of the current mission. Buyer Agent SHALL When the transaction involves commissioning payments, further verification is performed in conjunction with the language of the authorized boundary provided by Authorization & Delegation Domain.
+
+The pre-check SHOULD of the rules covers the following dimensions.
+
++ The amount test, including whether the single sum exceeds the permitted amount Scope and whether the cumulative amount boundary is exceeded at the time of the cumulative constraint.
++ The category Scope test, i.e. whether the goods or services to be purchased meet the permitted category or do not trigger the prohibited category restriction.
++ MerchantScope test, i.e. whether the counterparty meets the permitted Merchant or does not trigger the ban Merchant.
++ The time limit test for performance, i.e. whether the expected delivery, delivery or service performance time meets the established requirements.
++ The price tolerance test, i.e. the final confirmation that the price falls within Scope permitted price fluctuations.
+
+Additional tests may also be added to the above when the realizing party has other business-related necessary verification items, but SHALL NOT weakens the basic verification semantics of this component definition.
+
+## Treatment when the test is failed
+Buyer Agent SHALL NOT goes directly to the payment stage when either rule pre-checks are not passed.
+
++ Buyer Agent SHALL be implemented in accordance with the intended or authorized transboundary disposal strategy in the border.
++ If the transboundary disposal strategy is suspended and notified, Buyer Agent SHALL suspends the current confirmation process and waits for User recertification or adjustment of the constraints.
++ If the cross-border treatment strategy is automatically cancelled, Buyer Agent SHALL terminates the current commerce interaction and records the reasons for the cancellation.
++ If no clear transboundary treatment strategy is foreseen, Buyer Agent SHOULD defaults on a suspended and notified treatment.
+
+## Submit lock and order generation
+When the pre-rule test is passed, Buyer Agent may be submitted to the counterparty with a request Cart Confirmation. The confirmation request SHOULD includes, at a minimum, the details of the goods or services to be identified, the final price, the currency, the performance requirements and the relevant context as necessary.
+
+After accepting a request for confirmation, the counterparty should lock the relevant price, inventory or service capacity to the order level and generate the order transaction number back to Buyer Agent. The order transaction number returned by the counterparty SHALL be able to be consistently quoted at the subsequent payment execution stage.
+
+When the counterparty is unable to complete the order locking, SHALL return a clear failure or incorrect semantic, and Buyer Agent SHALL NOT the confirmation is considered successful.
+
+## Transaction confirmation result
+Upon completion of Cart Confirmation, Buyer Agent SHALL forms the confirmation of the transaction.
+
+The transaction confirmation results SHOULD include at least the following.
+
++ Details of goods or services identified.
++ Final recognition of the amount and currency.
++ Counterpart identification.
++ Order trade number.
++ Confirm time information.
++ Link identifiers used when cross-domain linkages are required.
+
+> Note: When key commercial nodes need to be recorded, this will be achieved in order to use the `act:commerce:cart-confirmed` event marker for follow-up certificate processing after Cart Confirmation completion.
+>

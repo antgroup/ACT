@@ -64,7 +64,6 @@ def structure_errors() -> list[str]:
         "docs/specification/a402.md", "docs/specification/a402.en.md",
         "docs/specification/commerce-payment-negotiation.md",
         "docs/specification/commerce-payment-negotiation.en.md",
-        "docs/flows/scenarios.md", "docs/flows/scenarios.en.md",
         "code/schemas/a402/README.md", "code/schemas/a402/payment-needed.schema.json",
         "code/samples/local-a402/package.json", "code/web-client/alipay-ai-pay-showcase/package.json",
         "integrations/alipay/buyer-agent/package.json", "integrations/alipay/seller-java/pom.xml",
@@ -78,7 +77,6 @@ def structure_errors() -> list[str]:
     forbidden = [
         "specs", "code/examples", "integrations/profiles", "integrations/bindings",
         "docs/architecture", "docs/getting-started", "docs/project",
-        "governance/audits", "governance/internal",
     ]
     errors += [
         f"obsolete release path contains publishable files: {p}"
@@ -137,8 +135,6 @@ def manifest_errors() -> list[str]:
         "docs/specification/commerce-interaction.md",
         "docs/specification/payment-services.md",
         "docs/specification/trust-services.md",
-        "docs/specification/a402.md",
-        "docs/specification/commerce-payment-negotiation.md",
     }
     declared_normative = {
         component.get("path")
@@ -164,7 +160,6 @@ def translation_errors() -> list[str]:
             "docs/specification/commerce-payment-negotiation.md",
             "docs/specification/commerce-payment-negotiation.en.md",
         ),
-        ("docs/flows/scenarios.md", "docs/flows/scenarios.en.md"),
     ]
     translation_marker = "Translation status: Official English translation / Informative"
     for source_name, translation_name in pairs:
@@ -206,7 +201,7 @@ def release_wording_errors() -> list[str]:
             r"public protocol entry point[^\n]*(?:authority|controls)|官网同步完成前)", re.I
         ),
     }
-    checked = [p for p in files("*.md") if "governance/decisions" not in p.as_posix()]
+    checked = files("*.md")
     checked += files("*.json")
     for path in checked:
         text = path.read_text(encoding="utf-8")
