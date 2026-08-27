@@ -1,5 +1,7 @@
 # 架构说明
 
+> 本文说明 `code/samples/tsd-crd-reference/` 的参考实现架构，不规定 ACT 2.1 的唯一实现方式。
+
 ## 目标
 
 架构服务于三个目标：
@@ -21,20 +23,20 @@ flowchart TD
     VECTORS["Test Vectors"] --> CONF
 ```
 
-依赖方向从入口指向用例和核心。`src/core` 不依赖 HTTP、CLI、文件系统或具体确认服务。
+依赖方向从入口指向用例和核心。`code/samples/tsd-crd-reference/src/core` 不依赖 HTTP、CLI、文件系统或具体确认服务。
 
 ## 目录职责
 
 | 目录 | 职责 |
 | --- | --- |
-| `../../schemas/tsd-crd/reference-v1` | 非规范性 Schema、OpenAPI、标准报文和测试向量 |
-| `src/core` | 协议对象、不变量、签名投影、状态机、授权和验证规则 |
-| `src/application` | ASC、MAP、LCM、AUTH、VER 用例编排 |
-| `src/adapters` | 内存存储、Mock 身份确认、虚构信用和固定映射 |
-| `src/http` | 本地 Sandbox HTTP 入口 |
-| `src/cli` | Demo 和命令行入口 |
-| `src/conformance` | 测试向量加载、执行和报告 |
-| `../../schemas/tsd-crd/reference-v1/test-vectors` | 与实现无关的正常和异常向量 |
+| `code/schemas/tsd-crd/reference-v1` | Schema、OpenAPI、标准报文和测试向量 |
+| `code/samples/tsd-crd-reference/src/core` | 协议对象、不变量、签名投影、状态机、授权和验证规则 |
+| `code/samples/tsd-crd-reference/src/application` | ASC、MAP、LCM、AUTH、VER 用例编排 |
+| `code/samples/tsd-crd-reference/src/adapters` | 内存存储、Mock 身份确认、虚构信用和固定映射 |
+| `code/samples/tsd-crd-reference/src/http` | 本地 Sandbox HTTP 入口 |
+| `code/samples/tsd-crd-reference/src/cli` | Demo 和命令行入口 |
+| `code/samples/tsd-crd-reference/src/conformance` | 测试向量加载、执行和报告 |
+| `code/schemas/tsd-crd/reference-v1/test-vectors` | 与实现无关的正常和异常向量 |
 
 ## 五组件映射
 

@@ -116,7 +116,7 @@ flowchart LR
 
 - 首期真实产品接入优先实现 L1：`ADD-INT-ICS + CID-CART-CFM + PSD-PMT-BND + PSD-PAY-INS + PSD-PAY-A402`。
 - 实现 L2/L3 前，需要同时具备 IAC 签发、状态查询、Agent 身份/密钥、PSP 权威授权核验和完整异常恢复，不能只在请求中增加 `delegation_id`。
-- TSD 规范语义已经定稿，但本仓库没有可运行的 ACT Trust Chain 或生产信用服务。[TSD-CRD Reference Implementation](../../code/samples/tsd-crd-reference/README.md) 只使用 Mock 能力和内存状态；产品日志、Demo 或基础一致性结果不得据此声明已完成 TSD 全量 Conformance 或生产接入。
+- TSD 规范语义已经定稿，但本仓库没有可运行的 ACT Trust Chain 或生产信用服务。[TSD-CRD Reference Implementation 指南](../reference-implementations/tsd-crd/README.md)所对应的本地实现只使用 Mock 能力和内存状态；产品日志、Demo 或基础一致性结果不得据此声明已完成 TSD 全量 Conformance 或生产接入。
 
 ## 9. 来源
 

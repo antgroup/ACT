@@ -1,5 +1,10 @@
 # Changelog
 
+## Repository maintenance — 2026-08-27
+
+- 将 TSD-CRD 参考实现的实现基线、架构、快速开始、安全模型和可选扩展说明集中到 `docs/reference-implementations/tsd-crd/`，可运行代码继续保留在 `code/samples/tsd-crd-reference/`。
+- 明确 TSD-CRD 是 ACT 2.1 的规范性协议子篇；`reference-v1` 机器 Profile、Reference Implementation 及其实现指南不增加或替代 ACT 2.1 协议要求。
+
 ## Repository update — 2026-08-24
 
 - 将 TSD-CRD 作为 ACT 2.1 信任服务域的信用关联子篇集成到现有发布树。

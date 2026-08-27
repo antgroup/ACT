@@ -214,7 +214,7 @@ ACT 2.1 已冻结信用关联的业务语义、对象必备性、状态和原因
 - TSD 各子篇共用的身份解析、历史公钥获取、状态查询和注册协议；
 - 全域统一的算法协商、传输封装和 Conformance Profile。
 
-仓库在 [`code/schemas/tsd-crd/reference-v1`](../../code/schemas/tsd-crd/reference-v1/README.md) 提供一套明确标为非规范性的 TSD-CRD Reference Profile，并在 [`code/samples/tsd-crd-reference`](../../code/samples/tsd-crd-reference/README.md) 提供本地 Reference Implementation。该 Profile 选择 `camelCase` 字段、Ed25519、确定性 JSON 签名投影和本地 HTTP 绑定，只是可选实现约定，不能反向解释为 ACT 2.1 要求或 TSD 统一 wire 契约。
+仓库在 [`code/schemas/tsd-crd/reference-v1`](../../code/schemas/tsd-crd/reference-v1/README.md) 提供一套 TSD-CRD Reference Profile，并在 [`code/samples/tsd-crd-reference`](../../code/samples/tsd-crd-reference/README.md) 提供本地 Reference Implementation；对应的[实现指南](../reference-implementations/tsd-crd/README.md)集中说明实现基线、架构、运行方式和安全边界。该 Profile 选择 `camelCase` 字段、Ed25519、确定性 JSON 签名投影和本地 HTTP 绑定，只是可选实现约定，不能反向解释为 ACT 2.1 要求或 TSD 统一 wire 契约。
 
 参考实现只使用 Mock 身份/信用/映射、内存存储和临时测试密钥。Schema 校验、测试和基础一致性 Runner 通过，仅证明当前 `reference-v1` 路径满足仓库内已执行检查；不等于 ACT 2.1 全量 Conformance、真实信用服务、ACT Trust Chain 节点或生产安全证明。仓库仍不虚构信用模型、链上网络或生产身份/密钥基础设施。
 

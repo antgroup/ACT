@@ -54,6 +54,7 @@ def structure_errors() -> list[str]:
     required = [
         "README.md", "README.en.md", "LICENSE", "SECURITY.md", "release-manifest.json",
         "docs/specification/overview.md", "docs/specification/a402.md", "docs/flows/scenarios.md",
+        "docs/reference-implementations/tsd-crd/README.md",
         "code/schemas/a402/README.md", "code/schemas/a402/payment-needed.schema.json",
         "code/schemas/tsd-crd/reference-v1/README.md",
         "code/schemas/tsd-crd/reference-v1/schemas/association-credential.schema.json",
@@ -71,6 +72,7 @@ def structure_errors() -> list[str]:
     forbidden = [
         "specs", "code/examples", "integrations/profiles", "integrations/bindings",
         "docs/architecture", "docs/getting-started", "docs/project",
+        "code/samples/tsd-crd-reference/docs",
         "governance/audits", "governance/internal",
     ]
     errors += [

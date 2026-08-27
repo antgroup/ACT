@@ -3,7 +3,7 @@
   "release": "ACT 2.1",
   "release_date": "2026-08-14",
   "specification_finalized": "2026-08-11",
-  "updated": "2026-08-24",
+  "updated": "2026-08-27",
   "components": {
     "specification": {"path": "docs/specification/overview.md", "status": "final", "normative": true},
     "a402-machine-artifacts": {"path": "code/schemas/a402/README.md", "status": "implementation-artifact", "normative": false},

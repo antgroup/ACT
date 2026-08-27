@@ -12,7 +12,8 @@ This directory is the human-readable ACT 2.1 documentation set. The normative re
 - [Scenarios and business flows](flows/scenarios.md)
 - [Glossary](glossary.md)
 - [FAQ](faq.md)
+- [TSD-CRD Reference Implementation guide](reference-implementations/tsd-crd/README.md)
 
 Protocol requirements are defined only by the specification documents. Runnable artifacts are under [`code/`](../code/README.md), and product-specific implementations are under [`integrations/`](../integrations/README.md).
 
-The non-normative TSD-CRD machine profile and runnable reference implementation are under [`code/schemas/tsd-crd/`](../code/schemas/tsd-crd/README.md) and [`code/samples/tsd-crd-reference/`](../code/samples/tsd-crd-reference/README.md).
+TSD-CRD is a normative subprotocol of the ACT 2.1 Trust Services Domain. Its optional `reference-v1` machine profile and runnable reference implementation are under [`code/schemas/tsd-crd/`](../code/schemas/tsd-crd/README.md) and [`code/samples/tsd-crd-reference/`](../code/samples/tsd-crd-reference/README.md); human-readable implementation guidance is centralized under [`docs/reference-implementations/tsd-crd/`](reference-implementations/tsd-crd/README.md).

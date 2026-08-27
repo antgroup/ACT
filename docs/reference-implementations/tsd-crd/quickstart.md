@@ -1,5 +1,7 @@
 # 快速开始
 
+除非另有说明，以下命令均从 `act-protocol/` 仓库根目录执行。
+
 ## 环境
 
 - Node.js `>= 22.18`
@@ -9,13 +11,13 @@
 
 ```bash
 node --version
-npm test
+npm --prefix code/samples/tsd-crd-reference test
 ```
 
 ## 运行 Demo
 
 ```bash
-npm run demo
+npm --prefix code/samples/tsd-crd-reference run demo
 ```
 
 默认 Demo 使用 `ATTESTED_CONFIRMATION`：
@@ -33,17 +35,17 @@ npm run demo
 ## 启动 Sandbox
 
 ```bash
-npm run start
+npm --prefix code/samples/tsd-crd-reference run start
 ```
 
-Sandbox 只监听本地开发接口，具体路径以非规范性 [OpenAPI](../../../schemas/tsd-crd/reference-v1/openapi/openapi.yaml) 为准。
+Sandbox 只监听本地开发接口，具体路径以 `reference-v1` [OpenAPI](../../../code/schemas/tsd-crd/reference-v1/openapi/openapi.yaml) 为准。
 
 创建一笔 ATTESTED 申请：
 
 ```bash
 curl -sS http://127.0.0.1:8787/v1/association-applications \
   -H 'content-type: application/json' \
-  --data-binary @examples/association-application-sandbox.json
+  --data-binary @code/samples/tsd-crd-reference/examples/association-application-sandbox.json
 ```
 
 确认并签发凭证：
@@ -71,20 +73,20 @@ curl -sS http://127.0.0.1:8787/v1/association-applications/association-applicati
 ## 运行一致性测试
 
 ```bash
-npm run conformance
+npm --prefix code/samples/tsd-crd-reference run conformance
 ```
 
 Runner 读取：
 
-- [`reference-v1/test-vectors/valid/`](../../../schemas/tsd-crd/reference-v1/test-vectors/valid/) 中的正常向量。
-- [`reference-v1/test-vectors/invalid/`](../../../schemas/tsd-crd/reference-v1/test-vectors/invalid/) 中的篡改、过期、撤销和越权向量。
+- [`reference-v1/test-vectors/valid/`](../../../code/schemas/tsd-crd/reference-v1/test-vectors/valid/) 中的正常向量。
+- [`reference-v1/test-vectors/invalid/`](../../../code/schemas/tsd-crd/reference-v1/test-vectors/invalid/) 中的篡改、过期、撤销和越权向量。
 
 Agent 密钥持有扩展不计入基础一致性结果。
 
 ## 运行全部测试
 
 ```bash
-npm test
+npm --prefix code/samples/tsd-crd-reference test
 ```
 
 测试失败时先检查：

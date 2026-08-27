@@ -1,5 +1,7 @@
 # 可选 Agent 密钥持有证明扩展设计说明
 
+> **状态：Optional extension design / Informative / Not implemented。**
+
 ## 定位
 
 本扩展用于证明请求方持有某个 Agent 公钥对应的私钥。它是参考实现的可选增强，不属于：
