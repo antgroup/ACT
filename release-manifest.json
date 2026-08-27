@@ -4,8 +4,25 @@
   "release_date": "2026-08-14",
   "specification_finalized": "2026-08-11",
   "updated": "2026-08-27",
+  "languages": {
+    "normative": "zh-CN",
+    "official_informative_translations": ["en"]
+  },
   "components": {
-    "specification": {"path": "docs/specification/overview.md", "status": "final", "normative": true},
+    "specification-overview-zh": {"path": "docs/specification/overview.md", "status": "final", "normative": true},
+    "authorization-delegation-zh": {"path": "docs/specification/authorization-delegation.md", "status": "final", "normative": true},
+    "commerce-interaction-zh": {"path": "docs/specification/commerce-interaction.md", "status": "final", "normative": true},
+    "payment-services-zh": {"path": "docs/specification/payment-services.md", "status": "final", "normative": true},
+    "trust-services-zh": {"path": "docs/specification/trust-services.md", "status": "final", "normative": true},
+    "a402-zh": {"path": "docs/specification/a402.md", "status": "non-normative-extracted-guide", "normative": false},
+    "commerce-payment-negotiation-zh": {"path": "docs/specification/commerce-payment-negotiation.md", "status": "non-normative-cross-domain-guide", "normative": false},
+    "specification-overview-en": {"path": "docs/specification/overview.en.md", "status": "official-informative-translation", "normative": false, "translation_of": "docs/specification/overview.md"},
+    "authorization-delegation-en": {"path": "docs/specification/authorization-delegation.en.md", "status": "official-informative-translation", "normative": false, "translation_of": "docs/specification/authorization-delegation.md"},
+    "commerce-interaction-en": {"path": "docs/specification/commerce-interaction.en.md", "status": "official-informative-translation", "normative": false, "translation_of": "docs/specification/commerce-interaction.md"},
+    "payment-services-en": {"path": "docs/specification/payment-services.en.md", "status": "official-informative-translation", "normative": false, "translation_of": "docs/specification/payment-services.md"},
+    "trust-services-en": {"path": "docs/specification/trust-services.en.md", "status": "official-informative-translation", "normative": false, "translation_of": "docs/specification/trust-services.md"},
+    "a402-en": {"path": "docs/specification/a402.en.md", "status": "official-informative-translation", "normative": false, "translation_of": "docs/specification/a402.md"},
+    "commerce-payment-negotiation-en": {"path": "docs/specification/commerce-payment-negotiation.en.md", "status": "official-informative-translation", "normative": false, "translation_of": "docs/specification/commerce-payment-negotiation.md"},
     "a402-machine-artifacts": {"path": "code/schemas/a402/README.md", "status": "implementation-artifact", "normative": false},
     "tsd-crd-reference-profile": {"path": "code/schemas/tsd-crd/reference-v1/README.md", "status": "implementation-artifact", "normative": false},
     "local-a402-sample": {"path": "code/samples/local-a402/README.md", "status": "sample", "normative": false},
@@ -17,8 +34,9 @@
     "repository-tooling": {"path": "tools/README.md", "status": "release-tooling", "normative": false}
   },
   "authorities": {
-    "act_2_1_versioned_release": "docs/specification/overview.md",
-    "public_protocol_portal": "https://www.act-protocol.com/",
+    "act_2_1_versioned_release": "docs/specification/README.md",
+    "act_2_1_normative_language": "docs/specification/overview.md",
+    "informational_project_website": "https://www.act-protocol.com/",
     "alipay_product": "https://aipay.alipay.com/callpay"
   }
 }

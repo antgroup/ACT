@@ -8,30 +8,29 @@ ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. 
 
 | Goal | Entry |
 |---|---|
-| Read ACT 2.1 | [Specification overview](docs/specification/overview.md) |
-| Understand end-to-end flows | [Scenarios](docs/flows/scenarios.md) |
+| Read ACT 2.1 | [Specification overview](docs/specification/overview.en.md) |
+| Understand payment-service flows | [Payment Services Domain](docs/specification/payment-services.en.md) |
 | Run the TSD-CRD credit-association reference flow | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | Run the safe local A402 sample | [Local A402 Sample](code/samples/local-a402/README.md) |
 | Explore the interactive flow | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
 | Integrate Alipay | [Alipay Reference Integration](integrations/alipay/README.md) |
 
-For a first visit: read the [overview](docs/specification/overview.md), keep the [bilingual glossary](docs/glossary.md) open, run the local sample, and then choose the buyer or seller Alipay integration. The local sample intentionally demonstrates safe rejection rather than manufacturing payment success; a successful paid delivery requires verified proof from the official product workflow.
+For a first visit: read the [English overview](docs/specification/overview.en.md), keep the [bilingual glossary](docs/glossary.md) open, run the local sample, and then choose the buyer or seller Alipay integration. The local sample intentionally demonstrates safe rejection rather than manufacturing payment success; a successful paid delivery requires verified proof from the official product workflow.
 
 Human-readable protocol text lives in `docs/specification/`. JSON Schemas, fixtures, and tests live in `code/schemas/`; they support implementation without adding requirements that are absent from the specification.
 
-The normative ACT 2.1 specification in this release is currently published in Chinese. This English README is an informative navigation summary and does not replace the normative text.
+ACT 2.1 is available in both [Chinese](docs/specification/overview.md) and [English](docs/specification/overview.en.md). The English documents are official informative translations of the final 2.1 publication; if a translation discrepancy is found, the Chinese publication remains controlling until the translation is corrected in a subsequent repository release.
 
-The files under `docs/specification/` in this repository release are the versioned ACT 2.1 publication. [act-protocol.com](https://www.act-protocol.com/) is the continuously updated public protocol portal. If portal content differs from a repository release, interpret each by its stated version; unversioned portal content does not silently replace this release's ACT 2.1 text.
+The files under `docs/specification/` in this repository release are the sole versioned ACT 2.1 specification publication. [act-protocol.com](https://www.act-protocol.com/) is a project-information entry point. Website content that is not explicitly labeled ACT 2.1 is informative and is not a normative source for this release. If a web page omits a component, uses a different structure, or conflicts with this release, it MUST NOT override or interpret the repository's ACT 2.1 requirements.
 
 ## Repository layout
 
 ```text
-docs/                 ACT 2.1 specification, flows, and supporting material
+docs/                 ACT 2.1 specification and supporting material
 code/schemas/         Machine-readable implementation artifacts
 code/samples/         Runnable protocol samples
 code/web-client/      Interactive demo
 integrations/alipay/  Alipay reference integration and validation
-governance/           Accepted project decisions and release records
 tools/                Repository quality and release tooling
 ```
 
@@ -65,4 +64,4 @@ Run all checks with Python 3, Node.js 22.18+, JDK 8+, and Maven 3.8+:
 ./tools/verify.sh
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), [GOVERNANCE.md](GOVERNANCE.md), and [SECURITY.md](SECURITY.md). Documentation is licensed under CC BY 4.0; code is licensed under Apache License 2.0. Copyright Ant Group Co., Ltd.
+See [CONTRIBUTING.en.md](CONTRIBUTING.en.md), [SECURITY.md](SECURITY.md), and [CODE_OF_CONDUCT.en.md](CODE_OF_CONDUCT.en.md). Documentation is licensed under CC BY 4.0; code is licensed under Apache License 2.0. Copyright Ant Group Co., Ltd.

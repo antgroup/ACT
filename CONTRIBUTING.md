@@ -1,23 +1,18 @@
-# Contributing to ACT Protocol
+# 贡献指南
 
-Thank you for contributing. Read the [Code of Conduct](CODE_OF_CONDUCT.md), [governance rules](GOVERNANCE.md), and existing issues before starting.
+[English](CONTRIBUTING.en.md) | 简体中文
 
-## Repository map
+感谢你参与 ACT Protocol。开始前请阅读[行为准则](CODE_OF_CONDUCT.md)并查看现有 Issue。
 
-- `docs/`: ACT 2.1 specification, flows and explanatory material.
-- `code/`: machine artifacts, product-neutral samples and demos.
-- `integrations/`: provider-specific integrations, including Alipay.
-- `tools/`: active repository quality and release tooling; it does not define protocol semantics.
+## 提交变更
 
-## Workflow
+1. 涉及协议语义、新行为或破坏性变更时，请先创建 Issue。安全漏洞必须通过 [SECURITY.md](SECURITY.md) 指定的私密渠道提交。
+2. 每个 Pull Request 应聚焦单一主题，并说明变更属于协议、机器产物、产品接入还是文档。
+3. 根据变更补充相应测试，并运行 `./tools/verify.sh`。
+4. 在 Pull Request 中说明兼容性和安全影响。
 
-1. Open an issue for protocol semantics, new behavior or a breaking change. Security vulnerabilities must use the private channel in [SECURITY.md](SECURITY.md).
-2. Keep each pull request focused and identify whether it changes protocol, implementation artifacts, a product integration or documentation.
-3. Add tests appropriate to the change and run `./tools/verify.sh`.
-4. Explain compatibility, security and source impact in the pull request.
+ACT 2.1 已定稿。文字勘误和不改变含义的澄清可以更新；新增规范性行为必须面向未来协议版本。JSON Schema、产品接入和示例不得增加协议正文中不存在的要求。
 
-ACT 2.1 is final. Typographical fixes and clarifications may update it without changing meaning; new normative behavior requires a future version and an accepted public decision. JSON Schema and examples must not silently expand normative requirements.
+产品接入必须引用当前有效的官方产品来源，不得向仓库提交凭证，也不得把本地测试表述为真实沙箱证据。
 
-Product integrations must cite current official product sources, keep credentials out of the repository and avoid presenting local tests as real sandbox evidence.
-
-Contributors confirm they have the right to submit their material. Accepted contributions use the license assigned to the relevant file or directory by [LICENSE](LICENSE). No additional CLA or DCO sign-off is currently required.
+贡献者应确认有权提交相关内容。被接受的贡献适用 [LICENSE](LICENSE) 对相应文件或目录规定的许可证。目前不要求额外签署 CLA 或进行 DCO sign-off。

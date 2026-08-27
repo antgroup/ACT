@@ -9,7 +9,7 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 | 目标 | 入口 |
 |---|---|
 | 阅读 ACT 2.1 | [协议概览](docs/specification/overview.md) |
-| 理解完整业务流程 | [典型场景](docs/flows/scenarios.md) |
+| 理解支付服务流程 | [支付服务域](docs/specification/payment-services.md) |
 | 运行 TSD-CRD 信用关联参考链路 | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | 本地运行安全的 A402 样例 | [Local A402 Sample](code/samples/local-a402/README.md) |
 | 查看交互演示 | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
@@ -27,22 +27,20 @@ Local A402 Sample 有意不伪造支付成功。真实资源交付必须来自�
 
 ACT 2.1 的人类可读协议正文位于 `docs/specification/`。JSON Schema、fixtures 和测试位于 `code/schemas/`，用于帮助实现与验证，不增加协议正文未规定的要求。
 
-本仓库发布版本中的 `docs/specification/` 是 ACT 2.1 的版本化正文；[act-protocol.com](https://www.act-protocol.com/) 是持续更新的公共协议入口。网站内容与特定仓库版本存在差异时，应按各自标明的版本识别，不得用未标明版本的网页内容覆盖本仓库发布的 2.1 正文。
+本仓库发布版本中的 `docs/specification/` 是 ACT 2.1 唯一的版本化规范正文。[act-protocol.com](https://www.act-protocol.com/) 是项目信息入口；未明确标注 ACT 2.1 版本的网页内容属于信息性材料，不是本 Release 的规范来源。网页如果遗漏本 Release 的组件、采用不同结构或与正文冲突，只能按网页自身标明的版本理解，不得用于覆盖或解释本仓库的 ACT 2.1 要求。
 
 ## 仓库结构
 
 ```text
 act-protocol/
-├── docs/                         # ACT 2.1 规范、流程和附录
-│   ├── specification/
-│   └── flows/
+├── docs/                         # ACT 2.1 规范与附加文档
+│   └── specification/
 ├── code/                         # Schema、样例和演示
 │   ├── schemas/
 │   ├── samples/
 │   └── web-client/
 ├── integrations/
 │   └── alipay/                   # 支付宝参考接入代码与验证
-├── governance/                   # 已接受的项目决策与发布记录
 └── tools/                        # 仓库质量与发布工具
 ```
 
@@ -108,7 +106,6 @@ npm --prefix code/web-client/alipay-ai-pay-showcase run demo
 ## 项目政策
 
 - [贡献指南](CONTRIBUTING.md)
-- [治理说明](GOVERNANCE.md)
 - [安全政策](SECURITY.md)
 - [行为准则](CODE_OF_CONDUCT.md)
 - [版本记录](CHANGELOG.md)

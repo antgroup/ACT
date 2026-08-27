@@ -1,13 +1,24 @@
 # ACT 2.1 Specification
 
-ACT 2.1 is organized into four domains and their cross-domain payment access rules.
+ACT 2.1 consists of the protocol overview and four domain specifications. Those five finalized Chinese documents are the complete normative publication. English files are official informative translations; if a translation discrepancy is found, the Chinese publication remains controlling until the translation is corrected in a subsequent repository release.
 
-1. [Overview](overview.md)
-2. [Authorization & Delegation Domain](authorization-delegation.md)
-3. [Commerce Interaction Domain](commerce-interaction.md)
-4. [Payment Services Domain](payment-services.md)
-5. [Trust Services Domain](trust-services.md)
-6. [A402 payment access protocol](a402.md)
-7. [Commerce-to-payment negotiation](commerce-payment-negotiation.md)
+Requirement keywords in both languages follow the [normative-language table](overview.en.md#normative-language). The corresponding [Chinese table](overview.md#规范性用语) is controlling.
 
-The [scenario guide](../flows/scenarios.md) is informative. TSD-CRD's normative requirements are part of the [Trust Services Domain](trust-services.md); JSON Schemas, examples, test vectors, and the [Reference Implementation guide](../reference-implementations/tsd-crd/README.md) are implementation aids. The TSD-CRD `reference-v1` machine profile does not add requirements absent from the ACT 2.1 specification.
+| Specification | English | 中文 |
+|---|---|---|
+| Overview | [English](overview.en.md) | [中文](overview.md) |
+| Authorization & Delegation Domain | [English](authorization-delegation.en.md) | [中文](authorization-delegation.md) |
+| Commerce Interaction Domain | [English](commerce-interaction.en.md) | [中文](commerce-interaction.md) |
+| Payment Services Domain | [English](payment-services.en.md) | [中文](payment-services.md) |
+| Trust Services Domain | [English](trust-services.en.md) | [中文](trust-services.md) |
+
+Non-normative extracted and cross-domain guides:
+
+| Guide | English | 中文 |
+|---|---|---|
+| A402 payment access | [English](a402.en.md) | [中文](a402.md) |
+| Commerce-to-payment connection | [English](commerce-payment-negotiation.en.md) | [中文](commerce-payment-negotiation.md) |
+
+JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
+
+TSD-CRD's normative requirements are part of the Trust Services Domain. The optional [`reference-v1` machine profile](../../code/schemas/tsd-crd/reference-v1/README.md), [runnable reference implementation](../../code/samples/tsd-crd-reference/README.md), and [implementation guide](../reference-implementations/tsd-crd/README.md) are implementation aids and do not add or replace ACT 2.1 requirements.
