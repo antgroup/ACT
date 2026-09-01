@@ -9,9 +9,9 @@
 
 | 层次 | 入口 | 定位 |
 | --- | --- | --- |
-| ACT 2.1 TSD-CRD 协议正文 | [信任服务域](../../specification/trust-services.md) | 规范性协议要求 |
-| `reference-v1` | [机器可读 Profile](../../../code/schemas/tsd-crd/reference-v1/README.md) | 可选的机器表达和互操作 Profile |
-| Reference Implementation | [可运行实现](../../../code/samples/tsd-crd-reference/README.md) | 非生产参考实现、Sandbox、CLI 和测试 |
+| ACT 2.1 TSD-CRD 协议正文 | [信任服务域](../../docs/specification/trust-services.md) | 规范性协议要求 |
+| `reference-v1` | [机器可读 Profile](../../code/schemas/tsd-crd/reference-v1/README.md) | 可选的机器表达和互操作 Profile |
+| Reference Implementation | [可运行实现](../../code/samples/tsd-crd-reference/README.md) | 非生产参考实现、Sandbox、CLI 和测试 |
 
 发生冲突时，以 ACT 2.1 信任服务域正文为准。采用 `reference-v1` 的实现还必须满足该 Profile 的字段、签名投影和固定向量约束。
 

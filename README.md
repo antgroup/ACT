@@ -40,6 +40,7 @@ act-protocol/
 │   ├── samples/
 │   └── web-client/
 ├── integrations/
+│   ├── tsd-crd/                  # TSD-CRD 参考实现指南
 │   └── alipay/                   # 支付宝参考接入代码与验证
 └── tools/                        # 仓库质量与发布工具
 ```

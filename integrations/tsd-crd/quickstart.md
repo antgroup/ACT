@@ -38,7 +38,7 @@ npm --prefix code/samples/tsd-crd-reference run demo
 npm --prefix code/samples/tsd-crd-reference run start
 ```
 
-Sandbox 只监听本地开发接口，具体路径以 `reference-v1` [OpenAPI](../../../code/schemas/tsd-crd/reference-v1/openapi/openapi.yaml) 为准。
+Sandbox 只监听本地开发接口，具体路径以 `reference-v1` [OpenAPI](../../code/schemas/tsd-crd/reference-v1/openapi/openapi.yaml) 为准。
 
 创建一笔 ATTESTED 申请：
 
@@ -78,8 +78,8 @@ npm --prefix code/samples/tsd-crd-reference run conformance
 
 Runner 读取：
 
-- [`reference-v1/test-vectors/valid/`](../../../code/schemas/tsd-crd/reference-v1/test-vectors/valid/) 中的正常向量。
-- [`reference-v1/test-vectors/invalid/`](../../../code/schemas/tsd-crd/reference-v1/test-vectors/invalid/) 中的篡改、过期、撤销和越权向量。
+- [`reference-v1/test-vectors/valid/`](../../code/schemas/tsd-crd/reference-v1/test-vectors/valid/) 中的正常向量。
+- [`reference-v1/test-vectors/invalid/`](../../code/schemas/tsd-crd/reference-v1/test-vectors/invalid/) 中的篡改、过期、撤销和越权向量。
 
 Agent 密钥持有扩展不计入基础一致性结果。
 

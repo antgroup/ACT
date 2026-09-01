@@ -31,6 +31,7 @@ code/schemas/         Machine-readable implementation artifacts
 code/samples/         Runnable protocol samples
 code/web-client/      Interactive demo
 integrations/alipay/  Alipay reference integration and validation
+integrations/tsd-crd/ TSD-CRD reference implementation guidance
 tools/                Repository quality and release tooling
 ```
 

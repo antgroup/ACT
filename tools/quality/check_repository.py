@@ -64,7 +64,7 @@ def structure_errors() -> list[str]:
         "docs/specification/a402.md", "docs/specification/a402.en.md",
         "docs/specification/commerce-payment-negotiation.md",
         "docs/specification/commerce-payment-negotiation.en.md",
-        "docs/reference-implementations/tsd-crd/README.md",
+        "integrations/tsd-crd/README.md",
         "code/schemas/a402/README.md", "code/schemas/a402/payment-needed.schema.json",
         "code/schemas/tsd-crd/reference-v1/README.md",
         "code/schemas/tsd-crd/reference-v1/schemas/association-credential.schema.json",
@@ -83,6 +83,7 @@ def structure_errors() -> list[str]:
         "specs", "code/examples", "integrations/profiles", "integrations/bindings",
         "docs/architecture", "docs/getting-started", "docs/project",
         "code/samples/tsd-crd-reference/docs",
+        "docs/reference-implementations/tsd-crd",
     ]
     errors += [
         f"obsolete release path contains publishable files: {p}"

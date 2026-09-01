@@ -21,4 +21,4 @@ Non-normative extracted and cross-domain guides:
 
 JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
 
-TSD-CRD's normative requirements are part of the Trust Services Domain. The optional [`reference-v1` machine profile](../../code/schemas/tsd-crd/reference-v1/README.md), [runnable reference implementation](../../code/samples/tsd-crd-reference/README.md), and [implementation guide](../reference-implementations/tsd-crd/README.md) are implementation aids and do not add or replace ACT 2.1 requirements.
+TSD-CRD's normative requirements are part of the Trust Services Domain. The optional [`reference-v1` machine profile](../../code/schemas/tsd-crd/reference-v1/README.md), [runnable reference implementation](../../code/samples/tsd-crd-reference/README.md), and [implementation guide](../../integrations/tsd-crd/README.md) are implementation aids and do not add or replace ACT 2.1 requirements.
