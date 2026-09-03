@@ -4,7 +4,7 @@
 > Schema：JSON Schema Draft 2020-12  
 > 产物版本：`2.1-artifact.1`；对应规范：ACT 2.1
 
-本目录是 ACT 2.1 A402 的 HTTP-first 实现辅助产物。它约束 **Base64URL 解码后的 UTF-8 JSON**；对应协议语义见 [ACT 2.1 A402](../../../docs/specification/a402.md)。产品接入可以映射这些语义，但不得反向改变规范。它不是 ACT 2.1 的规范性 Schema，也不构成 Conformance 契约。
+本目录是 ACT 2.1 A402 的 HTTP-first 实现辅助产物。它约束 **Base64URL 解码后的 UTF-8 JSON**；对应接入说明见 [ACT 2.1 A402](../../../integrations/alipay/a402.md)，规范语义以[支付服务域](../../../docs/specification/payment-services.md)为准。产品接入可以映射这些语义，但不得反向改变规范。它不是 ACT 2.1 的规范性 Schema，也不构成 Conformance 契约。
 
 权威入口：
 

@@ -27,7 +27,6 @@ final class PaidResourceServer implements AutoCloseable {
     private final Config config;
     private final AlipayGateway gateway;
     private final BillSigner signer;
-    private final DemoEventSink demoEvents;
     private final A402Codec codec = new A402Codec();
     private final ObjectMapper json = new ObjectMapper();
     private final Map<String, Models.BillRecord> bills = new ConcurrentHashMap<>();
@@ -40,18 +39,9 @@ final class PaidResourceServer implements AutoCloseable {
     private HttpServer server;
 
     PaidResourceServer(Config config, AlipayGateway gateway, BillSigner signer) {
-        this(config, gateway, signer, DemoEventSink.noop());
-    }
-
-    PaidResourceServer(
-            Config config,
-            AlipayGateway gateway,
-            BillSigner signer,
-            DemoEventSink demoEvents) {
         this.config = config;
         this.gateway = gateway;
         this.signer = signer;
-        this.demoEvents = demoEvents;
     }
 
     void start() throws IOException {
@@ -85,39 +75,20 @@ final class PaidResourceServer implements AutoCloseable {
         String requestFingerprint = requestFingerprint(exchange);
         String requestRef = digestRef("request|" + requestFingerprint);
         if (proofHeader == null || proofHeader.trim().isEmpty()) {
-            demoEvents.emit("RESOURCE_REQUESTED", mapOf(
-                    "resource_id", config.resourceId,
-                    "goods_name", config.goodsName,
-                    "http_method", exchange.getRequestMethod(),
-                    "request_ref", requestRef));
             paymentRequired(exchange, "Payment Needed", requestFingerprint, requestRef);
             return;
         }
 
         try {
-            demoEvents.emit("RESOURCE_REQUEST_RETRIED", mapOf(
-                    "resource_id", config.resourceId,
-                    "http_method", exchange.getRequestMethod(),
-                    "request_ref", requestRef,
-                    "request_fingerprint", requestFingerprint,
-                    "result_summary", "original resource request retried with proof reference"));
             Models.PaymentProof proof = codec.decodePaymentProof(proofHeader);
             Models.VerificationResult verified = gateway.verify(proof);
             Models.BillRecord bill = verified.outTradeNo == null ? null : bills.get(verified.outTradeNo);
             if (!verified.active) {
-                demoEvents.emit("PROOF_REJECTED", mapOf(
-                        "resource_id", config.resourceId,
-                        "recovery_action", "DO_NOT_DELIVER · REISSUE_AFTER_VERIFIED_INACTIVE",
-                        "result_summary", "Payment proof is inactive"));
                 paymentRequired(exchange, "Payment proof is inactive", requestFingerprint, requestRef);
                 return;
             }
             String rejection = rejectionReason(proof, verified, bill, requestFingerprint);
             if (rejection != null) {
-                demoEvents.emit("PROOF_REJECTED", mapOf(
-                        "resource_id", config.resourceId,
-                        "recovery_action", "DO_NOT_DELIVER · RECONCILE_BEFORE_NEW_PAYMENT",
-                        "result_summary", rejection));
                 proofRejected(exchange, rejection);
                 return;
             }
@@ -139,52 +110,20 @@ final class PaidResourceServer implements AutoCloseable {
             }
 
             String transactionRef = digestRef("trade|" + verified.tradeNo);
-            String deliveryRef = digestRef("delivery|" + deliveryKey);
-            demoEvents.emit("PAYMENT_VERIFIED", mapOf(
-                    "amount", verified.amount,
-                    "currency", config.currency,
-                    "resource_id", verified.resourceId,
-                    "order_ref", bill.orderRef,
-                    "request_fingerprint", bill.requestFingerprint,
-                    "transaction_ref", transactionRef,
-                    "validation_mapping", "ACT 2.1 evidence <- Alipay payment.verify result",
-                    "result_summary", "active and merchant bill checks passed"));
             sendJson(exchange, 200, mapOf(
                     "resource_id", config.resourceId,
                     "content", "This resource was released after Alipay payment verification.",
                     "transaction_ref", transactionRef,
                     "idempotent_replay", !firstDelivery));
-            demoEvents.emit("RESOURCE_DELIVERED", mapOf(
-                    "resource_id", verified.resourceId,
-                    "order_ref", bill.orderRef,
-                    "request_fingerprint", bill.requestFingerprint,
-                    "transaction_ref", transactionRef,
-                    "delivery_ref", deliveryRef,
-                    "idempotent_replay", !firstDelivery,
-                    "payment_action", firstDelivery ? "ORIGINAL_PAYMENT" : "NO_NEW_PAYMENT",
-                    "delivery_action", firstDelivery ? "COMMIT_DELIVERY" : "RETURN_PRIOR_RESULT",
-                    "fulfillment_action", firstDelivery ? "SCHEDULE_CONFIRMATION" : "NOT_REPEATED",
-                    "result_summary", firstDelivery
-                            ? "paid resource delivered"
-                            : "idempotent resource response"));
 
-            if (firstDelivery) confirmFulfillmentAsync(
-                    verified.tradeNo, transactionRef, deliveryRef, bill.orderRef);
+            if (firstDelivery) confirmFulfillmentAsync(verified.tradeNo);
         } catch (IllegalArgumentException exception) {
-            demoEvents.emit("PROOF_REJECTED", mapOf(
-                    "resource_id", config.resourceId,
-                    "recovery_action", "DO_NOT_DELIVER · REQUEST_VALID_PROOF",
-                    "result_summary", "invalid proof encoding or shape"));
             sendJson(exchange, 400, mapOf(
                     "error", "invalid_payment_proof",
                     "message", "Invalid Payment-Proof",
                     "recovery_action", "request_valid_proof"));
         } catch (Exception exception) {
             System.err.println("payment verification unavailable: " + safeMessage(exception));
-            demoEvents.emit("VERIFICATION_UNAVAILABLE", mapOf(
-                    "resource_id", config.resourceId,
-                    "recovery_action", "RETRY_SAME_VERIFICATION · DO_NOT_DELIVER",
-                    "result_summary", "official verification temporarily unavailable"));
             exchange.getResponseHeaders().set("Retry-After", "3");
             sendJson(exchange, 503, mapOf("error", "payment_verification_unavailable"));
         }
@@ -218,23 +157,12 @@ final class PaidResourceServer implements AutoCloseable {
             String requestRef) throws IOException {
         try {
             Models.BillRecord record = currentOrNewBill(requestFingerprint, requestRef);
-            Models.PaymentNeeded bill = record.value;
             String encoded = codec.encodePaymentNeeded(record.value);
             exchange.getResponseHeaders().set("Payment-Needed", encoded);
             sendJson(exchange, 402, mapOf(
                     "error", "Payment Needed",
                     "message", message,
                     "resourceId", config.resourceId));
-            demoEvents.emit("PAYMENT_REQUIRED", mapOf(
-                    "amount", bill.protocol.amount,
-                    "currency", bill.protocol.currency,
-                    "resource_id", bill.protocol.resourceId,
-                    "request_ref", record.requestRef,
-                    "request_fingerprint", record.requestFingerprint,
-                    "order_ref", record.orderRef,
-                    "profile_mapping", "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
-                    "goods_name", bill.method.goodsName,
-                    "seller_name", bill.method.sellerName));
         } catch (Exception exception) {
             System.err.println("cannot create payment requirement: " + safeMessage(exception));
             sendJson(exchange, 500, mapOf("error", "payment_requirement_unavailable"));
@@ -284,23 +212,11 @@ final class PaidResourceServer implements AutoCloseable {
         return record;
     }
 
-    private void confirmFulfillmentAsync(
-            String tradeNo,
-            String transactionRef,
-            String deliveryRef,
-            String orderRef) {
+    private void confirmFulfillmentAsync(String tradeNo) {
         fulfillmentExecutor.submit(() -> {
             try {
                 gateway.confirmFulfillment(tradeNo);
                 System.out.println("fulfillment confirmed for trade " + redact(tradeNo));
-                demoEvents.emit("FULFILLMENT_CONFIRMED", mapOf(
-                        "resource_id", config.resourceId,
-                        "order_ref", orderRef,
-                        "transaction_ref", transactionRef,
-                        "delivery_ref", deliveryRef,
-                        "fulfillment_ref", digestRef("fulfillment|" + tradeNo),
-                        "product_fulfillment_status", "CONFIRMED",
-                        "result_summary", "seller fulfillment confirmed"));
             } catch (Exception exception) {
                 // A production implementation must persist this job and retry with backoff.
                 System.err.println(
@@ -383,6 +299,5 @@ final class PaidResourceServer implements AutoCloseable {
         if (server != null) server.stop(0);
         serverExecutor.shutdownNow();
         fulfillmentExecutor.shutdownNow();
-        demoEvents.close();
     }
 }

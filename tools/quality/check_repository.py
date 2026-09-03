@@ -61,9 +61,10 @@ def structure_errors() -> list[str]:
         "docs/specification/commerce-interaction.md", "docs/specification/commerce-interaction.en.md",
         "docs/specification/payment-services.md", "docs/specification/payment-services.en.md",
         "docs/specification/trust-services.md", "docs/specification/trust-services.en.md",
-        "docs/specification/a402.md", "docs/specification/a402.en.md",
-        "docs/specification/commerce-payment-negotiation.md",
-        "docs/specification/commerce-payment-negotiation.en.md",
+        "docs/specification/scenarios.md", "docs/specification/scenarios.en.md",
+        "integrations/alipay/a402.md", "integrations/alipay/a402.en.md",
+        "integrations/alipay/commerce-payment-negotiation.md",
+        "integrations/alipay/commerce-payment-negotiation.en.md",
         "code/schemas/a402/README.md", "code/schemas/a402/payment-needed.schema.json",
         "code/samples/local-a402/package.json", "code/web-client/alipay-ai-pay-showcase/package.json",
         "integrations/alipay/buyer-agent/package.json", "integrations/alipay/seller-java/pom.xml",
@@ -155,10 +156,11 @@ def translation_errors() -> list[str]:
         ("docs/specification/commerce-interaction.md", "docs/specification/commerce-interaction.en.md"),
         ("docs/specification/payment-services.md", "docs/specification/payment-services.en.md"),
         ("docs/specification/trust-services.md", "docs/specification/trust-services.en.md"),
-        ("docs/specification/a402.md", "docs/specification/a402.en.md"),
+        ("docs/specification/scenarios.md", "docs/specification/scenarios.en.md"),
+        ("integrations/alipay/a402.md", "integrations/alipay/a402.en.md"),
         (
-            "docs/specification/commerce-payment-negotiation.md",
-            "docs/specification/commerce-payment-negotiation.en.md",
+            "integrations/alipay/commerce-payment-negotiation.md",
+            "integrations/alipay/commerce-payment-negotiation.en.md",
         ),
     ]
     translation_marker = "Translation status: Official English translation / Informative"

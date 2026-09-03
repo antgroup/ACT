@@ -12,11 +12,10 @@ Requirement keywords in both languages follow the [normative-language table](ove
 | Payment Services Domain | [English](payment-services.en.md) | [中文](payment-services.md) |
 | Trust Services Domain | [English](trust-services.en.md) | [中文](trust-services.md) |
 
-Non-normative extracted and cross-domain guides:
+The scenario guide is part of the specification documentation set but is non-normative:
 
 | Guide | English | 中文 |
 |---|---|---|
-| A402 payment access | [English](a402.en.md) | [中文](a402.md) |
-| Commerce-to-payment connection | [English](commerce-payment-negotiation.en.md) | [中文](commerce-payment-negotiation.md) |
+| Scenarios and Business Flows | [English](scenarios.en.md) | [中文](scenarios.md) |
 
-JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
+Non-normative A402 and commerce-to-payment guides are grouped under the [Alipay reference integration](../../integrations/alipay/README.md). JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
