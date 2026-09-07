@@ -3,7 +3,7 @@
 [中文](commerce-payment-negotiation.md) | English
 
 > **Status: ACT 2.1 / Final / Non-normative cross-domain guide**
-> This guide summarizes the connection between the Commerce Interaction Domain and Payment Services Domain without adding normative semantics. See the complete [Commerce Interaction Domain](commerce-interaction.en.md) and [Payment Services Domain](payment-services.en.md); those domain specifications control if this guide differs.
+> This guide summarizes the connection between the Commerce Interaction Domain and Payment Services Domain without adding normative semantics. See the complete [Commerce Interaction Domain](../../docs/specification/commerce-interaction.en.md) and [Payment Services Domain](../../docs/specification/payment-services.en.md); those domain specifications control if this guide differs.
 > **Translation status: Official English translation / Informative. If a translation discrepancy is found, the Chinese ACT 2.1 publication remains controlling until the translation is corrected in a subsequent repository release.**
 
 ## 1. Purpose

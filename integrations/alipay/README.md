@@ -4,6 +4,8 @@ This directory demonstrates how ACT 2.1 can be connected to the public Alipay AI
 
 | Directory | Purpose |
 |---|---|
+| [`a402.md`](a402.md) / [`a402.en.md`](a402.en.md) | Non-normative ACT A402 integration guide used by this reference integration |
+| [`commerce-payment-negotiation.md`](commerce-payment-negotiation.md) / [`commerce-payment-negotiation.en.md`](commerce-payment-negotiation.en.md) | Non-normative guide connecting commerce negotiation to payment |
 | [`buyer-agent/`](buyer-agent/README.md) | Preflight and handoff to the official Alipay Agent Payment installer |
 | [`seller-java/`](seller-java/README.md) | Java seller service using the Alipay SDK for proof verification and fulfillment confirmation |
 | [`validation/`](validation/README.md) | Sandbox preflight and sanitized evidence guidance |
@@ -18,6 +20,8 @@ Use the official sources for current product behavior:
 - [Official Agent Payment package](https://github.com/alipay/payment-skills)
 
 This repository does not duplicate account opening, application registration, credential issuance, or the official sandbox. Never commit application private keys, Alipay public keys, tokens, complete payment proofs, or replayable payment URLs.
+
+The two Markdown integration guides in this directory explain ACT semantics for implementers. They are not Alipay product documentation and do not override either the ACT domain specifications or the official Alipay sources above.
 
 ## Boundary
 

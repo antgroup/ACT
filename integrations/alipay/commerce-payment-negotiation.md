@@ -3,7 +3,7 @@
 中文 | [English](commerce-payment-negotiation.en.md)
 
 > **状态：ACT 2.1 / Final / Non-normative cross-domain guide**
-> 本文归纳商业交互域与支付服务域的连接关系，不新增规范语义；完整规则见[商业交互域](commerce-interaction.md)与[支付服务域](payment-services.md)，如有不一致以域正文为准。
+> 本文归纳商业交互域与支付服务域的连接关系，不新增规范语义；完整规则见[商业交互域](../../docs/specification/commerce-interaction.md)与[支付服务域](../../docs/specification/payment-services.md)，如有不一致以域正文为准。
 
 ## 1. 作用
 

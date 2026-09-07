@@ -75,15 +75,9 @@ curl -i http://127.0.0.1:8080/paid-resource
 - 资源交付后异步执行履约确认。
 - 日志和资源响应只输出脱敏 `transaction_ref`，不输出完整交易号、密钥或完整凭证。
 
-## 5. 可选 Sandbox Showcase 事件
-
-本示例可以向本机 [Demo Bridge](../../../code/web-client/alipay-ai-pay-showcase/README.md#live-sandbox)发送脱敏状态。配置 `ACT_DEMO_BRIDGE_URL`、`ACT_DEMO_VALIDATION_ID` 和双方共享的 `ACT_DEMO_CORRELATION_REF` 后，它会观察首次资源请求、402、携 Proof 的原请求重试、验款结论、资源交付和履约确认。Buyer Adapter 必须先输出能力协商与独立商业确认，并在调用官方支付能力时输出 L1 授权、处理状态和支付结果。
-
 `ACT_A402_METHOD_ID` 和 `ACT_A402_METHOD_VERSION` 只用于非规范性实现产物的可信本地上下文及防重键，不会写入支付宝产品报文，也不是支付宝产品字段。仓库为这份映射固定使用集成层标识 `act-integration:a402/alipay-ai-pay` 和版本 `1.0.0`；它由本仓库维护，不声称由支付宝产品返回，也不是 ACT 2.1 的全局注册项。官方沙箱联调证据应同时记录该映射版本、仓库 Commit 和支付宝官方产品来源。
 
-该功能默认关闭、异步执行且失败不阻断产品链路。它不发送完整账单、Proof、交易号、订单号、`client_session`、签名或密钥。用户授权和支付处理中状态必须由实际官方 Agent Payment Adapter 提供。
-
-## 6. 距离生产使用仍有差距
+## 5. 距离生产使用仍有差距
 
 本示例有意使用内存账单和履约记录。生产使用前必须替换为持久化、原子化存储，并补充：
 

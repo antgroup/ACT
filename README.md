@@ -9,7 +9,7 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 | 目标 | 入口 |
 |---|---|
 | 阅读 ACT 2.1 | [协议概览](docs/specification/overview.md) |
-| 理解支付服务流程 | [支付服务域](docs/specification/payment-services.md) |
+| 理解完整业务流程 | [典型场景与业务流程](docs/specification/scenarios.md) |
 | 运行 TSD-CRD 信用关联参考链路 | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | 本地运行安全的 A402 样例 | [Local A402 Sample](code/samples/local-a402/README.md) |
 | 查看交互演示 | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
@@ -25,23 +25,23 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 
 Local A402 Sample 有意不伪造支付成功。真实资源交付必须来自已经验真的支付证明，因此“本地安全失败路径”和“官网沙箱成功路径”是两个不同的接入阶段。TSD-CRD Reference Implementation 同样只使用 Mock 能力和测试密钥，不是生产信用服务。
 
-ACT 2.1 的人类可读协议正文位于 `docs/specification/`。JSON Schema、fixtures 和测试位于 `code/schemas/`，用于帮助实现与验证，不增加协议正文未规定的要求。
+ACT 2.1 的五份规范正文和非规范性场景指南位于 `docs/specification/`。A402 与 Commerce–Payment 接入指南随支付宝参考接入放在 `integrations/alipay/`。JSON Schema、fixtures 和测试位于 `code/schemas/`，用于帮助实现与验证，不增加协议正文未规定的要求。
 
-本仓库发布版本中的 `docs/specification/` 是 ACT 2.1 唯一的版本化规范正文。[act-protocol.com](https://www.act-protocol.com/) 是项目信息入口；未明确标注 ACT 2.1 版本的网页内容属于信息性材料，不是本 Release 的规范来源。网页如果遗漏本 Release 的组件、采用不同结构或与正文冲突，只能按网页自身标明的版本理解，不得用于覆盖或解释本仓库的 ACT 2.1 要求。
+本仓库发布版本中，`docs/specification/` 下的协议概览和四份域规范共同构成 ACT 2.1 唯一的版本化规范正文；场景指南明确为非规范性材料。[act-protocol.com](https://www.act-protocol.com/) 是项目信息入口；未明确标注 ACT 2.1 版本的网页内容属于信息性材料，不是本 Release 的规范来源。网页如果遗漏本 Release 的组件、采用不同结构或与正文冲突，只能按网页自身标明的版本理解，不得用于覆盖或解释本仓库的 ACT 2.1 要求。
 
 ## 仓库结构
 
 ```text
 act-protocol/
-├── docs/                         # ACT 2.1 规范与附加文档
-│   └── specification/
+├── docs/                         # ACT 2.1 规范、场景与附加文档
+│   └── specification/           # 五份规范正文 + 非规范性场景指南
 ├── code/                         # Schema、样例和演示
 │   ├── schemas/
 │   ├── samples/
 │   └── web-client/
 ├── integrations/
 │   ├── tsd-crd/                  # TSD-CRD 参考实现指南
-│   └── alipay/                   # 支付宝参考接入代码与验证
+│   └── alipay/                   # 接入指南、支付宝参考代码与验证
 └── tools/                        # 仓库质量与发布工具
 ```
 

@@ -7,7 +7,7 @@
     {
       "id": "A402-TEST-001",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#act-21-a402-支付接入协议",
+      "source": "../../../../integrations/alipay/a402.md#act-21-a402-支付接入协议",
       "applies_to": [
         "INS/L1",
         "DEL/L2",
@@ -29,7 +29,7 @@
     {
       "id": "A402-TEST-002",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#22-返回支付诉求",
+      "source": "../../../../integrations/alipay/a402.md#22-返回支付诉求",
       "applies_to": [
         "HTTP binding",
         "resource server"
@@ -52,7 +52,7 @@
     {
       "id": "A402-TEST-003",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#25-卖方验证支付证明",
+      "source": "../../../../integrations/alipay/a402.md#25-卖方验证支付证明",
       "applies_to": [
         "resource server"
       ],
@@ -73,7 +73,7 @@
     {
       "id": "A402-TEST-004",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#25-卖方验证支付证明",
+      "source": "../../../../integrations/alipay/a402.md#25-卖方验证支付证明",
       "applies_to": [
         "resource server",
         "payment service"
@@ -94,7 +94,7 @@
     {
       "id": "A402-TEST-005",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#26-交付资源与履约确认",
+      "source": "../../../../integrations/alipay/a402.md#26-交付资源与履约确认",
       "applies_to": [
         "resource server",
         "delivery"
@@ -115,7 +115,7 @@
     {
       "id": "A402-TEST-006",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#24-携带支付证明重新访问",
+      "source": "../../../../integrations/alipay/a402.md#24-携带支付证明重新访问",
       "applies_to": [
         "buyer",
         "resource server"
@@ -136,7 +136,7 @@
     {
       "id": "A402-TEST-007",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#25-卖方验证支付证明",
+      "source": "../../../../integrations/alipay/a402.md#25-卖方验证支付证明",
       "applies_to": [
         "resource server",
         "delivery"
@@ -157,7 +157,7 @@
     {
       "id": "A402-TEST-008",
       "kind": "test-assertion",
-      "source": "../../../../docs/specification/a402.md#7-错误响应",
+      "source": "../../../../integrations/alipay/a402.md#7-错误响应",
       "applies_to": [
         "buyer",
         "resource server",

@@ -394,10 +394,9 @@ const authorizationCopy = {
 const elements = Object.fromEntries(
   [
     "actBinding", "actComponent", "actDomain", "agentMessage", "alipayProduct", "controlStatus",
-    "correlationChain", "currentState", "eventCounter", "eventStreamUrl", "evidenceDetails", "baselineValue", "footerScenarioValue",
-    "evidenceRef", "exchangeCard", "fromActor", "directionArrow", "layerCode", "liveForm",
-    "liveTab", "methodId", "modeBadge", "phaseRail", "playReplay",
-    "replayControls", "replayFile", "replayTab", "playDemo", "demoControls", "demoTab",
+    "correlationChain", "currentState", "eventCounter", "evidenceDetails", "baselineValue", "footerScenarioValue",
+    "evidenceRef", "exchangeCard", "fromActor", "directionArrow", "layerCode",
+    "methodId", "modeBadge", "phaseRail", "playDemo", "demoControls",
     "resetDemo", "resourceCard", "resourceDescription", "resourceId", "resourcePrice",
     "resourceState", "resourceTitle", "scenarioSelect", "stateExplanation", "stepDemo",
     "stepReplay", "taskResult", "taskStatusDot", "timeline", "toActor", "wireBadge", "wireMessage",
@@ -412,26 +411,15 @@ const elements = Object.fromEntries(
   ].map((id) => [id, document.getElementById(id)]),
 );
 
-let mode = "GUIDED_DEMO";
+const mode = "GUIDED_DEMO";
 let scenario = "SUCCESS";
 let authorizationLevel = "L1";
 let events = [];
-let replayEvents = [];
-let replayIndex = 0;
-let replayTimer = null;
-let eventSource = null;
 let demoEvents = [];
 let demoIndex = 0;
 let demoTimer = null;
 
-const operationalL1Flow = [
-  "CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED",
-  "USER_AUTHORIZATION_REQUIRED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED",
-  "RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED",
-];
-
 function successFlow() {
-  if (mode !== "GUIDED_DEMO") return operationalL1Flow;
   return authorizationFlows[authorizationLevel] || authorizationFlows.L1;
 }
 
@@ -751,23 +739,13 @@ function renderAuthorizationCard(stateId = null, failure = false) {
   elements.authorizationFacts.innerHTML = facts.map((fact) => `<span>${fact}</span>`).join("");
 }
 
-function setMode(nextMode) {
+function resetGuidedDemo() {
   stopInputs();
-  mode = nextMode;
-  authorizationLevel = mode === "GUIDED_DEMO" ? elements.authorizationSelect.value : "L1";
-  scenario = mode === "GUIDED_DEMO" ? elements.scenarioSelect.value : "SUCCESS";
+  authorizationLevel = elements.authorizationSelect.value;
+  scenario = elements.scenarioSelect.value;
   events = [];
-  replayEvents = [];
-  replayIndex = 0;
   demoEvents = createDemoEvents();
   demoIndex = 0;
-  elements.demoTab.classList.toggle("active", mode === "GUIDED_DEMO");
-  elements.liveTab.classList.toggle("active", mode === "LIVE_SANDBOX");
-  elements.replayTab.classList.toggle("active", mode === "SANITIZED_REPLAY");
-  elements.demoControls.classList.toggle("hidden", mode !== "GUIDED_DEMO");
-  elements.authorizationSummary.classList.toggle("hidden", mode !== "GUIDED_DEMO");
-  elements.liveForm.classList.toggle("hidden", mode !== "LIVE_SANDBOX");
-  elements.replayControls.classList.toggle("hidden", mode !== "SANITIZED_REPLAY");
   const baseline = authorizationLevel === "L1" ? "PMT-BND + INS / L1 + A402"
     : authorizationLevel === "L2" ? "ADD + DEL / L2 + A402" : "ADD + AUP / L3 + A402";
   elements.baselineValue.textContent = baseline;
@@ -790,37 +768,21 @@ function setMode(nextMode) {
   elements.layerExplanation.textContent = authorizationLevel === "L1"
     ? "先看懂上面的购买故事，再用这里核对协议边界：ACT 描述协商、授权和支付服务消息；支付宝产品完成支付与验款；示例服务负责真正的数据交付。"
     : "本档只对照 ACT 2.1 的授权与支付语义；PSP 是协议角色，本仓库未提供支付宝 L2/L3 接入实现；示例服务只负责资源交付。";
-  if (mode === "GUIDED_DEMO") {
-    elements.modeBadge.textContent = authorizationLevel === "L1"
-      ? "引导演示 · 非支付证据"
-      : `ACT 2.1 ${authorizationLevel} · 无支付宝实现`;
-    elements.modeBadge.className = "mode-badge demo";
-    setStatus(authorizationLevel === "L1"
-      ? "说明性数据展示首次绑定、笔笔核身确认和 A402 恢复，不代表真实支付或兼容性证据。"
-      : `${authorizationLevel} 演示 ACT 2.1 协议语义；本仓库未提供对应的支付宝实现。`);
-  } else if (mode === "LIVE_SANDBOX") {
-    elements.eventStreamUrl.value = `${window.location.origin}/events`;
-    elements.modeBadge.textContent = "官方沙箱事件 · 未连接";
-    elements.modeBadge.className = "mode-badge live";
-    setStatus("Demo 不生成支付结果。请连接真实脱敏事件流。");
-  } else {
-    elements.modeBadge.textContent = "REPLAY · NO FILE";
-    elements.modeBadge.className = "mode-badge replay";
-    setStatus("请选择由官网沙箱链路生成的脱敏 NDJSON。");
-  }
+  elements.modeBadge.textContent = authorizationLevel === "L1"
+    ? "引导演示 · 非支付证据"
+    : `ACT 2.1 ${authorizationLevel} · 无支付宝实现`;
+  elements.modeBadge.className = "mode-badge demo";
+  setStatus(authorizationLevel === "L1"
+    ? "说明性数据展示首次绑定、笔笔核身确认和 A402 恢复，不代表真实支付或兼容性证据。"
+    : `${authorizationLevel} 演示 ACT 2.1 协议语义；本仓库未提供对应的支付宝实现。`);
   renderTimeline();
   renderPhaseRail();
   render();
 }
 
 function stopInputs() {
-  if (eventSource) eventSource.close();
-  eventSource = null;
-  if (replayTimer) clearInterval(replayTimer);
   if (demoTimer) clearInterval(demoTimer);
-  replayTimer = null;
   demoTimer = null;
-  elements.playReplay.textContent = "播放";
   elements.playDemo.textContent = "播放当前场景";
 }
 
@@ -925,14 +887,7 @@ function validateEvent(event, expectedIndex, expectedMode) {
   if (!event.evidence_ref || !event.correlation_ref) throw new Error("事件缺少证据或关联引用");
   if (!Number.isFinite(Date.parse(event.occurred_at))) throw new Error("事件时间格式无效");
   validateDemoEvidence(event, expectedIndex);
-  if (expectedMode === "LIVE_SANDBOX" && event.environment !== "SANDBOX") {
-    throw new Error("Live 事件必须声明 SANDBOX 环境");
-  }
-  if (expectedMode === "SANITIZED_REPLAY" && (event.sanitized !== true || !event.origin_validation_id)) {
-    throw new Error("Replay 事件必须包含脱敏标记和原验证编号");
-  }
-  if (expectedMode === "GUIDED_DEMO"
-      && (event.source !== demoBase.source || event.evidence_ref !== demoBase.evidence_ref)) {
+  if (event.source !== demoBase.source || event.evidence_ref !== demoBase.evidence_ref) {
     throw new Error("演示预览不能冒充支付证据");
   }
 }
@@ -994,16 +949,6 @@ function validateDemoEvidence(event, expectedIndex) {
       throw new Error("幂等重放缺少不重复支付、交付和履约确认的证据");
     }
   }
-}
-
-function parseNdjson(text) {
-  return text.split(/\r?\n/).filter((line) => line.trim()).map((line, index) => {
-    try {
-      return JSON.parse(line);
-    } catch {
-      throw new Error(`第 ${index + 1} 行不是有效 JSON`);
-    }
-  });
 }
 
 function addEvent(event) {
@@ -1224,7 +1169,7 @@ function stepDemo() {
     if (demoIndex === demoEvents.length) {
       stopInputs();
       elements.playDemo.textContent = "重新播放";
-      setStatus("当前场景演示完成。以上为说明性数据，不是支付或沙箱验证证据。");
+      setStatus("当前场景演示完成。以上为说明性数据，不是真实支付或兼容性证据。");
     }
   } catch (error) {
     stopInputs();
@@ -1232,13 +1177,10 @@ function stepDemo() {
   }
 }
 
-elements.demoTab.addEventListener("click", () => setMode("GUIDED_DEMO"));
-elements.liveTab.addEventListener("click", () => setMode("LIVE_SANDBOX"));
-elements.replayTab.addEventListener("click", () => setMode("SANITIZED_REPLAY"));
-elements.scenarioSelect.addEventListener("change", () => setMode("GUIDED_DEMO"));
-elements.authorizationSelect.addEventListener("change", () => setMode("GUIDED_DEMO"));
+elements.scenarioSelect.addEventListener("change", resetGuidedDemo);
+elements.authorizationSelect.addEventListener("change", resetGuidedDemo);
 elements.stepDemo.addEventListener("click", stepDemo);
-elements.resetDemo.addEventListener("click", () => setMode("GUIDED_DEMO"));
+elements.resetDemo.addEventListener("click", resetGuidedDemo);
 elements.playDemo.addEventListener("click", () => {
   if (demoIndex >= demoEvents.length) {
     events = [];
@@ -1259,116 +1201,4 @@ elements.playDemo.addEventListener("click", () => {
   if (demoIndex < demoEvents.length) demoTimer = setInterval(stepDemo, 900);
 });
 
-elements.liveForm.addEventListener("submit", (submitEvent) => {
-  submitEvent.preventDefault();
-  const url = elements.eventStreamUrl.value.trim();
-  if (!url) return setStatus("请输入只输出脱敏事件的 SSE 地址。", true);
-  stopInputs();
-  events = [];
-  scenario = "SUCCESS";
-  renderTimeline();
-  render();
-  eventSource = new EventSource(url);
-  elements.modeBadge.textContent = "官方沙箱事件 · 连接中";
-  setStatus("正在连接由官方沙箱链路产生的脱敏事件流…");
-  eventSource.onopen = () => {
-    elements.modeBadge.textContent = "官方沙箱事件 · 已连接";
-    setStatus("已连接。等待真实事件，不会自动推进状态。");
-  };
-  eventSource.onmessage = (message) => {
-    try {
-      const next = JSON.parse(message.data);
-      if (events.length === 0 && next.scenario) {
-        scenario = next.scenario;
-        if (!["SUCCESS", "PAYMENT_PENDING", "PROOF_MISMATCH", "VERIFICATION_UNAVAILABLE", "IDEMPOTENT_REPLAY"].includes(scenario)) {
-          throw new Error(`不支持场景 ${scenario}`);
-        }
-        renderTimeline();
-      }
-      addEvent(next);
-      setStatus(`已接收 ${events.length} / ${flow().length} 个真实事件。`);
-    } catch (error) {
-      eventSource.close();
-      setStatus(`事件流已停止：${error.message}`, true);
-    }
-  };
-  eventSource.addEventListener("reset", () => {
-    events = [];
-    scenario = "SUCCESS";
-    renderTimeline();
-    render();
-    setStatus("事件 Bridge 已重置，等待新的真实链路。");
-  });
-  eventSource.onerror = () => {
-    eventSource.close();
-    elements.modeBadge.textContent = "官方沙箱事件 · 已断开";
-    setStatus("事件流连接中断。页面不会推断后续支付结果。", true);
-  };
-});
-
-elements.replayFile.addEventListener("change", async () => {
-  stopInputs();
-  events = [];
-  replayIndex = 0;
-  try {
-    const file = elements.replayFile.files[0];
-    if (!file) return;
-    replayEvents = parseNdjson(await file.text());
-    scenario = replayEvents[0]?.scenario || "SUCCESS";
-    if (!["SUCCESS", "PAYMENT_PENDING", "PROOF_MISMATCH", "VERIFICATION_UNAVAILABLE", "IDEMPOTENT_REPLAY"].includes(scenario)) {
-      throw new Error(`不支持场景 ${scenario}`);
-    }
-    renderTimeline();
-    if (replayEvents.length !== flow().length) throw new Error(`Replay 必须包含当前场景的 ${flow().length} 个状态`);
-    replayEvents.forEach((event, index) => validateEvent(event, index, "SANITIZED_REPLAY"));
-    elements.playReplay.disabled = false;
-    elements.stepReplay.disabled = false;
-    elements.modeBadge.textContent = "SANITIZED REPLAY";
-    setStatus(`已验证 ${file.name}。尚未播放，不代表实时支付。`);
-    render();
-  } catch (error) {
-    replayEvents = [];
-    elements.playReplay.disabled = true;
-    elements.stepReplay.disabled = true;
-    elements.modeBadge.textContent = "REPLAY · REJECTED";
-    setStatus(`拒绝加载：${error.message}`, true);
-  }
-});
-
-elements.stepReplay.addEventListener("click", () => {
-  if (replayIndex >= replayEvents.length) return;
-  try {
-    addEvent(replayEvents[replayIndex++]);
-    if (replayIndex === replayEvents.length) {
-      elements.stepReplay.disabled = true;
-      elements.playReplay.disabled = true;
-      setStatus("Replay 播放完成。内容来自已验证链路的脱敏记录。");
-    }
-  } catch (error) {
-    setStatus(`Replay 已停止：${error.message}`, true);
-  }
-});
-
-elements.playReplay.addEventListener("click", () => {
-  if (replayTimer) {
-    clearInterval(replayTimer);
-    replayTimer = null;
-    elements.playReplay.textContent = "继续";
-    return;
-  }
-  elements.playReplay.textContent = "暂停";
-  replayTimer = setInterval(() => {
-    if (replayIndex >= replayEvents.length) {
-      clearInterval(replayTimer);
-      replayTimer = null;
-      elements.playReplay.textContent = "播放";
-      elements.playReplay.disabled = true;
-      elements.stepReplay.disabled = true;
-      setStatus("Replay 播放完成。内容来自已验证链路的脱敏记录。");
-      return;
-    }
-    addEvent(replayEvents[replayIndex++]);
-  }, 900);
-});
-
-setMode("GUIDED_DEMO");
+resetGuidedDemo();

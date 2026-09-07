@@ -9,7 +9,7 @@ ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. 
 | Goal | Entry |
 |---|---|
 | Read ACT 2.1 | [Specification overview](docs/specification/overview.en.md) |
-| Understand payment-service flows | [Payment Services Domain](docs/specification/payment-services.en.md) |
+| Understand end-to-end flows | [Scenarios and Business Flows](docs/specification/scenarios.en.md) |
 | Run the TSD-CRD credit-association reference flow | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | Run the safe local A402 sample | [Local A402 Sample](code/samples/local-a402/README.md) |
 | Explore the interactive flow | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
@@ -17,21 +17,21 @@ ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. 
 
 For a first visit: read the [English overview](docs/specification/overview.en.md), keep the [bilingual glossary](docs/glossary.md) open, run the local sample, and then choose the buyer or seller Alipay integration. The local sample intentionally demonstrates safe rejection rather than manufacturing payment success; a successful paid delivery requires verified proof from the official product workflow.
 
-Human-readable protocol text lives in `docs/specification/`. JSON Schemas, fixtures, and tests live in `code/schemas/`; they support implementation without adding requirements that are absent from the specification.
+The five human-readable specification documents and the non-normative scenario guide live in `docs/specification/`. A402 and commerce-to-payment integration guides are grouped with the Alipay reference integration under `integrations/alipay/`. JSON Schemas, fixtures, and tests live in `code/schemas/`; they support implementation without adding requirements that are absent from the specification.
 
 ACT 2.1 is available in both [Chinese](docs/specification/overview.md) and [English](docs/specification/overview.en.md). The English documents are official informative translations of the final 2.1 publication; if a translation discrepancy is found, the Chinese publication remains controlling until the translation is corrected in a subsequent repository release.
 
-The files under `docs/specification/` in this repository release are the sole versioned ACT 2.1 specification publication. [act-protocol.com](https://www.act-protocol.com/) is a project-information entry point. Website content that is not explicitly labeled ACT 2.1 is informative and is not a normative source for this release. If a web page omits a component, uses a different structure, or conflicts with this release, it MUST NOT override or interpret the repository's ACT 2.1 requirements.
+The overview and four domain specifications under `docs/specification/` are the sole versioned ACT 2.1 normative publication in this repository release; the scenario guide is explicitly non-normative. [act-protocol.com](https://www.act-protocol.com/) is a project-information entry point. Website content that is not explicitly labeled ACT 2.1 is informative and is not a normative source for this release. If a web page omits a component, uses a different structure, or conflicts with this release, it MUST NOT override or interpret the repository's ACT 2.1 requirements.
 
 ## Repository layout
 
 ```text
-docs/                 ACT 2.1 specification and supporting material
+docs/specification/   ACT 2.1 specification and non-normative scenarios
 code/schemas/         Machine-readable implementation artifacts
 code/samples/         Runnable protocol samples
 code/web-client/      Interactive demo
-integrations/alipay/  Alipay reference integration and validation
 integrations/tsd-crd/ TSD-CRD reference implementation guidance
+integrations/alipay/  Integration guides, Alipay reference code, and validation
 tools/                Repository quality and release tooling
 ```
 
