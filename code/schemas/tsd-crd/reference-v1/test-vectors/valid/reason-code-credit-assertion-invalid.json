@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-credit-assertion-invalid",
+  "description": "An invalid subject credit assertion returns CREDIT_ASSERTION_INVALID.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "subject credit assertion proof or validity check fails"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "CREDIT_ASSERTION_INVALID",
+  "expectedValid": true
+}

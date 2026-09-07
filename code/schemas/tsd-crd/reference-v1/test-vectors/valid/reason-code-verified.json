@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-verified",
+  "description": "Successful verification returns VERIFIED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "all requested verification checks pass"
+  },
+  "expectedResult": "PASS",
+  "expectedReasonCode": "VERIFIED",
+  "expectedValid": true
+}

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "verification-response.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Associated Credit Verification Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "verificationRecordId",
+    "agentId",
+    "completedLevel",
+    "result",
+    "reasonCode",
+    "credentialStatus",
+    "scope",
+    "generatedAt",
+    "expiresAt",
+    "purposeLimited",
+    "responseProof"
+  ],
+  "properties": {
+    "requestId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "verificationRecordId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "agentId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "completedLevel": {
+      "$ref": "common.schema.json#/$defs/verificationLevel"
+    },
+    "result": {
+      "$ref": "common.schema.json#/$defs/verificationResult"
+    },
+    "reasonCode": {
+      "$ref": "common.schema.json#/$defs/reasonCode"
+    },
+    "credentialStatus": {
+      "$ref": "common.schema.json#/$defs/credentialStatus"
+    },
+    "creditSource": {
+      "type": "string",
+      "const": "ASSOCIATED_CREDIT"
+    },
+    "associatedCreditValue": {
+      "$ref": "common.schema.json#/$defs/associatedCreditValue"
+    },
+    "subjectCreditAssertionValid": {
+      "type": "boolean"
+    },
+    "mappingPolicy": {
+      "$ref": "common.schema.json#/$defs/mappingPolicy"
+    },
+    "scope": {
+      "$ref": "common.schema.json#/$defs/stringSet"
+    },
+    "generatedAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expiresAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "statusQuery": {
+      "$ref": "common.schema.json#/$defs/statusQuery"
+    },
+    "purposeLimited": {
+      "type": "boolean",
+      "const": true
+    },
+    "responseProof": {
+      "$ref": "common.schema.json#/$defs/proof"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "completedLevel": {
+            "const": "CREDENTIAL"
+          }
+        },
+        "required": [
+          "completedLevel"
+        ]
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "creditSource"
+              ]
+            },
+            {
+              "required": [
+                "associatedCreditValue"
+              ]
+            },
+            {
+              "required": [
+                "subjectCreditAssertionValid"
+              ]
+            },
+            {
+              "required": [
+                "mappingPolicy"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "completedLevel": {
+            "const": "ASSOCIATED_CREDIT"
+          },
+          "result": {
+            "const": "PASS"
+          }
+        },
+        "required": [
+          "completedLevel",
+          "result"
+        ]
+      },
+      "then": {
+        "required": [
+          "creditSource",
+          "associatedCreditValue",
+          "subjectCreditAssertionValid",
+          "mappingPolicy"
+        ],
+        "properties": {
+          "subjectCreditAssertionValid": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "PASS"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "reasonCode": {
+            "const": "VERIFIED"
+          },
+          "credentialStatus": {
+            "const": "ACTIVE"
+          }
+        }
+      }
+    }
+  ]
+}

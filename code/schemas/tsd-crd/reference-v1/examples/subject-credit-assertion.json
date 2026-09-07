@@ -1,0 +1,18 @@
+{
+  "assertionId": "subject-credit-assertion-001",
+  "assertionVersion": "1.0",
+  "creditServiceId": "credit-service:example:provider",
+  "subjectId": "subject:example:alice",
+  "issuedAt": "2026-08-12T07:55:00Z",
+  "validFrom": "2026-08-12T07:55:00Z",
+  "expiresAt": "2026-09-12T07:55:00Z",
+  "creditPayload": {
+    "level": "A",
+    "standing": "GOOD"
+  },
+  "assertionProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "credit-service:example:provider#key-1",
+    "signatureValue": "SUBJECT_CREDIT_ASSERTION_TEST_SIGNATURE"
+  }
+}

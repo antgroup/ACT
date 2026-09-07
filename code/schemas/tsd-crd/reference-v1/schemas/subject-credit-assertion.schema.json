@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "subject-credit-assertion.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Association Subject Credit Assertion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "assertionId",
+    "assertionVersion",
+    "creditServiceId",
+    "subjectId",
+    "issuedAt",
+    "validFrom",
+    "creditPayload"
+  ],
+  "properties": {
+    "assertionId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "assertionVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "creditServiceId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "subjectId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "issuedAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "validFrom": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expiresAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "creditPayload": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Provider-defined credit content. Access remains subject to data protection and authorization rules."
+    },
+    "assertionProof": {
+      "$ref": "common.schema.json#/$defs/proof"
+    }
+  }
+}

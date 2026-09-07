@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-agent-not-registered",
+  "description": "Verification for an unknown Agent identifier returns AGENT_NOT_REGISTERED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "agent identifier is not registered"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "AGENT_NOT_REGISTERED",
+  "expectedValid": true
+}

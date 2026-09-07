@@ -3,7 +3,7 @@
 中文 | [English](scenarios.en.md)
 
 > **状态：ACT 2.1 Informative Scenario Guide / Non-normative**
-> **用于理解跨域组合，不是独立协议组件、正式实现规范或 Conformance 证据。**  
+> **用于理解跨域组合，不是独立协议组件、正式实现规范或 Conformance 证据。**
 > **版本基线：2026-08-11（UTC+8）。**
 
 本文把 ADD、CID、PSD 和 TSD 组合成端到端业务场景，帮助开发者判断何时需要 IAC、采用哪一种支付授权级别，以及何时异步形成可信事件。本 Release 中的本文是 ACT 2.1 的版本化场景指南；ACT Protocol 官网的[典型场景与业务流程](https://www.act-protocol.com/documentation/scenarios)是未版本化的信息性参考，不覆盖本 Release。

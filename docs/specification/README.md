@@ -19,3 +19,5 @@ The scenario guide is part of the specification documentation set but is non-nor
 | Scenarios and Business Flows | [English](scenarios.en.md) | [中文](scenarios.md) |
 
 Non-normative A402 and commerce-to-payment guides are grouped under the [Alipay reference integration](../../integrations/alipay/README.md). JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
+
+TSD-CRD's normative requirements are part of the Trust Services Domain. The optional [`reference-v1` machine profile](../../code/schemas/tsd-crd/reference-v1/README.md), [runnable reference implementation](../../code/samples/tsd-crd-reference/README.md), and [implementation guide](../../integrations/tsd-crd/README.md) are implementation aids and do not add or replace ACT 2.1 requirements.

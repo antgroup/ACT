@@ -1,0 +1,28 @@
+{
+  "name": "@act-protocol/tsd-crd-reference",
+  "version": "0.1.0",
+  "description": "Non-normative executable reference suite for ACT 2.1 TSD-CRD",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "start": "node src/http/server.ts",
+    "demo": "node src/cli/act-tsd-crd.ts demo run",
+    "conformance": "node src/cli/act-tsd-crd.ts conformance",
+    "test": "node --test test/*.test.ts",
+    "check": "npm test && npm run conformance"
+  },
+  "bin": {
+    "act-tsd-crd": "./src/cli/act-tsd-crd.ts"
+  },
+  "keywords": [
+    "act",
+    "tsd-crd",
+    "credit-association",
+    "reference-implementation",
+    "conformance"
+  ],
+  "license": "Apache-2.0"
+}

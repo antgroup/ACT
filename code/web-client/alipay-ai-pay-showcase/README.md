@@ -2,7 +2,7 @@
 
 本 Demo 说明“Agent 在调研过程中如何购买专业数据”，以左右对照方式展示业务执行、参与方、ACT 2.1 组件和支付宝产品映射。
 
-> **范围：Guided Demo / Non-normative / No real payment**  
+> **范围：Guided Demo / Non-normative / No real payment**
 > 本 Demo 不连接支付宝沙箱、钱包、支付接口或验款接口，不接收真实事件，也不执行支付。
 
 ## 演示内容

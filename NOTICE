@@ -6,6 +6,15 @@ International (CC-BY-4.0). Source code, JSON Schema, executable examples,
 tests, and automation are licensed under Apache License 2.0, except where a
 file or third-party notice states otherwise.
 
+TSD-CRD Reference Implementation
+Copyright (c) 2026 TSD-CRD contributors
+
+The TSD-CRD machine profile, reference implementation, examples, tests, and
+test vectors integrated under code/schemas/tsd-crd and
+code/samples/tsd-crd-reference originate from the standalone TSD-CRD project
+at commit fdf7006d97ae06645dce82400fac2dff964691f2 and are licensed under
+Apache License 2.0.
+
 Third-party dependencies, linked projects, referenced standards, and product
 documentation remain subject to their respective terms. This NOTICE does not
 grant rights to third-party names, trademarks, logos, or content.
