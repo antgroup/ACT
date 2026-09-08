@@ -2,11 +2,6 @@
 
 [中文](trust-services.md) | English
 
-> **Status: ACT 2.1 Specification / Final / Informative English Translation**
-> **Translation status: Official English translation / Informative**
-> **This English edition is a complete translation of the finalized Chinese specification published on 2026-08-11. The Chinese edition is authoritative if the two editions differ.**
-> **The Chinese ACT 2.1 publication remains controlling if the two editions differ.**
-
 # First: trusted attestation
 
 # Scope

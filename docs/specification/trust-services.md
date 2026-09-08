@@ -2,9 +2,6 @@
 
 中文 | [English](trust-services.en.md)
 
-> **状态：ACT 2.1 Specification / Final / Normative**
-> **正文完整转录自 2026-08-11 定稿中文协议；仅清理语雀排版标签。**
-
 # 第一篇：可信存证
 
 # 范围

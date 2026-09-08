@@ -2,11 +2,6 @@
 
 [中文](commerce-interaction.md) | English
 
-> **Status: ACT 2.1 Specification / Final / Informative English Translation**
-> **Translation status: Official English translation / Informative**
-> **This English edition is a complete translation of the finalized Chinese specification published on 2026-08-11. The Chinese edition is authoritative if the two editions differ.**
-> **The Chinese ACT 2.1 publication remains controlling if the two editions differ.**
-
 # Scope
 ## Domain Positioning
 Commerce Interaction Domain (Commerce Interaction Domain, CID) provides for a uniform, citation and commerce interaction synonym between Agent and Merchant, Merchant-side Agent or other Agent for the pre-payment identification of goods or services, Intent Context transmission, alignment of capacity to pay and transaction recognition.
@@ -54,7 +49,7 @@ The role of CID-PCA-NEG occurs primarily in the pre-payment phase and is used to
 
 CID-CART-CFM is the key component in the field for pre-discovering, screening, negotiating and forming the final confirmation of the order level, the output of which will have a direct impact on whether the subsequent Payment Services Domain can initiate payment execution.
 
-Authorization & Delegation Domain provides the domain primarily with ISR and the context of the relevant constraints; Payment Services Domain refers primarily to the transaction confirmation results, order transaction numbers, Payment Capability Negotiation results; Trust Services Domaintrusted attestation sub-sections harmonize the maintenance of the type of relevant event and certificate governance rules, and do not repeat the definition. Agent credit association statements defined in sub-section credit association can be used to assist judgement of the local domain ' s authorized link, such as the identification and screening of goods or services, and the transmission of Intent Context, but may not replace the inspection, confirmation and consultation rules prescribed by the components of this domain.
+Authorization & Delegation Domain primarily provides this domain with ISR and the relevant constraint context; Payment Services Domain primarily references the transaction confirmation result, order transaction number, and Payment Capability Negotiation result produced by this domain; the trusted attestation subsection of Trust Services Domain centrally maintains the relevant event types and attestation governance rules, which are not redefined here. Agent credit association statements defined in the credit association subsection may be used as an auxiliary input when screening products or services in this domain.
 
 # CID-MER-CAT: Merchant Catalog Interface
 ## Overview

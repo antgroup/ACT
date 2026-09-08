@@ -2,11 +2,6 @@
 
 [中文](payment-services.md) | English
 
-> **Status: ACT 2.1 Specification / Final / Informative English Translation**
-> **Translation status: Official English translation / Informative**
-> **This English edition is a complete translation of the finalized Chinese specification published on 2026-08-11. The Chinese edition is authoritative if the two editions differ.**
-> **The Chinese ACT 2.1 publication remains controlling if the two editions differ.**
-
 # Scope
 ## Domain Positioning
 Payment Services Domain (Payment Services Domain, PSD) provides for Agent to initiate interactive rules for payment, acceptance of payment verification, acquisition of payment result and treatment of the related state after completion of the pre-payment commercial confirmation, providing a uniform, verifiable, compatible payment services synonym for the payment execution phase in agentic commerce.
@@ -36,8 +31,8 @@ Payment scenario component:
 + **PSD-PMT-BND: Payment Method Binding.** Responsible for regulating Principal the process of completing Payment Service Provider capacity to pay and establishing Agent payment marks or equivalent payment instrument quotations.
 + **PSD-AGT-SUB: Agent-specific Sub-account Management.** Responsible for regulating the opening of an exclusive sub-account with a financial isolation capability for a specific Agent and managing its accompanying authentication key and life cycle process.
 + **PSD-PAY-INS: Instant User Payment.** Responsible for regulating the process of prompt payment, completion of confirmation of payment and receipt of payment result in real-time presence.
-+ **PSD-PAY-DEL：**** User-directed Delegated Payment****。** Responsible for regulating the process of initiating and accepting targeted commissioning of payments and acceptance of PSPs on the basis of valid Intent Authorization Credential (IAC) in the absence of real-time presence.
-+ **PSD-PAY-AUP: Autonomous Delegated Payment.** Responsible for the regulation of multiple rounds of commercial decision-making and payment processes within the authorized boundaries, based on the BOUNDD model IAC in the absence of Principal.
++ **PSD-PAY-DEL: User-directed Delegated Payment.** Responsible for regulating the process in which Buyer Agent initiates directed delegated payment based on a SPECIFIED mode IAC and accepts PSP verification when Principal is not present in real time.
++ **PSD-PAY-AUP: Autonomous Delegated Payment.** Responsible for regulating the process in which Buyer Agent autonomously conducts multiple rounds of commercial decision-making and payment within the authorization boundary based on a `BOUNDED` mode IAC when Principal is not present in real time.
 
 Payment access programme components:
 
@@ -49,7 +44,7 @@ Payment Services Domain uses a standard core set of objects and identifiers to d
 |** Object or Identification**|** Meaning**|** Mainly Generate Location**|** Main Use Location**|
 | --- | --- | --- | --- |
 |payment instrument Reference|Available references to the payment instrument used to identify payment instruments at the time of payment may be shown as proof of payment mark, sub-account mark or other equivalent payment instrument|PSD-PMT-BND、PSD-AGT-SUB|PSD-PAY-INS、PSD-PAY-DEL、PSD-PAY-AUP、PSD-PAY-A402|
-|Merchant side order number|Order confirmation from Commerce Interaction Domain, usually with the order number identifying the commodity information, the amount of the transaction, etc.|CID-CART-CFM|Payment Services Domain Payment execution components|
+|Merchant side order number|Order-level confirmation result from Commerce Interaction Domain; the order number identifies the product information, amount, and other information for the current transaction.|CID-CART-CFM|Payment Services Domain Payment execution components|
 |Results Payment Capability Negotiation|Pre-payment capability alignment results from Commerce Interaction Domain to determine the payment method, Payment Service Provider interface endpoint and load mode used for this payment|CID-PCA-NEG|PSD-PAY-A402, PSD-PAY-DEL, PSD-PAY-AUP and, if necessary, PSD-PAY-INS|
 |User Intent Authorization Credential(IAC)|Intent Authorization Credential issued Authorization & Delegation Domain for the expression of authorized boundaries for commissioning or autonomous payment|ADD-IAC-ISS|PSD-PAY-DEL、PSD-PAY-AUP|
 |`delegation_id`|authorization and delegation voucher life-cycle markers for stable association with the same authorization chain in payment execution, authorization verification and subsequent certificates|ADD-IAC-ISS|PSD-PAY-DEL、PSD-PAY-AUP|
@@ -59,7 +54,7 @@ Payment Services Domain uses a standard core set of objects and identifiers to d
 ## Dependence and Cross-domain Reference
 PSD-PMT-BND and PSD-AGT-SUB provide the basis of payment instrument for the payment of implementation, respectively: the former provides payment instrument quotations for Principal main account, and the latter provides a specific Agent financial segregation account and its authentication key.
 
-PSD-PAY-INS, PSD-PAY-DEL and PSD-PAY-AUP refer to the transaction confirmation result of Commerce Interaction Domain based on the paid interaction process used before the payment is initiated; PSD-PAY-DEL and PSD-PAY-AUP also require further reference to User Intent Authorization Credential provided by Authorization & Delegation Domain.
+Before initiating payment, PSD-PAY-INS, PSD-PAY-DEL, and PSD-PAY-AUP reference the transaction confirmation result produced by Commerce Interaction Domain; PSD-PAY-DEL and PSD-PAY-AUP additionally reference User Intent Authorization Credential provided by Authorization & Delegation Domain.
 
 When the counterparty is the seller Agent or payment method to be consulted dynamically, PSD-PAY-DEL and PSD-PAY-AUP may also refer to Payment Capability Negotiation resulting from CID-PCA-NEG to determine payment method, Payment Service Provider and interface endpoints.
 
@@ -158,11 +153,11 @@ When a sub-account is not opened, the balance is insufficient, the state is abno
 
 The semantic SHOULD of the cause of the failure covers at least the failure to verify the identity, the failure to open the sub-account, the freezing of the sub-account, the cancellation of the sub-account, the insufficient balance and the invalidation of the authentication key.
 
-# PSD-PAY-A402: payment process based on HTTP 402 (additional component)
+# PSD-PAY-A402: Payment Process Based on HTTP 402
 ## Overview
 This component definition is Buyer Agent, Merchant/resource service provider interacts with a generic payment access line based on the HTTP 402 status code (Payment Required): Buyer Agent access to paid resources or services, and the seller ' s service returns 402 status code and bill when no valid proof of payment is found; the buyer completes payment that meets the requirements of the payment scene; the seller certifies the delivery of resources and completes the confirmation of performance.
 
-This component can be quoted as required by `PSD-PAY-INS`, `PSD-PAY-DEL`, `PSD-PAY-AUP`. When quoted, this component carries only the payment access interactive mechanism, which does not replace the scenario inherent in each scenario component (e.g. IAC binding, cumulative boundary, sub-account management, etc.).
+This component may be referenced as needed by `PSD-PAY-INS`, `PSD-PAY-DEL`, and `PSD-PAY-AUP`. When referenced, it carries only the payment access interaction mechanism and does not replace other specific requirements of each scenario component, such as IAC constraints, cumulative amount boundaries, or sub-account management.
 
 ## Participants and prefix
 This component involves the following Participants:
@@ -211,8 +206,8 @@ Response is used only for debugging, logs and human readable tips; Buyer Agent p
 After the Buyer Agent resolution `Payment-Needed`, SHALL performs the pre-judgement of the scene:
 
 + In the `PSD-PAY-INS` scene, SHALL leads Principal to real-time payment confirmation.
-+ In the `PSD-PAY-DEL` scenario, SHALL validates IAC validity, amount, cumulative amount, MerchantScope and allows payment method.
-+ In the `PSD-PAY-AUP` scene, SHALL Verify BOUNDD IAC, mandate Scope, cumulative budget, resource category and state of Agent-specific Sub-account.
++ In the `PSD-PAY-DEL` scenario, SHALL verify the validity of the SPECIFIED mode IAC, amount, cumulative amount, Merchant Scope, and allowed payment methods.
++ In the `PSD-PAY-AUP` scenario, SHALL verify the validity of the `BOUNDED` mode IAC, task Scope, cumulative budget, resource category, and Agent-specific Sub-account status.
 
 If either condition is not met, Buyer Agent SHALL NOT continues to initiate payment and SHALL terminates the transaction in accordance with the pre-set strategy, switchs the counterparty or informs Principal processing.
 
@@ -298,7 +293,7 @@ Each of the three Header payloads uses two layers of `Protocol + method` (pre-Ba
 |`signature_type`|string|The type of signature algorithm used to indicate the algorithm identifier required for the authentication of the signature of the message.|
 
 ### Payment Method Extension Fields
-The payment method extension field is used to fit the business scenario of the specific payment method, and the buyer and seller and the PSP may allow the addition of specific parameters to the method Scope in the methodological specifications. Such extension parameters may include the account identifier map key, commodity information, signature over the Scope declaration or other method-specific attribute.
+The payment method extension field is used to fit the business scenario of the specific payment method, and the buyer and seller and the PSP may allow the addition of specific parameters to the method Scope in the methodological specifications. Such extension parameters may include the account identifier map key, commodity information, signature over the Scope declaration, or other payment-method-specific attributes.
 
 The definition, restraint and use of the extended field is defined by the corresponding payment method to regulate the independent description of the document.
 
@@ -408,7 +403,7 @@ Buyer Agent After completing commerce interaction with the seller’s service pr
 Buyer Agent At the launch of Payment Service Provider, the request SHOULD contain at least the following core elements.
 
 + This request is for the sole global identifier to be used for weight proofing.
-+ Merchant side order number to be used for content consistency verification.
++ Merchant side order number to be used for product information consistency verification.
 + payment instrument Quoted for prior binding.
 + This payment is in the amount and in the currency of the payment.
 + Time stamp requested for the timescale verification of Payment Service Provider.
@@ -430,7 +425,7 @@ At least SHALL display the amount of the payment and the currency, the name of t
 
 Principal Upon completion of the confirmation by means of biometric recognition, payment password, dynamic authentication code or other Payment Service Provider support, Payment Service Provider SHALL record the nuclei used for this confirmation and the confirmation time stamp as evidence of authorization for this payment.
 
-This step is the core feature of the L1 scene: Payment Service Provider must complete the User written confirmation before the funds are withheld. The Payment Service Provider nuclear form (e.g., face/fingerprint/scanning/ password/certification code) is determined by Payment Service Provider based on the risk control strategy and terminal environment, and this protocol does not specify.
+This step is the core feature of the L1 scenario: Payment Service Provider SHALL complete User identity verification and confirmation for each payment before funds are debited. The identity verification method (e.g., facial recognition, fingerprint, QR-code scanning, password, or verification code) is determined by Payment Service Provider based on its risk-control strategy and terminal environment; this protocol does not prescribe a specific method.
 
 **Step 5: Pay execution and status returns.**
 
@@ -454,7 +449,7 @@ Upon completion of the payment transaction, Payment Service Provider SHOULD anec
 + Buyer Agent When constructed immediately payment request, SHALL to ensure consistency in the amount paid, currency and order information on side Merchant, and SHALL NOT to modify the identified core elements of the transaction without permission.
 + Payment Service Provider complete all basic verifications before the register is called; unverified request SHALL NOT enters the register confirmation process.
 + Payment Service Provider Shows payment information for Principal that is strictly consistent with the corresponding field in the request to ensure that Principal is confirmed with full knowledge.
-+ In the L1 scenario, Payment Service Provider must complete the confirmation of User prior to the withdrawal of funds; payment request SHALL NOT for the non-completion of the confirmation of body to enter the drawdown phase.
++ In the L1 scenario, Payment Service Provider SHALL complete User identity verification and confirmation before funds are debited; a payment request for which identity verification and confirmation have not been completed SHALL NOT enter the funds-debiting stage. The identity verification method is determined by Payment Service Provider based on its risk-control strategy and terminal environment.
 
 ## Error Response
 Error response in instant payment, SHOULD overwrites the following semantic categories.
@@ -541,7 +536,7 @@ Upon completion of the payment transaction, Payment Service Provider SHOULD anec
 
 ## Processing of requests
 + Buyer Agent Before initiating commissioning, local pre-screening is completed and SHALL NOT requests that clearly exceed the authorized boundary continue to be sent to Payment Service Provider.
-+ Buyer Agent Construction commissioning payment request, SHALL to ensure that the amounts paid, the currency of payment and the Merchant side order number are consistent with the prior confirmations.
++ Buyer Agent SHALL ensure that the payment amount, payment currency, and Merchant-side order number in the delegated payment request are consistent with the preceding Cart Confirmation result.
 + Payment Service Provider Completing the validity verification and binding verification of IAC, and SHALL NOT continuing the non-approval request at the withholding stage, pending the processing of funds.
 + When the exclusive sub-account model is used, Payment Service Provider, in addition to verifying IAC, verify the validity of the sub-account status and its payment authorization secret and confirm its validity in relation to the current Buyer Agent identity and sub-account binding.
 + Payment Service Provider The determination of the cumulative amount is based on the amount of historical successful transactions that it has identified, while SHALL NOT relies only on Buyer Agent local statements.
@@ -642,7 +637,7 @@ Upon completion of the payment transaction, PSP SHOULD be reported as `act:payme
 
 ## Processing of requests
 + Buyer Agent Before initiating Autonomous Delegated Payment, SHALL complete the local rule self-check and SHALL NOT continue to send requests that clearly exceed the authorized boundary in `BOUNDED` mode IAC to PSP.
-+ Buyer Agent constructed payment request, SHALL to ensure that the amounts paid, the currency of payment and the Merchant side order numbers are consistent with the prior confirmations.
++ Buyer Agent SHALL ensure that the payment amount, payment currency, and Merchant-side order number in the payment request are consistent with the preceding commercial confirmation result.
 + The PSP completes the validity verification and binding verification of IAC pending the processing of funds, and SHALL NOT continues the non-approval request to the deduction phase.
 + When the exclusive sub-account model is used, the PSP, in addition to verifying IAC, verifys the validity of the sub-account status and its payment authorization secret and confirms its validity in relation to the current Buyer Agent identity and sub-account binding.
 + PSP's assessment of the cumulative amount is based on the amount of historical successful transactions that it has identified, while SHALL NOT relies only on Buyer Agent local statements.

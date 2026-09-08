@@ -2,11 +2,6 @@
 
 [中文](authorization-delegation.md) | English
 
-> **Status: ACT 2.1 Specification / Final / Informative English Translation**
-> **Translation status: Official English translation / Informative**
-> **This English edition is a complete translation of the finalized Chinese specification published on 2026-08-11. The Chinese edition is authoritative if the two editions differ.**
-> **The Chinese ACT 2.1 publication remains controlling if the two editions differ.**
-
 # Scope
 ## Domain Positioning
 Authorization & Delegation Domain (Authorization & Delegation Domain, ADD) provides the expression, confirmation, structured constraints of user intent, authorization credential issuances and their life-cycle management rules that provide an expressionable, binding, verifiable and retroactive basis of authorization for Agent representing User commercial activities.
@@ -48,7 +43,7 @@ To maintain consistency in internal and cross-domain processing, ADD uses a set 
 ## Dependence and Cross-domain Reference
 ADD-INT-ICS forms the basis for the issuance of ADD-IAC-ISS. ADD-IAC-ISS forms IAC and `delegation_id` form the subject of ADD-IAC-LCM, and the state of authorization given ADD-IAC-LCM will affect the subsequent acceptance of authorization credential.
 
-Commerce Interaction Domain Key quotes ISR and relevant binding context to support commodity discovery, attempted transmission, and transaction confirmation. Payment Services Domain Key quotes IAC, `delegation_id` and authorization status findings to support authorization validation in payment request. Trust Services Domain Reference may be made to local domain-related incident identifiers, but the structure of the event and the certificate governance rules are defined in a uniform manner by sub-section trusted attestation. In addition, the declaration agentcredit association, as defined in sub-section credit association, can also be used as a supporting judgement in the local authorization chain and can be used as a reference input for the credit risk assessment, but may not be expanded, modified, covered or replaced by the authorization Scope, the amount, the period of effectiveness and the conditions of restraint contained in IAC.
+Commerce Interaction Domain primarily references ISR and the relevant constraint context to support product discovery, intent transmission, and transaction confirmation. Payment Services Domain primarily references IAC, `delegation_id`, and authorization status results to support authorization verification in payment requests. The trusted attestation subsection of Trust Services Domain centrally maintains the relevant event types and attestation governance rules; this domain does not redefine them.
 
 # ADD-INT-ICS: Intentional acquisition and structured expression
 ## Overview

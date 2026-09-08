@@ -2,11 +2,6 @@
 
 [中文](overview.md) | English
 
-> **Status: ACT 2.1 Specification / Final / Informative English Translation**
-> **Translation status: Official English translation / Informative**
-> **This English edition is a complete translation of the finalized Chinese specification published on 2026-08-11. The Chinese edition is authoritative if the two editions differ.**
-> **The Chinese ACT 2.1 publication remains controlling if the two editions differ.**
-
 # Introduction
 In the Internet business phase, which is dominated by information retrieval and page browsing, User is the direct implementer of business decision-making and payment. The transaction takes place between User and the business platform, User in real-time viewing of the goods, clicking on the list, and confirming payments on a case-by-case basis through interface. This premise is changing with the deep penetration of AI Agent technology. Agent Starts on behalf of User service discovery, commodity price, transaction negotiation and even payment execution, User from "real-time operator" to "target setr and authorized person".
 
@@ -45,7 +40,7 @@ The core needs in ACT are grouped into four categories: authorization and delega
 
 Together, these four types of requirements form the basis of the design of the protocol ACT and delineate the four subsequent capability areas.
 
-![ACT 2.1 trust requirements and participant relationships; source figure in Chinese](../assets/specification/act-2.1-trust-requirements.png)
+![](../assets/specification/act-2.1-trust-requirements.png)
 
 **authorization and delegation Requirements (R1)**
 
@@ -95,11 +90,11 @@ The ACT protocol framework uses the protocol stack structure of the sub-domain o
 
 The modules listed in the figure below are the overall component view of the current version of the protocol. The official component name, number, object definition and cross-domain reference relationships for each domain are based on the corresponding domain specification document; the typical use scene for which the protocol is currently oriented can be found in the " Typical scene and business process " document.
 
-![ACT 2.1 protocol framework; source figure in Chinese](../assets/specification/act-2.1-protocol-framework.png)
+![](../assets/specification/act-2.1-protocol-framework.png)
 
 ## Four Capability Domains and Primary Protocol Modules
 ### Authorization & Delegation Domain
-**Positioning:** Authorization & Delegation DomainGuidance Principal (i.e. User where the intent is presented in the specific scene and the authority is granted) confers its commercial intent and operational authority on the complete process of Agent in a verifiable manner.**** It covers the period from Scope to Principal the expression of natural language intent, to Agent the holding of complete validity User Intent Authorization Credential and, accordingly, to represent Principal action in subsequent commerce interaction and payment execution.
+**Positioning:** Authorization & Delegation DomainGuidance Principal (i.e. User where the intent is presented in the specific scene and the authority is granted) confers its commercial intent and operational authority on the complete process of Agent in a verifiable manner. It covers the period from Scope to Principal the expression of natural language intent, to Agent the holding of complete validity User Intent Authorization Credential and, accordingly, to represent Principal action in subsequent commerce interaction and payment execution.
 
 **Key protocol modules:**
 
@@ -132,10 +127,10 @@ The modules listed in the figure below are the overall component view of the cur
 ### Trust Services Domain
 **Positioning:** Trust Services Domain is the confidence infrastructure level of the ACT protocol, which provides confidence services such as trusted attestation, agentcredit association, Agent identity management, Agent reputation management for agentic commerce ecological agentic commerce. Its role is to provide a common trust base for cross-institutional, cross-subject business collaboration and to support dispute management, risk identification and subsequent governance. The current version of the Focus Regulation trusted attestation is related to agentcredit association components, Agent identity management, reputation management, etc., can serve as an extension of the subsequent version.
 
-**Main protocols**** Subtitles****：**
+**Main Protocol Subsections:**
 
 + **agentic commercetrusted attestation** Regulates the preservation of the record and long-term retention of key node information during agentic commerce interaction to provide an objective and verifiable factual basis for dealing with transactions disputes.
-+ **agentcredit association:** The establishment of a Agent relationship with its associated subject credit association, the generation and mapping of associated credit statements, life-cycle management, search authorization and standardized certification provide a verifiable link credit reference for Agent when its own credit data are insufficient.
++ **agentcredit association:** The establishment of a Agent relationship with its associated subject credit association, the generation and mapping of associated credit statements, life-cycle management, search authorization and standardized certification provide a verifiable associated-credit reference for Agent when its own credit data are insufficient.
 + **Agent Identity management** Agent capacity for registration, authentication and analysis of identity for participation at commerce interaction, supporting the verification of identity and legality of the transaction at Participants.
 + **Agent Honorary management** To regulate the multi-dimensional evaluation and ongoing tracking of historical behaviour in Agent, provide a searchable basis for the credibility of the transaction Participants and support governance and restraint of the breach Agent.
 

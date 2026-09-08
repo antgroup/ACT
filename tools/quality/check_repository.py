@@ -163,14 +163,9 @@ def translation_errors() -> list[str]:
             "integrations/alipay/commerce-payment-negotiation.en.md",
         ),
     ]
-    translation_marker = "Translation status: Official English translation / Informative"
     for source_name, translation_name in pairs:
         source = (ROOT / source_name).read_text(encoding="utf-8")
         translation = (ROOT / translation_name).read_text(encoding="utf-8")
-        if translation_marker not in translation:
-            errors.append(f"{translation_name}: missing official informative translation marker")
-        if "Chinese ACT 2.1 publication remains controlling" not in translation:
-            errors.append(f"{translation_name}: missing Chinese controlling-language notice")
         source_headings = HEADING.findall(source)
         translation_headings = HEADING.findall(translation)
         if source_headings != translation_headings:
