@@ -2,6 +2,18 @@
 
 本文件记录各公开发布版本的变更。版本标识、发布日期、规范定版日期和发布内容以 [`release-manifest.json`](release-manifest.json) 为准。ACT 2.1 已定版，非勘误性质的规范性变更须以新的协议版本发布。
 
+## Repository maintenance — 2026-08-27
+
+- 将 TSD-CRD 参考实现的实现基线、架构、快速开始、安全模型和可选扩展说明集中到 `integrations/tsd-crd/`，可运行代码继续保留在 `code/samples/tsd-crd-reference/`。
+- 明确 TSD-CRD 是 ACT 2.1 的规范性协议子篇；`reference-v1` 机器 Profile、Reference Implementation 及其实现指南不增加或替代 ACT 2.1 协议要求。
+
+## Repository update — 2026-08-24
+
+- 将 TSD-CRD 作为 ACT 2.1 信任服务域的信用关联子篇集成到现有发布树。
+- 在 `code/schemas/tsd-crd/reference-v1/` 发布非规范性 JSON Schema、OpenAPI、本地示例和固定测试向量，并保留既有 wire 契约与签名向量。
+- 在 `code/samples/tsd-crd-reference/` 提供非生产 Reference Implementation、Sandbox、CLI、Demo、测试和基础一致性 Runner。
+- 将 TSD-CRD 机器产物与参考实现接入根级导航、发布清单、仓库完整性检查和 `./tools/verify.sh`；通过不构成 ACT 2.1 全量 Conformance 或生产就绪声明。
+
 ## ACT 2.1 — 2026-08-14
 
 - 发布协议概览及 ADD、CID、PSD、TSD 四域规范；A402 和 L1/L2/L3 均由支付服务域正文定义，提取文档仅作为非规范性便捷指南。

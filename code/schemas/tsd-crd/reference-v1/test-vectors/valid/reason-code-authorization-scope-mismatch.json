@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-authorization-scope-mismatch",
+  "description": "A request outside the authorization purpose, relying party, agent, level or data scope returns AUTHORIZATION_SCOPE_MISMATCH.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "verification request exceeds authorization scope"
+  },
+  "expectedResult": "FAIL",
+  "expectedReasonCode": "AUTHORIZATION_SCOPE_MISMATCH",
+  "expectedValid": true
+}

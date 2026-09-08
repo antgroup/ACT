@@ -1,0 +1,16 @@
+{
+  "requestId": "status-change-request-001",
+  "credentialId": "credential-attested-001",
+  "targetStatus": "SUSPENDED",
+  "reasonCode": "SUBJECT_REQUEST",
+  "requestedBy": "subject:example:alice",
+  "requestedAt": "2026-08-13T08:00:00Z",
+  "antiReplay": {
+    "nonce": "status-change-nonce-0001"
+  },
+  "requestProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "subject:example:alice#key-1",
+    "signatureValue": "STATUS_CHANGE_REQUEST_TEST_SIGNATURE"
+  }
+}

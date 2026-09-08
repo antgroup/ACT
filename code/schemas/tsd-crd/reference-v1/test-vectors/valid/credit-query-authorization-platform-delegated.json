@@ -1,0 +1,42 @@
+{
+  "id": "credit-query-authorization-platform-delegated",
+  "description": "Platform-delegated authorization identifies the delegate and provides a machine-readable frequency limit.",
+  "schema": "credit-query-authorization.schema.json",
+  "expectedValid": true,
+  "instance": {
+    "authorizationId": "authorization-vector-platform-001",
+    "authorizationVersion": "reference-v1",
+    "mode": "PLATFORM_DELEGATED",
+    "subjectId": "subject:vector:company",
+    "relyingPartyIds": [
+      "relying-party:vector:procurement"
+    ],
+    "platformDelegateId": "platform-delegate:vector:procurement",
+    "agentIds": [
+      "agent:vector:service-assistant"
+    ],
+    "verificationLevel": "ASSOCIATED_CREDIT",
+    "purpose": "B2B_COUNTERPARTY_REVIEW",
+    "allowedDataItems": [
+      "associatedCreditValue",
+      "mappingPolicy"
+    ],
+    "validFrom": "2026-08-12T09:10:00Z",
+    "expiresAt": "2026-09-12T09:10:00Z",
+    "frequencyLimit": {
+      "maxRequestsPerWindow": 5,
+      "windowDurationSeconds": 3600
+    },
+    "resultUseRestrictions": {
+      "mayStore": true,
+      "retentionSeconds": 86400,
+      "mayTransfer": false
+    },
+    "status": "ACTIVE",
+    "authorizationProof": {
+      "signatureAlgorithm": "Ed25519",
+      "keyId": "subject:vector:company#key-1",
+      "signatureValue": "VECTOR_AUTHORIZATION_SIGNATURE"
+    }
+  }
+}

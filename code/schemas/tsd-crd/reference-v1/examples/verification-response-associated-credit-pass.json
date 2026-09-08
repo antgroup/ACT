@@ -1,0 +1,35 @@
+{
+  "requestId": "verification-request-associated-credit-001",
+  "verificationRecordId": "verification-record-associated-credit-001",
+  "agentId": "agent:example:shopping-assistant",
+  "completedLevel": "ASSOCIATED_CREDIT",
+  "result": "PASS",
+  "reasonCode": "VERIFIED",
+  "credentialStatus": "ACTIVE",
+  "creditSource": "ASSOCIATED_CREDIT",
+  "associatedCreditValue": {
+    "level": "A-ASSOCIATED",
+    "standing": "ELIGIBLE_FOR_REFERENCE"
+  },
+  "subjectCreditAssertionValid": true,
+  "mappingPolicy": {
+    "id": "reference-level-mapping",
+    "version": "1.0"
+  },
+  "scope": [
+    "merchant:example:demo-store",
+    "transaction:purchase"
+  ],
+  "generatedAt": "2026-08-12T08:21:01Z",
+  "expiresAt": "2026-08-12T08:26:01Z",
+  "statusQuery": {
+    "uri": "/v1/association-credentials/credential-attested-001/status",
+    "method": "GET"
+  },
+  "purposeLimited": true,
+  "responseProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "verifier:example:reference-service#key-1",
+    "signatureValue": "ASSOCIATED_CREDIT_VERIFICATION_RESPONSE_TEST_SIGNATURE"
+  }
+}

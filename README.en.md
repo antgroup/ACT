@@ -10,6 +10,7 @@ ACT (Agentic Commerce Trust Protocol) is an open protocol for agentic commerce. 
 |---|---|
 | Read ACT 2.1 | [Specification overview](docs/specification/overview.en.md) |
 | Understand end-to-end flows | [Scenarios and Business Flows](docs/specification/scenarios.en.md) |
+| Run the TSD-CRD credit-association reference flow | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | Run the safe local A402 sample | [Local A402 Sample](code/samples/local-a402/README.md) |
 | Explore the interactive flow | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
 | Integrate Alipay | [Alipay Reference Integration](integrations/alipay/README.md) |
@@ -29,6 +30,7 @@ docs/specification/   ACT 2.1 specification and non-normative scenarios
 code/schemas/         Machine-readable implementation artifacts
 code/samples/         Runnable protocol samples
 code/web-client/      Interactive demo
+integrations/tsd-crd/ TSD-CRD reference implementation guidance
 integrations/alipay/  Integration guides, Alipay reference code, and validation
 tools/                Repository quality and release tooling
 ```
@@ -46,9 +48,18 @@ npm --prefix code/web-client/alipay-ai-pay-showcase run demo
 
 The local A402 sample performs no payment. The Showcase explains the protocol flow and does not constitute a payment implementation or conformance claim.
 
+The TSD-CRD reference suite requires Node.js 22.18 or later:
+
+```bash
+npm --prefix code/samples/tsd-crd-reference run check
+npm --prefix code/samples/tsd-crd-reference run demo
+```
+
+It uses Mock providers, in-memory state, temporary test keys, and the optional non-normative `reference-v1` machine profile. Passing its tests is not a claim of full ACT 2.1 conformance or production readiness.
+
 For Alipay onboarding, credentials, sandbox operation, and current product behavior, use the [AIPay website](https://aipay.alipay.com/callpay) and its [official integration guide](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html).
 
-Run all checks with:
+Run all checks with Python 3, Node.js 22.18+, JDK 8+, and Maven 3.8+:
 
 ```bash
 ./tools/verify.sh

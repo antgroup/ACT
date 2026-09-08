@@ -1,0 +1,21 @@
+{
+  "requestId": "verification-request-associated-credit-002",
+  "verificationRecordId": "verification-record-associated-credit-002",
+  "agentId": "agent:example:shopping-assistant",
+  "completedLevel": "CREDENTIAL",
+  "result": "INCONCLUSIVE",
+  "reasonCode": "CREDIT_ASSERTION_UNAVAILABLE",
+  "credentialStatus": "ACTIVE",
+  "scope": [
+    "merchant:example:demo-store",
+    "transaction:purchase"
+  ],
+  "generatedAt": "2026-08-12T08:22:01Z",
+  "expiresAt": "2026-08-12T08:23:01Z",
+  "purposeLimited": true,
+  "responseProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "verifier:example:reference-service#key-1",
+    "signatureValue": "INCONCLUSIVE_VERIFICATION_RESPONSE_TEST_SIGNATURE"
+  }
+}

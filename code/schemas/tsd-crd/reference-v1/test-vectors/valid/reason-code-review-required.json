@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-review-required",
+  "description": "A verification outcome that needs manual handling returns REVIEW_REQUIRED.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "verification policy requires manual review"
+  },
+  "expectedResult": "REVIEW_REQUIRED",
+  "expectedReasonCode": "REVIEW_REQUIRED",
+  "expectedValid": true
+}

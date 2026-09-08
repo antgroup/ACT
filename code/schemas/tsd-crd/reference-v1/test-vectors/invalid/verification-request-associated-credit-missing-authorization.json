@@ -1,0 +1,31 @@
+{
+  "id": "verification-request-associated-credit-missing-authorization",
+  "description": "Associated-credit information verification requires a subject credit assertion reference and valid query authorization reference.",
+  "schema": "verification-request.schema.json",
+  "expectedValid": false,
+  "instance": {
+    "requestId": "verification-invalid-authorization-001",
+    "messageVersion": "reference-v1",
+    "relyingPartyId": "relying-party:vector:merchant",
+    "agentId": "agent:vector:shopping-assistant",
+    "verificationLevel": "ASSOCIATED_CREDIT",
+    "purpose": "MERCHANT_RISK_REFERENCE",
+    "businessContext": {
+      "orderId": "order-vector-001"
+    },
+    "requestedDataItems": [
+      "associatedCreditValue"
+    ],
+    "credential": {
+      "credentialId": "credential-attested-vector-001"
+    },
+    "requestedAt": "2026-08-12T10:30:00Z",
+    "antiReplay": {
+      "nonce": "verification-invalid-authorization-nonce"
+    },
+    "requestProof": {
+      "signatureAlgorithm": "Ed25519",
+      "signatureValue": "VECTOR_REQUEST_SIGNATURE"
+    }
+  }
+}

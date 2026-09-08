@@ -6,5 +6,7 @@ This directory contains maintainer and CI tooling for the repository. These file
 - `quality/check_repository.py`: repository structure, links, JSON, Python and release-wording checks.
 - `quality/create_public_snapshot.py`: public-release snapshot and sensitive-content checks.
 - `a402/validate_contract.py`: validation for the non-normative A402 schemas, fixtures and executable assertions.
+- `tsd-crd/validate_contract.py`: validation for the non-normative TSD-CRD
+  `reference-v1` schemas, examples, OpenAPI references, and test-vector layout.
 
 Tools may validate protocol artifacts, but they do not define ACT semantics. Normative text remains under `docs/specification/`; machine-readable implementation artifacts remain under `code/schemas/`.

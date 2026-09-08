@@ -1,0 +1,11 @@
+{
+  "id": "reason-code-credit-assertion-unavailable",
+  "description": "A temporarily unavailable subject credit assertion returns CREDIT_ASSERTION_UNAVAILABLE.",
+  "operation": "verificationReasonCode",
+  "input": {
+    "scenario": "subject credit assertion cannot currently be retrieved"
+  },
+  "expectedResult": "INCONCLUSIVE",
+  "expectedReasonCode": "CREDIT_ASSERTION_UNAVAILABLE",
+  "expectedValid": true
+}

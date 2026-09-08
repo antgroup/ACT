@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "authorization-revocation-request.schema.json",
+  "$comment": "Implementation Artifact / Non-normative. ACT 2.1 human-readable specification is authoritative.",
+  "title": "Credit Query Authorization Revocation Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "authorizationId",
+    "subjectId",
+    "reasonCode",
+    "requestedAt",
+    "antiReplay",
+    "requestProof"
+  ],
+  "properties": {
+    "requestId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "authorizationId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "subjectId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requestedAt": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "antiReplay": {
+      "$ref": "common.schema.json#/$defs/antiReplay"
+    },
+    "requestProof": {
+      "$ref": "common.schema.json#/$defs/proof"
+    }
+  }
+}

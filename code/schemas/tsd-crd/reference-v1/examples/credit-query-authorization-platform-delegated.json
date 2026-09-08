@@ -1,0 +1,37 @@
+{
+  "authorizationId": "authorization-platform-delegated-001",
+  "authorizationVersion": "reference-v1",
+  "mode": "PLATFORM_DELEGATED",
+  "subjectId": "subject:example:company",
+  "relyingPartyIds": [
+    "relying-party:example:procurement-platform"
+  ],
+  "platformDelegateId": "platform-delegate:example:procurement-platform",
+  "agentIds": [
+    "agent:example:service-assistant"
+  ],
+  "verificationLevel": "ASSOCIATED_CREDIT",
+  "purpose": "B2B_COUNTERPARTY_REVIEW",
+  "allowedDataItems": [
+    "associatedCreditValue",
+    "mappingPolicy",
+    "subjectCreditAssertionValid"
+  ],
+  "validFrom": "2026-08-12T08:20:00Z",
+  "expiresAt": "2026-09-12T08:20:00Z",
+  "frequencyLimit": {
+    "maxRequestsPerWindow": 10,
+    "windowDurationSeconds": 3600
+  },
+  "resultUseRestrictions": {
+    "mayStore": true,
+    "retentionSeconds": 86400,
+    "mayTransfer": false
+  },
+  "status": "ACTIVE",
+  "authorizationProof": {
+    "signatureAlgorithm": "Ed25519",
+    "keyId": "subject:example:company#key-1",
+    "signatureValue": "PLATFORM_AUTHORIZATION_TEST_SIGNATURE"
+  }
+}
