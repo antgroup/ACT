@@ -18,7 +18,7 @@ Under [`code/schemas/`](../code/schemas/README.md). It currently contains A402 a
 
 ## Is the TSD-CRD Sandbox a production credit service?
 
-No. [`code/samples/tsd-crd-reference/`](../code/samples/tsd-crd-reference/README.md) is a non-normative, non-production reference implementation using Mock identity/credit providers, in-memory state, and temporary test keys. Its tests and basic conformance runner do not prove full ACT 2.1 conformance or production readiness.
+No. The [TSD-CRD Reference Implementation guide](../integrations/tsd-crd/README.md) documents a non-production implementation under [`code/samples/tsd-crd-reference/`](../code/samples/tsd-crd-reference/README.md) using Mock identity/credit providers, in-memory state, and temporary test keys. TSD-CRD remains a normative ACT 2.1 subprotocol, but this particular implementation's tests and basic conformance runner do not prove full ACT 2.1 conformance or production readiness.
 
 ## Where do I configure an Alipay sandbox?
 

@@ -2,12 +2,12 @@
 
 中文 | [English](commerce-payment-negotiation.en.md)
 
-> **状态：ACT 2.1 Specification / Final / Normative**
-> 本文记录商业交互域与支付服务域的规范连接关系；完整 CID 见[商业交互域](commerce-interaction.md)。
+> **状态：ACT 2.1 / Final / Non-normative cross-domain guide**
+> 本文归纳商业交互域与支付服务域的连接关系，不新增规范语义；完整规则见[商业交互域](../../docs/specification/commerce-interaction.md)与[支付服务域](../../docs/specification/payment-services.md)，如有不一致以域正文为准。
 
 ## 1. 作用
 
-`CID-PCA-NEG` 用于在进入支付交互前确定双方可使用的支付方法和接入信息。《支付服务域》把它或等价机制作为 A402 的前置能力，并允许 INS、DEL、AUP 选择 A402、传统商户平台下单支付或相应 MCP/API 接口。
+`CID-PCA-NEG` 用于在进入支付交互前确定双方可使用的支付方法和接入信息。《支付服务域》把它或等价机制作为 A402 的前置能力，并允许 INS、DEL、AUP 选择 Skill、A402、传统商户平台下单支付或相应 MCP/OpenAPI 接口。
 
 源文档给出的协商结果至少涉及：
 

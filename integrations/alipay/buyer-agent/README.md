@@ -64,9 +64,3 @@ npm view @alipay/agent-payment@latest version dist.integrity
 - 留存不包含绑定码、密码或完整凭证的脱敏证据。
 
 然后按[端到端验证清单](../validation/README.md)与收费资源完成联调。
-
-## 5. 接入 Sandbox Showcase（可选）
-
-真实联调需要可视化时，宿主 Agent 可在官方支付工作流产生真实状态后，调用 [Buyer Event Adapter](../../../code/web-client/alipay-ai-pay-showcase/buyer-event-adapter.mjs)。Adapter 只接收脱敏的结构化状态与关联引用，不执行支付、不解析 CLI 对客文本，也不能接收完整 `Payment-Proof`。
-
-运行时接线和信号格式见 [Demo 的买方 Adapter 说明](../../../code/web-client/alipay-ai-pay-showcase/README.md#买方-agent-adapter)。没有官方 Skill/CLI 的真实结果时不得提交成功信号。

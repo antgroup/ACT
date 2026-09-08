@@ -1,6 +1,6 @@
 # ACT 2.1 Specification
 
-ACT 2.1 is organized into four domains and their cross-domain payment access rules. English files are official informative translations of the final Chinese publication. If a translation discrepancy is found, the Chinese publication remains controlling until governance resolves it.
+ACT 2.1 consists of the protocol overview and four domain specifications. Those five finalized Chinese documents are the complete normative publication. English files are official informative translations; if a translation discrepancy is found, the Chinese publication remains controlling until the translation is corrected in a subsequent repository release.
 
 Requirement keywords in both languages follow the [normative-language table](overview.en.md#normative-language). The corresponding [Chinese table](overview.md#规范性用语) is controlling.
 
@@ -11,7 +11,13 @@ Requirement keywords in both languages follow the [normative-language table](ove
 | Commerce Interaction Domain | [English](commerce-interaction.en.md) | [中文](commerce-interaction.md) |
 | Payment Services Domain | [English](payment-services.en.md) | [中文](payment-services.md) |
 | Trust Services Domain | [English](trust-services.en.md) | [中文](trust-services.md) |
-| A402 payment access protocol | [English](a402.en.md) | [中文](a402.md) |
-| Commerce-to-payment negotiation | [English](commerce-payment-negotiation.en.md) | [中文](commerce-payment-negotiation.md) |
 
-The scenario guide is informative: [English](../flows/scenarios.en.md) / [中文](../flows/scenarios.md). JSON Schemas, examples, and test vectors are implementation aids under [`code/schemas/`](../../code/schemas/README.md); the TSD-CRD `reference-v1` profile is explicitly non-normative.
+The scenario guide is part of the specification documentation set but is non-normative:
+
+| Guide | English | 中文 |
+|---|---|---|
+| Scenarios and Business Flows | [English](scenarios.en.md) | [中文](scenarios.md) |
+
+Non-normative A402 and commerce-to-payment guides are grouped under the [Alipay reference integration](../../integrations/alipay/README.md). JSON Schemas and fixtures are implementation aids under [`code/schemas/`](../../code/schemas/README.md).
+
+TSD-CRD's normative requirements are part of the Trust Services Domain. The optional [`reference-v1` machine profile](../../code/schemas/tsd-crd/reference-v1/README.md), [runnable reference implementation](../../code/samples/tsd-crd-reference/README.md), and [implementation guide](../../integrations/tsd-crd/README.md) are implementation aids and do not add or replace ACT 2.1 requirements.

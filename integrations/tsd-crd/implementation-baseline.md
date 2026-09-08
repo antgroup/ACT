@@ -1,15 +1,18 @@
-# 协议基线
+# TSD-CRD Reference Implementation 基线
+
+> **定位：Implementation guidance / Informative。**
+> TSD-CRD 是 ACT 2.1 的规范性协议内容；本文说明仓库参考实现如何对应协议正文和 `reference-v1`，不构成第二份协议正文。
 
 ## 当前基线
 
-本目录实现 ACT 2.1 信任服务域中的[信用关联子篇](../../../../docs/specification/trust-services.md)。
+[`code/samples/tsd-crd-reference/`](../../code/samples/tsd-crd-reference/README.md) 实现 ACT 2.1 信任服务域中的[信用关联子篇](../../docs/specification/trust-services.md)。
 
 实现分为三层：
 
 | 层次 | 作用 | 是否规范性来源 |
 | --- | --- | --- |
 | ACT 2.1 TSD-CRD 正文 | 定义参与方、业务语义、对象、流程和约束 | 是 |
-| [`reference-v1`](../../../schemas/tsd-crd/reference-v1/README.md) | 补充 JSON 字段、格式、算法和 HTTP 表达 | 否，除非实现明确采用该 Profile |
+| [`reference-v1`](../../code/schemas/tsd-crd/reference-v1/README.md) | 补充 JSON 字段、格式、算法和 HTTP 表达 | 否，除非实现明确采用该 Profile |
 | 参考实现 | 提供可运行的 Sandbox、CLI 和测试 | 否 |
 
 发生冲突时，以 ACT 2.1 正文为准。实现或 Profile 中新增的字段和流程不能反向解释为协议要求，基础一致性测试通过也不构成 ACT 2.1 全量 Conformance 声明。
