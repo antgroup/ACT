@@ -37,11 +37,6 @@
       <section class="playback-toolbar panel" aria-label="演示播放控制">
         <div class="playback-toolbar-heading">
           <div><p class="section-kicker">DEMO CONTROL</p><strong>选择场景并控制左右两侧同步运行</strong></div>
-          <div class="mode-tabs" role="tablist" aria-label="演示输入模式">
-            <button class="mode-tab active" id="demoTab" type="button" role="tab" aria-selected="true">引导演示</button>
-            <button class="mode-tab" id="liveTab" type="button" role="tab" aria-selected="false">连接官方沙箱事件</button>
-            <button class="mode-tab" id="replayTab" type="button" role="tab" aria-selected="false">证据回放</button>
-          </div>
         </div>
 
         <div class="input-row" id="demoControls">
@@ -70,20 +65,8 @@
           <div class="authorization-summary-facts" id="authorizationSummaryFacts"></div>
         </div>
 
-        <form class="input-row hidden" id="liveForm">
-          <label class="sr-only" for="eventStreamUrl">脱敏事件流地址</label>
-          <input id="eventStreamUrl" type="url" placeholder="https://…/act-events" autocomplete="off" />
-          <button class="primary-button" type="submit">连接事件流</button>
-        </form>
-
-        <div class="input-row hidden" id="replayControls">
-          <label class="file-button" for="replayFile">加载 NDJSON</label>
-          <input id="replayFile" type="file" accept=".ndjson,.jsonl,application/x-ndjson" />
-          <button class="secondary-button" id="playReplay" type="button" disabled>播放</button>
-          <button class="step-button" id="stepReplay" type="button" disabled>下一步 →</button>
-        </div>
         <div class="control-status" id="controlStatus" role="status">
-          引导演示只解释协议，不代表真实支付或沙箱验证。
+          引导演示只解释协议，不会连接或执行真实支付。
         </div>
       </section>
 
@@ -122,7 +105,7 @@
                 <div class="qr-pattern" aria-hidden="true"></div>
                 <strong>支付宝绑定</strong><span>演示二维码 · 不可扫码</span>
               </div>
-              <div class="binding-command hidden" id="bindingCommand"><small>短时绑定指令</small><strong>开启支付功能：••••••</strong><span>真实 6 位指令不得进入日志或 Replay</span></div>
+              <div class="binding-command hidden" id="bindingCommand"><small>短时绑定指令</small><strong>开启支付功能：••••••</strong><span>真实 6 位指令不得进入日志或演示数据</span></div>
             </article>
 
             <article class="resource-card tool-call-card locked" id="resourceCard">

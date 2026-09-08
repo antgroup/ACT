@@ -12,7 +12,6 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PRIVATE_PREFIXES = ("governance/internal/",)
 SENSITIVE_NAMES = {".env", "id_rsa", "id_ed25519"}
 SENSITIVE_SUFFIXES = {".key", ".p12", ".pfx"}
 
@@ -29,9 +28,6 @@ def repository_paths() -> list[Path]:
         if not raw:
             continue
         relative = Path(raw.decode("utf-8"))
-        portable = relative.as_posix()
-        if portable.startswith(PRIVATE_PREFIXES):
-            continue
         source = ROOT / relative
         if source.is_file() or source.is_symlink():
             paths.append(relative)
@@ -61,8 +57,6 @@ def build_snapshot(destination: Path) -> int:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target, follow_symlinks=False)
 
-    if (destination / "governance/internal").exists():
-        raise RuntimeError("private governance material leaked into public snapshot")
     return len(paths)
 
 

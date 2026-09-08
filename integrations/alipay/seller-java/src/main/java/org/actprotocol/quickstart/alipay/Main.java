@@ -9,8 +9,7 @@ public final class Main {
         PaidResourceServer server = new PaidResourceServer(
                 config,
                 gateway,
-                new BillSigner.Rsa2(config.privateKey),
-                DemoEventSink.fromEnvironment());
+                new BillSigner.Rsa2(config.privateKey));
         Runtime.getRuntime().addShutdownHook(new Thread(server::close));
         server.start();
         System.out.println("ACT Alipay paid resource listening on http://localhost:"

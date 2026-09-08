@@ -1,23 +1,36 @@
-# Contributing to ACT Protocol
+# 贡献指南
 
-Thank you for contributing. Read the [Code of Conduct](CODE_OF_CONDUCT.md), [governance rules](GOVERNANCE.md), and existing issues before starting.
+[English](CONTRIBUTING.en.md) | 简体中文
 
-## Repository map
+感谢你参与 ACT Protocol。开始前请阅读[行为准则](CODE_OF_CONDUCT.md)并查看现有 Issue。
 
-- `docs/`: ACT 2.1 specification, flows and explanatory material.
-- `code/`: machine artifacts, product-neutral samples and demos.
-- `integrations/`: provider-specific integrations, including Alipay.
-- `tools/`: active repository quality and release tooling; it does not define protocol semantics.
+## 选择入口
 
-## Workflow
+- 协议勘误、澄清或未来版本建议：[规范 Issue 模板](.github/ISSUE_TEMPLATE/spec-issue.md)
+- 样例、Schema、产品接入、Demo 或工具问题：[实现 Issue 模板](.github/ISSUE_TEMPLATE/implementation-issue.md)
+- 准备提交变更：[Pull Request 模板](.github/PULL_REQUEST_TEMPLATE.md)
+- 安全漏洞：不要创建公开 Issue，请按[安全政策](SECURITY.md)私密提交
 
-1. Open an issue for protocol semantics, new behavior or a breaking change. Security vulnerabilities must use the private channel in [SECURITY.md](SECURITY.md).
-2. Keep each pull request focused and identify whether it changes protocol, implementation artifacts, a product integration or documentation.
-3. Add tests appropriate to the change and run `./tools/verify.sh`.
-4. Explain compatibility, security and source impact in the pull request.
+## 提交变更
 
-ACT 2.1 is final. Typographical fixes and clarifications may update it without changing meaning; new normative behavior requires a future version and an accepted public decision. JSON Schema and examples must not silently expand normative requirements.
+1. 涉及协议语义、新行为或破坏性变更时，请先创建 Issue。安全漏洞必须通过 [SECURITY.md](SECURITY.md) 指定的私密渠道提交。
+2. 每个 Pull Request 应聚焦单一主题，并说明变更属于协议、机器产物、产品接入还是文档。
+3. 根据变更补充相应测试，并运行 `./tools/verify.sh`。
+4. 在 Pull Request 中说明兼容性和安全影响。
 
-Product integrations must cite current official product sources, keep credentials out of the repository and avoid presenting local tests as real sandbox evidence.
+ACT 2.1 已定稿。文字勘误和不改变含义的澄清可以更新；新增规范性行为必须面向未来协议版本。JSON Schema、产品接入和示例不得增加协议正文中不存在的要求。
 
-Contributors confirm they have the right to submit their material. Accepted contributions use the license assigned to the relevant file or directory by [LICENSE](LICENSE). No additional CLA or DCO sign-off is currently required.
+产品接入必须引用当前有效的官方产品来源，不得向仓库提交凭证，也不得把本地测试表述为真实沙箱证据。
+
+贡献者应确认有权提交相关内容。被接受的贡献适用 [LICENSE](LICENSE) 对相应文件或目录规定的许可证。目前不要求额外签署 CLA 或进行 DCO sign-off。
+
+## AI 辅助贡献与评审
+
+可以使用 AI 工具辅助编写代码、规范文本、文档、测试和评审，但 AI 不能替代贡献者或评审者的判断与责任。
+
+- 在 Pull Request 中说明 AI 实际参与的范围，例如代码生成、翻译、测试生成、资料整理或评审建议；仅使用普通补全且未形成实质内容时无需披露。
+- 提交前由贡献者本人检查生成内容，运行相应测试，并对准确性、安全性、许可证合规性和最终结果负责。
+- 不得将密钥、Token、支付凭证、个人信息、未脱敏证据或其他敏感资料提交给未经批准的 AI 服务。
+- 不得直接采用 AI 生成的协议语义、产品 API、错误码、链接、引用或兼容性结论；必须与 ACT 规范、官方产品来源和实际测试结果逐项核对。
+- AI 评审结果仅作为辅助意见。评审者应重点检查虚构事实、遗漏边界条件、不充分测试、不安全代码、错误翻译，以及机器产物或产品行为反向定义协议语义的问题。
+- Pull Request 的作者仍对提交内容负责，最终接受决定由项目维护者作出。

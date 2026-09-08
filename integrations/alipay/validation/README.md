@@ -56,7 +56,3 @@ cd integrations/alipay/seller-java
 - 未解决问题属于 Protocol、Product、Binding 还是 Implementation。
 
 不得记录账号、密钥、绑定码、支付密码、完整 Proof、`client_session` 或可重放请求。
-
-Demo 的脱敏事件格式见 [Demo 事件格式](../../../code/web-client/alipay-ai-pay-showcase/event-format.md)。Replay 只能来自已通过的官网沙箱链路。
-
-完整 Live 链路通过后，使用 Demo Bridge 的 `GET /events/export` 导出 NDJSON。人工完成脱敏复核后，再通过 `prepare-replay.mjs` 添加原验证编号和复核记录；未完成链路、未明确确认脱敏或包含明显敏感文本的文件不能生成合法 Replay。

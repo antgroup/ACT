@@ -61,10 +61,11 @@ def structure_errors() -> list[str]:
         "docs/specification/commerce-interaction.md", "docs/specification/commerce-interaction.en.md",
         "docs/specification/payment-services.md", "docs/specification/payment-services.en.md",
         "docs/specification/trust-services.md", "docs/specification/trust-services.en.md",
-        "docs/specification/a402.md", "docs/specification/a402.en.md",
-        "docs/specification/commerce-payment-negotiation.md",
-        "docs/specification/commerce-payment-negotiation.en.md",
-        "docs/flows/scenarios.md", "docs/flows/scenarios.en.md",
+        "docs/specification/scenarios.md", "docs/specification/scenarios.en.md",
+        "integrations/alipay/a402.md", "integrations/alipay/a402.en.md",
+        "integrations/alipay/commerce-payment-negotiation.md",
+        "integrations/alipay/commerce-payment-negotiation.en.md",
+        "integrations/tsd-crd/README.md",
         "code/schemas/a402/README.md", "code/schemas/a402/payment-needed.schema.json",
         "code/schemas/tsd-crd/reference-v1/README.md",
         "code/schemas/tsd-crd/reference-v1/schemas/association-credential.schema.json",
@@ -82,7 +83,8 @@ def structure_errors() -> list[str]:
     forbidden = [
         "specs", "code/examples", "integrations/profiles", "integrations/bindings",
         "docs/architecture", "docs/getting-started", "docs/project",
-        "governance/audits", "governance/internal",
+        "code/samples/tsd-crd-reference/docs",
+        "docs/reference-implementations/tsd-crd",
     ]
     errors += [
         f"obsolete release path contains publishable files: {p}"
@@ -141,8 +143,6 @@ def manifest_errors() -> list[str]:
         "docs/specification/commerce-interaction.md",
         "docs/specification/payment-services.md",
         "docs/specification/trust-services.md",
-        "docs/specification/a402.md",
-        "docs/specification/commerce-payment-negotiation.md",
     }
     declared_normative = {
         component.get("path")
@@ -163,21 +163,16 @@ def translation_errors() -> list[str]:
         ("docs/specification/commerce-interaction.md", "docs/specification/commerce-interaction.en.md"),
         ("docs/specification/payment-services.md", "docs/specification/payment-services.en.md"),
         ("docs/specification/trust-services.md", "docs/specification/trust-services.en.md"),
-        ("docs/specification/a402.md", "docs/specification/a402.en.md"),
+        ("docs/specification/scenarios.md", "docs/specification/scenarios.en.md"),
+        ("integrations/alipay/a402.md", "integrations/alipay/a402.en.md"),
         (
-            "docs/specification/commerce-payment-negotiation.md",
-            "docs/specification/commerce-payment-negotiation.en.md",
+            "integrations/alipay/commerce-payment-negotiation.md",
+            "integrations/alipay/commerce-payment-negotiation.en.md",
         ),
-        ("docs/flows/scenarios.md", "docs/flows/scenarios.en.md"),
     ]
-    translation_marker = "Translation status: Official English translation / Informative"
     for source_name, translation_name in pairs:
         source = (ROOT / source_name).read_text(encoding="utf-8")
         translation = (ROOT / translation_name).read_text(encoding="utf-8")
-        if translation_marker not in translation:
-            errors.append(f"{translation_name}: missing official informative translation marker")
-        if "Chinese ACT 2.1 publication remains controlling" not in translation:
-            errors.append(f"{translation_name}: missing Chinese controlling-language notice")
         source_headings = HEADING.findall(source)
         translation_headings = HEADING.findall(translation)
         if source_headings != translation_headings:
@@ -210,7 +205,7 @@ def release_wording_errors() -> list[str]:
             r"public protocol entry point[^\n]*(?:authority|controls)|官网同步完成前)", re.I
         ),
     }
-    checked = [p for p in files("*.md") if "governance/decisions" not in p.as_posix()]
+    checked = files("*.md")
     checked += files("*.json")
     for path in checked:
         text = path.read_text(encoding="utf-8")

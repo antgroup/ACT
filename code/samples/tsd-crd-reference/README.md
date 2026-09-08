@@ -25,7 +25,7 @@ ACT 2.1 信用关联子篇（TSD-CRD）的可执行参考实现、本地 Sandbox
 
 协议正文规定业务语义；[`code/schemas/tsd-crd/reference-v1`](../../schemas/tsd-crd/reference-v1/README.md) 补充一套非规范性机器可读格式；本目录提供其中一种可运行实现。三者冲突时，以 ACT 2.1 协议正文为准。
 
-详细说明见[协议基线](docs/protocol-baseline.md)和 [Reference Profile v1](../../schemas/tsd-crd/reference-v1/README.md)。本目录由独立 TSD-CRD 仓库提交 `fdf7006d97ae06645dce82400fac2dff964691f2` 迁入；迁入时保留 `reference-v1` 的 wire 字段和固定签名向量。
+详细说明见[参考实现基线](../../../integrations/tsd-crd/implementation-baseline.md)和 [Reference Profile v1](../../schemas/tsd-crd/reference-v1/README.md)。本目录由独立 TSD-CRD 仓库提交 `fdf7006d97ae06645dce82400fac2dff964691f2` 迁入；迁入时保留 `reference-v1` 的 wire 字段和固定签名向量。
 
 ## 两种主体确认方式
 
@@ -36,7 +36,7 @@ ACT 2.1 信用关联子篇（TSD-CRD）的可执行参考实现、本地 Sandbox
 
 这里的“一层”和“两层”只指信用关联凭证的签名结构，不包括 HTTPS、回调验签或其他传输层保护。
 
-协议不要求 Agent 提交公钥、使用 Agent 私钥签署挑战值或完成 `AgentControlProof`。基于 nonce 的 Agent 密钥持有证明属于可选安全扩展，不在 P0 默认流程和基础一致性测试范围内。当前仓库只有[设计说明](docs/agent-key-possession-extension.md)，尚未实现对应代码。它不能替代主体确认或签发方签名。
+协议不要求 Agent 提交公钥、使用 Agent 私钥签署挑战值或完成 `AgentControlProof`。基于 nonce 的 Agent 密钥持有证明属于可选安全扩展，不在 P0 默认流程和基础一致性测试范围内。当前仓库只有[设计说明](../../../integrations/tsd-crd/agent-key-possession-extension.md)，尚未实现对应代码。它不能替代主体确认或签发方签名。
 
 ## P0 范围
 
@@ -88,12 +88,13 @@ Demo 默认使用 `ATTESTED_CONFIRMATION`，通过 Mock 主体确认服务完成
 
 Sandbox 对验证请求、DIRECT 主体确认、查询授权及生命周期变更采用失败关闭策略：必须注入可信公钥解析器并完成身份—公钥绑定和 Ed25519 验签；未配置解析器、无法解析密钥或证明无效时直接拒绝。Demo 使用进程内临时测试密钥和显式测试身份绑定，生产实现必须替换为可信密钥目录或等效信任来源。
 
-更多运行说明见[快速开始](docs/quickstart.md)。Sandbox 的接口以非规范性 [OpenAPI](../../schemas/tsd-crd/reference-v1/openapi/openapi.yaml) 为准，创建申请使用 `POST /v1/association-applications`。
+更多运行说明见[快速开始](../../../integrations/tsd-crd/quickstart.md)。Sandbox 的接口以 `reference-v1` [OpenAPI](../../schemas/tsd-crd/reference-v1/openapi/openapi.yaml) 为准，创建申请使用 `POST /v1/association-applications`。
 
 ## 目录结构
 
 ```text
 act-protocol/
+├── integrations/tsd-crd/                      # 实现指南、架构和安全边界
 ├── code/schemas/tsd-crd/reference-v1/
 │   ├── schemas/                     # JSON Schema
 │   ├── openapi/                     # HTTP API 描述
@@ -108,11 +109,10 @@ act-protocol/
     │   ├── cli/                     # CLI 和 Demo 入口
     │   └── conformance/             # 一致性测试 Runner
     ├── test/                        # 单元和集成测试
-    ├── examples/                    # 可运行示例
-    └── docs/                        # 架构、协议和安全说明
+    └── examples/                    # 可运行示例
 ```
 
-架构和依赖边界见 [架构说明](docs/architecture.md)。
+架构和依赖边界见 [架构说明](../../../integrations/tsd-crd/architecture.md)。
 
 ## 非生产边界
 
@@ -124,7 +124,7 @@ act-protocol/
 - 不要把内存存储、Mock 身份确认和固定映射规则用于生产。
 - 生产实现必须自行补充密钥管理、数据保护、审计、合规、可用性和风险控制。
 
-详见[安全模型](docs/security-model.md)和仓库的[安全政策](../../../SECURITY.md)。
+详见[安全模型](../../../integrations/tsd-crd/security-model.md)和仓库的[安全政策](../../../SECURITY.md)。
 
 ## 参与贡献
 
