@@ -13,6 +13,25 @@ test("offers guided L1, L2, and L3 scenarios", () => {
   }
 });
 
+test("keeps the synchronized L1 request, validation, confirmation, and delivery flow", () => {
+  assert.match(index, /id="eventCounter">0 \/ 17/);
+  for (const state of [
+    "PAYMENT_REQUEST_SUBMITTED",
+    "PAYMENT_REQUEST_VALIDATED",
+    "USER_AUTHORIZATION_REQUIRED",
+    "PAYMENT_PROCESSING",
+    "PAYMENT_RESULT_RECEIVED",
+    "RESOURCE_REQUEST_RETRIED",
+    "PAYMENT_VERIFIED",
+    "RESOURCE_DELIVERED",
+    "FULFILLMENT_CONFIRMED",
+  ]) {
+    assert.match(app, new RegExp(`${state}:`));
+  }
+  assert.equal(app.includes("PAYMENT_QR_PRESENTED"), false);
+  assert.match(app, /payment_validation_status/);
+});
+
 test("does not expose a sandbox, live-event, or evidence-replay mode", () => {
   const published = `${index}\n${app}\n${JSON.stringify(packageJson.scripts)}`;
   for (const marker of ["LIVE_SANDBOX", "SANITIZED_REPLAY", "liveTab", "replayTab", "连接官方沙箱事件", "证据回放"]) {

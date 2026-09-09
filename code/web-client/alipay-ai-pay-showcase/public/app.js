@@ -27,13 +27,6 @@ const stateCatalog = {
     explanation: "授权后用户将短时绑定指令返回 Agent，官方能力确认绑定成功；后续每笔支付仍需按 L1 逐笔授权。",
     agent: "支付宝支付功能已经绑定。短时绑定指令未被记录，现在可以继续本次购买。",
   },
-  PAYMENT_QR_PRESENTED: {
-    label: "核身后生成付款码", phase: "INS / L1", domain: "PSD", component: "PSD-PAY-INS · L1",
-    binding: "支付宝官方支付卡片", profile: "用户逐笔确认后生成本笔支付二维码",
-    product: "Agent 支付 · 扫码支付", code: "INS · QR",
-    explanation: "本笔交易生成支付宝支付卡片和二维码。二维码由官方产品生成；Demo 仅展示不可扫码占位图。",
-    agent: "本笔 0.01 元支付卡片已经生成，请使用支付宝扫码完成付款。",
-  },
   SPECIFIED_INTENT_CAPTURED: {
     label: "明确自动支付意图", phase: "ADD / L2", domain: "ADD", component: "ADD-INT-ICS · SPECIFIED",
     binding: "指定商品、商户、金额与受托 Agent", profile: "ACT L2 协议语义",
@@ -138,28 +131,52 @@ const stateCatalog = {
     explanation: "Seller 返回机器可读 Payment-Needed，并回显已协商的 method_id；资源继续锁定。",
     agent: "服务返回了一张机器账单。我正在核对商品、金额、支付方法和有效期。",
   },
+  PAYMENT_REQUEST_SUBMITTED: {
+    label: "Agent 发起本笔支付",
+    phase: "INS / L1",
+    domain: "PSD",
+    component: "PSD-PAY-INS · payment request",
+    binding: "Buyer Agent → PSP 支付请求",
+    profile: "订单、金额、支付工具引用与唯一请求标识",
+    product: "AI 按量付费 · 将账单交给支付宝支付能力",
+    code: "INS · REQUEST",
+    explanation: "Buyer Agent 根据 Payment-Needed 构造本笔支付请求，携带商户订单、金额、币种、支付工具引用和唯一请求标识后提交给 PSP。",
+    agent: "我已核对机器账单，正在把本笔 0.01 元支付请求提交给支付宝支付能力。",
+  },
+  PAYMENT_REQUEST_VALIDATED: {
+    label: "PSP 校验支付请求",
+    phase: "INS / L1",
+    domain: "PSD",
+    component: "PSD-PAY-INS · PSP validation",
+    binding: "PSP 校验请求、时效、签名与支付工具",
+    profile: "ACT 基础校验 ↔ 支付宝受理与风控",
+    product: "Agent 支付 · 支付受理与风险校验",
+    code: "INS · CHECK",
+    explanation: "PSP 在唤起用户确认前完成请求完整性、时效、Agent 身份或签名以及支付工具有效性的基础校验；本 Demo 不虚构支付宝内部报文字段。",
+    agent: "支付宝已受理请求并完成基础校验，下一步由用户在官方确认界面核对本笔交易。",
+  },
   USER_AUTHORIZATION_REQUIRED: {
-    label: "用户对本笔核身确认",
+    label: "用户确认本笔支付",
     phase: "INS / L1",
     domain: "PSD",
     component: "PSD-PAY-INS · L1",
-    binding: "支付宝官方 Skill / CLI",
-    profile: "INS/L1 场景 ↔ 用户逐笔确认",
-    product: "Agent 支付 · 用户在场",
+    binding: "PSP 收银台 / 确认界面",
+    profile: "核身方式由 PSP 按风控与终端环境决定",
+    product: "Agent 支付 · 用户逐笔确认",
     code: "INS · L1",
-    explanation: "当前场景预先采用 L1。PSP 完成基础校验，并在资金处理前取得用户对本笔金额、商户与支付方式的确认和身份验证。",
-    agent: "L1 不允许自动扣款：请你对这一笔核身，并确认收款方、商品、金额和支付方式。",
+    explanation: "当前场景采用 L1。用户在 PSP 官方确认界面核对金额、商户和支付方式，并按 PSP 基于风控与终端环境选择的方式完成本笔确认或身份验证。",
+    agent: "用户已在支付宝确认界面核对本笔交易并完成确认，可以进入支付执行。",
   },
   PAYMENT_PROCESSING: {
-    label: "支付宝处理中",
+    label: "支付执行中",
     phase: "INS / L1",
     domain: "PSD",
-    component: "Payment execution / status",
-    binding: "支付宝官方 Skill / CLI",
+    component: "PSD-PAY-INS · 支付执行",
+    binding: "PSP 资金扣划或额度冻结",
     profile: "ACT 支付执行 ↔ 支付宝官方支付流程",
     product: "Agent 支付 · 支付与查询",
     code: "INS · PAY",
-    explanation: "支付宝官方能力处理本次支付；结果未知时查询原交易，不能创建第二笔支付。",
+    explanation: "用户完成本笔即时确认后，PSP 执行资金扣划或额度冻结；结果未知时只能查询原交易，不能创建第二笔支付。",
     agent: "支付宝正在处理本次支付。结果确认前不会重复付款。",
   },
   PAYMENT_RESULT_RECEIVED: {
@@ -167,7 +184,7 @@ const stateCatalog = {
     phase: "INS / L1",
     domain: "PSD",
     component: "Payment result / Proof reference",
-    binding: "支付宝官方 Skill / CLI",
+    binding: "PSP → Buyer Agent 支付结果",
     profile: "官方支付结果提供脱敏 Proof 引用",
     product: "Agent 支付 · 支付结果",
     code: "INS · RESULT",
@@ -187,40 +204,40 @@ const stateCatalog = {
     agent: "正在携带支付凭据重试同一个资源请求。",
   },
   PAYMENT_VERIFIED: {
-    label: "服务方验款",
+    label: "核验 Payment-Proof",
     phase: "A402",
     domain: "PSD",
-    component: "Proof verification / Validation mapping",
-    binding: "支付宝 payment.verify",
-    profile: "ACT 2.1 Payment-Validation ↔ 支付宝验款结果",
-    product: "AI 按量付费 · payment.verify",
+    component: "PSD-PAY-A402 · Payment-Proof verification",
+    binding: "由 method_id 对应支付方法规范定义",
+    profile: "ACT 验款抽象 ↔ 支付宝 active、金额、订单与资源校验",
+    product: "AI 按量付费 · alipay.aipay.agent.payment.verify",
     code: "A402 · VERIFY",
-    explanation: "Seller 通过支付宝官方接口核验状态、金额、订单、资源和防重。ACT 2.1 Payment-Validation 映射到验款结果，不冒充已上线 Header。",
-    agent: "卖方已通过支付宝官方接口完成验款，正在准备交付资源。",
+    explanation: "Seller 解析 Buyer 携带的 Payment-Proof。ACT 2.1 只规定按支付方法规范向 PSP 或受信验证服务核验；本 Demo 映射为支付宝 AI 按量付费的 alipay.aipay.agent.payment.verify，并检查 active、金额、订单、资源和重复履约。",
+    agent: "卖方已取得 Payment-Proof 核验结果，接下来由卖方生成 A402 成功响应。",
   },
   RESOURCE_DELIVERED: {
-    label: "资源交付",
-    phase: "FULFILLMENT",
-    domain: "BUSINESS FULFILLMENT",
-    component: "Resource delivery",
-    binding: "HTTP 成功响应",
-    profile: "资源交付是独立业务事实，不等同于支付成功",
-    product: "AI 按量付费 · 服务交付",
-    code: "DELIVERY",
-    explanation: "验款通过后，Seller 对同一请求返回对应资源；重复请求只返回幂等结果。",
-    agent: "专业数据已经交付，我正在把它整理成最终报告。",
+    label: "返回付费资源",
+    phase: "A402",
+    domain: "PSD",
+    component: "PSD-PAY-A402 · resource delivery",
+    binding: "HTTP 200 + 付费资源；可选 Payment-Validation",
+    profile: "ACT 要求交付资源；本 Demo 选择附带可选验证 Header",
+    product: "AI 按量付费 · 验凭通过后返回资源内容",
+    code: "A402 · DELIVERY",
+    explanation: "验款通过后，Seller 必须向 Buyer Agent 返回资源或启动服务。ACT 2.1 允许但不强制在成功响应中携带 Payment-Validation；本 Demo 选择以 HTTP 200 同时返回该 Header 和付费资源。",
+    agent: "我已收到专业数据；本 Demo 的卖方还选择返回了可选的 Payment-Validation Header。",
   },
   FULFILLMENT_CONFIRMED: {
-    label: "履约确认",
+    label: "异步发送履约回执",
     phase: "FULFILLMENT",
     domain: "PSD / PRODUCT",
-    component: "Method fulfillment confirmation",
-    binding: "支付宝 fulfillment.confirm · 卖方观察",
-    profile: "产品履约确认与可选 TSD 证据相互独立",
-    product: "AI 按量付费 · 履约确认",
+    component: "PSD-PAY-A402 · post-fulfillment confirmation",
+    binding: "按支付方法规范向 PSP 确认履约",
+    profile: "ACT 履约确认抽象 ↔ 支付宝异步履约回执",
+    product: "AI 按量付费 · alipay.aipay.agent.fulfillment.confirm",
     code: "RECEIPT",
-    explanation: "卖方已完成支付宝产品履约确认。本 Demo 不把该调用冒充 TSD 事件；买方 ack 与卖方 confirm 是不同方向的产品动作。",
-    agent: "资源已交付，卖方产品履约确认已完成；可选 TSD 证据仍独立异步处理。",
+    explanation: "ACT 2.1 要求卖方按具体支付方法规范确认履约，但不定义 API 名称；支付宝 AI 按量付费将它实现为资源返回后的异步 alipay.aipay.agent.fulfillment.confirm 调用。该产品回执不是 TSD 事件。",
+    agent: "资源已经交付，卖方正在异步向支付宝发送产品履约回执。",
   },
   PAYMENT_PENDING: {
     label: "结果待确认",
@@ -240,7 +257,7 @@ const stateCatalog = {
     phase: "RECOVERY",
     domain: "PSD",
     component: "Proof consistency / replay checks",
-    binding: "payment.verify 拒绝",
+    binding: "Payment-Proof 验证失败",
     profile: "必须同时通过产品验款与本地账单一致性检查",
     product: "AI 按量付费 · 验款失败",
     code: "REJECTED",
@@ -249,15 +266,15 @@ const stateCatalog = {
     failure: true,
   },
   VERIFICATION_UNAVAILABLE: {
-    label: "验款暂不可用",
+    label: "凭证核验暂不可用",
     phase: "RECOVERY",
     domain: "PSD",
     component: "Verification availability",
     binding: "503 + Retry-After",
     profile: "示例恢复响应，不代表支付宝线上报文承诺",
-    product: "AI 按量付费 · payment.verify",
+    product: "本 Demo 不声明具体支付宝核验接口",
     code: "RETRY",
-    explanation: "官方验款暂不可用。Seller 返回可重试错误，不能猜测支付成功或提前交付。",
+    explanation: "凭证核验服务暂不可用。Seller 返回可重试错误，不能猜测支付成功或提前交付。",
     agent: "验款服务暂不可用。稍后会重试同一交易，不会重复扣款。",
     failure: true,
   },
@@ -267,7 +284,8 @@ const authorizationFlows = {
   L1: [
     "PAYMENT_TOOL_STATUS_CHECKED", "WALLET_BINDING_REQUIRED", "WALLET_BINDING_QR_PRESENTED", "WALLET_BOUND",
     "CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED",
-    "USER_AUTHORIZATION_REQUIRED", "PAYMENT_QR_PRESENTED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED",
+    "PAYMENT_REQUEST_SUBMITTED", "PAYMENT_REQUEST_VALIDATED", "USER_AUTHORIZATION_REQUIRED",
+    "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED",
     "RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED",
   ],
   L2: [
@@ -289,7 +307,6 @@ const exchangeCatalog = {
   WALLET_BINDING_REQUIRED: { from: "psp", to: "buyer", message: "返回官方开通与授权绑定指引" },
   WALLET_BINDING_QR_PRESENTED: { from: "buyer", to: "principal", message: "展示支付宝官方绑定链接 / 二维码" },
   WALLET_BOUND: { from: "principal", to: "psp", message: "提交短时绑定指令并确认支付能力就绪" },
-  PAYMENT_QR_PRESENTED: { from: "psp", to: "principal", message: "生成本笔交易的支付宝扫码支付卡片" },
   SPECIFIED_INTENT_CAPTURED: { from: "principal", to: "auth", message: "明确指定商户、资源、金额和受托 Agent" },
   SPECIFIED_IAC_ISSUED: { from: "auth", to: "buyer", message: "签发 SPECIFIED IAC 与 delegation_id" },
   SPECIFIED_IAC_VERIFIED: { from: "buyer", to: "buyer", message: "本地检查 IAC 状态、范围与 Agent 绑定" },
@@ -302,13 +319,15 @@ const exchangeCatalog = {
   ORDER_CONFIRMED: { from: "buyer", to: "seller", message: "确认商品：趋势数据 API · 单价 0.01 元 · 调用 1 次" },
   RESOURCE_REQUESTED: { from: "buyer", to: "seller", message: "Agent 请求调用 AI 支付行业趋势数据 API" },
   PAYMENT_REQUIRED: { from: "seller", to: "buyer", message: "服务返回报价：0.01 CNY，并保持数据锁定" },
-  USER_AUTHORIZATION_REQUIRED: { from: "buyer", to: "principal", message: "请确认：向示例专业数据服务支付 0.01 元" },
-  PAYMENT_PROCESSING: { from: "principal", to: "psp", message: "支付宝处理本次 0.01 元支付" },
+  PAYMENT_REQUEST_SUBMITTED: { from: "buyer", to: "psp", message: "提交商户订单、金额、支付工具引用与唯一请求标识" },
+  PAYMENT_REQUEST_VALIDATED: { from: "psp", to: "psp", message: "校验请求、时效、Agent 身份或签名与支付工具" },
+  USER_AUTHORIZATION_REQUIRED: { from: "principal", to: "psp", message: "在支付宝确认界面核对交易并完成本笔确认或身份验证" },
+  PAYMENT_PROCESSING: { from: "psp", to: "psp", message: "确认通过后执行资金扣划或额度冻结" },
   PAYMENT_RESULT_RECEIVED: { from: "psp", to: "buyer", message: "付款结果已确认，Agent 获得脱敏支付凭据" },
   RESOURCE_REQUEST_RETRIED: { from: "buyer", to: "seller", message: "Agent 携付款凭据重新请求同一份趋势数据" },
-  PAYMENT_VERIFIED: { from: "seller", to: "psp", message: "核对交易、金额、订单和目标数据资源" },
-  RESOURCE_DELIVERED: { from: "seller", to: "buyer", message: "验款通过，返回结构化趋势数据" },
-  FULFILLMENT_CONFIRMED: { from: "seller", to: "psp", message: "服务方确认本次数据交付已完成" },
+  PAYMENT_VERIFIED: { from: "seller", to: "psp", message: "按支付方法规范核验 Proof；本实现调用支付宝 payment.verify" },
+  RESOURCE_DELIVERED: { from: "seller", to: "buyer", message: "HTTP 200 返回资源；本 Demo 另附可选 Payment-Validation" },
+  FULFILLMENT_CONFIRMED: { from: "seller", to: "psp", message: "异步调用支付宝 fulfillment.confirm 发送履约回执" },
   PAYMENT_PENDING: { from: "buyer", to: "psp", message: "查询原支付结果；不会再次发起付款" },
   PROOF_REJECTED: { from: "seller", to: "buyer", message: "付款凭据不匹配，数据保持锁定" },
   VERIFICATION_UNAVAILABLE: { from: "psp", to: "seller", message: "验款暂不可用，稍后重试且不提前交付" },
@@ -326,33 +345,27 @@ const phaseCatalogs = {
   L1: [
     { eyebrow: "PMT-BND", label: "开通并绑定", states: ["PAYMENT_TOOL_STATUS_CHECKED", "WALLET_BINDING_REQUIRED", "WALLET_BINDING_QR_PRESENTED", "WALLET_BOUND"] },
     { eyebrow: "CID + A402", label: "选服务与报价", states: ["CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED"] },
-    { eyebrow: "INS / L1", label: "逐笔核身确认", states: ["USER_AUTHORIZATION_REQUIRED", "PAYMENT_QR_PRESENTED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
-    { eyebrow: "A402", label: "凭据与验款", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE"] },
-    { eyebrow: "FULFILLMENT", label: "获取数据", states: ["RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
+    { eyebrow: "INS / L1", label: "逐笔请求与确认", states: ["PAYMENT_REQUEST_SUBMITTED", "PAYMENT_REQUEST_VALIDATED", "USER_AUTHORIZATION_REQUIRED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
+    { eyebrow: "A402", label: "支付凭证核验", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE"] },
+    { eyebrow: "A402 + FULFILLMENT", label: "响应与履约", states: ["RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
   ],
   L2: [
     { eyebrow: "ADD", label: "明确委托", states: ["SPECIFIED_INTENT_CAPTURED"] },
     { eyebrow: "SPECIFIED IAC", label: "签发授权", states: ["SPECIFIED_IAC_ISSUED"] },
     { eyebrow: "CID + A402", label: "选服务与报价", states: ["CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED"] },
     { eyebrow: "DEL / L2", label: "意图匹配自动付", states: ["SPECIFIED_IAC_VERIFIED", "DEL_PSP_AUTHORIZED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
-    { eyebrow: "A402", label: "验款与交付", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
+    { eyebrow: "A402", label: "凭证核验、响应与履约", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
   ],
   L3: [
     { eyebrow: "ADD", label: "定义任务边界", states: ["BOUNDED_INTENT_CAPTURED"] },
     { eyebrow: "BOUNDED IAC", label: "签发授权", states: ["BOUNDED_IAC_ISSUED"] },
     { eyebrow: "CID + A402", label: "自主选服务", states: ["CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED"] },
     { eyebrow: "AUP / L3", label: "边界内自主付", states: ["AUP_BOUNDARY_CHECKED", "AUP_PSP_AUTHORIZED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
-    { eyebrow: "A402", label: "验款与交付", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
+    { eyebrow: "A402", label: "凭证核验、响应与履约", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
   ],
 };
 
 const forbiddenKeys = /(^|_)(secret|private_key|access_token|app_auth_token|payment_proof|client_session|binding_code|password)($|_)/i;
-const detailKeys = [
-  "authorization_level", "delegation_mode", "delegation_id", "method_id", "method_version", "psp_id", "http_method", "commerce_confirmation_ref",
-  "request_ref", "request_fingerprint", "order_ref", "proof_ref", "transaction_ref",
-  "resource_id", "amount", "currency", "validation_mapping", "delivery_ref", "fulfillment_ref",
-  "idempotent_replay", "recovery_action",
-];
 const demoBase = {
   mode: "GUIDED_DEMO",
   source: "illustrative-ui-demo",
@@ -368,7 +381,7 @@ const authorizationCopy = {
     description: "Agent 可以准备订单，但每笔扣款前都必须回到用户确认金额、商户与支付方式。",
     facts: ["用户逐笔在场", "逐笔核身确认", "Agent 不可自动扣款"],
     userRequest: "帮我生成《2026 AI 支付趋势报告》，需要付款时每一笔都让我核身确认。",
-    intro: "L1 中 Agent 可以寻找并报价，但每一笔支付都必须由用户在场核身确认。本页演示首次绑定、逐笔确认、扫码付款和数据交付。",
+    intro: "L1 中 Agent 可以寻找并报价，但每一笔支付都必须由用户在场核身确认。本页演示首次绑定、逐笔核身、支付执行和数据交付。",
     idle: "我会先寻找专业数据；收到报价后必须请你对本笔支付核身确认。",
   },
   L2: {
@@ -393,19 +406,19 @@ const authorizationCopy = {
 
 const elements = Object.fromEntries(
   [
-    "actBinding", "actComponent", "actDomain", "agentMessage", "alipayProduct", "controlStatus",
-    "correlationChain", "currentState", "eventCounter", "evidenceDetails", "baselineValue", "footerScenarioValue",
-    "evidenceRef", "exchangeCard", "fromActor", "directionArrow", "layerCode",
-    "methodId", "modeBadge", "phaseRail", "playDemo", "demoControls",
+    "actBinding", "actComponent", "agentMessage", "alipayProduct", "controlStatus",
+    "currentState", "eventCounter", "baselineValue", "footerScenarioValue",
+    "exchangeCard", "fromActor", "directionArrow", "layerCode",
+    "modeBadge", "phaseRail", "playDemo", "demoControls",
     "resetDemo", "resourceCard", "resourceDescription", "resourceId", "resourcePrice",
     "resourceState", "resourceTitle", "scenarioSelect", "stateExplanation", "stepDemo",
-    "stepReplay", "taskResult", "taskStatusDot", "timeline", "toActor", "wireBadge", "wireMessage",
-    "principalActor", "buyerActor", "sellerActor", "pspActor", "authActor", "profileMapping", "tsdStatus",
+    "taskResult", "taskStatusDot", "timeline", "toActor", "wireBadge", "wireMessage",
+    "principalActor", "buyerActor", "sellerActor", "pspActor", "authActor", "profileMapping",
     "businessJourney", "purchaseStatus", "businessActionTitle", "agentThinkingLabel",
-    "paymentCard", "paymentCardKind", "paymentCardTitle", "paymentCardStatus", "paymentCardHint", "paymentQr", "resultArtifact",
+    "paymentCard", "paymentCardKind", "paymentCardTitle", "paymentCardStatus", "paymentCardHint", "resultArtifact",
     "authorizationSelect", "authorizationCard", "authorizationCardKind", "authorizationCardTitle",
-    "authorizationCardStatus", "authorizationCardDescription", "authorizationFacts", "bindingQr", "bindingCommand", "protocolLayerValue",
-    "productLayerValue", "footerProfileValue", "pspActorIcon", "pspActorName", "pspActorDescription", "layerExplanation",
+    "authorizationCardStatus", "authorizationCardDescription", "authorizationFacts", "bindingQr", "bindingCommand",
+    "footerProfileValue", "pspActorIcon", "pspActorName", "pspActorDescription",
     "authorizationSummary", "authorizationSummaryLevel", "authorizationSummaryEyebrow", "authorizationSummaryTitle",
     "authorizationSummaryDescription", "authorizationSummaryFacts", "userRequest", "introScenarioCopy",
   ].map((id) => [id, document.getElementById(id)]),
@@ -491,8 +504,8 @@ function displayState(id, index) {
     }[id] || state.code,
     explanation: {
       RESOURCE_REQUEST_RETRIED: "Buyer 再次提交相同 Proof 与同一请求指纹；不会创建第二笔支付。",
-      PAYMENT_VERIFIED: "Seller 仍执行权威验款与一致性检查，并命中既有防重占用记录。",
-      RESOURCE_DELIVERED: "Seller 返回已保存的交付结果，不重复非幂等交付，也不再次触发履约确认。",
+      PAYMENT_VERIFIED: "Seller 仍调用支付方法的权威验款能力，并命中既有防重占用记录；此时尚未向 Buyer 返回资源。",
+      RESOURCE_DELIVERED: "Seller 以 HTTP 200 返回既有交付结果，并可附带 Payment-Validation；不重复非幂等交付，也不再次触发履约确认。",
     }[id] || state.explanation,
   };
 }
@@ -513,22 +526,22 @@ const businessJourneys = {
     { title: "检查支付能力", detail: "首次使用确认开通状态", states: ["PAYMENT_TOOL_STATUS_CHECKED", "WALLET_BINDING_REQUIRED"] },
     { title: "完成钱包绑定", detail: "扫码授权并返回短时指令", states: ["WALLET_BINDING_QR_PRESENTED", "WALLET_BOUND"] },
     { title: "获取服务报价", detail: "选择 API 并收到 0.01 元账单", states: ["CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED"] },
-    { title: "本笔核身确认", detail: "每笔都回到用户确认后付款", states: ["USER_AUTHORIZATION_REQUIRED", "PAYMENT_QR_PRESENTED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
-    { title: "验款并交付", detail: "携 Proof 重试并生成报告", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
+    { title: "发起并确认本笔支付", detail: "Agent 提交，PSP 校验，用户逐笔确认", states: ["PAYMENT_REQUEST_SUBMITTED", "PAYMENT_REQUEST_VALIDATED", "USER_AUTHORIZATION_REQUIRED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
+    { title: "凭证核验、响应并履约", detail: "携 Proof 重试，接收资源和可选验证 Header", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
   ],
   L2: [
     { title: "明确委托目标", detail: "限定商户、资源和金额", states: ["SPECIFIED_INTENT_CAPTURED"] },
     { title: "签发定向授权", detail: "生成 SPECIFIED IAC", states: ["SPECIFIED_IAC_ISSUED"] },
     { title: "调用目标服务", detail: "命中指定 API 并收到报价", states: ["CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED"] },
     { title: "自动执行指定支付", detail: "完全匹配意图，不再询问用户", states: ["SPECIFIED_IAC_VERIFIED", "DEL_PSP_AUTHORIZED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
-    { title: "验款并交付", detail: "A402 恢复原请求", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
+    { title: "凭证核验、响应并履约", detail: "A402 恢复原请求并接收资源", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
   ],
   L3: [
     { title: "定义任务边界", detail: "设置目标与 1 元总预算", states: ["BOUNDED_INTENT_CAPTURED"] },
     { title: "签发任务授权", detail: "生成 BOUNDED IAC", states: ["BOUNDED_IAC_ISSUED"] },
     { title: "自主选择服务", detail: "Agent 在边界内比较并调用", states: ["CAPABILITY_NEGOTIATED", "ORDER_CONFIRMED", "RESOURCE_REQUESTED", "PAYMENT_REQUIRED"] },
     { title: "自主选择并支付", detail: "AUP 每笔检查预算与范围", states: ["AUP_BOUNDARY_CHECKED", "AUP_PSP_AUTHORIZED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED", "PAYMENT_PENDING"] },
-    { title: "验款并交付", detail: "更新预算并完成报告", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
+    { title: "凭证核验、响应并履约", detail: "接收验证 Header，更新预算并完成报告", states: ["RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED", "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED"] },
   ],
 };
 
@@ -565,14 +578,15 @@ function renderBusinessJourney(stateId = null, failure = false) {
         "CAPABILITY_NEGOTIATED": "正在选择服务",
         "ORDER_CONFIRMED": "购买内容已确认",
         "RESOURCE_REQUESTED": "正在调用数据服务",
-        "PAYMENT_REQUIRED": "已报价 · 等待确认",
-        "USER_AUTHORIZATION_REQUIRED": "等待用户确认 0.01 元",
-        "PAYMENT_QR_PRESENTED": "等待支付宝扫码付款",
+        "PAYMENT_REQUIRED": "已报价 · 等待付款",
+        "PAYMENT_REQUEST_SUBMITTED": "Agent 已提交本笔支付请求",
+        "PAYMENT_REQUEST_VALIDATED": "PSP 已完成基础校验",
+        "USER_AUTHORIZATION_REQUIRED": "用户已确认本笔支付",
         "PAYMENT_PROCESSING": authorizationLevel === "L1" ? "支付宝处理中" : "授权范围内支付处理中",
         "PAYMENT_RESULT_RECEIVED": "付款结果已确认",
         "RESOURCE_REQUEST_RETRIED": "正在请求交付数据",
         "PAYMENT_VERIFIED": "验款通过",
-        "RESOURCE_DELIVERED": "数据已交付",
+        "RESOURCE_DELIVERED": "验证结果与数据已返回",
         "FULFILLMENT_CONFIRMED": "报告可以生成",
       }[stateId] || "等待开始";
 }
@@ -582,7 +596,7 @@ function renderAgentExecution(stateId = null, current = null) {
   const delivered = events.some((item) => item.state === "RESOURCE_DELIVERED");
   const toolVisible = events.some((item) => item.state === "CAPABILITY_NEGOTIATED");
   const paymentVisible = events.some((item) => [
-    "PAYMENT_REQUIRED", "USER_AUTHORIZATION_REQUIRED", "PAYMENT_QR_PRESENTED", "SPECIFIED_IAC_VERIFIED",
+    "PAYMENT_REQUIRED", "PAYMENT_REQUEST_SUBMITTED", "PAYMENT_REQUEST_VALIDATED", "USER_AUTHORIZATION_REQUIRED", "SPECIFIED_IAC_VERIFIED",
     "DEL_PSP_AUTHORIZED", "AUP_BOUNDARY_CHECKED", "AUP_PSP_AUTHORIZED", "PAYMENT_PROCESSING", "PAYMENT_RESULT_RECEIVED",
     "PAYMENT_PENDING", "RESOURCE_REQUEST_RETRIED", "PAYMENT_VERIFIED", "PROOF_REJECTED",
     "VERIFICATION_UNAVAILABLE", "RESOURCE_DELIVERED", "FULFILLMENT_CONFIRMED",
@@ -603,7 +617,6 @@ function renderAgentExecution(stateId = null, current = null) {
 
   if (!stateId) {
     elements.paymentCard.className = "agent-payment-card hidden";
-    elements.paymentQr.classList.add("hidden");
     elements.paymentCardStatus.textContent = "待确认";
     elements.paymentCardHint.textContent = "等待服务返回机器账单。";
     return;
@@ -614,8 +627,9 @@ function renderAgentExecution(stateId = null, current = null) {
     ORDER_CONFIRMED: "参数已确认",
     RESOURCE_REQUESTED: "调用中",
     PAYMENT_REQUIRED: "等待付款",
-    USER_AUTHORIZATION_REQUIRED: "等待确认",
-    PAYMENT_QR_PRESENTED: "等待扫码",
+    PAYMENT_REQUEST_SUBMITTED: "提交付款",
+    PAYMENT_REQUEST_VALIDATED: "请求已校验",
+    USER_AUTHORIZATION_REQUIRED: "用户已确认",
     SPECIFIED_IAC_VERIFIED: "授权已校验",
     DEL_PSP_AUTHORIZED: "委托已核准",
     AUP_BOUNDARY_CHECKED: "边界已检查",
@@ -624,13 +638,12 @@ function renderAgentExecution(stateId = null, current = null) {
     PAYMENT_RESULT_RECEIVED: "付款成功",
     RESOURCE_REQUEST_RETRIED: "重新调用",
     PAYMENT_VERIFIED: "验款通过",
-    RESOURCE_DELIVERED: "已返回数据",
+    RESOURCE_DELIVERED: "验证通过并返回数据",
     FULFILLMENT_CONFIRMED: "调用完成",
   }[stateId] || elements.resourceState.textContent;
 
   if (!paymentVisible) {
     elements.paymentCard.className = "agent-payment-card hidden";
-    elements.paymentQr.classList.add("hidden");
     return;
   }
 
@@ -644,12 +657,11 @@ function renderAgentExecution(stateId = null, current = null) {
   elements.paymentCardTitle.textContent = authorizationLevel === "L1"
     ? "专业数据服务调用"
     : "ACT 协议支付语义";
-  elements.paymentQr.classList.toggle("hidden", authorizationLevel !== "L1"
-    || !["PAYMENT_QR_PRESENTED", "PAYMENT_PROCESSING"].includes(stateId));
   elements.paymentCardStatus.textContent = {
-    PAYMENT_REQUIRED: "待确认",
-    USER_AUTHORIZATION_REQUIRED: "等待用户",
-    PAYMENT_QR_PRESENTED: "等待扫码",
+    PAYMENT_REQUIRED: "待发起",
+    PAYMENT_REQUEST_SUBMITTED: "请求已提交",
+    PAYMENT_REQUEST_VALIDATED: "等待用户确认",
+    USER_AUTHORIZATION_REQUIRED: "本笔已确认",
     SPECIFIED_IAC_VERIFIED: "授权已校验",
     DEL_PSP_AUTHORIZED: "委托已核准",
     AUP_BOUNDARY_CHECKED: "边界已检查",
@@ -665,18 +677,19 @@ function renderAgentExecution(stateId = null, current = null) {
     FULFILLMENT_CONFIRMED: "支付已确认",
   }[stateId] || "支付已确认";
   const l1Hint = {
-    PAYMENT_REQUIRED: "Agent 已收到 0.01 元报价，准备请求用户逐笔确认。",
-    USER_AUTHORIZATION_REQUIRED: "请核对收款方、商品与金额；本页面不会发起真实支付。",
-    PAYMENT_QR_PRESENTED: "支付卡片已生成。真实二维码由支付宝官方页面提供；这里是不可扫码的演示占位图。",
+    PAYMENT_REQUIRED: "Agent 已收到 0.01 元报价，准备向支付宝支付能力发起本笔支付。",
+    PAYMENT_REQUEST_SUBMITTED: "Agent 已提交包含订单、金额、支付工具引用与唯一请求标识的支付请求。",
+    PAYMENT_REQUEST_VALIDATED: "支付宝已完成基础校验，正在准备官方确认界面。",
+    USER_AUTHORIZATION_REQUIRED: "用户已在支付宝确认界面核对收款方、商品、金额和支付方式，并完成本笔确认或身份验证。",
     PAYMENT_PROCESSING: "支付宝正在处理本笔交易，Agent 不会重复付款。",
     PAYMENT_PENDING: "结果未知，Agent 只查询原交易，不会再次付款。",
     PAYMENT_RESULT_RECEIVED: "支付结果已确认，Agent 将携脱敏凭据恢复原工具调用。",
     RESOURCE_REQUEST_RETRIED: "Agent 正在使用同一付款结果重新请求数据。",
-    PAYMENT_VERIFIED: "服务方已完成验款，等待工具返回数据。",
+    PAYMENT_VERIFIED: "卖方已取得 Payment-Proof 核验结果；Payment-Validation 尚未返回给 Buyer Agent。",
     PROOF_REJECTED: "付款凭据与订单或资源不一致，工具不会返回数据。",
-    VERIFICATION_UNAVAILABLE: "官方验款暂不可用，工具调用暂停并等待重试。",
-    RESOURCE_DELIVERED: "支付与验款完成，专业数据已经返回给 Agent。",
-    FULFILLMENT_CONFIRMED: "本次服务交付确认完成。",
+    VERIFICATION_UNAVAILABLE: "凭证核验服务暂不可用，工具调用暂停并等待重试。",
+    RESOURCE_DELIVERED: "卖方已通过 HTTP 200 返回专业数据，并选择附带可选的 Payment-Validation Header。",
+    FULFILLMENT_CONFIRMED: "卖方已异步向支付宝发送履约回执。",
   };
   const delegatedHint = {
     PAYMENT_REQUIRED: `Agent 已收到 0.01 元报价，准备按 ${authorizationLevel === "L2" ? "SPECIFIED" : "BOUNDED"} IAC 校验授权。`,
@@ -688,11 +701,11 @@ function renderAgentExecution(stateId = null, current = null) {
     PAYMENT_PENDING: "结果未知，只查询原交易，不得再次支付。",
     PAYMENT_RESULT_RECEIVED: "支付结果已确认，Agent 将携脱敏凭据恢复原工具调用。",
     RESOURCE_REQUEST_RETRIED: "Agent 正在使用同一付款结果重新请求数据。",
-    PAYMENT_VERIFIED: "服务方已完成验款，等待工具返回数据。",
+    PAYMENT_VERIFIED: "卖方已取得 Payment-Proof 核验结果；Payment-Validation 尚未返回给 Buyer Agent。",
     PROOF_REJECTED: "付款凭据与订单或资源不一致，工具不会返回数据。",
-    VERIFICATION_UNAVAILABLE: "权威验款暂不可用，工具调用暂停并等待重试。",
-    RESOURCE_DELIVERED: "支付与验款完成，专业数据已经返回给 Agent。",
-    FULFILLMENT_CONFIRMED: "本次服务交付确认完成。",
+    VERIFICATION_UNAVAILABLE: "凭证核验服务暂不可用，工具调用暂停并等待重试。",
+    RESOURCE_DELIVERED: "卖方已通过 HTTP 200 返回专业数据，并选择附带可选的 Payment-Validation Header。",
+    FULFILLMENT_CONFIRMED: "卖方已异步向支付宝发送履约回执。",
   };
   elements.paymentCardHint.textContent = (authorizationLevel === "L1" ? l1Hint : delegatedHint)[stateId]
     || "等待本次支付继续处理。";
@@ -749,9 +762,7 @@ function resetGuidedDemo() {
   const baseline = authorizationLevel === "L1" ? "PMT-BND + INS / L1 + A402"
     : authorizationLevel === "L2" ? "ADD + DEL / L2 + A402" : "ADD + AUP / L3 + A402";
   elements.baselineValue.textContent = baseline;
-  elements.protocolLayerValue.textContent = baseline;
   elements.footerScenarioValue.textContent = authorizationLevel === "L1" ? "PSD-PAY-INS (L1)" : authorizationLevel === "L2" ? "PSD-PAY-DEL (L2)" : "PSD-PAY-AUP (L3)";
-  elements.productLayerValue.textContent = authorizationLevel === "L1" ? "Agent 支付 + AI 按量付费" : "本仓库未提供 L2/L3 支付宝实现";
   elements.footerProfileValue.textContent = authorizationLevel === "L1" ? "ALIPAY AI PAY" : "ACT PROTOCOL ONLY";
   const copy = authorizationCopy[authorizationLevel];
   elements.authorizationSummary.dataset.level = authorizationLevel;
@@ -764,10 +775,7 @@ function resetGuidedDemo() {
   elements.introScenarioCopy.textContent = copy.intro;
   elements.pspActorIcon.textContent = authorizationLevel === "L1" ? "支" : "P";
   elements.pspActorName.textContent = authorizationLevel === "L1" ? "支付宝" : "PSP（协议角色）";
-  elements.pspActorDescription.textContent = authorizationLevel === "L1" ? "支付、查询、验款" : "协议角色，非产品声明";
-  elements.layerExplanation.textContent = authorizationLevel === "L1"
-    ? "先看懂上面的购买故事，再用这里核对协议边界：ACT 描述协商、授权和支付服务消息；支付宝产品完成支付与验款；示例服务负责真正的数据交付。"
-    : "本档只对照 ACT 2.1 的授权与支付语义；PSP 是协议角色，本仓库未提供支付宝 L2/L3 接入实现；示例服务只负责资源交付。";
+  elements.pspActorDescription.textContent = authorizationLevel === "L1" ? "支付、查询、凭证核验" : "协议角色，非产品声明";
   elements.modeBadge.textContent = authorizationLevel === "L1"
     ? "引导演示 · 非支付证据"
     : `ACT 2.1 ${authorizationLevel} · 无支付宝实现`;
@@ -814,10 +822,16 @@ function createDemoEvents() {
     request_fingerprint: "sha-256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     profile_mapping: "ALIPAY_PRODUCT_PAYLOAD_TO_ACT_2_1_EVIDENCE",
   };
+  const paymentRequest = {
+    payment_request_ref: "pay-request-sha256-43c1",
+    payment_tool_ref: "payment-tool-sha256-89bd",
+    buyer_agent_ref: "buyer-agent-demo",
+  };
   const payment = { transaction_ref: "trade-sha256-8c11", proof_ref: "proof-sha256-a831" };
   const delivery = { delivery_ref: "delivery-sha256-42bd" };
   const fulfillment = {
     fulfillment_ref: "fulfill-sha256-6d2a",
+    product_fulfillment_method: "alipay.aipay.agent.fulfillment.confirm",
     product_fulfillment_status: "CONFIRMED",
   };
   const delegation = authorizationLevel === "L1" ? {} : {
@@ -839,6 +853,7 @@ function createDemoEvents() {
       ...(seen("ORDER_CONFIRMED") ? commerce : {}),
       ...(seen("RESOURCE_REQUESTED") ? request : {}),
       ...(seen("PAYMENT_REQUIRED") ? bill : {}),
+      ...(authorizationLevel === "L1" && seen("PAYMENT_REQUEST_SUBMITTED") ? paymentRequest : {}),
       ...(paymentStarted ? { transaction_ref: payment.transaction_ref } : {}),
       ...(paymentCompleted ? { proof_ref: payment.proof_ref } : {}),
       ...(seen("RESOURCE_DELIVERED") ? delivery : {}),
@@ -846,7 +861,12 @@ function createDemoEvents() {
       sequence: index + 1,
       state: id,
       occurred_at: new Date(startedAt + index * 1000).toISOString(),
-      validation_mapping: id === "PAYMENT_VERIFIED" ? "ACT 2.1 evidence ← Alipay payment.verify result" : undefined,
+      payment_request_validation_status: id === "PAYMENT_REQUEST_VALIDATED" ? "ACCEPTED" : undefined,
+      user_confirmation_status: id === "USER_AUTHORIZATION_REQUIRED" ? "CONFIRMED" : undefined,
+      payment_verification_status: id === "PAYMENT_VERIFIED" ? "VERIFIED" : undefined,
+      a402_response: id === "RESOURCE_DELIVERED"
+        ? { http_status: 200, payment_validation_status: "PAYMENT_VALIDATED", includes_paid_resource: true }
+        : undefined,
       idempotent_replay: replayStep && id === "RESOURCE_DELIVERED" ? true : undefined,
       payment_action: replayStep ? "NO_NEW_PAYMENT" : undefined,
       delivery_action: replayStep && id === "RESOURCE_DELIVERED" ? "RETURN_PRIOR_RESULT" : undefined,
@@ -859,8 +879,8 @@ function createDemoEvents() {
       result_summary: replayStep && id === "RESOURCE_DELIVERED"
         ? "返回既有交付结果；未重复支付、交付或履约确认"
         : {
-            RESOURCE_DELIVERED: "专业数据已交付给 Agent",
-            FULFILLMENT_CONFIRMED: "卖方产品履约确认完成；TSD 证据未自动生成",
+            RESOURCE_DELIVERED: "HTTP 200 已返回专业数据；本 Demo 选择附带 Payment-Validation",
+            FULFILLMENT_CONFIRMED: "卖方已异步发送支付宝产品履约回执；TSD 证据未自动生成",
           }[id],
     };
   });
@@ -928,18 +948,41 @@ function validateDemoEvidence(event, expectedIndex) {
       if (!event[field]) throw new Error(`Payment-Needed 证据缺少 ${field}`);
     }
   }
+  if (event.state === "PAYMENT_REQUEST_SUBMITTED"
+      && (!event.payment_request_ref || !event.payment_tool_ref || !event.order_ref || !event.amount || !event.currency)) {
+    throw new Error("L1 支付请求缺少订单、金额、支付工具或唯一请求引用");
+  }
+  if (event.state === "PAYMENT_REQUEST_VALIDATED"
+      && event.payment_request_validation_status !== "ACCEPTED") {
+    throw new Error("PSP 基础校验结果尚未确认");
+  }
+  if (event.state === "USER_AUTHORIZATION_REQUIRED"
+      && event.user_confirmation_status !== "CONFIRMED") {
+    throw new Error("L1 本笔用户确认尚未完成");
+  }
   if (event.state === "PAYMENT_RESULT_RECEIVED" && (!event.transaction_ref || !event.proof_ref)) {
     throw new Error("支付结果缺少交易或 Proof 脱敏引用");
   }
-  if (event.state === "PAYMENT_VERIFIED" && (!event.transaction_ref || !event.validation_mapping)) {
-    throw new Error("验款事件缺少权威交易或映射引用");
+  if (event.state === "PAYMENT_VERIFIED"
+      && (!event.transaction_ref || event.payment_verification_status !== "VERIFIED")) {
+    throw new Error("卖方内部验款缺少权威交易或有效验款结果");
   }
-  if (event.state === "RESOURCE_DELIVERED" && (!event.transaction_ref || !event.delivery_ref)) {
-    throw new Error("资源交付缺少独立交付引用");
+  if (event.state === "RESOURCE_DELIVERED"
+      && (!event.transaction_ref || !event.delivery_ref
+        || event.a402_response?.http_status !== 200
+        || event.a402_response?.includes_paid_resource !== true)) {
+    throw new Error("A402 验款成功后必须返回付费资源或启动服务");
+  }
+  if (event.state === "RESOURCE_DELIVERED"
+      && event.a402_response?.payment_validation_status !== undefined
+      && event.a402_response.payment_validation_status !== "PAYMENT_VALIDATED") {
+    throw new Error("可选 Payment-Validation 与本次验款结果不一致");
   }
   if (event.state === "FULFILLMENT_CONFIRMED"
-      && (!event.transaction_ref || !event.fulfillment_ref || event.product_fulfillment_status !== "CONFIRMED")) {
-    throw new Error("履约确认缺少独立产品确认事实");
+      && (!event.transaction_ref || !event.fulfillment_ref
+        || event.product_fulfillment_method !== "alipay.aipay.agent.fulfillment.confirm"
+        || event.product_fulfillment_status !== "CONFIRMED")) {
+    throw new Error("支付宝 AI 按量付费履约回执缺少独立产品确认事实");
   }
   if (scenario === "IDEMPOTENT_REPLAY" && expectedIndex === flow().length - 1) {
     if (event.idempotent_replay !== true
@@ -988,7 +1031,7 @@ function render() {
   if (!current) {
     elements.currentState.textContent = "等待开始";
     elements.stateExplanation.textContent = "这里会解释同一个动作在 ACT 场景组件、A402 Binding 与支付宝产品中的位置。";
-    ["actDomain", "actComponent", "actBinding", "alipayProduct", "profileMapping"].forEach((id) => { elements[id].textContent = "—"; });
+    ["actComponent", "actBinding", "alipayProduct", "profileMapping"].forEach((id) => { elements[id].textContent = "—"; });
     elements.layerCode.textContent = "READY";
     elements.fromActor.textContent = "—";
     elements.toActor.textContent = "—";
@@ -1000,19 +1043,13 @@ function render() {
     renderPhaseRail();
     elements.agentMessage.textContent = authorizationCopy[authorizationLevel].idle;
     elements.businessActionTitle.textContent = "等待 Agent 开始任务";
-    elements.evidenceRef.textContent = "NO EVIDENCE";
-    elements.methodId.textContent = "—";
-    elements.tsdStatus.textContent = "NOT EMITTED · OPTIONAL";
-    elements.correlationChain.textContent = "等待建立关联链";
     renderBusinessJourney();
     renderAgentExecution();
-    renderEvidence(null);
     lockResource();
     return;
   }
   elements.currentState.textContent = current.label;
   elements.stateExplanation.textContent = current.explanation;
-  elements.actDomain.textContent = current.domain;
   elements.actComponent.textContent = current.component;
   elements.actBinding.textContent = current.binding;
   elements.profileMapping.textContent = current.profile || "Demo evidence observation";
@@ -1022,12 +1059,7 @@ function render() {
   renderBusinessJourney(event.state, current.failure === true);
   elements.businessActionTitle.textContent = current.label;
   elements.agentMessage.textContent = current.agent;
-  elements.evidenceRef.textContent = event.evidence_ref;
-  elements.methodId.textContent = event.method_id || findLatest("method_id") || "—";
-  elements.tsdStatus.textContent = event.tsd_evidence_ref || findLatest("tsd_evidence_ref") || "NOT EMITTED · OPTIONAL";
-  elements.correlationChain.textContent = correlationText();
-  renderEvidence(event);
-  applyResource(event, current);
+  applyResource(current);
   renderAgentExecution(event.state, current);
   if (events.length === flow().length) {
     elements.taskResult.textContent = current.failure
@@ -1069,45 +1101,8 @@ function findLatest(key) {
   return [...events].reverse().find((item) => item[key])?.[key];
 }
 
-function correlationText() {
-  const fields = [
-    ["IAC", findLatest("delegation_id")],
-    ["COMMERCE", findLatest("commerce_confirmation_ref")],
-    ["REQ", findLatest("request_ref")],
-    ["FINGERPRINT", findLatest("request_fingerprint")],
-    ["ORDER", findLatest("order_ref")],
-    ["RESOURCE", findLatest("resource_id")],
-    ["TRADE", findLatest("transaction_ref")],
-    ["FULFILL", findLatest("fulfillment_ref")],
-  ].filter(([, value]) => value);
-  return fields.length ? fields.map(([key, value]) => `${key} ${value}`).join("  →  ") : "等待建立关联链";
-}
 
-function renderEvidence(event) {
-  const rows = event
-    ? [
-        ["来源", event.source],
-        ["时间", new Date(event.occurred_at).toLocaleTimeString("zh-CN", { hour12: false })],
-        ...detailKeys.filter((key) => event[key]).slice(0, 4).map((key) => [labelFor(key), event[key]]),
-      ]
-    : [["来源", "—"], ["时间", "—"], ["结果", "—"]];
-  elements.evidenceDetails.innerHTML = rows.map(([label, value]) =>
-    `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(String(value))}</dd></div>`).join("");
-}
-
-function labelFor(key) {
-  return {
-    amount: "金额", currency: "币种", fulfillment_ref: "产品履约", http_method: "原请求",
-    authorization_level: "授权级别", delegation_mode: "委托模式", delegation_id: "IAC 关联",
-    commerce_confirmation_ref: "商业确认", delivery_ref: "交付", idempotent_replay: "幂等重放",
-    method_id: "支付方法", method_version: "方法版本", order_ref: "支付订单", psp_id: "PSP", proof_ref: "Proof 引用",
-    request_fingerprint: "请求指纹", request_ref: "请求",
-    resource_id: "资源", transaction_ref: "交易", validation_mapping: "验证映射",
-    recovery_action: "恢复动作",
-  }[key] || key;
-}
-
-function applyResource(event, current) {
+function applyResource(current) {
   const amount = findLatest("amount");
   const currency = findLatest("currency") || "CNY";
   const resourceId = findLatest("resource_id");
@@ -1148,7 +1143,6 @@ function lockResource() {
   elements.resourcePrice.textContent = "0.01 CNY";
   elements.resourceId.textContent = "market-signal-demo";
   elements.taskResult.textContent = "数据尚未交付，报告暂不能完成。";
-  elements.tsdStatus.textContent = "NOT EMITTED · OPTIONAL";
 }
 
 function setStatus(message, error = false) {
