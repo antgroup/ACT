@@ -119,10 +119,6 @@
             <article class="agent-payment-card hidden" id="paymentCard">
               <div class="payment-card-heading"><span class="payment-logo">支</span><div><small id="paymentCardKind">ALIPAY · 付款确认</small><strong id="paymentCardTitle">专业数据服务调用</strong></div><b id="paymentCardStatus">待确认</b></div>
               <dl><div><dt>收款方</dt><dd>示例专业数据服务</dd></div><div><dt>商品</dt><dd>AI 支付行业趋势数据 API</dd></div><div><dt>金额</dt><dd>0.01 CNY</dd></div></dl>
-              <div class="demo-qr payment-qr hidden" id="paymentQr" aria-label="演示支付二维码，不可扫码">
-                <div class="qr-pattern payment" aria-hidden="true"></div>
-                <strong>支付宝扫码支付</strong><span>演示二维码 · 不可扫码</span>
-              </div>
               <p id="paymentCardHint">等待服务返回机器账单。</p>
             </article>
 
@@ -150,7 +146,7 @@
               <h2 id="stageTitle">协议与参与方对照</h2>
             </div>
             <div class="stage-counter">
-              <strong id="eventCounter">0 / 11</strong>
+              <strong id="eventCounter">0 / 17</strong>
               <span id="layerCode">READY</span>
             </div>
           </div>
@@ -219,53 +215,6 @@
         </section>
       </div>
 
-        <section class="lower-grid">
-          <section class="panel layer-panel" aria-labelledby="layerTitle">
-            <div class="panel-heading">
-              <div><p class="section-kicker">WHY THESE LAYERS</p><h2 id="layerTitle">协议与产品各自负责什么</h2></div>
-            </div>
-            <div class="layer-legend" aria-label="协议与产品分层">
-              <article>
-                <span class="legend-number">1</span>
-                <div><small>BUSINESS · 买什么</small><strong>专业数据服务与报告任务</strong></div>
-              </article>
-              <article>
-                <span class="legend-number">2</span>
-                <div><small>ACT · 怎么表达</small><strong id="protocolLayerValue">INS / L1 + A402</strong></div>
-              </article>
-              <article>
-                <span class="legend-number">3</span>
-                <div><small>ALIPAY · 怎么执行</small><strong id="productLayerValue">Agent 支付 + AI 按量付费</strong></div>
-              </article>
-            </div>
-            <p class="layer-explanation" id="layerExplanation">先看懂上面的购买故事，再用这里核对协议边界：ACT 描述协商、授权和支付服务消息；支付宝产品完成支付与验款；示例服务负责真正的数据交付。</p>
-          </section>
-
-          <section class="panel detail-panel" aria-labelledby="detailTitle">
-            <div class="panel-heading">
-              <div><p class="section-kicker">PROTOCOL RECEIPT</p><h2 id="detailTitle">关联与证据</h2></div>
-              <span class="domain-chip" id="actDomain">—</span>
-            </div>
-            <div class="fact-grid">
-              <article><small>SELECTED METHOD</small><strong id="methodId">—</strong></article>
-              <article><small>EVIDENCE</small><strong id="evidenceRef">NO EVIDENCE</strong></article>
-              <article><small>TSD EVIDENCE</small><strong id="tsdStatus">NOT EMITTED · OPTIONAL</strong></article>
-            </div>
-            <div class="correlation-box">
-              <small>同一笔交易如何贯穿全链路</small>
-              <p id="correlationChain">等待建立请求、订单、资源、交易和履约关联</p>
-            </div>
-            <dl id="evidenceDetails" class="evidence-details">
-              <div><dt>来源</dt><dd>—</dd></div>
-              <div><dt>时间</dt><dd>—</dd></div>
-              <div><dt>结果</dt><dd>—</dd></div>
-            </dl>
-            <div class="security-note">
-              <span>◆</span>
-              <p>只展示脱敏引用，不展示完整 Proof、签名、账号、密钥或可重放请求。</p>
-            </div>
-          </section>
-        </section>
       </main>
 
       <footer>

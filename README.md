@@ -8,26 +8,27 @@ ACT（Agentic Commerce Trust Protocol）是面向智能体商业交互的开放�
 
 | 目标 | 入口 |
 |---|---|
+| 在线体验 ACT 流程 | [ACT 官网 Demo](https://www.act-protocol.com/demo) |
 | 阅读 ACT 2.1 | [协议概览](docs/specification/overview.md) |
 | 理解完整业务流程 | [典型场景与业务流程](docs/specification/scenarios.md) |
-| 运行 TSD-CRD 信用关联参考链路 | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | 本地运行安全的 A402 样例 | [Local A402 Sample](code/samples/local-a402/README.md) |
-| 查看交互演示 | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
+| 本地运行交互演示 | [Web Showcase](code/web-client/alipay-ai-pay-showcase/README.md) |
+| 运行 TSD-CRD 信用关联参考链路 | [TSD-CRD Reference Implementation](code/samples/tsd-crd-reference/README.md) |
 | 接入支付宝 | [Alipay Reference Integration](integrations/alipay/README.md) |
 
 第一次进入仓库，建议按以下顺序阅读：
 
-1. 用 2 分钟阅读[协议概览](docs/specification/overview.md)，先区分 ADD、CID、PSD、TSD 与 A402；
-2. 遇到缩写时查看[中英术语表](docs/glossary.md)；
-3. 需要理解信用关联时，运行 TSD-CRD Reference Implementation，观察关联、映射、生命周期、查询授权和验证；
-4. 运行 Local A402 Sample，观察 `402 → Payment-Needed → 伪 Proof 被拒绝` 的安全路径；
+1. 打开 [ACT 官网 Demo](https://www.act-protocol.com/demo)，先直观看到 Agent 商业流程中的业务步骤、参与方和协议组件；
+2. 用 2 分钟阅读[协议概览](docs/specification/overview.md)，区分 ADD、CID、PSD、TSD 与 A402；遇到缩写时查看[中英术语表](docs/glossary.md)；
+3. 阅读[典型场景与业务流程](docs/specification/scenarios.md)，把演示步骤对应到完整协议流程；
+4. 根据关注点运行 Local A402 Sample 或 TSD-CRD Reference Implementation，分别观察安全支付路径或信用关联路径；
 5. 需要真实支付成功链路时，选择[支付宝买方](integrations/alipay/buyer-agent/README.md)或[卖方 Java](integrations/alipay/seller-java/README.md)，并在官网沙箱完成授权和支付。
 
 Local A402 Sample 有意不伪造支付成功。真实资源交付必须来自已经验真的支付证明，因此“本地安全失败路径”和“官网沙箱成功路径”是两个不同的接入阶段。TSD-CRD Reference Implementation 同样只使用 Mock 能力和测试密钥，不是生产信用服务。
 
 ACT 2.1 的五份规范正文和非规范性场景指南位于 `docs/specification/`。A402 与 Commerce–Payment 接入指南随支付宝参考接入放在 `integrations/alipay/`。JSON Schema、fixtures 和测试位于 `code/schemas/`，用于帮助实现与验证，不增加协议正文未规定的要求。
 
-本仓库发布版本中，`docs/specification/` 下的协议概览和四份域规范共同构成 ACT 2.1 唯一的版本化规范正文；场景指南明确为非规范性材料。[act-protocol.com](https://www.act-protocol.com/) 是项目信息入口；未明确标注 ACT 2.1 版本的网页内容属于信息性材料，不是本 Release 的规范来源。网页如果遗漏本 Release 的组件、采用不同结构或与正文冲突，只能按网页自身标明的版本理解，不得用于覆盖或解释本仓库的 ACT 2.1 要求。
+`docs/specification/` 下的协议概览和四份域规范共同构成 ACT 2.1 的版本化规范正文，场景指南属于非规范性材料。[act-protocol.com](https://www.act-protocol.com/) 提供项目信息和在线演示，不替代本仓库中的版本化规范。
 
 ## 仓库结构
 
@@ -59,9 +60,17 @@ sample / demo
 
 产品实现、演示和 `tools/` 下的验证程序不得反向定义协议语义。
 
-## 运行本地样例
+## 在线体验 Demo
 
-下载或 clone 本仓库后，在仓库根目录执行以下命令，需要 Node.js 18 或更高版本：
+无需下载或安装，即可打开 [ACT 官网 Demo](https://www.act-protocol.com/demo) 体验协议流程。官网 Demo 是交互演示，不是支付实现或一致性认证。
+
+## 本地运行
+
+以下三个 Node.js 程序均无第三方运行时依赖，不需要先执行 `npm install`。下载或 clone 本仓库后，在仓库根目录运行。
+
+### Local A402 Sample
+
+需要 Node.js 18 或更高版本：
 
 ```bash
 npm --prefix code/samples/local-a402 run local
@@ -69,7 +78,9 @@ npm --prefix code/samples/local-a402 run local
 
 这个样例返回 `402 Payment Required`、解码 `Payment-Needed`，并验证伪造的 `Payment-Proof` 不会导致资源交付。它不连接支付产品，也不会执行支付。
 
-运行 TSD-CRD 测试、基础一致性检查和本地 Demo 需要 Node.js 22.18 或更高版本：
+### TSD-CRD Reference Implementation
+
+需要 Node.js 22.18 或更高版本。运行测试、基础一致性检查和本地 Demo：
 
 ```bash
 npm --prefix code/samples/tsd-crd-reference run check
@@ -78,27 +89,29 @@ npm --prefix code/samples/tsd-crd-reference run demo
 
 该套件采用非规范性的 `reference-v1` 机器 Profile。测试通过只证明仓库内参考路径，不等于 ACT 2.1 全量 Conformance 或生产就绪。
 
-运行交互演示：
+### Web Showcase
+
+需要 Node.js 18 或更高版本。如需在本地查看或修改交互演示源码，运行：
 
 ```bash
 npm --prefix code/web-client/alipay-ai-pay-showcase run demo
 ```
 
-打开 `http://127.0.0.1:4173/`。Showcase 是协议流程演示，不是支付实现或一致性认证。
+打开 `http://127.0.0.1:4173/`。本地 Showcase 是协议流程演示，不是支付实现或一致性认证。
 
 ## 支付宝参考接入
 
 `integrations/alipay/` 展示两侧能力：
 
-- `buyer-agent/`：检查环境并引导安装支付宝官方 Agent Payment Skill/CLI；
-- `seller-java/`：使用支付宝 Java SDK 验证支付凭证并确认履约；
+- `buyer-agent/`：检查环境并引导安装买方钱包与支付工具 `@alipay/agent-payment`；
+- `seller-java/`：使用支付宝 Java SDK 接入 Machine Pay，验证支付凭证并确认履约；支付宝官方卖方接入助手 `@alipay/alipay-aipay` 仅作为外部工具引用；
 - `validation/`：沙箱前置检查和脱敏证据格式。
 
 支付宝开户、授权、密钥、沙箱和最新产品操作始终以 [AIPay 官网](https://aipay.alipay.com/callpay)及其[官方接入指南](https://aipay.alipay.com/docs/ai-receive/MACHINE_PAY.html)为准。本仓库不复制或实现官网沙箱。
 
 ## 质量检查
 
-完整检查需要 Python 3、Node.js 22.18+、JDK 8+ 和 Maven 3.8+：
+完整检查需要 Python 3、Node.js 22.18+、JDK 8+ 和 Maven 3.8+。检查包含仓库结构、内部链接、关键官网外链、Schema、样例、集成和 Demo：
 
 ```bash
 ./tools/verify.sh
